@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Construction, ArrowLeft, Sparkles } from 'lucide-react';
+import { Construction, ArrowLeft, Sparkles, CheckCircle } from 'lucide-react';
 import { PageTransition } from '@/components/molecules';
 import { Button, Card } from '@/components/atoms';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -12,6 +12,7 @@ const Maintenance: React.FC = () => {
   const { animationLevel, reducedMotion } = useSettingsStore();
 
   const moduleName = searchParams.get('name') || '';
+  const isCompleted = searchParams.get('completed') === 'true';
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -25,6 +26,87 @@ const Maintenance: React.FC = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
+
+  if (isCompleted) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen px-4 py-12">
+          <div className="mx-auto max-w-xl">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/categories')}
+              leftIcon={<ArrowLeft className="w-4 h-4" />}
+              className="mb-8"
+            >
+              返回分类
+            </Button>
+
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="text-center"
+            >
+              <motion.div variants={itemVariants}>
+                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                  <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
+                </div>
+              </motion.div>
+
+              <motion.h1
+                variants={itemVariants}
+                className="mb-4 text-3xl font-bold text-gray-900 dark:text-white"
+              >
+                {moduleName ? `${moduleName} 测评完成` : '测评完成'}
+              </motion.h1>
+
+              <motion.p
+                variants={itemVariants}
+                className="mb-8 text-lg text-gray-600 dark:text-gray-400"
+              >
+                您的答案已保存，该模块的详细报告正在制作中
+              </motion.p>
+
+              <motion.div variants={itemVariants}>
+                <Card className="p-6 mb-8 text-left">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Sparkles className="w-5 h-5 text-primary-500" />
+                    <h2 className="font-semibold text-gray-900 dark:text-white">
+                      感谢您的参与
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    我们会尽快完善该模块的报告功能。敬请期待！
+                  </p>
+                  <ul className="text-sm space-y-2 text-gray-600 dark:text-gray-400">
+                    <li>• 您的测评结果已本地保存</li>
+                    <li>• 详细分析报告即将上线</li>
+                    <li>• 您可以先体验其他已开放的模块</li>
+                  </ul>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => navigate('/quiz/mbti-basic')}
+                  size="lg"
+                >
+                  体验 MBTI 测评
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate('/categories')}
+                  size="lg"
+                >
+                  查看所有测评
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>

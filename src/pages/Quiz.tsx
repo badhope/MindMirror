@@ -85,7 +85,12 @@ const Quiz: React.FC = () => {
       completedAt: new Date().toISOString(),
     };
     localStorage.setItem(`quiz_result_${assessmentId}`, JSON.stringify(resultData));
-    navigate(`/results/${assessmentId}`);
+
+    if (assessmentId === 'mbti-basic') {
+      navigate(`/results/${assessmentId}`);
+    } else {
+      navigate(`/maintenance?module=${assessmentId}&name=${encodeURIComponent(assessment.name)}&completed=true`);
+    }
   };
 
   const handleNext = () => {

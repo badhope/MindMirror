@@ -1,49 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Settings, History } from 'lucide-react';
+import { User, Settings, History, AlertCircle } from 'lucide-react';
 import { Card } from '@/components/atoms';
 import { useSettingsStore } from '@/store/settingsStore';
-import type { AssessmentResult } from '@/shared/types';
 
-const MOCK_HISTORY: AssessmentResult[] = [
-  {
-    id: 1,
-    assessmentId: 'mbti-basic',
-    assessmentSlug: 'mbti-basic',
-    assessmentName: 'MBTI 职业性格测试',
-    category: 'personality',
-    completedAt: new Date('2024-01-15'),
-    answers: {},
-    rawScores: {},
-    dimensionScores: { EI: 6.5, SN: 7.8, TF: 5.2, JP: 6.8 },
-    resultProfileId: 'INTJ',
-    resultProfileName: '建筑师',
-    totalScore: 72,
-  },
-  {
-    id: 2,
-    assessmentId: 'stress-check',
-    assessmentSlug: 'stress-check',
-    assessmentName: '压力指数评估',
-    category: 'psychology',
-    completedAt: new Date('2024-01-10'),
-    answers: {},
-    rawScores: {},
-    dimensionScores: { stressLoad: 8.8, emotionalStrain: 8.2, recoveryCapacity: 8.0 },
-    resultProfileId: 'mild-stress',
-    resultProfileName: '轻度压力',
-    totalScore: 85,
-  },
-];
+interface StoredResultData {
+  assessmentId: string;
+  answers: Record<string, number>;
+  completedAt: string;
+}
+
+interface HistoryItem {
+  id: string;
+  assessmentId: string;
+  assessmentName: string;
+  completedAt: string;
+  resultProfileName: string | null;
+  totalScore: number | null;
+}
 
 const Profile: React.FC = () => {
-  const { animationLevel, reducedMotion } = useSettingsStore();
-  const { animationLevel: animLevel, setAnimationLevel, fontSize, setFontSize } = useSettingsStore();
-  const [history, setHistory] = React.useState<AssessmentResult[]>([]);
+  const { animationLevel, reducedMotion, fontSize, setFontSize } = useSettingsStore();
+  const { animationLevel: animLevel, setAnimationLevel } = useSettingsStore();
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
-    setHistory(MOCK_HISTORY);
+  useEffect(() => {
+    const loadHistory = () => {
+      try {
+        const results: HistoryItem[] = [];
+
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith('quiz_result_')) {
+            const dataStr = localStorage.getItem(key);
+            if (dataStr) {
+              const data: StoredResultData = JSON.parse(dataStr);
+              results.push({
+                id: key,
+                assessmentId: data.assessmentId,
+                assessmentName: getAssessmentName(data.assessmentId),
+                completedAt: data.completedAt,
+                resultProfileName: data.assessmentId === 'mbti-basic' ? '已完成' : null,
+                totalScore: data.assessmentId === 'mbti-basic' ? Object.keys(data.answers).length * 5 : null,
+              });
+            }
+          }
+        }
+
+        results.sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
+        setHistory(results);
+      } catch (error) {
+        console.error('Failed to load history:', error);
+        setHistory([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadHistory();
   }, []);
+
+  const getAssessmentName = (assessmentId: string): string => {
+    const names: Record<string, string> = {
+      'mbti-basic': 'MBTI 职业性格测试',
+      'stress-check': '压力指数评估',
+      'resilience-basic': '心理韧性评估',
+      'logic-lite': '逻辑思维评估',
+      'focus-style': '注意力与思维风格',
+      'values-spectrum': '价值观光谱',
+      'holland-basic': '霍兰德职业兴趣测试',
+      'work-style-basic': '工作方式偏好',
+    };
+    return names[assessmentId] || assessmentId;
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -57,6 +87,14 @@ const Profile: React.FC = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen px-4 py-12 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen px-4 py-12">
@@ -110,7 +148,13 @@ const Profile: React.FC = () => {
                           {result.assessmentName}
                         </p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {new Date(result.completedAt).toLocaleDateString('zh-CN')}
+                          {new Date(result.completedAt).toLocaleDateString('zh-CN', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
                         </p>
                       </div>
                       <div className="text-right">
@@ -129,17 +173,23 @@ const Profile: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
-                  暂无测评记录
-                </p>
+                <div className="text-center py-8">
+                  <AlertCircle className="h-12 w-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+                  <p className="text-gray-500 dark:text-gray-400 mb-2">
+                    暂无测评记录
+                  </p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
+                    完成测评后，您的时间记录会显示在这里
+                  </p>
+                </div>
               )}
 
               {history.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">平均得分</span>
+                    <span className="text-gray-600 dark:text-gray-400">已完成测评</span>
                     <span className="font-medium text-gray-900 dark:text-white">
-                      {Math.round(history.reduce((sum, h) => sum + (h.totalScore || 0), 0) / history.length)}
+                      {history.length} 次
                     </span>
                   </div>
                 </div>
