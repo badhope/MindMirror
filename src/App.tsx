@@ -8,6 +8,7 @@ import AssessmentList from '@/pages/AssessmentList';
 import Quiz from '@/pages/Quiz';
 import Results from '@/pages/Results';
 import Profile from '@/pages/Profile';
+import NotFound from '@/pages/NotFound';
 import { ImmersiveBackground } from '@/components/3d/ImmersiveBackground';
 
 function App() {
@@ -64,6 +65,14 @@ function App() {
             element={
               <PageTransition>
                 <Profile />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <PageTransition>
+                <NotFound />
               </PageTransition>
             }
           />
