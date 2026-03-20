@@ -67,6 +67,7 @@ export async function loadSettingsFromDB(): Promise<UserSettings> {
     reducedMotion: (records.reducedMotion as boolean) || defaultSettings.reducedMotion,
     showTimer: (records.showTimer as boolean) ?? (records.showTimer === false ? false : defaultSettings.showTimer),
     autoSaveDraft: (records.autoSaveDraft as boolean) ?? (records.autoSaveDraft === false ? false : defaultSettings.autoSaveDraft),
+    aiApiKey: (records.aiApiKey as string) || defaultSettings.aiApiKey || '',
   };
 }
 

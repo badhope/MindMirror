@@ -8,6 +8,7 @@ export interface UserSettings {
   reducedMotion: boolean;
   showTimer: boolean;
   autoSaveDraft: boolean;
+  aiApiKey?: string;
 }
 
 export const defaultSettings: UserSettings = {

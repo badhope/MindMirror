@@ -16,6 +16,7 @@ import {
 } from '@/features/assessment/scoring';
 import { saveResult, getLatestResultByAssessmentSlug, getResultByResultId } from '@/features/storage/resultService';
 import { syncProfileFromResults } from '@/features/storage/profileService';
+import AIReportBlock from '@/components/blocks/AIReportBlock';
 import type { ResultRecord } from '@/shared/types';
 
 interface DimensionResult {
@@ -64,6 +65,7 @@ const Results: FC = () => {
   const [isRestoredFromStorage, setIsRestoredFromStorage] = useState(false);
   const [resultId, setResultId] = useState<number | null>(null);
   const [savingResult, setSavingResult] = useState(false);
+  const [savedResultRecord, setSavedResultRecord] = useState<ResultRecord | null>(null);
 
   useEffect(() => {
     async function loadResult() {
@@ -220,8 +222,10 @@ const Results: FC = () => {
 
             const savedId = await saveResult(resultRecord);
             setResultId(savedId);
+            setSavedResultRecord(resultRecord);
             if (loadedResult?.id) {
               setResultId(loadedResult.id);
+              setSavedResultRecord(loadedResult);
             }
 
             await syncProfileFromResults();
@@ -435,6 +439,12 @@ const Results: FC = () => {
                 </ul>
               </Card>
             </motion.div>
+
+            {resultId && savedResultRecord && (
+              <motion.div variants={itemVariants}>
+                <AIReportBlock result={savedResultRecord} resultId={resultId} />
+              </motion.div>
+            )}
 
             <motion.div variants={itemVariants}>
               <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">

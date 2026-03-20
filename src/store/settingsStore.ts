@@ -10,6 +10,7 @@ interface SettingsState extends UserSettings {
   setReducedMotion: (reduced: boolean) => void;
   setShowTimer: (show: boolean) => void;
   setAutoSaveDraft: (autoSave: boolean) => void;
+  setAiApiKey: (key: string) => void;
   resetSettings: () => void;
   syncFromDB: () => Promise<void>;
   syncToDB: () => Promise<void>;
@@ -24,6 +25,7 @@ const defaultSettings: UserSettings = {
   reducedMotion: false,
   showTimer: true,
   autoSaveDraft: true,
+  aiApiKey: '',
 };
 
 export const useSettingsStore = create<SettingsState>()(
@@ -62,6 +64,11 @@ export const useSettingsStore = create<SettingsState>()(
         await saveSettingTyped('autoSaveDraft', autoSaveDraft);
       },
 
+      setAiApiKey: async (aiApiKey) => {
+        set({ aiApiKey });
+        await saveSettingTyped('aiApiKey', aiApiKey);
+      },
+
       resetSettings: async () => {
         set({ ...defaultSettings, initialized: true });
         await resetSettingsInDB();
@@ -90,6 +97,7 @@ export const useSettingsStore = create<SettingsState>()(
             reducedMotion: state.reducedMotion,
             showTimer: state.showTimer,
             autoSaveDraft: state.autoSaveDraft,
+            aiApiKey: state.aiApiKey,
           });
         } catch (error) {
           console.error('Failed to sync settings to DB:', error);

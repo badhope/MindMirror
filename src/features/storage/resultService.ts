@@ -92,3 +92,29 @@ export async function updateResultMetadata(id: number, metadata: Record<string, 
 export async function updateResultAiAnalysis(id: number, aiAnalysis: string): Promise<void> {
   await db.results.update(id, { aiAnalysis });
 }
+
+export async function updateResultAiReport(
+  id: number,
+  aiReport: AIReportRecord
+): Promise<void> {
+  await db.results.update(id, { aiAnalysis: JSON.stringify(aiReport) });
+}
+
+interface AIReportRecord {
+  report: {
+    overview: string;
+    traitReadings: string[];
+    strengths: string[];
+    blindSpots: string[];
+    practicalSuggestions: string[];
+    growthDirections: string[];
+    cautions: string[];
+  };
+  metadata: {
+    provider: string;
+    model?: string;
+    generatedAt: string;
+    assessmentSlug: string;
+    resultType: string;
+  };
+}
