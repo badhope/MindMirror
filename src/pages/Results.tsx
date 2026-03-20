@@ -238,6 +238,7 @@ const Results: FC = () => {
           }
         } else if (loadedResult?.id) {
           setResultId(loadedResult.id);
+          setSavedResultRecord(loadedResult);
         }
       } catch (err) {
         console.error('Failed to load result:', err);
