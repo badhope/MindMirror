@@ -90,6 +90,7 @@ Windows-Release/
 electron-release/
 release/
 release-app/
+dist/
 
 # Documentation (optional)
 # README_EN.md
