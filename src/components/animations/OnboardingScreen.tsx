@@ -284,7 +284,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
       </div>
 
       {/* 底部导航 */}
-      <div className="relative z-10 p-6 space-y-6">
+      <div className="relative z-10 px-6 pt-4 pb-12 space-y-5">
         {/* 分页指示器 */}
         <div className="flex justify-center gap-2">
           {TUTORIAL_STEPS.map((_, index) => (
@@ -301,13 +301,13 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
         </div>
 
         {/* 导航按钮 */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 max-w-sm mx-auto w-full">
           {/* 上一步 */}
           <motion.button
             onClick={handlePrev}
             disabled={isFirstStep}
             className={cn(
-              'w-14 h-14 rounded-2xl flex items-center justify-center transition-all',
+              'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
               isFirstStep
                 ? 'bg-white/5 text-white/20 cursor-not-allowed'
                 : 'bg-white/10 text-white/80 hover:bg-white/20'
@@ -315,14 +315,14 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
             whileHover={!isFirstStep ? { scale: 1.05 } : {}}
             whileTap={!isFirstStep ? { scale: 0.95 } : {}}
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={22} />
           </motion.button>
 
           {/* 开始/下一步 */}
           <motion.button
             onClick={handleNext}
             className={cn(
-              'flex-1 h-14 rounded-2xl flex items-center justify-center gap-2 font-semibold text-white',
+              'flex-1 h-12 rounded-xl flex items-center justify-center gap-2 font-semibold text-white',
               'bg-gradient-to-r from-violet-500 to-purple-600',
               'shadow-lg shadow-violet-500/30',
               'max-w-xs'
@@ -335,29 +335,22 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
           >
             <span>{isLastStep ? '开始探索' : '下一步'}</span>
             {isLastStep ? (
-              <Sparkles size={20} />
+              <Sparkles size={18} />
             ) : (
-              <ChevronRight size={20} />
+              <ChevronRight size={18} />
             )}
           </motion.button>
 
           {/* 占位，保持按钮组平衡 */}
-          <div className="w-14" />
+          <div className="w-12" />
         </div>
 
         {/* 步骤进度 */}
         <div className="text-center">
           <span className="text-white/40 text-sm">
-            第 {currentStep + 1} 步，共 {TUTORIAL_STEPS.length} 步
+            第 {currentStep + 1} / {TUTORIAL_STEPS.length} 步
           </span>
         </div>
-      </div>
-
-      {/* 底部版权 */}
-      <div className="absolute bottom-2 left-0 right-0 text-center">
-        <p className="text-white/20 text-xs">
-          © 2024 心镜 MindMirror · 照见自己，成为更好的自己
-        </p>
       </div>
     </motion.div>
   )

@@ -282,14 +282,14 @@ export default function TrainingGuide() {
 
                       <motion.button
                         onClick={() => handleStartFromGuide(guide)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         className={cn(
                           'w-full py-3 rounded-xl font-semibold text-white',
                           'bg-gradient-to-r from-violet-500 to-purple-600',
                           'flex items-center justify-center gap-2',
                           'shadow-lg shadow-violet-500/30'
                         )}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
                       >
                         <span>开始训练</span>
                         <ArrowRight size={18} />
