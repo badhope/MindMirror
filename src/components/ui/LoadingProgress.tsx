@@ -137,7 +137,7 @@ export function PageLoader({ message = '加载中...' }: { message?: string }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
       <div className="text-center">
         <motion.div
-          className="w-12 h-12 mx-auto mb-4 border-3 border-white/20 border-t-violet-500 rounded-full"
+          className="w-12 h-12 mx-auto mb-4 border-2 border-white/20 border-t-violet-500 rounded-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         />
