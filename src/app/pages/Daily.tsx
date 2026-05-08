@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, Sparkles } from 'lucide-react'
+import { Calendar, Sparkles, CheckCircle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import UsageGuide from '../components/UsageGuide'
 import AssessmentCard from '../components/AssessmentCard'
@@ -22,18 +22,27 @@ export default function Daily() {
   } = useAppStore()
   const navigate = useNavigate()
   const [selectedMood, setSelectedMood] = useState<number | null>(null)
+  const [isMoodConfirmed, setIsMoodConfirmed] = useState(false)
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0]
     const todayMood = getMoodForDate(today)
     if (todayMood) {
       setSelectedMood(todayMood.mood)
+      setIsMoodConfirmed(true)
     }
   }, [getMoodForDate])
 
   const handleMoodSelect = (mood: number) => {
+    if (isMoodConfirmed) return
     setSelectedMood(mood)
-    recordMood(mood, MOOD_LABELS[mood])
+  }
+
+  const confirmMood = () => {
+    if (selectedMood !== null) {
+      recordMood(selectedMood, MOOD_LABELS[selectedMood])
+      setIsMoodConfirmed(true)
+    }
   }
 
   const showAssessmentCard = !hasCompletedAssessment && !hasDismissedAssessmentCard
@@ -43,7 +52,7 @@ export default function Daily() {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className="p-4 md:p-6 space-y-6"
+      className="p-4 md:p-6 space-y-8"
     >
         <div className="py-2 md:py-0 md:mb-6 md:text-left">
           <motion.h2 
@@ -68,7 +77,7 @@ export default function Daily() {
         </AnimatePresence>
 
         <div className="bg-white/5 rounded-2xl p-6 border border-violet-500/10">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-5">
             <h3 className="text-lg font-semibold">🌅 心情打卡</h3>
             <div className="text-xs text-white/40 flex items-center gap-1">
               <Calendar className="w-3 h-3" />
@@ -76,38 +85,73 @@ export default function Daily() {
             </div>
           </div>
 
-          {selectedMood !== null && (
+          {isMoodConfirmed && selectedMood !== null && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-4 p-3 rounded-xl bg-violet-500/10 border border-violet-500/20"
+              className="text-center mb-5 p-4 rounded-xl bg-violet-500/10 border border-violet-500/20"
             >
-              <span className="text-white/70 text-sm">
-                今日心情：{MOOD_EMOJIS[selectedMood]} {MOOD_LABELS[selectedMood]}
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-3xl">{MOOD_EMOJIS[selectedMood]}</span>
+                <CheckCircle size={20} className="text-emerald-400" />
+              </div>
+              <span className="text-white/80 text-sm font-medium">
+                今日心情：{MOOD_LABELS[selectedMood]}
               </span>
+              <p className="text-white/40 text-xs mt-2">已完成打卡，明天见！</p>
             </motion.div>
           )}
 
-          <div className="flex justify-between gap-2">
-            {MOOD_EMOJIS.map((emoji, i) => (
+          {!isMoodConfirmed && (
+            <>
+              {selectedMood !== null && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center mb-4 p-3 rounded-xl bg-violet-500/10 border border-violet-500/20"
+                >
+                  <span className="text-white/70 text-sm">
+                    已选择：{MOOD_EMOJIS[selectedMood]} {MOOD_LABELS[selectedMood]}
+                  </span>
+                </motion.div>
+              )}
+
+              <div className="flex justify-between gap-2 mb-4">
+                {MOOD_EMOJIS.map((emoji, i) => (
+                  <motion.button
+                    key={i}
+                    onClick={() => handleMoodSelect(i)}
+                    className={`flex-1 h-16 rounded-2xl flex flex-col items-center justify-center transition-all ${selectedMood === i
+                      ? 'bg-violet-500/30 border-2 border-violet-500/50'
+                      : 'bg-white/5 hover:bg-white/10 border border-transparent'}
+                    `}
+                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.02 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + i * 0.05 }}
+                  >
+                    <span className="text-2xl">{emoji}</span>
+                    <span className="text-xs text-white/50 mt-1">{MOOD_LABELS[i]}</span>
+                  </motion.button>
+                ))}
+              </div>
+
               <motion.button
-                key={i}
-                onClick={() => handleMoodSelect(i)}
-                className={`flex-1 h-14 rounded-2xl flex flex-col items-center justify-center transition-all ${selectedMood === i
-                  ? 'bg-violet-500/30 border-2 border-violet-500/50'
-                  : 'bg-white/5 hover:bg-white/10 border border-transparent'}
-                `}
-                whileTap={{ scale: 0.9 }}
-                whileHover={{ scale: 1.02 }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.05 }}
+                onClick={confirmMood}
+                disabled={selectedMood === null}
+                className={`w-full py-3 rounded-xl font-medium text-white transition-all ${
+                  selectedMood !== null
+                    ? 'bg-gradient-to-r from-violet-500 to-purple-600 shadow-lg shadow-violet-500/30 hover:opacity-90'
+                    : 'bg-white/10 text-white/40 cursor-not-allowed'
+                }`}
+                whileHover={selectedMood !== null ? { scale: 1.02 } : {}}
+                whileTap={selectedMood !== null ? { scale: 0.98 } : {}}
               >
-                <span className="text-2xl">{emoji}</span>
-                <span className="text-[10px] text-white/50 mt-1">{MOOD_LABELS[i]}</span>
+                确认打卡
               </motion.button>
-            ))}
-          </div>
+            </>
+          )}
         </div>
 
         <div className="bg-white/5 rounded-2xl p-6 border border-violet-500/10">
