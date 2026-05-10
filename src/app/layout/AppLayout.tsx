@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import TopNavBar from './TopNavBar'
-import BottomTabBar from './BottomTabBar'
 import SideNav from './SideNav'
 import SideDrawer from './SideDrawer'
 import { useResponsive } from '../hooks/useResponsive'
@@ -46,11 +45,9 @@ export default function AppLayout({ title }: AppLayoutProps) {
         onClose={() => setDrawerOpen(false)} 
       />
       
-      <main className="pb-20 max-w-md mx-auto">
+      <main className="max-w-md mx-auto">
         <Outlet />
       </main>
-      
-      <BottomTabBar />
     </div>
   )
 }
