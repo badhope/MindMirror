@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import { buttonPress, cardHover, staggerContainer } from '../../utils/motionPresets'
 
 const menuItems = [
-  { path: '/app/daily', label: '今日', icon: Home, preset: 'slideRight' as const },
+  { path: '/app/home', label: '首页', icon: Home, preset: 'slideRight' as const },
   { path: '/app/training', label: '训练', icon: Dumbbell, preset: 'scale' as const },
   { path: '/app/progress', label: '进度', icon: TrendingUp, preset: 'bounce' as const },
   { path: '/app/discover', label: '探索', icon: Compass, preset: 'elastic' as const },

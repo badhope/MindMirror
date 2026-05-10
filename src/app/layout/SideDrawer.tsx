@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import { buttonPress, cardHover } from '../../utils/motionPresets'
 
 const menuItems = [
-  { path: '/app/daily', label: '今日', icon: Home },
+  { path: '/app/home', label: '首页', icon: Home },
   { path: '/app/training', label: '训练', icon: Dumbbell },
   { path: '/app/progress', label: '进度', icon: TrendingUp },
   { path: '/app/discover', label: '探索', icon: Compass },
