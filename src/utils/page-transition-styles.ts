@@ -1,4 +1,5 @@
 import type { Variants, Transition } from 'framer-motion'
+import { animationConfig } from './animation-config'
 
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 const isTouchDevice = typeof window !== 'undefined' && 
@@ -6,16 +7,12 @@ const isTouchDevice = typeof window !== 'undefined' &&
 const prefersReducedMotion = typeof window !== 'undefined' && 
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const baseDuration = prefersReducedMotion ? 0.01 : isMobile ? 0.55 : 0.8
-const staggerDelay = prefersReducedMotion ? 0 : isMobile ? 0.08 : 0.15
-
 const getDuration = (mobile: number, desktop: number) => 
   prefersReducedMotion ? 0.01 : isMobile ? mobile : desktop
 
-const standardEase = [0.25, 0.1, 0.25, 1] as [number, number, number, number]
-const smoothEase = [0.4, 0, 0.2, 1] as [number, number, number, number]
-const bounceEase = [0.34, 1.56, 0.64, 1] as [number, number, number, number]
-const ultraSmoothEase = [0.25, 0.1, 0.25, 1] as [number, number, number, number]
+// 使用统一缓动函数
+const standardEase = animationConfig.ease.smooth
+const smoothEase = animationConfig.ease.snappy
 
 export type PageTransitionType = 
   | 'fadeScale'
@@ -58,10 +55,10 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         scale: 1,
         filter: 'blur(0px)',
         transition: {
-          duration: getDuration(0.65, 0.9),
-          ease: ultraSmoothEase,
+          duration: getDuration(0.5, 0.6),
+          ease: standardEase,
           when: 'beforeChildren',
-          staggerChildren: staggerDelay,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
@@ -70,8 +67,8 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         filter: 'blur(4px)',
         x: prefersReducedMotion ? 0 : -40,
         transition: {
-          duration: getDuration(0.5, 0.7),
-          ease: ultraSmoothEase,
+          duration: getDuration(0.3, 0.4),
+          ease: standardEase,
         },
       },
     },
@@ -92,9 +89,9 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         opacity: 1,
         boxShadow: '0 0 0px rgba(0,0,0,0)',
         transition: {
-          duration: getDuration(0.45, 0.6),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay * 1.5,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.fast * 1.5,
         },
       },
       exit: {
@@ -103,7 +100,7 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         scale: 0.95,
         filter: 'blur(4px)',
         transition: {
-          duration: getDuration(0.4, 0.55),
+          duration: getDuration(0.3, 0.4),
           ease: smoothEase,
         },
       },
@@ -127,16 +124,16 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         borderRadius: '0%',
         clipPath: 'circle(150% at 50% 50%)',
         transition: {
-          duration: getDuration(0.6, 0.8),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
         opacity: 0,
         scale: prefersReducedMotion ? 1 : 0.9,
         transition: {
-          duration: getDuration(0.3, 0.4),
+          duration: getDuration(0.2, 0.3),
           ease: standardEase,
         },
       },
@@ -160,9 +157,9 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         y: 0,
         rotate: 0,
         transition: {
-          duration: getDuration(0.55, 0.75),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
@@ -170,7 +167,7 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         x: prefersReducedMotion ? 0 : -50,
         y: prefersReducedMotion ? 0 : -30,
         transition: {
-          duration: getDuration(0.35, 0.5),
+          duration: getDuration(0.3, 0.4),
           ease: standardEase,
         },
       },
@@ -190,16 +187,16 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         clipPath: 'inset(0 0 0% 0)',
         opacity: 1,
         transition: {
-          duration: getDuration(0.6, 0.85),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay * 2,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.slow * 2,
         },
       },
       exit: {
         clipPath: 'inset(0 0 100% 0)',
         opacity: 0,
         transition: {
-          duration: getDuration(0.4, 0.55),
+          duration: getDuration(0.3, 0.4),
           ease: standardEase,
         },
       },
@@ -222,17 +219,17 @@ export const forwardTransitions: Record<string, TransitionPreset> = {
         scaleX: 1,
         scaleY: 1,
         transition: {
-          scaleX: { duration: getDuration(0.4, 0.55), ease: smoothEase },
-          scaleY: { duration: getDuration(0.35, 0.5), ease: smoothEase, delay: 0.1 },
-          opacity: { duration: getDuration(0.3, 0.4) },
-          staggerChildren: staggerDelay,
+          scaleX: { duration: getDuration(0.3, 0.4), ease: smoothEase },
+          scaleY: { duration: getDuration(0.25, 0.3), ease: smoothEase, delay: 0.1 },
+          opacity: { duration: getDuration(0.2, 0.3) },
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
         opacity: 0,
         scale: 0.95,
         transition: {
-          duration: getDuration(0.25, 0.35),
+          duration: getDuration(0.2, 0.25),
         },
       },
     },
@@ -257,9 +254,9 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         x: 0,
         filter: 'blur(0px)',
         transition: {
-          duration: getDuration(0.65, 0.85),
-          ease: ultraSmoothEase,
-          staggerChildren: staggerDelay,
+          duration: getDuration(0.4, 0.5),
+          ease: standardEase,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
@@ -268,8 +265,8 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         x: prefersReducedMotion ? 0 : 25,
         filter: 'blur(3px)',
         transition: {
-          duration: getDuration(0.55, 0.75),
-          ease: ultraSmoothEase,
+          duration: getDuration(0.3, 0.4),
+          ease: standardEase,
         },
       },
     },
@@ -290,9 +287,9 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         opacity: 1,
         scale: 1,
         transition: {
-          duration: getDuration(0.45, 0.6),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay * 1.5,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.fast * 1.5,
         },
       },
       exit: {
@@ -300,7 +297,7 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         opacity: 0,
         boxShadow: '0 0 50px rgba(0,0,0,0.3)',
         transition: {
-          duration: getDuration(0.4, 0.55),
+          duration: getDuration(0.3, 0.4),
           ease: smoothEase,
         },
       },
@@ -320,9 +317,9 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         opacity: 1,
         scale: 1,
         transition: {
-          duration: getDuration(0.5, 0.7),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
@@ -330,7 +327,7 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         scale: prefersReducedMotion ? 1 : 0.85,
         clipPath: 'circle(0% at 50% 50%)',
         transition: {
-          duration: getDuration(0.4, 0.55),
+          duration: getDuration(0.3, 0.4),
           ease: standardEase,
         },
       },
@@ -354,16 +351,16 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         y: 0,
         rotate: 0,
         transition: {
-          duration: getDuration(0.5, 0.7),
-          ease: ultraSmoothEase,
-          staggerChildren: staggerDelay,
+          duration: getDuration(0.4, 0.5),
+          ease: standardEase,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
         opacity: 0,
         x: prefersReducedMotion ? 0 : 60,
         transition: {
-          duration: getDuration(0.35, 0.5),
+          duration: getDuration(0.3, 0.4),
           ease: standardEase,
         },
       },
@@ -385,9 +382,9 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         scaleX: 1,
         scaleY: 1,
         transition: {
-          duration: getDuration(0.45, 0.6),
+          duration: getDuration(0.4, 0.5),
           ease: smoothEase,
-          staggerChildren: staggerDelay,
+          staggerChildren: prefersReducedMotion ? 0 : animationConfig.stagger.normal,
         },
       },
       exit: {
@@ -396,7 +393,7 @@ export const backwardTransitions: Record<string, TransitionPreset> = {
         scaleY: 0.8,
         transformOrigin: 'center center',
         transition: {
-          duration: getDuration(0.4, 0.55),
+          duration: getDuration(0.3, 0.4),
           ease: standardEase,
         },
       },
