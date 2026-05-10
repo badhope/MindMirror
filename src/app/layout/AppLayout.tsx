@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import TopNavBar from './TopNavBar'
 import BottomTabBar from './BottomTabBar'
 import SideNav from './SideNav'
+import SideDrawer from './SideDrawer'
 import { useResponsive } from '../hooks/useResponsive'
 
 interface AppLayoutProps {
@@ -10,6 +12,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ title }: AppLayoutProps) {
   const { isDesktop } = useResponsive()
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   if (isDesktop) {
     return (
@@ -33,7 +36,15 @@ export default function AppLayout({ title }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <TopNavBar title={title} />
+      <TopNavBar 
+        title={title} 
+        onMenuClick={() => setDrawerOpen(true)} 
+      />
+      
+      <SideDrawer 
+        isOpen={drawerOpen} 
+        onClose={() => setDrawerOpen(false)} 
+      />
       
       <main className="pb-20 max-w-md mx-auto">
         <Outlet />
