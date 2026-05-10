@@ -119,10 +119,11 @@ export default function App() {
 
                   <Suspense fallback={<PageSkeleton />}>
                     <Routes>
-                      <Route path="/" element={<Navigate to="/app/daily" replace />} />
+                      <Route path="/" element={<Navigate to="/app/home" replace />} />
 
-                      <Route path="/app" element={<AppLayout title="心镜 MindMirror" />}>
-                        <Route path="daily" element={<Daily />} />
+                      <Route path="/app" element={<AppLayout title="心镜" />}>
+                        <Route path="home" element={<HomePage />} />
+                        <Route path="daily" element={<HomePage />} />
                         <Route path="training" element={<Training />} />
                         <Route path="progress" element={<Progress />} />
                         <Route path="discover" element={<Discover />} />
@@ -159,7 +160,7 @@ export default function App() {
                       <Route path="/legacy/leaderboard" element={<Leaderboard />} />
                       <Route path="/legacy/soul-match" element={<SoulMatch />} />
                       <Route path="/legacy/profile" element={<Profile />} />
-                      <Route path="*" element={<Navigate to="/app/daily" replace />} />
+                      <Route path="*" element={<Navigate to="/app/home" replace />} />
                     </Routes>
                   </Suspense>
 
