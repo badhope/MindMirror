@@ -94,17 +94,17 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-violet-500/10 border border-violet-500/20 mb-3 sm:mb-4"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 mb-3 sm:mb-4"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring' }}
           >
-            <Sparkles size={12} className="text-violet-400" />
-            <span className="text-xs sm:text-sm text-violet-300">轻松探索，遇见真实的自己</span>
+            <Sparkles size={10} className="text-violet-400 sm:size-3" />
+            <span className="text-[10px] sm:text-xs text-violet-300">轻松探索，遇见真实的自己</span>
           </motion.div>
           
           <motion.h1 
-            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3"
+            className="text-xl sm:text-2xl md:text-3xl font-bold mb-1.5 sm:mb-2 px-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -116,7 +116,7 @@ export default function HomePage() {
           </motion.h1>
           
           <motion.p
-            className="text-white/50 text-xs sm:text-sm md:text-base px-4"
+            className="text-white/50 text-[10px] sm:text-xs md:text-sm px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
