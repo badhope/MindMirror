@@ -259,3 +259,86 @@ export const calculateProactive = createProfessionalCalculator({
     persisting: '坚持克服',
   },
 })
+
+export const calculatePSQI = createProfessionalCalculator({
+  name: 'PSQI',
+  questionPrefix: 'psqi',
+  dimensionKeys: ['sleepQuality', 'sleepLatency', 'sleepDuration', 'sleepEfficiency', 'sleepDisturbance', 'hypnoticDrugs', 'daytimeDysfunction', 'sleepHabits', 'sleepEnvironment'],
+  dimensionNames: {
+    sleepQuality: '主观睡眠质量',
+    sleepLatency: '睡眠潜伏期',
+    sleepDuration: '睡眠持续时间',
+    sleepEfficiency: '睡眠效率',
+    sleepDisturbance: '睡眠障碍',
+    hypnoticDrugs: '催眠药物使用',
+    daytimeDysfunction: '日间功能障碍',
+    sleepHabits: '睡眠习惯',
+    sleepEnvironment: '睡眠环境',
+  },
+  traitsGenerator: (scores, _dimensions): TraitScore[] => {
+    const traits: TraitScore[] = []
+    const totalScore = Object.values(scores).reduce((a, b) => a + b, 0)
+    
+    if (totalScore <= 5) {
+      traits.push({ name: '睡眠健康达人', description: '睡眠质量优秀，生活规律', score: 90, maxScore: 100 })
+    } else if (totalScore <= 10) {
+      traits.push({ name: '睡眠改善中', description: '存在轻微睡眠问题，可进一步优化', score: 70, maxScore: 100 })
+    } else if (totalScore <= 15) {
+      traits.push({ name: '睡眠亚健康', description: '睡眠问题需要关注，建议调整习惯', score: 50, maxScore: 100 })
+    } else {
+      traits.push({ name: '睡眠需改善', description: '睡眠质量较差，建议寻求专业帮助', score: 30, maxScore: 100 })
+    }
+
+    if (scores.sleepHabits && scores.sleepHabits < 3) {
+      traits.push({ name: '作息较规律', description: '睡眠时间相对稳定', score: 80, maxScore: 100 })
+    }
+
+    if (scores.daytimeDysfunction && scores.daytimeDysfunction < 3) {
+      traits.push({ name: '日间状态良好', description: '白天精力充沛', score: 85, maxScore: 100 })
+    }
+
+    return traits
+  },
+})
+
+export const calculateAttention = createProfessionalCalculator({
+  name: 'Attention',
+  questionPrefix: 'att',
+  dimensionKeys: ['sustained', 'selective', 'divided', 'shifting'],
+  dimensionNames: {
+    sustained: '持续性注意力',
+    selective: '选择性注意力',
+    divided: '分配性注意力',
+    shifting: '转换性注意力',
+  },
+  traitsGenerator: (scores, _dimensions): TraitScore[] => {
+    const traits: TraitScore[] = []
+    const avg = Object.values(scores).reduce((a, b) => a + b, 0) / Object.values(scores).length
+
+    if (avg >= 4) {
+      traits.push({ name: '专注达人', description: '注意力表现出色，认知效率高', score: 90, maxScore: 100 })
+    } else if (avg >= 3) {
+      traits.push({ name: '专注力良好', description: '注意力基本稳定，可进一步提升', score: 75, maxScore: 100 })
+    } else {
+      traits.push({ name: '注意力待提升', description: '建议通过训练改善注意力', score: 55, maxScore: 100 })
+    }
+
+    if (scores.sustained && scores.sustained >= 4) {
+      traits.push({ name: '持久专注', description: '长时间保持注意力，适合深度工作', score: 88, maxScore: 100 })
+    }
+
+    if (scores.selective && scores.selective >= 4) {
+      traits.push({ name: '慧眼识珠', description: '善于从干扰中筛选关键信息', score: 85, maxScore: 100 })
+    }
+
+    if (scores.divided && scores.divided >= 4) {
+      traits.push({ name: '一心多用', description: '多任务处理能力较强', score: 82, maxScore: 100 })
+    }
+
+    if (scores.shifting && scores.shifting >= 4) {
+      traits.push({ name: '灵活切换', description: '任务切换流畅，适应变化能力强', score: 86, maxScore: 100 })
+    }
+
+    return traits
+  },
+})
