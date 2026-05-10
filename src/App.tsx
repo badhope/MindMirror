@@ -1,10 +1,9 @@
-import { lazy, Suspense, useState, useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { PageSkeleton } from './components/Loading'
 import GlobalMenu from './components/GlobalMenu'
 import { I18nProvider } from './i18n'
 import { useAppStore } from './store'
-import PageTransitionController from './components/animations/PageTransitionController'
 import ErrorBoundary from './components/ErrorBoundary'
 import QuickSearchModal from './components/QuickSearchModal'
 import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp'
@@ -63,62 +62,60 @@ export default function App() {
       <ErrorBoundary>
         <ToastProvider>
           <ShortcutProvider>
-            <PageTransitionController useThemeTransition={false}>
-              <div className="min-h-screen bg-slate-900 text-white">
-                <ShortcutInitializer />
-                
-                {!isNewApp && <GlobalMenu />}
-                {!isNewApp && <QuickSearchModal />}
-                {!isNewApp && <KeyboardShortcutsHelp />}
+            <div className="min-h-screen bg-slate-900 text-white">
+              <ShortcutInitializer />
+              
+              {!isNewApp && <GlobalMenu />}
+              {!isNewApp && <QuickSearchModal />}
+              {!isNewApp && <KeyboardShortcutsHelp />}
 
-                <Suspense fallback={<PageSkeleton />}>
-                  <Routes>
-                    <Route path="/" element={<Navigate to="/app/home" replace />} />
+              <Suspense fallback={<PageSkeleton />}>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/app/home" replace />} />
 
-                    <Route path="/app" element={<AppLayout title="心镜" />}>
-                      <Route path="home" element={<HomePage />} />
-                      <Route path="daily" element={<Daily />} />
-                      <Route path="training" element={<Training />} />
-                      <Route path="progress" element={<Progress />} />
-                      <Route path="discover" element={<Discover />} />
-                      <Route path="settings" element={<SettingsPage />} />
-                      <Route path="getting-started" element={<GettingStarted />} />
-                    </Route>
+                  <Route path="/app" element={<AppLayout title="心镜" />}>
+                    <Route path="home" element={<HomePage />} />
+                    <Route path="daily" element={<Daily />} />
+                    <Route path="training" element={<Training />} />
+                    <Route path="progress" element={<Progress />} />
+                    <Route path="discover" element={<Discover />} />
+                    <Route path="settings" element={<SettingsPage />} />
+                    <Route path="getting-started" element={<GettingStarted />} />
+                  </Route>
 
-                    <Route path="/app/training/:programId" element={<UniversalTraining />} />
-                    <Route path="/app/growth" element={<GrowthDashboard />} />
+                  <Route path="/app/training/:programId" element={<UniversalTraining />} />
+                  <Route path="/app/growth" element={<GrowthDashboard />} />
 
-                    <Route path="/assessments" element={<Navigate to="/app/discover" replace />} />
-                    <Route path="/categories" element={<Navigate to="/app/discover" replace />} />
-                    <Route path="/legacy/categories" element={<Navigate to="/app/discover" replace />} />
-                    <Route path="/legacy/assessments" element={<Navigate to="/app/discover" replace />} />
-                    <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
-                    <Route path="/legacy/mode-select/:id" element={<ModeSelect />} />
-                    <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelect />} />
-                    <Route path="/legacy/confirm/:id" element={<AssessmentConfirm />} />
-                    <Route path="/legacy/assessment/:id" element={<Assessment />} />
-                    <Route path="/legacy/loading/:id" element={<Loading />} />
-                    <Route path="/legacy/results/:id" element={<Results />} />
-                    <Route path="/legacy/result/:hash" element={<Results />} />
-                    <Route path="/legacy/dashboard" element={<Dashboard />} />
-                    <Route path="/legacy/about" element={<About />} />
-                    <Route path="/legacy/theory/:theoryId" element={<TheoryDetail />} />
-                    <Route path="/legacy/history/philosophy" element={<PhilosophyHistoryPage />} />
-                    <Route path="/legacy/history/psychology" element={<PsychologyHistoryPage />} />
-                    <Route path="/legacy/history/ideology" element={<IdeologyHistoryPage />} />
-                    <Route path="/legacy/isms" element={<IsmsPage />} />
-                    <Route path="/legacy/story" element={<PlatformStoryPage />} />
-                    <Route path="/legacy/tools/question-optimizer" element={<QuestionOptimizer />} />
-                    <Route path="/legacy/demos/theme-analysis" element={<ThemeAnalysisDemo />} />
-                    <Route path="/legacy/demos/charts" element={<ChartShowcase />} />
-                    <Route path="/legacy/leaderboard" element={<Leaderboard />} />
-                    <Route path="/legacy/soul-match" element={<SoulMatch />} />
-                    <Route path="/legacy/profile" element={<Profile />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </div>
-            </PageTransitionController>
+                  <Route path="/assessments" element={<Navigate to="/app/discover" replace />} />
+                  <Route path="/categories" element={<Navigate to="/app/discover" replace />} />
+                  <Route path="/legacy/categories" element={<Navigate to="/app/discover" replace />} />
+                  <Route path="/legacy/assessments" element={<Navigate to="/app/discover" replace />} />
+                  <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
+                  <Route path="/legacy/mode-select/:id" element={<ModeSelect />} />
+                  <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelect />} />
+                  <Route path="/legacy/confirm/:id" element={<AssessmentConfirm />} />
+                  <Route path="/legacy/assessment/:id" element={<Assessment />} />
+                  <Route path="/legacy/loading/:id" element={<Loading />} />
+                  <Route path="/legacy/results/:id" element={<Results />} />
+                  <Route path="/legacy/result/:hash" element={<Results />} />
+                  <Route path="/legacy/dashboard" element={<Dashboard />} />
+                  <Route path="/legacy/about" element={<About />} />
+                  <Route path="/legacy/theory/:theoryId" element={<TheoryDetail />} />
+                  <Route path="/legacy/history/philosophy" element={<PhilosophyHistoryPage />} />
+                  <Route path="/legacy/history/psychology" element={<PsychologyHistoryPage />} />
+                  <Route path="/legacy/history/ideology" element={<IdeologyHistoryPage />} />
+                  <Route path="/legacy/isms" element={<IsmsPage />} />
+                  <Route path="/legacy/story" element={<PlatformStoryPage />} />
+                  <Route path="/legacy/tools/question-optimizer" element={<QuestionOptimizer />} />
+                  <Route path="/legacy/demos/theme-analysis" element={<ThemeAnalysisDemo />} />
+                  <Route path="/legacy/demos/charts" element={<ChartShowcase />} />
+                  <Route path="/legacy/leaderboard" element={<Leaderboard />} />
+                  <Route path="/legacy/soul-match" element={<SoulMatch />} />
+                  <Route path="/legacy/profile" element={<Profile />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </div>
           </ShortcutProvider>
         </ToastProvider>
       </ErrorBoundary>
