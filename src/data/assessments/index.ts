@@ -1,6 +1,8 @@
 import { sasStandardAssessment } from './sas-standard'
 import { sdsStandardAssessment } from './sds-standard'
+import { scl90Assessment } from './scl90-symptoms'
 import { pssStandardAssessment } from './pss-standard'
+import { pssStressAssessment } from './pss-stress'
 import { pcqStandardAssessment } from './pcq-standard'
 import { hardinessStandardAssessment } from './hardiness-standard'
 import { schwartzStandardAssessment } from './schwartz-standard'
@@ -36,9 +38,12 @@ import { ocbStandardAssessment } from './ocb-standard'
 import { mftStandardAssessment } from './mft-standard'
 import { mindsetStandardAssessment } from './mindset-standard'
 import { metacognitionStandardAssessment } from './metacognition-standard'
+import { attentionTestAssessment } from './attention-test'
 import { kolbStandardAssessment } from './kolb-standard'
 import { mlqStandardAssessment } from './mlq-standard'
 import { asiStandardAssessment } from './asi-standard'
+import { loveLanguagesAssessment } from '../entertainment/love-languages'
+import { sleepQualityAssessment } from './sleep-quality'
 
 export const standardAssessments = {
   'kolb-standard': kolbStandardAssessment,
@@ -46,12 +51,15 @@ export const standardAssessments = {
   'asi-standard': asiStandardAssessment,
   'sas-standard': sasStandardAssessment,
   'sds-standard': sdsStandardAssessment,
+  'scl90': scl90Assessment,
   'pss-standard': pssStandardAssessment,
+  'pss-stress': pssStressAssessment,
   'pcq-standard': pcqStandardAssessment,
   'hardiness-standard': hardinessStandardAssessment,
   'schwartz-standard': schwartzStandardAssessment,
   'mindset-standard': mindsetStandardAssessment,
   'metacognition-standard': metacognitionStandardAssessment,
+  'attention-test': attentionTestAssessment,
   'tki-standard': tkiStandardAssessment,
   'els-standard': elsStandardAssessment,
   'ocb-standard': ocbStandardAssessment,
@@ -82,6 +90,8 @@ export const standardAssessments = {
   'abm-love-animal': abmLoveAnimalAssessment,
   'mental-age': mentalAgeAssessment,
   'sbti-personality': sbtiAssessment,
+  'love-languages': loveLanguagesAssessment,
+  'sleep-quality': sleepQualityAssessment,
 }
 
 export type StandardAssessmentId = keyof typeof standardAssessments
@@ -127,8 +137,13 @@ const assessmentIdAliases: Record<string, string> = {
   'depression': 'sds-standard',
   'sds-depression': 'sds-standard',
   'sds': 'sds-standard',
+  'scl90': 'scl90',
+  'scl-90': 'scl90',
+  'symptom': 'scl90',
+  'symptoms': 'scl90',
   'stress': 'pss-standard',
   'pss': 'pss-standard',
+  'pss10': 'pss-stress',
   'psychological-capital': 'pcq-standard',
   'pcq': 'pcq-standard',
   'values': 'schwartz-standard',
@@ -145,6 +160,9 @@ const assessmentIdAliases: Record<string, string> = {
   'mindset': 'mindset-standard',
   'meta-cognitive': 'metacognition-standard',
   'metacognition': 'metacognition-standard',
+  'attention': 'attention-test',
+  'attention-test': 'attention-test',
+  'focus': 'attention-test',
   'learning-style': 'kolb-standard',
   'kolb': 'kolb-standard',
   'meaning-in-life': 'mlq-standard',
@@ -184,8 +202,14 @@ const assessmentIdAliases: Record<string, string> = {
   'officialdom': 'officialdom-dream',
   'disc': 'ocean-bigfive',
   'enneagram': 'ocean-bigfive',
-  'love-language': 'eq-goleman',
+  'love-language': 'love-languages',
+  'love-languages': 'love-languages',
+  'love-language-test': 'love-languages',
   'via-character': 'eq-goleman',
+  'sleep': 'sleep-quality',
+  'psqi': 'sleep-quality',
+  'sleep-quality': 'sleep-quality',
+  'sleep-assessment': 'sleep-quality',
 }
 
 export function getAssessmentById(id: string) {
