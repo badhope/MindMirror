@@ -182,10 +182,15 @@ const FUTURE_PROJECTIONS = [
 ]
 
 function calculateSubDimensionScores(mainScore: number, subDimensionNames: string[]): CASTResult['subDimensions'][''] {
-  return subDimensionNames.map((name, i) => ({
-    name,
-    score: Math.max(0, Math.min(100, mainScore + Math.round((Math.random() - 0.5) * 25))),
-  }))
+  const variance = 10
+  return subDimensionNames.map((name, i) => {
+    const offset = (i - (subDimensionNames.length - 1) / 2) * 3
+    const score = Math.max(0, Math.min(100, mainScore + offset + (Math.random() < 0.5 ? -variance : variance) * 0.3))
+    return {
+      name,
+      score: Math.round(score),
+    }
+  })
 }
 
 function determineParentingStyle(dimensions: CASTResult['dimensions']): CASTResult['parentingStyleArchetype'] {
