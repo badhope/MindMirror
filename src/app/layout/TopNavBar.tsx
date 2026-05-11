@@ -35,7 +35,7 @@ export default function TopNavBar({ title, onMenuClick }: TopNavBarProps) {
             <span className="text-sm sm:text-base font-bold bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent whitespace-nowrap">
               心镜
             </span>
-            <span className="text-xs sm:text-sm font-medium text-white/50 whitespace-nowrap hidden sm:inline">
+            <span className="text-xs font-medium text-white/50 whitespace-nowrap">
               MindMirror
             </span>
             {title && title !== '心镜' && (
