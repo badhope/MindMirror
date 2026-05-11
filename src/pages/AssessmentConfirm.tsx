@@ -55,8 +55,8 @@ export default function AssessmentConfirm() {
   }
 
   const realQuestionCount = assessment.questions?.length || 0
-  const durationMinutes = selectedMode === 'normal' ? 5 : Math.max(10, Math.ceil(realQuestionCount * 10 / 60))
-  const displayQuestionCount = selectedMode === 'normal' ? 28 : realQuestionCount || 60
+  const durationMinutes = selectedMode === 'normal' ? Math.max(5, Math.ceil(realQuestionCount * 10 / 60)) : Math.max(10, Math.ceil(realQuestionCount * 10 / 60))
+  const displayQuestionCount = realQuestionCount
   const qualityLabel = {
     lite: '科学',
     standard: '专业',
