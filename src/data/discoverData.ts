@@ -9,6 +9,8 @@ export interface DiscoverItem {
   path?: string
   badge?: string
   featured?: boolean
+  questionCount?: number
+  duration?: number
 }
 
 export interface DiscoverSubcategory {
@@ -29,50 +31,50 @@ export interface DiscoverCategory {
 }
 
 const personalityItems: DiscoverItem[] = [
-  { id: 'sbti', title: 'MBTI 16型人格测试', description: '了解你的人格类型', icon: Brain, path: '/legacy/mode-select/sbti-personality', badge: '热门' },
-  { id: 'bigfive', title: '大五人格测试', description: '全面了解你的人格特质', icon: Sparkles, path: '/legacy/mode-select/ocean-bigfive' },
-  { id: 'darktriad', title: '黑暗三人格测试', description: '探索你的阴暗面', icon: Flame, path: '/legacy/mode-select/dark-triad' },
-  { id: 'hardiness', title: '心理韧性测试', description: '评估你的抗压能力', icon: Shield, path: '/legacy/mode-select/hardiness-standard' },
-  { id: 'mentalage', title: '心理年龄测试', description: '测测你的心理年龄', icon: Calendar, path: '/legacy/mode-select/mental-age' },
-  { id: 'mindset', title: '成长型思维测试', description: '了解你的思维模式', icon: Lightbulb, path: '/legacy/mode-select/mindset-standard' },
+  { id: 'sbti', title: 'MBTI 16型人格测试', description: '了解你的人格类型', icon: Brain, path: '/legacy/mode-select/sbti-personality', badge: '热门', questionCount: 24, duration: 5 },
+  { id: 'bigfive', title: '大五人格测试', description: '全面了解你的人格特质', icon: Sparkles, path: '/legacy/mode-select/ocean-bigfive', questionCount: 28, duration: 6 },
+  { id: 'darktriad', title: '黑暗三人格测试', description: '探索你的阴暗面', icon: Flame, path: '/legacy/mode-select/dark-triad', questionCount: 28, duration: 6 },
+  { id: 'hardiness', title: '心理韧性测试', description: '评估你的抗压能力', icon: Shield, path: '/legacy/mode-select/hardiness-standard', questionCount: 28, duration: 6 },
+  { id: 'mentalage', title: '心理年龄测试', description: '测测你的心理年龄', icon: Calendar, path: '/legacy/mode-select/mental-age', questionCount: 20, duration: 4 },
+  { id: 'mindset', title: '成长型思维测试', description: '了解你的思维模式', icon: Lightbulb, path: '/legacy/mode-select/mindset-standard', questionCount: 28, duration: 6 },
 ]
 
 const relationshipItems: DiscoverItem[] = [
-  { id: 'attachment', title: '成人依恋类型测试', description: '了解你的依恋模式', icon: Heart, path: '/legacy/mode-select/ecr-attachment', badge: '推荐' },
-  { id: 'eq', title: '戈尔曼情商测试', description: '全面评估你的情商', icon: Zap, path: '/legacy/mode-select/eq-goleman' },
-  { id: 'loveanimal', title: '爱情动物测试', description: '探索你的爱情风格', icon: Heart, path: '/legacy/mode-select/abm-love-animal' },
-  { id: 'maturity', title: '情感成熟度测试', description: '评估你的情感成熟度', icon: Sparkles, path: '/legacy/mode-select/gma-maturity' },
-  { id: 'parenting', title: '养育风格测试', description: '了解你的育儿方式', icon: Users, path: '/legacy/mode-select/cast-parenting' },
+  { id: 'attachment', title: '成人依恋类型测试', description: '了解你的依恋模式', icon: Heart, path: '/legacy/mode-select/ecr-attachment', badge: '推荐', questionCount: 28, duration: 6 },
+  { id: 'eq', title: '戈尔曼情商测试', description: '全面评估你的情商', icon: Zap, path: '/legacy/mode-select/eq-goleman', questionCount: 28, duration: 6 },
+  { id: 'loveanimal', title: '爱情动物测试', description: '探索你的爱情风格', icon: Heart, path: '/legacy/mode-select/abm-love-animal', questionCount: 20, duration: 4 },
+  { id: 'maturity', title: '情感成熟度测试', description: '评估你的情感成熟度', icon: Sparkles, path: '/legacy/mode-select/gma-maturity', questionCount: 28, duration: 6 },
+  { id: 'parenting', title: '养育风格测试', description: '了解你的育儿方式', icon: Users, path: '/legacy/mode-select/cast-parenting', questionCount: 28, duration: 6 },
 ]
 
 const mentalItems: DiscoverItem[] = [
-  { id: 'sas', title: '焦虑自评量表', description: '评估你的焦虑水平', icon: CloudRain, path: '/legacy/mode-select/sas-standard', badge: '专业' },
-  { id: 'sds', title: '抑郁自评量表', description: '评估你的抑郁程度', icon: CloudSun, path: '/legacy/mode-select/sds-standard' },
-  { id: 'pss', title: '压力知觉量表', description: '了解你的压力水平', icon: Droplets, path: '/legacy/mode-select/pss-standard' },
-  { id: 'burnout', title: '职业倦怠测试', description: '评估职业倦怠程度', icon: Coffee, path: '/legacy/mode-select/burnout-mbi' },
-  { id: 'internet', title: '网络成瘾测试', description: '评估网络使用情况', icon: Zap, path: '/legacy/mode-select/internet-addiction' },
+  { id: 'sas', title: '焦虑自评量表', description: '评估你的焦虑水平', icon: CloudRain, path: '/legacy/mode-select/sas-standard', badge: '专业', questionCount: 28, duration: 5 },
+  { id: 'sds', title: '抑郁自评量表', description: '评估你的抑郁程度', icon: CloudSun, path: '/legacy/mode-select/sds-standard', questionCount: 20, duration: 4 },
+  { id: 'pss', title: '压力知觉量表', description: '了解你的压力水平', icon: Droplets, path: '/legacy/mode-select/pss-standard', questionCount: 20, duration: 4 },
+  { id: 'burnout', title: '职业倦怠测试', description: '评估职业倦怠程度', icon: Coffee, path: '/legacy/mode-select/burnout-mbi', questionCount: 28, duration: 6 },
+  { id: 'internet', title: '网络成瘾测试', description: '评估网络使用情况', icon: Zap, path: '/legacy/mode-select/internet-addiction', questionCount: 20, duration: 4 },
 ]
 
 const careerItems: DiscoverItem[] = [
-  { id: 'holland', title: '霍兰德职业兴趣测试', description: '探索适合的职业方向', icon: Briefcase, path: '/legacy/mode-select/holland-sds', badge: '热门' },
-  { id: 'kolb', title: '学习风格测试', description: '了解你的学习方式', icon: BookOpen, path: '/legacy/mode-select/kolb-standard' },
-  { id: 'leadership', title: '领导力风格测试', description: '评估你的领导能力', icon: Users, path: '/legacy/mode-select/mlq-standard' },
-  { id: 'iq', title: '瑞文智力测验', description: '测试你的逻辑推理能力', icon: Lightbulb, path: '/legacy/mode-select/iq-ravens' },
+  { id: 'holland', title: '霍兰德职业兴趣测试', description: '探索适合的职业方向', icon: Briefcase, path: '/legacy/mode-select/holland-sds', badge: '热门', questionCount: 28, duration: 6 },
+  { id: 'kolb', title: '学习风格测试', description: '了解你的学习方式', icon: BookOpen, path: '/legacy/mode-select/kolb-standard', questionCount: 28, duration: 6 },
+  { id: 'leadership', title: '领导力风格测试', description: '评估你的领导能力', icon: Users, path: '/legacy/mode-select/mlq-standard', questionCount: 28, duration: 6 },
+  { id: 'iq', title: '瑞文智力测验', description: '测试你的逻辑推理能力', icon: Lightbulb, path: '/legacy/mode-select/iq-ravens', questionCount: 28, duration: 8 },
 ]
 
 const valuesItems: DiscoverItem[] = [
-  { id: 'ideology', title: '政治坐标九维测试', description: '了解你的政治倾向', icon: Target, path: '/legacy/mode-select/ideology-9square' },
-  { id: 'schwartz', title: '施瓦茨价值观测试', description: '探索你的价值取向', icon: Sparkles, path: '/legacy/mode-select/schwartz-standard' },
-  { id: 'mft', title: '道德基础量表', description: '了解你的道德观念', icon: Shield, path: '/legacy/mode-select/mft-standard' },
-  { id: 'pcq', title: '心理资本问卷', description: '评估你的心理资本', icon: Sun, path: '/legacy/mode-select/pcq-standard' },
+  { id: 'ideology', title: '政治坐标九维测试', description: '了解你的政治倾向', icon: Target, path: '/legacy/mode-select/ideology-9square', questionCount: 28, duration: 6 },
+  { id: 'schwartz', title: '施瓦茨价值观测试', description: '探索你的价值取向', icon: Sparkles, path: '/legacy/mode-select/schwartz-standard', questionCount: 28, duration: 6 },
+  { id: 'mft', title: '道德基础量表', description: '了解你的道德观念', icon: Shield, path: '/legacy/mode-select/mft-standard', questionCount: 28, duration: 6 },
+  { id: 'pcq', title: '心理资本问卷', description: '评估你的心理资本', icon: Sun, path: '/legacy/mode-select/pcq-standard', questionCount: 28, duration: 6 },
 ]
 
 const funItems: DiscoverItem[] = [
-  { id: 'fubao', title: '福报指数测试', description: '测测你的福报值', icon: Sparkles, path: '/legacy/mode-select/fubao-index', badge: '趣味' },
-  { id: 'color', title: '颜色潜意识测试', description: '色彩揭示你的内心', icon: Wrench, path: '/legacy/mode-select/color-subconscious' },
-  { id: 'foodie', title: '吃货等级鉴定', description: '看看你的吃货级别', icon: Coffee, path: '/legacy/mode-select/foodie-level' },
-  { id: 'onepiece', title: '海贼王悬赏金测试', description: '你值多少赏金？', icon: Flame, path: '/legacy/mode-select/onepiece-bounty' },
-  { id: 'pua', title: 'PUA抵抗力测试', description: '测试你的防坑能力', icon: Shield, path: '/legacy/mode-select/pua-resistance' },
+  { id: 'fubao', title: '福报指数测试', description: '测测你的福报值', icon: Sparkles, path: '/legacy/mode-select/fubao-index', badge: '趣味', questionCount: 28, duration: 5 },
+  { id: 'color', title: '颜色潜意识测试', description: '色彩揭示你的内心', icon: Wrench, path: '/legacy/mode-select/color-subconscious', questionCount: 20, duration: 4 },
+  { id: 'foodie', title: '吃货等级鉴定', description: '看看你的吃货级别', icon: Coffee, path: '/legacy/mode-select/foodie-level', questionCount: 20, duration: 4 },
+  { id: 'onepiece', title: '海贼王悬赏金测试', description: '你值多少赏金？', icon: Flame, path: '/legacy/mode-select/onepiece-bounty', questionCount: 20, duration: 4 },
+  { id: 'pua', title: 'PUA抵抗力测试', description: '测试你的防坑能力', icon: Shield, path: '/legacy/mode-select/pua-resistance', questionCount: 28, duration: 6 },
 ]
 
 const articlesItems: DiscoverItem[] = [
