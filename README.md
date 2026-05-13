@@ -1,7 +1,5 @@
 <!-- MindMirror - Professional Psychological Growth Platform -->
 
-![MindMirror Logo](https://raw.githubusercontent.com/badhope/MindMirror/main/public/pwa-512x512.png)
-
 # 🪞 MindMirror
 
 **See Yourself Clearly, Become Your Best Self**
@@ -265,6 +263,10 @@ This project is licensed under **CC BY-NC 4.0** (Creative Commons Attribution-No
 **Under the following terms:**
 - 🏷️ **Attribution** — You must give appropriate credit
 - 🚫 **NonCommercial** — You may not use the material for commercial purposes
+
+**For Commercial Use:**
+If you wish to use this project for commercial purposes, please contact us for collaboration:
+- 📧 **Email**: contact@guanxinjie.dev
 
 📖 [Read the full license](https://creativecommons.org/licenses/by-nc/4.0/)
 
