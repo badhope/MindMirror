@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![MindMirror Logo](https://raw.githubusercontent.com/badhope/MindMirror/main/public/pwa-512x512.png)
-
 # 🪞 心镜 MindMirror
 
 **照见自己，成为更好的自己**
@@ -267,6 +265,10 @@ git push origin feature/amazing-feature
 **需遵守以下条款：**
 - 🏷️ **署名** — 必须给予适当的credit
 - 🚫 **非商业性** — 不得将本材料用于商业目的
+
+**商业使用：**
+如需将本项目用于商业目的，请联系我们洽谈合作：
+- 📧 **电子邮件**: contact@guanxinjie.dev
 
 📖 [阅读完整许可证](https://creativecommons.org/licenses/by-nc/4.0/)
 
