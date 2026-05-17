@@ -7,8 +7,8 @@ const MENU_SECTIONS = [
   {
     title: '我的数据',
     items: [
-      { id: 'progress', icon: TrendingUp, label: '我的进度', desc: '查看成长数据和统计', path: '/app/profile' },
-      { id: 'achievements', icon: Trophy, label: '成就徽章', desc: '已解锁的成就', path: '/app/profile' },
+      { id: 'progress', icon: TrendingUp, label: '我的进度', desc: '查看成长数据和统计', path: '/app/progress' },
+      { id: 'achievements', icon: Trophy, label: '成就徽章', desc: '已解锁的成就', path: '/app/progress' },
     ]
   },
   {
