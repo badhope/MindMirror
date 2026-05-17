@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Sparkles, Brain, TrendingUp, Heart, Compass, Zap, Shield, Award, Clock, CheckCircle, Flame, ChevronRight, Dumbbell, BookOpen, Target } from 'lucide-react'
+import { Sparkles, Brain, TrendingUp, Heart, Compass, Zap, Shield, Award, Clock, CheckCircle, Flame, ChevronRight, Dumbbell, BookOpen, Target, RefreshCw, Calendar, Coffee } from 'lucide-react'
 import { useAppStore } from '../../store'
+import { getDailyPsychology, PsychologyCard } from '../data/psychology-knowledge'
+import { getDailyQuote, DailyQuote } from '../utils/daily-quote'
 
 const MOOD_EMOJIS = ['😢', '😔', '😐', '😊', '🎉']
 const MOOD_LABELS = ['很糟糕', '不太好', '一般般', '还不错', '超棒！']
@@ -26,6 +28,9 @@ export default function HomePage() {
   const { completedAssessments, moodHistory, recordMood, getMoodForDate, trainingRecords } = useAppStore()
   const [selectedMood, setSelectedMood] = useState<number | null>(null)
   const [isMoodConfirmed, setIsMoodConfirmed] = useState(false)
+  const [dailyQuote, setDailyQuote] = useState<DailyQuote | null>(null)
+  const [psychologyCards, setPsychologyCards] = useState<PsychologyCard[]>([])
+  const [quoteLoading, setQuoteLoading] = useState(true)
 
   const hasRecords = completedAssessments.length > 0
 
@@ -36,7 +41,17 @@ export default function HomePage() {
       setSelectedMood(todayMood.mood)
       setIsMoodConfirmed(true)
     }
+    
+    setPsychologyCards(getDailyPsychology(2))
+    loadQuote()
   }, [getMoodForDate])
+
+  const loadQuote = async () => {
+    setQuoteLoading(true)
+    const quote = await getDailyQuote()
+    setDailyQuote(quote)
+    setQuoteLoading(false)
+  }
 
   const handleMoodSelect = (mood: number) => {
     if (isMoodConfirmed) return
@@ -54,6 +69,14 @@ export default function HomePage() {
     navigate(`/legacy/mode-select/${id}`)
   }
 
+  const getGreeting = () => {
+    const hour = new Date().getHours()
+    if (hour < 6) return '夜深了'
+    if (hour < 12) return '早上好'
+    if (hour < 18) return '下午好'
+    return '晚上好'
+  }
+
   return (
     <div className="min-h-screen pb-20">
       <div className="px-4 py-4 space-y-5 max-w-lg mx-auto">
@@ -61,16 +84,68 @@ export default function HomePage() {
         <div className="text-center pt-2 pb-2">
           <h1 className="text-xl font-bold mb-1">
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              心镜
+              {getGreeting()}
             </span>
           </h1>
-          <p className="text-white/50 text-xs">照见自己，成为更好的自己</p>
+          <p className="text-white/50 text-xs">
+            {new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
+          </p>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 via-violet-500/5 to-pink-500/10 border border-amber-500/20 p-5"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl" />
+          
+          <div className="relative">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                <Coffee size={14} className="text-amber-400" />
+                每日一句
+              </h3>
+              <button 
+                onClick={loadQuote}
+                className="p-1 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                <RefreshCw size={12} className={`text-white/40 ${quoteLoading ? 'animate-spin' : ''}`} />
+              </button>
+            </div>
+            
+            {quoteLoading ? (
+              <div className="py-8 text-center">
+                <motion.div
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="text-white/40 text-sm"
+                >
+                  正在加载...
+                </motion.div>
+              </div>
+            ) : dailyQuote && (
+              <motion.div
+                key={dailyQuote.content}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <p className="text-white/90 text-sm leading-relaxed mb-3">
+                  “{dailyQuote.content}”
+                </p>
+                <p className="text-right text-xs text-white/40">
+                  —— {dailyQuote.author}
+                </p>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
           className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-2xl p-4 border border-violet-500/20"
         >
           <div className="flex items-center justify-between mb-3">
@@ -206,8 +281,56 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-3 gap-3"
+          transition={{ delay: 0.35 }}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-violet-500/20 p-4"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+              <Sparkles size={14} className="text-amber-400" />
+              每日心理学
+            </h3>
+            <button 
+              onClick={() => navigate('/app/library/articles')}
+              className="text-[10px] text-violet-400 flex items-center gap-0.5"
+            >
+              更多 <ChevronRight size={10} />
+            </button>
+          </div>
+          
+          <div className="space-y-3">
+            {psychologyCards.map((card, i) => (
+              <motion.div
+                key={card.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.08 }}
+                className="group p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-xl">{card.icon}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <h4 className="font-semibold text-xs text-white">{card.title}</h4>
+                      <span className="px-1.5 py-0.5 rounded-full text-[9px] bg-amber-500/20 text-amber-300">
+                        {card.type === 'effect' ? '心理学效应' : card.type === 'fact' ? '冷知识' : card.type === 'tip' ? '实用技巧' : '名言'}
+                      </span>
+                    </div>
+                    <p className="text-white/60 text-xs leading-relaxed">{card.content}</p>
+                    {card.source && (
+                      <p className="text-[9px] text-white/30 mt-1.5 text-right">—— {card.source}</p>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="grid grid-cols-3 gap-2"
         >
           {[
             { label: '专业测评', value: '40+', icon: Award, color: 'violet' },
@@ -218,8 +341,8 @@ export default function HomePage() {
               key={i}
               className="rounded-xl p-3 border text-center bg-white/5 border-white/5"
             >
-              <stat.icon size={14} className={`mx-auto mb-1 text-${stat.color}-400`} />
-              <div className="text-base font-bold text-white">{stat.value}</div>
+              <stat.icon size={13} className={`mx-auto mb-1 text-${stat.color}-400`} />
+              <div className="text-sm font-bold text-white">{stat.value}</div>
               <div className="text-[9px] text-white/40">{stat.label}</div>
             </div>
           ))}
