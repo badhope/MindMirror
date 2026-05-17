@@ -1,4 +1,5 @@
 import { normalizeResult } from './normalizeResult'
+import { standardCalculators } from './index'
 import type { AssessmentResult, Dimension } from '../../types'
 
 interface CalculationContext {
@@ -98,28 +99,56 @@ class CalculatorEngine {
     mode: string
   ): Promise<AssessmentResult> {
     if (mode === 'professional') {
-      const { calculateProfessionalResult } = await import('../professionalCalculators')
-      return await calculateProfessionalResult(assessmentId, answers, mode)
+      try {
+        const { calculateProfessionalResult } = await import('../professionalCalculators')
+        return await calculateProfessionalResult(assessmentId, answers, mode)
+      } catch (e) {
+        console.warn('Professional calculator failed, falling back:', e)
+      }
     }
 
+    // 首先尝试从standardCalculators中查找 - 这是最可靠的方式
+    if (standardCalculators[assessmentId]) {
+      try {
+        return standardCalculators[assessmentId](answers)
+      } catch (e) {
+        console.warn('Standard calculator failed:', assessmentId, e)
+      }
+    }
+
+    // 然后尝试从模块中查找resultCalculator
     const assessmentModule = await this.loadAssessmentModule(assessmentId)
     if (assessmentModule?.resultCalculator) {
-      return assessmentModule.resultCalculator(answers)
+      try {
+        return assessmentModule.resultCalculator(answers)
+      } catch (e) {
+        console.warn('Module resultCalculator failed:', assessmentId, e)
+      }
     }
 
-    const { calculateProfessionalResult } = await import('../professionalCalculators')
-    return await calculateProfessionalResult(assessmentId, answers, mode)
+    // 最后尝试professional fallback
+    try {
+      const { calculateProfessionalResult } = await import('../professionalCalculators')
+      return await calculateProfessionalResult(assessmentId, answers, mode)
+    } catch (e) {
+      console.warn('Professional fallback also failed:', e)
+      // 如果所有都失败，使用紧急fallback
+      return this.fallbackCalculate(assessmentId, answers)
+    }
   }
 
   private async loadAssessmentModule(assessmentId: string): Promise<any> {
     try {
       // 核心测评模块注册表
       const coreModuleMap: Record<string, () => Promise<any>> = {
+        // 核心专业测评
         'ocean-bigfive': () => import('../../data/assessments/ocean-bigfive'),
         'dark-triad': () => import('../../data/assessments/dark-triad'),
+        'dark-triangle': () => import('../../data/assessments/dark-triad'), // 兼容ID
         'eq-goleman': () => import('../../data/assessments/eq-goleman'),
         'ecr-attachment': () => import('../../data/assessments/ecr-attachment'),
         'scl90': () => import('../../data/assessments/scl90-symptoms'),
+        'scl90-symptoms': () => import('../../data/assessments/scl90-symptoms'),
         'sas-standard': () => import('../../data/assessments/sas-standard'),
         'sleep-quality': () => import('../../data/assessments/sleep-quality'),
         'holland-sds': () => import('../../data/assessments/holland-sds'),
@@ -132,35 +161,117 @@ class CalculatorEngine {
         'sbti-personality': () => import('../../data/assessments/sbti-personality'),
         'schwartz-standard': () => import('../../data/assessments/schwartz-standard'),
         'tki-standard': () => import('../../data/assessments/tki-standard'),
-        'slacking-purity': () => import('../../data/assessments/slacking-purity'),
-        'sexual-experience': () => import('../../data/assessments/sexual-experience'),
-        'onepiece-bounty': () => import('../../data/assessments/onepiece-bounty'),
-        'abm-love-animal': () => import('../../data/assessments/abm-love-animal'),
-        'color-subconscious': () => import('../../data/assessments/color-subconscious'),
         'sds-standard': () => import('../../data/assessments/sds-standard'),
-        'lacan-diagnosis': () => import('../../data/assessments/lacan-diagnosis'),
         'pss-stress': () => import('../../data/assessments/pss-stress'),
         'pss-standard': () => import('../../data/assessments/pss-standard'),
-        'foodie-level': () => import('../../data/assessments/foodie-level'),
-        'internet-addiction': () => import('../../data/assessments/internet-addiction'),
         'mindset-standard': () => import('../../data/assessments/mindset-standard'),
         'metacognition-standard': () => import('../../data/assessments/metacognition-standard'),
         'ocb-standard': () => import('../../data/assessments/ocb-standard'),
         'pcq-standard': () => import('../../data/assessments/pcq-standard'),
         'philo-spectrum': () => import('../../data/assessments/philo-spectrum'),
         'life-meaning': () => import('../../data/assessments/life-meaning'),
-        'pua-resistance': () => import('../../data/assessments/pua-resistance'),
-        'officialdom-dream': () => import('../../data/assessments/officialdom-dream'),
-        'patriotism-purity': () => import('../../data/assessments/patriotism-purity'),
         'mlq-standard': () => import('../../data/assessments/mlq-standard'),
-        'fubao-index': () => import('../../data/assessments/fubao-index'),
         'kolb-standard': () => import('../../data/assessments/kolb-standard'),
         'hardiness-standard': () => import('../../data/assessments/hardiness-standard'),
         'els-standard': () => import('../../data/assessments/els-standard'),
         'asi-standard': () => import('../../data/assessments/asi-standard'),
         'attention-test': () => import('../../data/assessments/attention-test'),
         'mft-standard': () => import('../../data/assessments/mft-standard'),
+        
+        // 趣味测评
+        'slacking-purity': () => import('../../data/assessments/slacking-purity'),
+        'moyu-purity': () => import('../../data/assessments/slacking-purity'), // 别名
+        'foodie-level': () => import('../../data/assessments/foodie-level'),
+        'internet-addiction': () => import('../../data/assessments/internet-addiction'),
+        'sexual-experience': () => import('../../data/assessments/sexual-experience'),
+        'onepiece-bounty': () => import('../../data/assessments/onepiece-bounty'),
+        'abm-love-animal': () => import('../../data/assessments/abm-love-animal'),
+        'color-subconscious': () => import('../../data/assessments/color-subconscious'),
+        'lacan-diagnosis': () => import('../../data/assessments/lacan-diagnosis'),
+        'pua-resistance': () => import('../../data/assessments/pua-resistance'),
+        'officialdom-dream': () => import('../../data/assessments/officialdom-dream'),
+        'patriotism-purity': () => import('../../data/assessments/patriotism-purity'),
+        'patriot-purity': () => import('../../data/assessments/patriotism-purity'), // 别名
+        'fubao-index': () => import('../../data/assessments/fubao-index'),
+        
+        // 娱乐测评
         'love-languages': () => import('../../data/entertainment/love-languages'),
+        'love-language': () => import('../../data/entertainment/love-languages'),
+        'enneagram': () => import('../../data/entertainment/enneagram'),
+        'disc': () => import('../../data/entertainment/disc-personalities'),
+        'disc-personalities': () => import('../../data/entertainment/disc-personalities'),
+        'pdp-personalities': () => import('../../data/entertainment/pdp-personalities'),
+        'dnd-alignment': () => import('../../data/entertainment/dnd-alignment'),
+        'love-style': () => import('../../data/entertainment/love-style'),
+        'harrypotter': () => import('../../data/entertainment/harrypotter'),
+        'naruto': () => import('../../data/entertainment/naruto'),
+        
+        // 兼容性别名
+        'bigfive': () => import('../../data/assessments/ocean-bigfive'),
+        'big-five': () => import('../../data/assessments/ocean-bigfive'),
+        'mbti': () => import('../../data/assessments/sbti-personality'),
+        'mbti-standard': () => import('../../data/assessments/sbti-personality'),
+        'attachment': () => import('../../data/assessments/ecr-attachment'),
+        'attachment-style': () => import('../../data/assessments/ecr-attachment'),
+        'political': () => import('../../data/assessments/ideology-9square'),
+        'political-ideology': () => import('../../data/assessments/ideology-9square'),
+        'political-compass': () => import('../../data/assessments/ideology-9square'),
+        'via-character': () => import('../../data/assessments/eq-goleman'), // 临时兼容
+        'anxiety': () => import('../../data/assessments/sas-standard'),
+        'depression': () => import('../../data/assessments/sds-standard'),
+        'sds-depression': () => import('../../data/assessments/sds-standard'),
+        'stress': () => import('../../data/assessments/pss-standard'),
+        'moyu': () => import('../../data/assessments/slacking-purity'),
+        'onepiece': () => import('../../data/assessments/onepiece-bounty'),
+        'bounty': () => import('../../data/assessments/onepiece-bounty'),
+        'philo': () => import('../../data/assessments/philo-spectrum'),
+        'schwartz': () => import('../../data/assessments/schwartz-standard'),
+        'values': () => import('../../data/assessments/schwartz-standard'),
+        'mft': () => import('../../data/assessments/mft-standard'),
+        'moral-foundations': () => import('../../data/assessments/mft-standard'),
+        'tki': () => import('../../data/assessments/tki-standard'),
+        'conflict-style': () => import('../../data/assessments/tki-standard'),
+        'els': () => import('../../data/assessments/els-standard'),
+        'emotional-labor': () => import('../../data/assessments/els-standard'),
+        'ocb': () => import('../../data/assessments/ocb-standard'),
+        'organizational-citizenship': () => import('../../data/assessments/ocb-standard'),
+        'growth-mindset': () => import('../../data/assessments/mindset-standard'),
+        'meta-cognitive': () => import('../../data/assessments/metacognition-standard'),
+        'metacognition': () => import('../../data/assessments/metacognition-standard'),
+        'focus': () => import('../../data/assessments/attention-test'),
+        'learning-style': () => import('../../data/assessments/kolb-standard'),
+        'kolb': () => import('../../data/assessments/kolb-standard'),
+        'meaning-in-life': () => import('../../data/assessments/mlq-standard'),
+        'mlq': () => import('../../data/assessments/mlq-standard'),
+        'authoritarian': () => import('../../data/assessments/asi-standard'),
+        'asi': () => import('../../data/assessments/asi-standard'),
+        'psychological-hardiness': () => import('../../data/assessments/hardiness-standard'),
+        'hardiness': () => import('../../data/assessments/hardiness-standard'),
+        'slack-off': () => import('../../data/assessments/slacking-purity'),
+        'slacking': () => import('../../data/assessments/slacking-purity'),
+        'patriotism': () => import('../../data/assessments/patriotism-purity'),
+        'general-mental-ability': () => import('../../data/assessments/gma-maturity'),
+        'gma': () => import('../../data/assessments/gma-maturity'),
+        'cast': () => import('../../data/assessments/cast-parenting'),
+        'philosophy': () => import('../../data/assessments/philo-spectrum'),
+        'lacan': () => import('../../data/assessments/lacan-diagnosis'),
+        'pua': () => import('../../data/assessments/pua-resistance'),
+        'fubao': () => import('../../data/assessments/fubao-index'),
+        'job-burnout': () => import('../../data/assessments/burnout-mbi'),
+        'burnout': () => import('../../data/assessments/burnout-mbi'),
+        'career-interest': () => import('../../data/assessments/holland-sds'),
+        'holland': () => import('../../data/assessments/holland-sds'),
+        'emotional-intelligence': () => import('../../data/assessments/eq-goleman'),
+        'eq': () => import('../../data/assessments/eq-goleman'),
+        'iq': () => import('../../data/assessments/iq-ravens'),
+        'iq-test': () => import('../../data/assessments/iq-ravens'),
+        'love-animal': () => import('../../data/assessments/abm-love-animal'),
+        'mental-age': () => import('../../data/assessments/mental-age'),
+        'sbti': () => import('../../data/assessments/sbti-personality'),
+        'officialdom': () => import('../../data/assessments/officialdom-dream'),
+        'psqi': () => import('../../data/assessments/sleep-quality'),
+        'sleep': () => import('../../data/assessments/sleep-quality'),
+        'sleep-assessment': () => import('../../data/assessments/sleep-quality'),
       }
       
       // 首先尝试核心注册表
