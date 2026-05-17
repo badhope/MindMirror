@@ -18,21 +18,38 @@ export class PersonalitySignatureExtractor {
   constructor(threshold: number = 1.5) {
     this.threshold = threshold
     this.dimensionNames = {
+      // Big Five
       O: ['保守传统', '开放探索'],
       C: ['灵活随性', '严谨尽责'],
       E: ['内倾沉静', '外倾主导'],
       A: ['竞争独立', '宜人合作'],
       N: ['冷静坚韧', '敏感细腻'],
+      openness: ['保守传统', '开放探索'],
+      conscientiousness: ['灵活随性', '严谨尽责'],
+      extraversion: ['内倾沉静', '外倾主导'],
+      agreeableness: ['竞争独立', '宜人合作'],
+      neuroticism: ['冷静坚韧', '敏感细腻'],
+      
+      // Dark Triad
       machiavellianism: ['理想主义', '策略务实'],
       narcissism: ['谦逊低调', '自信表现'],
       psychopathy: ['共情关怀', '果断无畏'],
       sadism: ['温和顺从', '支配控制'],
+      
+      // EQ
       selfAwareness: ['自我盲视', '自我洞察'],
       selfManagement: ['冲动随性', '自律坚毅'],
       socialAwareness: ['自我中心', '共情同理'],
       relationshipManagement: ['独立疏离', '领导影响'],
+      selfRegulation: ['冲动随性', '自律坚毅'],
+      
+      // Attachment
       ANXIETY: ['笃定自信', '焦虑敏感'],
+      anxiety: ['笃定自信', '焦虑敏感'],
       AVOIDANCE: ['亲密依恋', '自主回避'],
+      avoidance: ['亲密依恋', '自主回避'],
+      SECURE: ['安全型', '安全型'],
+      secure: ['安全型', '安全型'],
     }
   }
 

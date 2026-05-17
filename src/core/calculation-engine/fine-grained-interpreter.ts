@@ -58,21 +58,45 @@ export class FineGrainedInterpreter {
     const isHigh = percentile >= 50
 
     const traitMapping: Record<string, [string, string]> = {
+      // Big Five
       O: ['保守', '开放探索'],
       C: ['随性灵活', '严谨尽责'],
       E: ['内倾沉静', '外倾活跃'],
       A: ['竞争独立', '宜人合作'],
       N: ['情绪稳定', '敏感细腻'],
+      openness: ['保守', '开放探索'],
+      conscientiousness: ['随性灵活', '严谨尽责'],
+      extraversion: ['内倾沉静', '外倾活跃'],
+      agreeableness: ['竞争独立', '宜人合作'],
+      neuroticism: ['情绪稳定', '敏感细腻'],
+      
+      // Dark Triad
       machiavellianism: ['真诚直接', '策略务实'],
       narcissism: ['谦逊低调', '自信表现'],
       psychopathy: ['共情关怀', '果断大胆'],
       sadism: ['温和善良', '支配强势'],
+      
+      // EQ
       selfAwareness: ['自我盲视', '自我洞察'],
       selfManagement: ['冲动随性', '自律可控'],
       socialAwareness: ['自我中心', '共情同理'],
       relationshipManagement: ['疏离独立', '影响领导'],
+      selfRegulation: ['冲动随性', '自律可控'],
+      
+      // Attachment
       ANXIETY: ['笃定自信', '敏感焦虑'],
+      anxiety: ['笃定自信', '敏感焦虑'],
       AVOIDANCE: ['亲密依赖', '独立回避'],
+      avoidance: ['亲密依赖', '独立回避'],
+      SECURE: ['安全型', '安全型'],
+      secure: ['安全型', '安全型'],
+      
+      // Work
+      slacking: ['勤奋努力', '摸鱼达人'],
+      working: ['休闲放松', '工作狂'],
+      
+      // Meaning
+      meaning: ['无意义感', '意义追寻'],
     }
 
     const [lowTrait, highTrait] = traitMapping[dimension] || ['低', '高']
