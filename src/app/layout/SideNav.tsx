@@ -1,12 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, Dumbbell, TrendingUp, Compass, User, Settings } from 'lucide-react'
+import { Home, Brain, Dumbbell, User, Settings } from 'lucide-react'
 import { clsx } from 'clsx'
 
 const menuItems = [
   { path: '/app/home', label: '首页', icon: Home },
+  { path: '/app/assessments', label: '测评', icon: Brain },
   { path: '/app/training', label: '训练', icon: Dumbbell },
-  { path: '/app/progress', label: '进度', icon: TrendingUp },
-  { path: '/app/discover', label: '探索', icon: Compass },
+  { path: '/app/profile', label: '我的', icon: User },
 ]
 
 export default function SideNav() {
@@ -53,7 +53,9 @@ export default function SideNav() {
           <div className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon
-              const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/')
+              const isActive = location.pathname === item.path || 
+                (item.path === '/app/home' && location.pathname === '/app') ||
+                (item.path !== '/app/home' && location.pathname.startsWith(item.path))
               
               return (
                 <button

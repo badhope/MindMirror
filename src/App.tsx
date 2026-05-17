@@ -19,6 +19,8 @@ import Training from './app/pages/Training'
 import Progress from './app/pages/Progress'
 import Discover from './app/pages/Discover'
 import SettingsPage from './app/pages/SettingsPage'
+import AssessmentsPage from './app/pages/AssessmentsPage'
+import ProfilePage from './app/pages/ProfilePage'
 import GrowthDashboard from './app/pages/GrowthDashboard'
 import GettingStarted from './app/pages/GettingStarted'
 import UniversalTraining from './app/pages/training/UniversalTraining'
@@ -87,7 +89,10 @@ export default function App() {
                   <Route path="/" element={<Navigate to="/app/home" replace />} />
 
                   <Route path="/app" element={<AppLayout title="心镜" />}>
+                    <Route index element={<Navigate to="home" replace />} />
                     <Route path="home" element={<HomePage />} />
+                    <Route path="assessments" element={<AssessmentsPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
                     <Route path="daily" element={<Daily />} />
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
@@ -107,11 +112,11 @@ export default function App() {
                     <Route path="training/:programId" element={<UniversalTraining />} />
                   </Route>
 
-                  <Route path="/assessments" element={<Navigate to="/app/discover" replace />} />
-                  <Route path="/categories" element={<Navigate to="/app/discover" replace />} />
-                  <Route path="/legacy/categories" element={<Navigate to="/app/discover" replace />} />
-                  <Route path="/legacy/assessments" element={<Navigate to="/app/discover" replace />} />
-                  <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
+                  <Route path="/assessments" element={<Navigate to="/app/assessments" replace />} />
+                  <Route path="/categories" element={<Navigate to="/app/assessments" replace />} />
+                  <Route path="/legacy/categories" element={<Navigate to="/app/assessments" replace />} />
+                  <Route path="/legacy/assessments" element={<Navigate to="/app/assessments" replace />} />
+                  <Route path="/legacy/home" element={<Navigate to="/app/home" replace />} />
                   <Route path="/legacy/mode-select/:id" element={<ModeSelect />} />
                   <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelect />} />
                   <Route path="/legacy/confirm/:id" element={<AssessmentConfirm />} />

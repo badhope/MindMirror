@@ -1,15 +1,14 @@
 import { motion } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, Dumbbell, TrendingUp, Compass, Settings } from 'lucide-react'
+import { Home, Brain, Dumbbell, User } from 'lucide-react'
 import { clsx } from 'clsx'
 import { buttonPress, staggerContainer } from '../../utils/motionPresets'
 
 const tabs = [
-  { path: '/app/daily', label: '今日', icon: Home, preset: 'slideUp' as const },
-  { path: '/app/training', label: '训练', icon: Dumbbell, preset: 'bounce' as const },
-  { path: '/app/progress', label: '进度', icon: TrendingUp, preset: 'scale' as const },
-  { path: '/app/discover', label: '探索', icon: Compass, preset: 'elastic' as const },
-  { path: '/app/settings', label: '设置', icon: Settings, preset: 'fadeIn' as const },
+  { path: '/app/home', label: '首页', icon: Home, preset: 'slideUp' as const },
+  { path: '/app/assessments', label: '测评', icon: Brain, preset: 'bounce' as const },
+  { path: '/app/training', label: '训练', icon: Dumbbell, preset: 'scale' as const },
+  { path: '/app/profile', label: '我的', icon: User, preset: 'elastic' as const },
 ]
 
 export default function BottomTabBar() {
@@ -31,7 +30,9 @@ export default function BottomTabBar() {
       >
         {tabs.map((tab, index) => {
           const Icon = tab.icon
-          const isActive = location.pathname === tab.path
+          const isActive = location.pathname === tab.path || 
+            (tab.path === '/app/home' && location.pathname === '/app') ||
+            (tab.path !== '/app/home' && location.pathname.startsWith(tab.path))
           
           return (
             <motion.button
