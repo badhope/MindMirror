@@ -4,12 +4,33 @@ import { Calendar, Flame, Target, ChevronRight, Brain, Clock, Activity } from 'l
 import { useAppStore, type MoodRecord, type TrainingRecord } from '../../store'
 import AdvancedRadarChart from '../../components/charts/AdvancedRadarChart'
 import AchievementsPanel from '../components/AchievementsPanel'
+import { ANIMATION } from '../utils/animation-config'
 
 const COLOR_MAP: Record<string, { bg: string; border: string; text: string }> = {
   orange: { bg: 'rgba(251, 146, 60, 0.1)', border: 'rgba(251, 146, 60, 0.2)', text: '#fb923c' },
   pink: { bg: 'rgba(236, 72, 153, 0.1)', border: 'rgba(236, 72, 153, 0.2)', text: '#ec4899' },
   violet: { bg: 'rgba(139, 92, 246, 0.1)', border: 'rgba(139, 92, 246, 0.2)', text: '#8b5cf6' },
   emerald: { bg: 'rgba(16, 185, 129, 0.1)', border: 'rgba(16, 185, 129, 0.2)', text: '#10b981' },
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: ANIMATION.STAGGER_DELAY,
+      delayChildren: ANIMATION.INITIAL_DELAY
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: ANIMATION.FADE_DURATION, ease: 'easeOut' }
+  }
 }
 
 export default function Progress() {
@@ -88,29 +109,19 @@ export default function Progress() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
       className="p-4 md:p-6 space-y-6"
     >
-      <div className="py-4 md:hidden">
-        <motion.h2 
-          className="text-2xl md:text-3xl font-bold mb-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-        >
+      <motion.div variants={itemVariants} className="md:hidden">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
           📈 我的进度
-        </motion.h2>
-        <p className="text-white/50">数据概览</p>
-      </div>
+        </h2>
+        <p className="text-white/40">数据概览</p>
+      </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        className="grid grid-cols-4 gap-3"
-      >
+      <motion.div variants={itemVariants} className="grid grid-cols-4 gap-3">
         {[
           { label: '连续打卡', value: streakDays, unit: '天', icon: Flame, color: 'orange' as const },
           { label: '心情记录', value: moodHistory.length, unit: '次', icon: Activity, color: 'pink' as const },
@@ -124,26 +135,23 @@ export default function Progress() {
               key={i}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.05 }}
-              className="rounded-2xl p-3 border text-center"
+              transition={{ delay: ANIMATION.INITIAL_DELAY + i * ANIMATION.STAGGER_DELAY }}
+              className="rounded-2xl p-4 border text-center backdrop-blur-sm"
               style={{ backgroundColor: colors.bg, borderColor: colors.border }}
             >
-              <Icon size={16} className="mx-auto mb-1" style={{ color: colors.text }} />
-              <div className="text-xl font-bold">{stat.value}<span className="text-xs font-normal text-white/40">{stat.unit}</span></div>
-              <div className="text-[10px] text-white/40">{stat.label}</div>
+              <div className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: `${colors.text}20` }}>
+                <Icon size={18} style={{ color: colors.text }} />
+              </div>
+              <div className="text-2xl font-bold">{stat.value}<span className="text-xs font-normal text-white/40">{stat.unit}</span></div>
+              <div className="text-xs text-white/40 mt-1">{stat.label}</div>
             </motion.div>
           )
         })}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="bg-white/5 rounded-2xl p-5 border border-white/10"
-      >
+      <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/8 to-white/5 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <span className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center">
+          <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-rose-500 flex items-center justify-center shadow-lg">
             😊
           </span>
           本周心情变化
@@ -155,20 +163,22 @@ export default function Progress() {
           </div>
         ) : (
           <>
-            <div className="flex justify-between items-end h-20 mb-4">
+            <div className="flex justify-between items-end h-24 mb-4">
               {moodByDay.map((day, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
+                  transition={{ delay: ANIMATION.INITIAL_DELAY + i * ANIMATION.STAGGER_DELAY }}
                   className="flex-1 flex flex-col items-center"
                 >
-                  <div className="text-lg mb-1">{day.emoji}</div>
-                  <div 
-                    className="w-8 rounded-t-lg transition-all"
+                  <div className="text-xl mb-2">{day.emoji}</div>
+                  <motion.div 
+                    initial={{ height: 0 }}
+                    animate={{ height: day.mood !== null ? `${(day.mood + 1) * 15}px` : '6px' }}
+                    transition={{ duration: 0.8, ease: 'easeOut', delay: ANIMATION.INITIAL_DELAY + i * ANIMATION.STAGGER_DELAY }}
+                    className="w-10 rounded-t-xl transition-all"
                     style={{ 
-                      height: day.mood !== null ? `${(day.mood + 1) * 12}px` : '4px',
                       background: day.mood !== null 
                         ? 'linear-gradient(to top, #8b5cf6, #ec4899)' 
                         : 'rgba(255,255,255,0.1)'
@@ -179,7 +189,7 @@ export default function Progress() {
             </div>
             <div className="flex justify-between">
               {moodByDay.map((day, i) => (
-                <div key={i} className="flex-1 text-center text-[10px] text-white/30">
+                <div key={i} className="flex-1 text-center text-xs text-white/40">
                   {day.shortDate}
                 </div>
               ))}
@@ -188,24 +198,19 @@ export default function Progress() {
         )}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
-        className="bg-white/5 rounded-2xl p-5 border border-white/10"
-      >
+      <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/8 to-white/5 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold flex items-center gap-2">
-            <span className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center">
-              <Brain size={14} />
+            <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shadow-lg">
+              <Brain size={16} />
             </span>
             能力均衡度
           </h3>
           <button
             onClick={() => navigate('/app/growth')}
-            className="text-xs text-violet-400 flex items-center gap-0.5 hover:text-violet-300"
+            className="text-sm text-violet-400 flex items-center gap-1 hover:text-violet-300 transition-colors"
           >
-            详细分析 <ChevronRight size={12} />
+            详细分析 <ChevronRight size={14} />
           </button>
         </div>
 
@@ -217,21 +222,18 @@ export default function Progress() {
           <AdvancedRadarChart
             dimensions={radarData}
             colorScheme="violet"
-            height={220}
+            height={240}
             showDataLabels={false}
             animated
           />
         )}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-white/5 rounded-2xl p-5 border border-white/10"
-      >
+      <motion.div variants={itemVariants} className="bg-gradient-to-br from-white/8 to-white/5 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Calendar size={18} className="text-violet-400" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500/30 to-blue-500/30 flex items-center justify-center">
+            <Calendar size={18} className="text-violet-400" />
+          </div>
           30天训练热力图
         </h3>
 
@@ -259,43 +261,45 @@ export default function Progress() {
                   key={i}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.45 + i * 0.01 }}
-                  className={`aspect-square rounded ${colors[intensity]} ${intensity > 0 ? 'ring-1 ring-violet-500/30' : ''}`}
+                  transition={{ delay: ANIMATION.INITIAL_DELAY + i * 0.01 }}
+                  className={`aspect-square rounded-lg ${colors[intensity]} ${intensity > 0 ? 'ring-1 ring-violet-500/30 shadow-lg' : ''}`}
                   title={`${day.date}: ${trainingsThisDay} 个训练`}
                 />
               )
             })}
           </div>
         )}
-        <div className="flex items-center justify-end gap-2 mt-3 text-[10px] text-white/40">
+        <div className="flex items-center justify-end gap-2 mt-3 text-xs text-white/40">
           <span>无</span>
-          <div className="w-3 h-3 rounded bg-white/5" />
-          <div className="w-3 h-3 rounded bg-violet-500/30" />
-          <div className="w-3 h-3 rounded bg-violet-500/50" />
-          <div className="w-3 h-3 rounded bg-violet-500" />
+          <div className="w-4 h-4 rounded-lg bg-white/5" />
+          <div className="w-4 h-4 rounded-lg bg-violet-500/30" />
+          <div className="w-4 h-4 rounded-lg bg-violet-500/50" />
+          <div className="w-4 h-4 rounded-lg bg-violet-500" />
           <span>多</span>
         </div>
       </motion.div>
 
       <AchievementsPanel />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        onClick={() => navigate('/app/growth')}
-        className="bg-gradient-to-r from-violet-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 cursor-pointer hover:scale-[1.01] transition-transform"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-semibold flex items-center gap-2">
-              📊 查看完整成长分析报告
-            </h3>
-            <p className="text-sm text-white/50 mt-1">
-              6大核心能力维度 · AI 智能洞察
-            </p>
+      <motion.div variants={itemVariants}>
+        <div 
+          onClick={() => navigate('/app/growth')}
+          className="bg-gradient-to-br from-violet-500/20 via-purple-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 cursor-pointer hover:scale-[1.01] transition-all hover:shadow-lg hover:shadow-violet-500/10 backdrop-blur-sm"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/30 to-purple-500/30 flex items-center justify-center">
+                <Target size={24} className="text-violet-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">查看完整成长分析报告</h3>
+                <p className="text-sm text-white/50 mt-1">
+                  6大核心能力维度 · AI 智能洞察
+                </p>
+              </div>
+            </div>
+            <ChevronRight size={24} className="text-violet-400" />
           </div>
-          <ChevronRight size={20} className="text-violet-400" />
         </div>
       </motion.div>
     </motion.div>
