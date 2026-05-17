@@ -44,6 +44,9 @@ import { mlqStandardAssessment } from './mlq-standard'
 import { asiStandardAssessment } from './asi-standard'
 import { loveLanguagesAssessment } from '../entertainment/love-languages'
 import { sleepQualityAssessment } from './sleep-quality'
+import { financialHealthAssessment } from './financial-health'
+import { relationshipQualityAssessment } from './relationship-quality'
+import { careerSatisfactionAssessment } from './career-satisfaction'
 
 export const standardAssessments = {
   'kolb-standard': kolbStandardAssessment,
@@ -92,6 +95,9 @@ export const standardAssessments = {
   'sbti-personality': sbtiAssessment,
   'love-languages': loveLanguagesAssessment,
   'sleep-quality': sleepQualityAssessment,
+  'financial-health': financialHealthAssessment,
+  'relationship-quality': relationshipQualityAssessment,
+  'career-satisfaction': careerSatisfactionAssessment,
 }
 
 export type StandardAssessmentId = keyof typeof standardAssessments
@@ -214,6 +220,18 @@ const assessmentIdAliases: Record<string, string> = {
   'psqi': 'sleep-quality',
   'sleep-quality': 'sleep-quality',
   'sleep-assessment': 'sleep-quality',
+  'financial': 'financial-health',
+  'finance': 'financial-health',
+  'money': 'financial-health',
+  'financial-health': 'financial-health',
+  'relationship': 'relationship-quality',
+  'relationships': 'relationship-quality',
+  'romance': 'relationship-quality',
+  'relationship-quality': 'relationship-quality',
+  'career': 'career-satisfaction',
+  'job': 'career-satisfaction',
+  'work': 'career-satisfaction',
+  'career-satisfaction': 'career-satisfaction',
 }
 
 export function getAssessmentById(id: string) {
