@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Sparkles, Brain, TrendingUp, Heart, Compass, Zap, Shield, Award, Clock, CheckCircle, Flame, ChevronRight, Dumbbell, BookOpen, Target, RefreshCw, Calendar, Coffee } from 'lucide-react'
+import { Sparkles, Brain, TrendingUp, Heart, Compass, Shield, Award, CheckCircle, Flame, ChevronRight, Dumbbell, BookOpen, Target, RefreshCw, Coffee } from 'lucide-react'
 import { useAppStore } from '../../store'
-import { getDailyPsychology, PsychologyCard } from '../data/psychology-knowledge'
+import { getDailyPsychology } from '../data/psychology-knowledge'
 import { getDailyQuote, DailyQuote } from '../utils/daily-quote'
+import { ANIMATION, STAGGER_CHILDREN } from '../utils/animation-config'
 
 const MOOD_EMOJIS = ['😢', '😔', '😐', '😊', '🎉']
 const MOOD_LABELS = ['很糟糕', '不太好', '一般般', '还不错', '超棒！']
@@ -23,13 +24,36 @@ const QUICK_ENTRIES = [
   { id: 'library', icon: BookOpen, label: '心理文章', path: '/app/library/articles', color: 'from-amber-500 to-orange-500' },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: ANIMATION.STAGGER_DELAY,
+      delayChildren: ANIMATION.INITIAL_DELAY,
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: ANIMATION.SLIDE_DURATION,
+      ease: 'easeOut'
+    }
+  }
+}
+
 export default function HomePage() {
   const navigate = useNavigate()
   const { completedAssessments, moodHistory, recordMood, getMoodForDate, trainingRecords } = useAppStore()
   const [selectedMood, setSelectedMood] = useState<number | null>(null)
   const [isMoodConfirmed, setIsMoodConfirmed] = useState(false)
   const [dailyQuote, setDailyQuote] = useState<DailyQuote | null>(null)
-  const [psychologyCards, setPsychologyCards] = useState<PsychologyCard[]>([])
+  const [psychologyCards, setPsychologyCards] = useState<any[]>([])
   const [quoteLoading, setQuoteLoading] = useState(true)
 
   const hasRecords = completedAssessments.length > 0
@@ -78,10 +102,18 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen pb-20">
-      <div className="px-4 py-4 space-y-5 max-w-lg mx-auto">
+    <motion.div 
+      className="min-h-screen pb-20"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <div className="px-4 py-4 space-y-4 max-w-lg mx-auto">
         
-        <div className="text-center pt-2 pb-2">
+        <motion.div 
+          className="text-center pt-2 pb-2"
+          variants={itemVariants}
+        >
           <h1 className="text-xl font-bold mb-1">
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               {getGreeting()}
@@ -90,19 +122,17 @@ export default function HomePage() {
           <p className="text-white/50 text-xs">
             {new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
           </p>
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 via-violet-500/5 to-pink-500/10 border border-amber-500/20 p-5"
+          variants={itemVariants}
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500/10 via-violet-500/5 to-pink-500/10 border border-amber-500/20 p-4"
         >
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl" />
           
           <div className="relative">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-semibold text-white flex items-center gap-2">
                 <Coffee size={14} className="text-amber-400" />
                 每日一句
@@ -116,10 +146,10 @@ export default function HomePage() {
             </div>
             
             {quoteLoading ? (
-              <div className="py-8 text-center">
+              <div className="py-6 text-center">
                 <motion.div
                   animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  transition={{ duration: 1, repeat: Infinity }}
                   className="text-white/40 text-sm"
                 >
                   正在加载...
@@ -128,10 +158,11 @@ export default function HomePage() {
             ) : dailyQuote && (
               <motion.div
                 key={dailyQuote.content}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: ANIMATION.FADE_DURATION }}
               >
-                <p className="text-white/90 text-sm leading-relaxed mb-3">
+                <p className="text-white/90 text-sm leading-relaxed mb-2">
                   “{dailyQuote.content}”
                 </p>
                 <p className="text-right text-xs text-white/40">
@@ -143,12 +174,10 @@ export default function HomePage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
+          variants={itemVariants}
           className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-2xl p-4 border border-violet-500/20"
         >
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-base font-semibold text-white flex items-center gap-2">
               <span className="text-lg">🌅</span>
               今日心情打卡
@@ -163,6 +192,7 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: ANIMATION.SCALE_DURATION, type: 'spring' }}
               className="text-center p-3 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20"
             >
               <div className="flex items-center justify-center gap-2 mb-1">
@@ -174,17 +204,18 @@ export default function HomePage() {
             </motion.div>
           ) : (
             <>
-              <div className="flex justify-between gap-2 mb-3">
+              <div className="flex justify-between gap-2 mb-2">
                 {MOOD_EMOJIS.map((emoji, i) => (
                   <motion.button
                     key={i}
                     onClick={() => handleMoodSelect(i)}
-                    className={`flex-1 h-14 rounded-xl flex flex-col items-center justify-center transition-all ${
+                    className={`flex-1 h-12 rounded-xl flex flex-col items-center justify-center transition-all ${
                       selectedMood === i
                         ? 'bg-gradient-to-br from-violet-500/30 to-purple-500/30 border-2 border-violet-500/50'
                         : 'bg-white/5 hover:bg-white/10 border border-transparent'
                     }`}
                     whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02 }}
                   >
                     <span className="text-lg">{emoji}</span>
                     <span className="text-[9px] text-white/50">{MOOD_LABELS[i]}</span>
@@ -195,11 +226,12 @@ export default function HomePage() {
               <motion.button
                 onClick={confirmMood}
                 disabled={selectedMood === null}
-                className={`w-full py-2.5 rounded-xl font-medium text-sm transition-all ${
+                className={`w-full py-2 rounded-xl font-medium text-sm transition-all ${
                   selectedMood !== null
                     ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white'
                     : 'bg-white/10 text-white/40 cursor-not-allowed'
                 }`}
+                whileTap={selectedMood !== null ? { scale: 0.98 } : {}}
               >
                 确认打卡
               </motion.button>
@@ -207,12 +239,8 @@ export default function HomePage() {
           )}
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="flex items-center justify-between mb-3">
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-white flex items-center gap-1.5">
               <Sparkles size={14} className="text-amber-400" />
               推荐测评
@@ -226,14 +254,13 @@ export default function HomePage() {
           </div>
           
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-            {FEATURED_ASSESSMENTS.map((item, i) => (
+            {FEATURED_ASSESSMENTS.map((item) => (
               <motion.button
                 key={item.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.25 + i * 0.05 }}
                 onClick={() => handleSelectAssessment(item.id)}
                 className="flex-shrink-0 w-36 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-violet-500/30 transition-all text-left"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center mb-2`}>
                   <item.icon size={16} className="text-white" />
@@ -249,25 +276,20 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-1.5">
+        <motion.div variants={itemVariants}>
+          <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-1.5">
             <Target size={14} className="text-emerald-400" />
             快捷入口
           </h3>
           
           <div className="grid grid-cols-4 gap-2">
-            {QUICK_ENTRIES.map((entry, i) => (
+            {QUICK_ENTRIES.map((entry) => (
               <motion.button
                 key={entry.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 + i * 0.05 }}
                 onClick={() => navigate(entry.path)}
                 className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-violet-500/20 transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${entry.color} flex items-center justify-center`}>
                   <entry.icon size={18} className="text-white" />
@@ -278,13 +300,8 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-violet-500/20 p-4"
-        >
-          <div className="flex items-center justify-between mb-3">
+        <motion.div variants={itemVariants} className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-violet-500/20 p-4">
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2">
               <Sparkles size={14} className="text-amber-400" />
               每日心理学
@@ -297,14 +314,12 @@ export default function HomePage() {
             </button>
           </div>
           
-          <div className="space-y-3">
-            {psychologyCards.map((card, i) => (
+          <div className="space-y-2">
+            {psychologyCards.map((card) => (
               <motion.div
                 key={card.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
                 className="group p-3 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all"
+                whileHover={{ y: -2 }}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-xl">{card.icon}</span>
@@ -326,19 +341,14 @@ export default function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45 }}
-          className="grid grid-cols-3 gap-2"
-        >
+        <motion.div variants={itemVariants} className="grid grid-cols-3 gap-2">
           {[
             { label: '专业测评', value: '40+', icon: Award, color: 'violet' },
             { label: '隐私保护', value: '100%', icon: Shield, color: 'emerald' },
             { label: '永久免费', value: '✓', icon: Sparkles, color: 'amber' },
-          ].map((stat, i) => (
+          ].map((stat) => (
             <div
-              key={i}
+              key={stat.label}
               className="rounded-xl p-3 border text-center bg-white/5 border-white/5"
             >
               <stat.icon size={13} className={`mx-auto mb-1 text-${stat.color}-400`} />
@@ -350,9 +360,7 @@ export default function HomePage() {
 
         {hasRecords && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            variants={itemVariants}
             onClick={() => navigate('/app/profile')}
             className="bg-gradient-to-r from-violet-500/10 to-blue-500/10 rounded-xl p-4 border border-violet-500/20 cursor-pointer hover:scale-[1.01] transition-transform"
           >
@@ -370,6 +378,6 @@ export default function HomePage() {
           </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }

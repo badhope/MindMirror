@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Home, Brain, Dumbbell, User, Settings } from 'lucide-react'
 import { clsx } from 'clsx'
+import { ANIMATION } from '../utils/animation-config'
 
 const menuItems = [
   { path: '/app/home', label: '首页', icon: Home },
@@ -9,18 +11,39 @@ const menuItems = [
   { path: '/app/profile', label: '我的', icon: User },
 ]
 
+const menuItemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: {
+      duration: ANIMATION.FADE_DURATION,
+      ease: 'easeOut'
+    }
+  }
+}
+
 export default function SideNav() {
   const location = useLocation()
   const navigate = useNavigate()
 
   return (
-    <div 
+    <motion.div 
       className="fixed left-0 top-0 bottom-0 w-64 bg-slate-950 border-r border-violet-500/10 z-50"
+      initial={{ x: -50, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ 
+        type: 'spring', 
+        stiffness: 200, 
+        damping: 25 
+      }}
     >
       <div className="p-6">
-        <button
+        <motion.button
           onClick={() => navigate('/app/home')}
           className="flex items-center gap-3 mb-8 hover:opacity-80 transition-opacity"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/30 flex items-center justify-center">
             <svg viewBox="0 0 100 100" className="w-7 h-7">
@@ -47,69 +70,79 @@ export default function SideNav() {
             </h1>
             <p className="text-xs text-white/40">照见自己，成为更好的自己</p>
           </div>
-        </button>
+        </motion.button>
 
         <nav className="space-y-2">
           <div className="space-y-2">
-            {menuItems.map((item) => {
+            {menuItems.map((item, index) => {
               const Icon = item.icon
               const isActive = location.pathname === item.path || 
                 (item.path === '/app/home' && location.pathname === '/app') ||
                 (item.path !== '/app/home' && location.pathname.startsWith(item.path))
               
               return (
-                <button
+                <motion.button
                   key={item.path}
                   onClick={() => navigate(item.path)}
                   className={clsx(
-                    'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group',
+                    'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group',
                     isActive 
                       ? 'bg-gradient-to-r from-violet-500/20 to-blue-500/20 text-violet-400 border border-violet-500/20'
                       : 'text-white/50 hover:bg-white/5 hover:text-white'
                   )}
+                  variants={menuItemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ x: 4 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <div className={isActive ? 'drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]' : ''}>
                     <Icon size={20} />
                   </div>
                   <span className="font-medium">{item.label}</span>
                   {isActive && (
-                    <div 
+                    <motion.div 
                       className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400"
+                      layoutId="sideNavIndicator"
+                      initial={false}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
                   )}
-                </button>
+                </motion.button>
               )
             })}
           </div>
         </nav>
       </div>
 
-      <div 
+      <motion.div 
         className="absolute bottom-0 left-0 right-0 p-4 border-t border-violet-500/10 space-y-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: ANIMATION.FADE_DURATION }}
       >
-        <button 
+        <motion.button 
           onClick={() => navigate('/app/settings')}
           className={clsx(
-            'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300',
+            'w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200',
             location.pathname === '/app/settings'
               ? 'bg-gradient-to-r from-violet-500/20 to-blue-500/20 text-violet-400 border border-violet-500/20'
               : 'text-white/50 hover:bg-white/5 hover:text-white'
           )}
+          whileTap={{ scale: 0.98 }}
         >
           <Settings size={18} className={location.pathname === '/app/settings' ? 'drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]' : ''} />
           <span className="text-sm">设置</span>
-          {location.pathname === '/app/settings' && (
-            <div 
-              className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400"
-            />
-          )}
-        </button>
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all">
+        </motion.button>
+        
+        <motion.button 
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-all"
+          whileTap={{ scale: 0.98 }}
+        >
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-pink-500" />
           <span className="text-white/70">访客用户</span>
-          <User size={16} className="ml-auto text-white/30" />
-        </button>
-      </div>
-    </div>
+        </motion.button>
+      </motion.div>
+    </motion.div>
   )
 }

@@ -2,13 +2,13 @@ import { motion } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Home, Brain, Dumbbell, User } from 'lucide-react'
 import { clsx } from 'clsx'
-import { buttonPress, staggerContainer } from '../../utils/motionPresets'
+import { ANIMATION } from '../utils/animation-config'
 
 const tabs = [
-  { path: '/app/home', label: '首页', icon: Home, preset: 'slideUp' as const },
-  { path: '/app/assessments', label: '测评', icon: Brain, preset: 'bounce' as const },
-  { path: '/app/training', label: '训练', icon: Dumbbell, preset: 'scale' as const },
-  { path: '/app/profile', label: '我的', icon: User, preset: 'elastic' as const },
+  { path: '/app/home', label: '首页', icon: Home },
+  { path: '/app/assessments', label: '测评', icon: Brain },
+  { path: '/app/training', label: '训练', icon: Dumbbell },
+  { path: '/app/profile', label: '我的', icon: User },
 ]
 
 export default function BottomTabBar() {
@@ -20,15 +20,15 @@ export default function BottomTabBar() {
       className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-xl border-t border-violet-500/20 pb-safe"
       initial={{ y: 50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.1 }}
+      transition={{ 
+        type: 'spring', 
+        stiffness: 300, 
+        damping: 30, 
+        delay: 0.1 
+      }}
     >
-      <motion.div 
-        className="flex items-center justify-around h-16 max-w-md mx-auto"
-        variants={staggerContainer}
-        initial="initial"
-        animate="animate"
-      >
-        {tabs.map((tab, index) => {
+      <div className="flex items-center justify-around h-16 max-w-md mx-auto">
+        {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = location.pathname === tab.path || 
             (tab.path === '/app/home' && location.pathname === '/app') ||
@@ -39,20 +39,11 @@ export default function BottomTabBar() {
               key={tab.path}
               onClick={() => navigate(tab.path)}
               className={clsx(
-                'relative flex flex-col items-center justify-center w-full h-full transition-all duration-300',
+                'relative flex flex-col items-center justify-center w-full h-full transition-colors duration-200',
                 isActive ? 'text-violet-400' : 'text-white/40'
               )}
-              custom={index}
-              variants={{
-                initial: { opacity: 0, y: 10, scale: 0.8 },
-                animate: { 
-                  opacity: 1, 
-                  y: 0, 
-                  scale: 1,
-                  transition: { delay: 0.15 + index * 0.06 },
-                },
-              }}
-              {...buttonPress}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: ANIMATION.FADE_DURATION }}
             >
               {isActive && (
                 <motion.div
@@ -64,24 +55,20 @@ export default function BottomTabBar() {
               )}
               
               <motion.div
-                animate={isActive ? { scale: [1, 1.15, 1] } : {}}
-                transition={{ 
-                  duration: 0.3, 
-                  times: [0, 0.5, 1],
-                  type: 'spring',
-                }}
+                animate={isActive ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                transition={{ duration: 0.3, type: 'spring' }}
               >
                 <Icon
                   size={24}
                   className={clsx(
-                    'transition-all duration-300',
+                    'transition-all duration-200',
                     isActive && 'drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]'
                   )}
                 />
               </motion.div>
               
               <span className={clsx(
-                'text-xs mt-1 font-medium transition-all duration-300',
+                'text-xs mt-1 font-medium transition-all duration-200',
                 isActive && 'font-semibold'
               )}>
                 {tab.label}
@@ -89,7 +76,7 @@ export default function BottomTabBar() {
             </motion.button>
           )
         })}
-      </motion.div>
+      </div>
     </motion.div>
   )
 }

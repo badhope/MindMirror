@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Brain, Heart, Leaf, Briefcase, Target, Smile, Flame, Sparkles, Clock, ChevronRight } from 'lucide-react'
+import { Brain, Heart, Leaf, Briefcase, Target, Smile, Flame, Sparkles, Clock } from 'lucide-react'
+import { ANIMATION } from '../utils/animation-config'
 
 type CategoryType = 'personality' | 'relationship' | 'mental' | 'career' | 'values' | 'fun'
 
@@ -65,6 +66,38 @@ const HOT_ASSESSMENTS = [
   { id: 'sas-standard', title: '焦虑自评', desc: '专业焦虑水平评估', color: 'from-amber-500 to-orange-500', icon: Flame },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: ANIMATION.STAGGER_DELAY,
+      delayChildren: ANIMATION.INITIAL_DELAY,
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: ANIMATION.SLIDE_DURATION,
+      ease: 'easeOut'
+    }
+  }
+}
+
+const tabVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: ANIMATION.FADE_DURATION }
+  }
+}
+
 export default function AssessmentsPage() {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState<CategoryType>('personality')
@@ -74,33 +107,36 @@ export default function AssessmentsPage() {
   }
 
   return (
-    <div className="min-h-screen pb-20">
+    <motion.div 
+      className="min-h-screen pb-20"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="px-4 py-4 space-y-4 max-w-lg mx-auto">
         
-        <div className="pt-2">
+        <motion.div variants={itemVariants} className="pt-2">
           <h1 className="text-xl font-bold mb-1">🧠 测评中心</h1>
           <p className="text-white/50 text-xs">发现适合你的心理测评</p>
-        </div>
+        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <motion.div variants={itemVariants}>
           <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-1.5">
             <Flame size={14} className="text-orange-400" />
             热门推荐
           </h3>
           
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-            {HOT_ASSESSMENTS.map((item, i) => (
+            {HOT_ASSESSMENTS.map((item) => (
               <motion.button
                 key={item.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 + i * 0.05 }}
+                transition={{ duration: ANIMATION.SLIDE_DURATION }}
                 onClick={() => handleSelect(item.id)}
                 className="flex-shrink-0 w-40 p-4 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-white/10 hover:border-violet-500/30 transition-all text-left"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-2`}>
                   <item.icon size={18} className="text-white" />
@@ -112,17 +148,15 @@ export default function AssessmentsPage() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <motion.div 
+          variants={itemVariants}
           className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide"
         >
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon
             const isActive = activeCategory === cat.id
             return (
-              <button
+              <motion.button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
@@ -130,10 +164,12 @@ export default function AssessmentsPage() {
                     ? `bg-gradient-to-r ${cat.color} text-white`
                     : 'bg-white/5 text-white/60 hover:bg-white/10'
                 }`}
+                whileTap={{ scale: 0.95 }}
+                variants={tabVariants}
               >
                 <Icon size={14} />
                 {cat.label}
-              </button>
+              </motion.button>
             )
           })}
         </motion.div>
@@ -141,10 +177,10 @@ export default function AssessmentsPage() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: ANIMATION.FADE_DURATION }}
             className="grid grid-cols-2 gap-3"
           >
             {ASSESSMENTS[activeCategory].map((item, i) => (
@@ -152,9 +188,14 @@ export default function AssessmentsPage() {
                 key={item.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.03 }}
+                transition={{ 
+                  duration: ANIMATION.FADE_DURATION,
+                  delay: i * 0.03
+                }}
                 onClick={() => handleSelect(item.id)}
                 className="p-3 rounded-xl bg-white/5 border border-white/5 hover:border-violet-500/30 transition-all text-left"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className="flex items-start justify-between mb-1.5">
                   <h4 className="font-medium text-white text-xs">{item.title}</h4>
@@ -177,6 +218,6 @@ export default function AssessmentsPage() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }
