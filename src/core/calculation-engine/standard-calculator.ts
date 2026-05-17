@@ -203,7 +203,11 @@ export class StandardScoreCalculator {
     }
 
     for (const [dim, data] of dimensionData) {
-      data.score = this.winsorize(data.score, this.options.winsorizeLevel)
+      if (data.items.length >= 3) {
+        const avgRawScore = data.score / data.count
+        const winsorizedAvg = this.winsorize(data.items, this.options.winsorizeLevel)
+        data.score = winsorizedAvg * data.count
+      }
     }
 
     return dimensionData
@@ -301,7 +305,25 @@ export class StandardScoreCalculator {
     return totalItems > 0 ? weightedSum / totalItems : 0.8
   }
 
-  private winsorize(value: number, level: number): number {
-    return value
+  private winsorize(items: number[], level: number = 0.05): number {
+    if (items.length < 5) {
+      return items.reduce((a, b) => a + b, 0) / items.length
+    }
+    
+    const sorted = [...items].sort((a, b) => a - b)
+    const n = sorted.length
+    
+    const lowerIdx = Math.floor(n * level)
+    const upperIdx = Math.ceil(n * (1 - level))
+    
+    const lowerBound = sorted[lowerIdx]
+    const upperBound = sorted[upperIdx - 1]
+    
+    const sum = sorted.reduce((acc, val) => {
+      const clamped = Math.max(lowerBound, Math.min(upperBound, val))
+      return acc + clamped
+    }, 0)
+    
+    return sum / n
   }
 }

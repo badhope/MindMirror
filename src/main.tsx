@@ -8,20 +8,65 @@ import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 import './index.css'
 
-// 检测运行环境，选择适合的路由模式
-const getRouterMode = () => {
-  const isGitHubPages = window.location.hostname.includes('github.io')
-  const isCustomDomain = window.location.hostname === 'humanitysos.dpdns.org'
-  const isProduction = import.meta.env.PROD
-  
-  // GitHub Pages（包括自定义域名）使用 HashRouter，Docker部署可使用BrowserRouter
-  if (isGitHubPages || isCustomDomain || (isProduction && !import.meta.env.VITE_USE_BROWSER_ROUTER)) {
-    return HashRouter
-  }
-  return BrowserRouter
+// 路由配置
+interface RouterConfig {
+  mode: 'hash' | 'browser' | 'auto'
+  customDomain?: string[]
+  forceHash?: boolean
 }
 
-const Router = getRouterMode()
+const routerConfig: RouterConfig = {
+  mode: 'auto',
+  customDomain: [
+    'humanitysos.dpdns.org',
+    'mindmirror.app'
+  ],
+  forceHash: false
+}
+
+// 配置化路由适配器
+const createRouter = (config: RouterConfig) => {
+  if (config.forceHash) {
+    return HashRouter
+  }
+
+  if (config.mode === 'hash') {
+    return HashRouter
+  }
+
+  if (config.mode === 'browser') {
+    return BrowserRouter
+  }
+
+  // auto模式 - 智能检测
+  const { hostname, port, pathname } = window.location
+  
+  // 检查自定义域名
+  if (config.customDomain?.includes(hostname)) {
+    return HashRouter
+  }
+  
+  // 检查GitHub Pages类环境
+  const isStaticHost = /github\.io|gitlab\.io|vercel\.app|netlify\.app|surge\.sh/.test(hostname)
+  if (isStaticHost) {
+    return HashRouter
+  }
+  
+  // 检查是否为开发环境
+  if (import.meta.env.DEV) {
+    return BrowserRouter
+  }
+  
+  // 检查是否有端口（本地部署）
+  if (port && port !== '80' && port !== '443') {
+    return BrowserRouter
+  }
+  
+  // 其他情况默认使用HashRouter
+  return HashRouter
+}
+
+const Router = createRouter(routerConfig)
 
 setTimeout(() => {
   preloadTopAssessments()

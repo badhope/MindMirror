@@ -282,7 +282,6 @@ export const useAppStore = create<AppStore>()(
       dismissAssessmentCard: () => set({ hasDismissedAssessmentCard: true }),
 
       // assessmentHistory alias & methods (backward compatible)
-      get assessmentHistory() { return get().completedAssessments },
       addAssessmentRecord: (record) => set((state) => {
         const existingIndex = state.completedAssessments.findIndex((r: any) => r.id === record.id)
         if (existingIndex >= 0) {
@@ -367,6 +366,7 @@ export const useStore = {
       updateAnswer: state.updateAnswer,
       clearCurrentAssessment: state.clearCurrentAssessment,
       completedAssessments: state.completedAssessments,
+      assessmentHistory: state.completedAssessments, // 兼容旧API
       addCompletedAssessment: state.addCompletedAssessment,
       deleteAssessment: state.deleteAssessment,
       isLoading: state.isLoading,
