@@ -472,7 +472,7 @@ export default function SettingsPage() {
       >
         <div className="flex items-center gap-5 p-5 md:p-6 max-w-6xl mx-auto">
           <motion.button
-            onClick={() => navigate('/app/daily')}
+            onClick={() => navigate('/app/home')}
             className="w-12 h-12 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

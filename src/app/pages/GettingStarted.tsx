@@ -60,7 +60,7 @@ const guideModules: GuideModule[] = [
     ],
     cta: {
       text: '开始探索',
-      path: '/app/discover'
+      path: '/app/assessments'
     }
   },
   {
@@ -89,7 +89,7 @@ const guideModules: GuideModule[] = [
     ],
     cta: {
       text: '前往测评',
-      path: '/app/discover'
+      path: '/app/assessments'
     }
   },
   {
@@ -118,7 +118,7 @@ const guideModules: GuideModule[] = [
     ],
     cta: {
       text: '前往打卡',
-      path: '/app/daily'
+      path: '/app/home'
     }
   },
   {
@@ -176,7 +176,7 @@ const guideModules: GuideModule[] = [
     ],
     cta: {
       text: '查看进度',
-      path: '/app/progress'
+      path: '/app/profile'
     }
   },
   {
@@ -224,7 +224,7 @@ export default function GettingStarted() {
         className="mb-6 p-4 md:p-6"
       >
         <motion.button
-          onClick={() => navigate('/app/daily')}
+          onClick={() => navigate('/app/home')}
           className="flex items-center gap-2 text-white/60 hover:text-white mb-4 transition-colors md:hidden"
           whileHover={{ x: -4 }}
         >

@@ -18,7 +18,7 @@ const defaultTasks: DailyTask[] = [
     title: '心情打卡',
     description: '记录今日心情，追踪情绪变化',
     icon: <Sparkles size={18} />,
-    path: '/app/daily',
+    path: '/app/home',
     priority: 'high'
   },
   {
@@ -42,7 +42,7 @@ const defaultTasks: DailyTask[] = [
     title: '探索测评',
     description: '发现更多测评，了解自己',
     icon: <BookOpen size={18} />,
-    path: '/app/discover',
+    path: '/app/assessments',
     priority: 'medium'
   },
   {
@@ -50,7 +50,7 @@ const defaultTasks: DailyTask[] = [
     title: '查看进度',
     description: '回顾成长轨迹，见证变化',
     icon: <TrendingUp size={18} />,
-    path: '/app/progress',
+    path: '/app/profile',
     priority: 'medium'
   },
   {

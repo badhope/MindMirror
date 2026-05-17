@@ -167,7 +167,7 @@ export default function Assessment() {
 
   useEffect(() => {
     if (!assessment) {
-      navigate('/app/discover')
+      navigate('/app/assessments')
       return
     }
 
@@ -428,7 +428,7 @@ export default function Assessment() {
     if (timerRef.current) {
       clearInterval(timerRef.current)
     }
-    navigate('/app/discover')
+    navigate('/app/assessments')
   }, [navigate])
 
   const goHome = useCallback(() => {
@@ -896,7 +896,7 @@ export default function Assessment() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-2">答题超时</h3>
               <p className="text-white/60 text-sm sm:text-base mb-4 sm:mb-6">很抱歉，您未在规定时间内完成答题</p>
               <button
-                onClick={() => navigate('/app/discover')}
+                onClick={() => navigate('/app/assessments')}
                 className="w-full px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-violet-500 text-white hover:bg-violet-600 transition-colors text-sm sm:text-base"
                 type="button"
               >

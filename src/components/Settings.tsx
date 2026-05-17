@@ -36,7 +36,7 @@ export default function Settings({ isOpen = true, onClose }: SettingsProps) {
   
   const handleClose = () => {
     if (onClose) onClose()
-    else navigate('/app/daily')
+    else navigate('/app/home')
   }
   const { t, language, setLanguage } = useI18n()
   const {

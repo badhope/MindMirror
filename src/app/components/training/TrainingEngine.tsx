@@ -442,7 +442,7 @@ export default function TrainingEngine({ program, onComplete }: TrainingEnginePr
                 <div className="flex gap-2">
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate('/app/progress')}
+                    onClick={() => navigate('/app/profile')}
                     className="flex-1 py-4 rounded-2xl bg-white/5 font-medium hover:bg-white/10 transition-colors"
                   >
                     查看我的成长

@@ -10,7 +10,7 @@ interface LegacyHeaderProps {
 
 export default function LegacyHeader({ 
   title, 
-  showBackTo = '/app/discover',
+  showBackTo = '/app/assessments',
 }: LegacyHeaderProps) {
   const navigate = useNavigate()
   const { isDesktop } = useResponsive()

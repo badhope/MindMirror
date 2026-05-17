@@ -24,7 +24,7 @@ export default function AssessmentConfirm() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-4">测评不存在</h2>
           <button
-            onClick={() => navigate('/app/discover')}
+            onClick={() => navigate('/app/assessments')}
             className="px-6 py-3 rounded-xl bg-violet-500 text-white"
             type="button"
           >

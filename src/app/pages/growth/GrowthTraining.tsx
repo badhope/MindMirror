@@ -208,7 +208,7 @@ export default function GrowthTraining() {
         className="mb-4 sm:mb-6"
       >
         <button 
-          onClick={() => navigate('/app/discover')}
+          onClick={() => navigate('/app/assessments')}
           className="flex items-center gap-1 text-sm text-white/60 hover:text-white mb-2 transition-colors"
         >
           <ArrowLeft size={16} />
