@@ -1,6 +1,11 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sparkles, Brain, TrendingUp, Heart, Compass, Zap, Shield, Award, Clock } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Sparkles, Brain, TrendingUp, Heart, Compass, Zap, Shield, Award, Clock, CheckCircle, Flame } from 'lucide-react'
 import { useAppStore } from '../../store'
+
+const MOOD_EMOJIS = ['😢', '😔', '😐', '😊', '🎉']
+const MOOD_LABELS = ['很糟糕', '不太好', '一般般', '还不错', '超棒！']
 
 const FEATURED_ASSESSMENTS = [
   {
@@ -57,9 +62,32 @@ const TOPICS = [
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { completedAssessments } = useAppStore()
+  const { completedAssessments, moodHistory, recordMood, getMoodForDate } = useAppStore()
+  const [selectedMood, setSelectedMood] = useState<number | null>(null)
+  const [isMoodConfirmed, setIsMoodConfirmed] = useState(false)
 
   const hasRecords = completedAssessments.length > 0
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0]
+    const todayMood = getMoodForDate(today)
+    if (todayMood) {
+      setSelectedMood(todayMood.mood)
+      setIsMoodConfirmed(true)
+    }
+  }, [getMoodForDate])
+
+  const handleMoodSelect = (mood: number) => {
+    if (isMoodConfirmed) return
+    setSelectedMood(mood)
+  }
+
+  const confirmMood = () => {
+    if (selectedMood !== null) {
+      recordMood(selectedMood, MOOD_LABELS[selectedMood])
+      setIsMoodConfirmed(true)
+    }
+  }
 
   const handleStartAssessment = () => {
     navigate('/app/discover')
@@ -117,6 +145,107 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative mx-3 sm:mx-0"
+        >
+          <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-2xl p-4 sm:p-6 border border-violet-500/20 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                  🌅
+                </span>
+                今日心情打卡
+              </h3>
+              <div className="flex items-center gap-1 text-xs text-white/40">
+                <Flame size={12} className="text-orange-400" />
+                已连续 {moodHistory.length} 天
+              </div>
+            </div>
+
+            {isMoodConfirmed && selectedMood !== null ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20"
+              >
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <span className="text-3xl sm:text-4xl">{MOOD_EMOJIS[selectedMood]}</span>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', delay: 0.2 }}
+                  >
+                    <CheckCircle size={20} className="text-emerald-400" />
+                  </motion.div>
+                </div>
+                <span className="text-white/80 text-sm font-medium">
+                  今日心情：{MOOD_LABELS[selectedMood]}
+                </span>
+                <p className="text-white/40 text-xs mt-1">已完成打卡，明天见！</p>
+              </motion.div>
+            ) : (
+              <>
+                {selectedMood !== null && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mb-3 p-2 rounded-xl bg-violet-500/10 border border-violet-500/20"
+                  >
+                    <span className="text-white/70 text-sm">
+                      已选择：{MOOD_EMOJIS[selectedMood]} {MOOD_LABELS[selectedMood]}
+                    </span>
+                  </motion.div>
+                )}
+
+                <div className="flex justify-between gap-2 mb-4">
+                  {MOOD_EMOJIS.map((emoji, i) => (
+                    <motion.button
+                      key={i}
+                      onClick={() => handleMoodSelect(i)}
+                      className={`flex-1 h-16 sm:h-20 rounded-xl flex flex-col items-center justify-center transition-all relative overflow-hidden ${selectedMood === i
+                        ? 'bg-gradient-to-br from-violet-500/30 to-purple-500/30 border-2 border-violet-500/50'
+                        : 'bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/10'}
+                      `}
+                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + i * 0.05 }}
+                    >
+                      {selectedMood === i && (
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                        />
+                      )}
+                      <span className="relative text-xl sm:text-2xl">{emoji}</span>
+                      <span className="relative text-[10px] sm:text-xs text-white/60 mt-0.5">{MOOD_LABELS[i]}</span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                <motion.button
+                  onClick={confirmMood}
+                  disabled={selectedMood === null}
+                  className={`w-full py-3 rounded-xl font-semibold text-white transition-all ${
+                    selectedMood !== null
+                      ? 'bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 shadow-lg shadow-violet-500/30'
+                      : 'bg-white/10 text-white/40 cursor-not-allowed'
+                  }`}
+                  whileHover={selectedMood !== null ? { scale: 1.02 } : {}}
+                  whileTap={selectedMood !== null ? { scale: 0.98 } : {}}
+                >
+                  确认打卡
+                </motion.button>
+              </>
+            )}
+          </div>
+        </motion.div>
 
         <div className="px-3 sm:px-0">
           <h3 className="text-sm sm:text-lg font-semibold text-white mb-3 sm:mb-4 flex items-center gap-2">
