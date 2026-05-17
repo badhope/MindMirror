@@ -26,7 +26,6 @@ import {
   RefreshCw,
   Save,
   Share,
-  Palette as ColorWheel,
   Lock,
   Unlock,
   Cpu,
@@ -39,7 +38,6 @@ import {
   HelpCircle,
   Star,
   Award,
-  Target,
   Activity,
   Trash2,
   Database,
@@ -49,7 +47,6 @@ import {
   Mail,
   Github,
   BookOpen,
-  ExternalLink as LinkIcon,
 } from 'lucide-react'
 import { useAppStore } from '@store'
 import { useSettingsStore } from '@store/settingsStore'
@@ -80,7 +77,7 @@ function ToggleItem({ setting }: { setting: ToggleSetting }) {
       key={setting.id}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center justify-between p-4 rounded-xl bg-white/5"
+      className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5"
     >
       <div className="flex items-center gap-3 flex-1">
         <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
@@ -128,7 +125,7 @@ function SectionHeader({ icon: Icon, title, description, color }: { icon: React.
 
 function StatCard({ value, label }: { value: string | number; label: string }) {
   return (
-    <div className="p-4 rounded-xl bg-white/5 text-center">
+    <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-center">
       <p className="text-2xl font-bold text-white">{value}</p>
       <p className="text-xs text-white/50 mt-1">{label}</p>
     </div>
@@ -144,7 +141,7 @@ function ActionButton({ icon: Icon, label, description, onClick, variant = 'defa
   badge?: string
 }) {
   const variants = {
-    default: 'bg-white/5 hover:bg-white/10 text-white',
+    default: 'bg-white/5 hover:bg-white/10 text-white border border-white/5',
     danger: 'bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30',
     success: 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
   }
@@ -188,7 +185,7 @@ function LinkButton({ icon: Icon, label, description, href, onClick }: {
   return (
     <motion.button
       onClick={onClick || (href ? () => window.open(href, '_blank') : undefined)}
-      className="w-full p-4 rounded-xl transition-all flex items-center gap-3 bg-white/5 hover:bg-white/10"
+      className="w-full p-4 rounded-xl transition-all flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/5"
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
     >
@@ -524,7 +521,7 @@ export default function SettingsPage() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sticky top-0 z-10 backdrop-blur-xl border-b border-white/10"
+        className="sticky top-0 z-10 backdrop-blur-xl border-b border-white/10 bg-gradient-to-b from-slate-950 to-transparent"
       >
         <div className="flex items-center gap-4 p-4 max-w-6xl mx-auto">
           <motion.button
@@ -540,31 +537,35 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="flex gap-2 px-4 pb-4 max-w-6xl mx-auto overflow-x-auto scrollbar-hide">
-          {sections.map((section) => {
-            const Icon = section.icon
-            const isActive = activeSection === section.id
-            return (
-              <motion.button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={cn(
-                  'flex items-center gap-2 px-3 py-2 rounded-lg whitespace-nowrap transition-all',
-                  isActive
-                    ? `bg-gradient-to-r ${section.color} text-white shadow-lg`
-                    : 'bg-white/5 text-white/60 hover:bg-white/10'
-                )}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Icon size={16} />
-                <span className="text-xs font-medium">{section.label}</span>
-              </motion.button>
-            )
-          })}
+        <div className="px-4 pb-4 max-w-6xl mx-auto">
+          <div className="flex gap-3 flex-wrap justify-start">
+            {sections.map((section) => {
+              const Icon = section.icon
+              const isActive = activeSection === section.id
+              return (
+                <motion.button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-2.5 rounded-xl whitespace-nowrap transition-all',
+                    isActive
+                      ? `bg-gradient-to-r ${section.color} text-white shadow-lg shadow-violet-500/20`
+                      : 'bg-white/5 text-white/60 hover:bg-white/10 border border-white/5'
+                  )}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <Icon size={16} />
+                  <span className="text-sm font-medium">{section.label}</span>
+                </motion.button>
+              )
+            })}
+          </div>
         </div>
       </motion.div>
 
-      <div className="p-4 max-w-6xl mx-auto">
+      <div className="p-4 max-w-4xl mx-auto">
         <AnimatePresence mode="wait">
           {activeSection === 'personal' && (
             <motion.div
@@ -573,15 +574,15 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <div className="flex items-center justify-between mb-4">
                   <SectionHeader icon={User} title="个人资料" description="管理你的个人信息" color="from-blue-500 to-cyan-500" />
                   {!editingProfile && (
                     <motion.button
                       onClick={() => setEditingProfile(true)}
-                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 text-xs font-medium transition-colors"
+                      className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 text-sm font-medium transition-colors"
                       whileTap={{ scale: 0.98 }}
                     >
                       编辑
@@ -590,31 +591,31 @@ export default function SettingsPage() {
                 </div>
 
                 {editingProfile ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div>
-                      <label className="block text-xs text-white/60 mb-1.5">昵称</label>
+                      <label className="block text-sm text-white/60 mb-2">昵称</label>
                       <input
                         type="text"
                         value={profileForm.name}
                         onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                        className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:border-blue-500 focus:outline-none transition-colors"
+                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-blue-500 focus:outline-none transition-colors"
                         placeholder="给你的昵称"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-white/60 mb-1.5">简介</label>
+                      <label className="block text-sm text-white/60 mb-2">简介</label>
                       <textarea
                         value={profileForm.bio}
                         onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
-                        className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:border-blue-500 focus:outline-none transition-colors resize-none"
+                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-blue-500 focus:outline-none transition-colors resize-none"
                         placeholder="介绍下自己..."
                         rows={2}
                       />
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-3">
                       <motion.button
                         onClick={handleSaveProfile}
-                        className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-sm flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-sm flex items-center justify-center gap-2"
                         whileTap={{ scale: 0.98 }}
                       >
                         <Save size={14} />
@@ -622,7 +623,7 @@ export default function SettingsPage() {
                       </motion.button>
                       <motion.button
                         onClick={() => setEditingProfile(false)}
-                        className="px-4 py-2 rounded-lg bg-white/10 text-white/80 font-medium text-sm"
+                        className="px-4 py-3 rounded-xl bg-white/10 text-white/80 font-medium text-sm"
                         whileTap={{ scale: 0.98 }}
                       >
                         取消
@@ -631,13 +632,13 @@ export default function SettingsPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex items-center gap-4 p-3 rounded-lg bg-white/5">
+                    <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-2xl font-bold text-white shrink-0">
                         {(user?.name || '访')[0]}
                       </div>
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-white">{user?.name || '访客用户'}</h3>
-                        <p className="text-xs text-white/50 mt-1">{user?.bio || '这个人很懒，什么都没写'}</p>
+                        <p className="text-sm text-white/50 mt-1">{user?.bio || '这个人很懒，什么都没写'}</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-3">
@@ -649,7 +650,7 @@ export default function SettingsPage() {
                 )}
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Globe} title="语言" description="选择界面语言" color="from-amber-500 to-orange-500" />
                 <div className="grid grid-cols-2 gap-3">
                   {[
@@ -659,10 +660,10 @@ export default function SettingsPage() {
                     <motion.button
                       key={lang.value}
                       className={cn(
-                        'px-4 py-3 rounded-lg font-semibold text-sm transition-all flex items-center justify-center',
+                        'px-4 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center',
                         lang.value === 'zh'
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25'
-                          : 'bg-white/5 text-white/60 hover:bg-white/10'
+                          : 'bg-white/5 text-white/60 hover:bg-white/10 border border-white/5'
                       )}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -681,9 +682,9 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Moon} title="主题模式" description="选择外观主题" color="from-violet-500 to-purple-500" />
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {themeOptions.map((option) => (
@@ -699,9 +700,9 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
-                <SectionHeader icon={ColorWheel} title="强调色" description="自定义主题颜色" color="from-pink-500 to-rose-500" />
-                <div className="flex gap-3 flex-wrap justify-center">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
+                <SectionHeader icon={Palette} title="强调色" description="自定义主题颜色" color="from-pink-500 to-rose-500" />
+                <div className="flex gap-4 flex-wrap justify-center">
                   {colorOptions.map((color) => (
                     <ColorOptionButton
                       key={color.value}
@@ -715,7 +716,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Sparkles} title="视觉特效" description="动画和界面效果" color="from-emerald-500 to-teal-500" />
                 <div className="space-y-3">
                   {appearanceSettings.map((setting) => (
@@ -733,9 +734,9 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Bell} title="通知设置" description="管理通知偏好" color="from-amber-500 to-orange-500" />
                 <div className="space-y-3">
                   {notificationSettings.map((setting) => (
@@ -753,9 +754,9 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Shield} title="隐私保护" description="管理隐私设置" color="from-rose-500 to-pink-500" />
                 <div className="space-y-3">
                   {privacySettings.map((setting) => (
@@ -764,7 +765,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Lock} title="安全选项" description="账号安全设置" />
                 <div className="space-y-3">
                   <ActionButton icon={Unlock} label="修改密码" description="更新你的登录密码" onClick={() => toast.info('当前为本地模式，无需密码', 2500)} />
@@ -782,9 +783,9 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Cpu} title="性能设置" description="优化应用性能" color="from-emerald-500 to-teal-500" />
                 <div className="space-y-3">
                   {performanceSettings.map((setting) => (
@@ -793,7 +794,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Activity} title="资源管理" description="管理应用资源" />
                 <div className="space-y-3">
                   <ActionButton 
@@ -821,9 +822,9 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Database} title="数据管理" description="管理你的数据" color="from-indigo-500 to-blue-500" />
                 <div className="grid grid-cols-2 gap-3">
                   <ActionButton icon={Download} label="导出数据" description="备份到本地文件" onClick={exportDataJSON} variant="success" />
@@ -833,7 +834,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={Trash} title="危险区域" description="不可逆的操作" color="from-red-500 to-rose-500" />
                 <ActionButton 
                   icon={Trash2} 
@@ -844,7 +845,7 @@ export default function SettingsPage() {
                 />
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-white">测评记录</h2>
                   <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-medium">
@@ -853,14 +854,14 @@ export default function SettingsPage() {
                 </div>
                 
                 {completedAssessments.length > 0 ? (
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 max-h-64 overflow-y-auto">
                     {completedAssessments.slice(0, 10).map((record) => (
                       <motion.div
                         key={`${record.assessmentId}-${record.completedAt}`}
                         layout
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center justify-between p-3 rounded-lg bg-white/5 group"
+                        className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 group"
                       >
                         <div 
                           className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer"
@@ -898,15 +899,15 @@ export default function SettingsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: ANIMATION.FADE_DURATION }}
-              className="space-y-4"
+              className="space-y-5"
             >
-              <div className="rounded-xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 text-center">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-6 text-center border border-white/5">
                 <div className="w-20 h-20 mx-auto mb-4 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-xl shadow-violet-500/30">
                   <Sparkles size={40} className="text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2">心镜 MindMirror</h2>
                 <p className="text-violet-400 font-medium text-sm mb-3">版本 3.0.0</p>
-                <p className="text-white/60 text-xs max-w-xs mx-auto">
+                <p className="text-white/60 text-sm max-w-xs mx-auto">
                   照见自己，成为更好的自己。开源专业心理测评与成长平台。
                 </p>
               </div>
@@ -918,9 +919,9 @@ export default function SettingsPage() {
                 <StatCard value="41" label="专项训练" />
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <h3 className="text-white font-semibold text-base mb-4 text-center">技术栈</h3>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {[
                     { name: '前端框架', value: 'React 18 + TypeScript' },
                     { name: '样式方案', value: 'Tailwind CSS' },
@@ -928,7 +929,7 @@ export default function SettingsPage() {
                     { name: '动画库', value: 'Framer Motion' },
                     { name: '构建工具', value: 'Vite 5' },
                   ].map((tech) => (
-                    <div key={tech.name} className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+                    <div key={tech.name} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
                       <span className="text-white/70 text-sm">{tech.name}</span>
                       <span className="text-white font-medium text-sm">{tech.value}</span>
                     </div>
@@ -936,7 +937,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-slate-800/80 p-5">
+              <div className="rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 p-5 border border-white/5">
                 <SectionHeader icon={HelpCircle} title="帮助与支持" description="获取帮助信息" />
                 <div className="space-y-3">
                   <LinkButton 
@@ -991,31 +992,27 @@ export default function SettingsPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="rounded-xl p-5 max-w-sm w-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10"
+              className="rounded-2xl p-6 max-w-sm w-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="text-center mb-5">
                 <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-red-500/20 flex items-center justify-center">
                   <AlertCircle size={28} className="text-red-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  清空所有数据？
-                </h3>
-                <p className="text-white/60 text-sm">
-                  这将永久删除所有测评记录和成就，此操作无法撤销。
-                </p>
+                <h3 className="text-lg font-bold text-white mb-2">清空所有数据？</h3>
+                <p className="text-white/60 text-sm">这将永久删除所有测评记录和成就，此操作无法撤销。</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <motion.button
                   onClick={() => setShowDeleteModal(false)}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-white/10 text-white font-semibold text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl bg-white/10 text-white font-semibold text-sm"
                   whileTap={{ scale: 0.98 }}
                 >
                   取消
                 </motion.button>
                 <motion.button
                   onClick={confirmDelete}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold text-sm"
                   whileTap={{ scale: 0.98 }}
                 >
                   确认删除
@@ -1039,28 +1036,28 @@ export default function SettingsPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="rounded-xl p-5 max-w-sm w-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10"
+              className="rounded-2xl p-6 max-w-sm w-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-bold text-white mb-3 text-center">反馈建议</h3>
+              <h3 className="text-lg font-bold text-white mb-4 text-center">反馈建议</h3>
               <textarea
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none transition-colors resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-violet-500 focus:outline-none transition-colors resize-none"
                 placeholder="请输入你的反馈..."
                 rows={4}
               />
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-3 mt-4">
                 <motion.button
                   onClick={() => setShowFeedbackModal(false)}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-white/10 text-white/80 font-medium text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl bg-white/10 text-white/80 font-medium text-sm"
                   whileTap={{ scale: 0.98 }}
                 >
                   取消
                 </motion.button>
                 <motion.button
                   onClick={handleFeedback}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-violet-500 to-purple-500 text-white font-semibold text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 text-white font-semibold text-sm"
                   whileTap={{ scale: 0.98 }}
                 >
                   发送
