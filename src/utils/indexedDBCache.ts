@@ -127,7 +127,7 @@ class IndexedDBCache {
           resolve(result.data)
         }
       })
-    } catch (e) {
+    } catch (_e) {
       return null
     }
   }
@@ -148,8 +148,8 @@ class IndexedDBCache {
           cursor.continue()
         }
       }
-    } catch (e) {
-      console.warn('[IndexedDB] 清理过期计算失败', e)
+    } catch (_e) {
+      console.warn('[IndexedDB] 清理过期计算失败', _e)
     }
   }
 

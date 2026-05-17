@@ -24,26 +24,28 @@ export {
   TRAINING_PROGRAMS,
 }
 
-export function integrateResultToGrowthSystem(result: any, assessmentId: string, assessmentName: string) {
+export function integrateResultToGrowthSystem(result: unknown, assessmentId: string, assessmentName: string) {
+  const res = result as Record<string, unknown>
   const recorder = createGrowthRecorder()
   
   return recorder.save({
     assessmentId,
     assessmentName,
-    dimensions: result.dimensions || [],
-    traits: result.traits,
-    overall: result.overallScore || result.overall,
-    type: result.type || result.typeCode,
+    dimensions: res.dimensions || [],
+    traits: res.traits,
+    overall: (res.overallScore || res.overall) as number | undefined,
+    type: (res.type || res.typeCode) as string | undefined,
   })
 }
 
-export function generateResultWithTrainingSuggestions(result: any, _assessmentId: string) {
-  const dimensions = result.dimensions || []
+export function generateResultWithTrainingSuggestions(result: unknown, _assessmentId: string) {
+  const res = result as Record<string, unknown>
+  const dimensions = (res.dimensions || []) as Array<Record<string, unknown>>
   
   const suggestions: TrainingSuggestion[] = []
   
   for (const dim of dimensions) {
-    const score = dim.percentile || dim.score || 50
+    const score = (dim.percentile || dim.score || 50) as number
     
     if (score < 50) {
       const matchingPrograms = TRAINING_PROGRAMS.filter(p => 
@@ -58,7 +60,7 @@ export function generateResultWithTrainingSuggestions(result: any, _assessmentId
   }
   
   return {
-    ...result,
+    ...res,
     recommendedTraining: suggestions.slice(0, 3),
   }
 }

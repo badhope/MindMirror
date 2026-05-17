@@ -1,4 +1,4 @@
-import type { ProfessionalAssessmentResult, CompletedAssessment } from '../types'
+import type { CompletedAssessment } from '../types'
 
 export interface ExportOptions {
   includeCharts: boolean

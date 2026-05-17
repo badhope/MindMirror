@@ -10,11 +10,10 @@ import type {
 } from './types'
 import { coreAnalysisModules } from './modules'
 import { calculateMetricResult, calculateConfidence } from './scoring'
-import { 
+import {
   generateFindings,
   generateInterpretations,
   generateRecommendations,
-  generateSummary,
   identifyLimitations,
   suggestFurtherResearch,
   generateReportId,

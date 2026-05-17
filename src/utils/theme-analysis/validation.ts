@@ -286,7 +286,7 @@ export function validateModuleConfig(config: string): ValidationResult {
       }
     }
 
-  } catch (e) {
+  } catch (_e) {
     errors.push('Invalid JSON format')
   }
 

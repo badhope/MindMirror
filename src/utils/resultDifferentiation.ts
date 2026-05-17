@@ -102,7 +102,7 @@ function generateDimensionDescription(
 }
 
 function generatePersonalizedStrengths(
-  score: number,
+  _score: number,
   baseStrengths: string[],
   intensity: string,
   detailLevel: string

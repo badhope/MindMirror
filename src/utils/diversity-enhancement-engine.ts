@@ -129,7 +129,7 @@ export class DiversityEnhancementEngine {
 
   generateDiversityWeightedOptions<T extends { id: string; text: string; value: number }>(
     standardOptions: T[],
-    questionType: 'personality' | 'opinion' | 'ability'
+    _questionType: 'personality' | 'opinion' | 'ability'
   ): T[] {
     if (!this.config.enableChoiceJitter || questionType === 'ability') {
       return standardOptions

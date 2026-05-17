@@ -39,14 +39,6 @@ const CLASSIFICATIONS = {
   slave: { name: '社畜本畜', emoji: '💪', desc: '卷王本王。别人摸鱼我工作，别人下班我加班。老板的好员工，同事的眼中钉。' },
 }
 
-const DIMENSION_NAMES: Record<string, string> = {
-  meetingEvading: '逃会技巧',
-  pretendWorking: '假装工作',
-  toiletEscape: '厕所遁术',
-  overtimeResistance: '反加班',
-  gossipExpert: '八卦专家',
-}
-
 const SLACKING_QUOTES = [
   '上班不摸鱼，不如回家卖鱼',
   '工作是为了摸鱼，摸鱼才是正经事',

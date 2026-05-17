@@ -24,7 +24,7 @@ import type { Answer } from '../../types'
  * 2. 这里的字段名必须与 ReportTemplate.tsx 中使用的完全一致！
  *    不一致 = Report 里 result.xxx 返回 undefined = 页面空白！
  */
-export interface PatriotismResult extends Record<string, any> {
+export interface PatriotismResult extends Record<string, unknown> {
   rawScore: number              // 原始总分
   patriotismIndex: number       // 核心指数 0-100（5维平均分）
   classification: string        // 分类标识（用于匹配段位）

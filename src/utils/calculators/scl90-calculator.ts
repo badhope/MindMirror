@@ -27,18 +27,6 @@ export interface SCL90Result extends Record<string, any> {
 
 const randomPick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
-const dimensionNames: Record<string, string> = {
-  somatization: '躯体化',
-  obsessiveCompulsive: '强迫症状',
-  interpersonalSensitivity: '人际关系敏感',
-  depression: '抑郁',
-  anxiety: '焦虑',
-  hostility: '敌对',
-  phobicAnxiety: '恐怖',
-  paranoidIdeation: '偏执',
-  psychoticism: '精神病性',
-}
-
 const dimensionMap: Record<string, string[]> = {
   somatization: ['scl90-1', 'scl90-2', 'scl90-3', 'scl90-4'],
   obsessiveCompulsive: ['scl90-5', 'scl90-6', 'scl90-7', 'scl90-8'],

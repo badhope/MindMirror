@@ -9,14 +9,14 @@ import { calculateOfficialdom } from '@data/professional/officialdom/officialdom
  * officialdom-calculator 期望的是 Answer[] 格式
  * 这里做格式转换
  */
-export function calculateOfficialdomWrapper(answers: Record<string, number> | any[]) {
+export function calculateOfficialdomWrapper(answers: Record<string, number> | unknown[]) {
   const answerArray = Array.isArray(answers)
     ? answers
     : Object.entries(answers).map(([questionId, value]) => ({
         questionId,
         selectedOptions: [],
         value: typeof value === 'number' ? value : parseInt(String(value || 3)),
-      }))
+      })) as unknown[]
 
-  return calculateOfficialdom(answerArray as any)
+  return calculateOfficialdom(answerArray as unknown[] as Parameters<typeof calculateOfficialdom>[0])
 }

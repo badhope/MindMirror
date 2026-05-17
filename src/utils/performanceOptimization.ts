@@ -159,7 +159,7 @@ export function useDeepCompareMemo<T>(
   return useMemo(factory, [signalRef.current])
 }
 
-function isEqual(a: any, b: any): boolean {
+function isEqual(a: unknown, b: unknown): boolean {
   if (a === b) return true
   if (a instanceof Date && b instanceof Date) return a.getTime() === b.getTime()
   if (a instanceof RegExp && b instanceof RegExp) return a.toString() === b.toString()

@@ -12,7 +12,7 @@
  * 3. 睡眠焦虑占比最高 = 临床故意设计，不是Bug！
  */
 
-import type { Answer, AssessmentResult } from '../../types'
+import type { Answer } from '../../types'
 
 /**
  * 焦虑自评结果接口

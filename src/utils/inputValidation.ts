@@ -327,7 +327,7 @@ export class InputValidator {
 }
 
 export function useInputValidation() {
-  const validateAndSanitize = (value: string, type: 'text' | 'email' | 'phone' | 'number' | 'url' | 'password' = 'text', options?: any) => {
+  const validateAndSanitize = (value: string, type: 'text' | 'email' | 'phone' | 'number' | 'url' | 'password' = 'text', options?: Record<string, unknown>) => {
     switch (type) {
       case 'email':
         return InputValidator.validateEmail(value)

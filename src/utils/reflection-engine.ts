@@ -248,7 +248,7 @@ export class ReflectionEngine {
     return undefined
   }
 
-  generateImprovementPlan(): ImprovementPlan {
+  generateImprovementPlan(_options?: unknown): ImprovementPlan {
     const metrics = this.getPerformanceMetrics()
     const actions: ImprovementAction[] = []
 

@@ -179,7 +179,7 @@ export function calculateOverallScore(
 
 export function scoreFinding(
   module: ThemeAnalysisModule, 
-  data: any
+  _data: unknown
 ): Finding[] {
   return [
     {

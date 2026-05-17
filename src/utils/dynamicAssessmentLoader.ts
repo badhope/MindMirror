@@ -1,8 +1,6 @@
 export type StandardAssessmentId = string
 import { assessmentCache } from './assessmentCache'
 
-let standardAssessmentList: any[] = []
-
 export interface AssessmentMeta {
   id: StandardAssessmentId
   title: string
@@ -13,21 +11,21 @@ export interface AssessmentMeta {
   icon: string
 }
 
-const assessmentMetaCache: Record<StandardAssessmentId, AssessmentMeta> = {} as any
+const assessmentMetaCache: Record<StandardAssessmentId, AssessmentMeta> = {}
 
 async function buildMetaCache() {
-  const mod = await import('../data/assessments' as any)
-  const list = mod.assessments || mod.standardAssessmentList || []
-  standardAssessmentList = list
-  list.forEach((assessment: any) => {
-    assessmentMetaCache[assessment.id] = {
-      id: assessment.id,
-      title: assessment.title,
-      category: assessment.category,
-      subcategory: assessment.subcategory,
-      questionCount: assessment.questions.length,
-      estimatedTime: Math.ceil(assessment.questions.length * 0.15),
-      icon: assessment.icon || '📊'
+  const mod = await import('../data/assessments')
+  const list = (mod as unknown as { assessments?: unknown[]; standardAssessmentList?: unknown[] }).assessments || mod.standardAssessmentList || []
+  list.forEach((assessment) => {
+    const a = assessment as Record<string, unknown>
+    assessmentMetaCache[a.id as StandardAssessmentId] = {
+      id: a.id as StandardAssessmentId,
+      title: a.title as string,
+      category: a.category as string,
+      subcategory: a.subcategory as string,
+      questionCount: (a.questions as unknown[]).length,
+      estimatedTime: Math.ceil((a.questions as unknown[]).length * 0.15),
+      icon: (a.icon as string) || '📊'
     }
   })
 }

@@ -50,7 +50,7 @@ export async function getCalculator(type: string): Promise<CalculatorFunction> {
   return calculator
 }
 
-export async function calculateLazy(type: string, answers: Answer[]): Promise<any> {
+export async function calculateLazy(type: string, answers: Answer[]): Promise<LazyResult> {
   const calculator = await getCalculator(type)
   return calculator(answers)
 }

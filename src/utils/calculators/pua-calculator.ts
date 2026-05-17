@@ -39,7 +39,7 @@ import type { Answer } from '../../types'
  * - criticalThinking: 批判性思维
  * - selfEsteem: 自尊水平
  */
-export interface PUAResult extends Record<string, any> {
+export interface PUAResult extends Record<string, unknown> {
   rawScore: number
   puaResistance: number
   percentile: number

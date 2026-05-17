@@ -1,10 +1,8 @@
-import { Transition } from 'framer-motion'
-
 export interface AnimationPreset {
-  initial: any
-  animate: any
-  exit?: any
-  transition: Transition
+  initial: Record<string, unknown>
+  animate: Record<string, unknown>
+  exit?: Record<string, unknown>
+  transition: Record<string, unknown>
 }
 
 export const motionPresets = {

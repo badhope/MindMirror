@@ -131,8 +131,9 @@ export class IsomerCalculator {
     const archetype = this.determineArchetype(extremity, midpointAvoidance)
 
     const dimensions = Array.isArray(baseResult.dimensions) 
-      ? baseResult.dimensions.reduce((acc: Record<string, number>, d: any) => {
-          acc[d.name || d.id] = d.score || 50
+      ? baseResult.dimensions.reduce((acc: Record<string, number>, d: unknown) => {
+          const dim = d as { name?: string; id?: string; score?: number };
+          acc[dim.name || dim.id || 'unknown'] = dim.score || 50
           return acc
         }, {})
       : {}

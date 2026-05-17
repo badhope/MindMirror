@@ -60,8 +60,8 @@ export function generateInterpretations(
 
 export function generateRecommendations(
   module: ThemeAnalysisModule,
-  findings: Finding[],
-  metrics: MetricResult[]
+  _findings: Finding[],
+  _metrics: MetricResult[]
 ): Recommendation[] {
   return [
     {
@@ -92,7 +92,7 @@ export function identifyLimitations(module: ThemeAnalysisModule, data: any): str
   ]
 }
 
-export function suggestFurtherResearch(module: ThemeAnalysisModule, findings: Finding[]): string[] {
+export function suggestFurtherResearch(_module: ThemeAnalysisModule, _findings: Finding[]): string[] {
   return [
     '扩大样本规模以提高代表性',
     '引入更多数据源进行三角验证',

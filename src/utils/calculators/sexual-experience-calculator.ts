@@ -41,14 +41,6 @@ const CLASSIFICATIONS = {
   legend: { name: '都市传说', emoji: '👑', desc: '传说中的人物。你的经历可以写进都市怪谈，是别人口中"我有一个朋友"的那个朋友。' },
 }
 
-const DIMENSION_NAMES: Record<string, string> = {
-  theoretical: '理论知识',
-  practical: '实战经验',
-  diversity: '涉猎广度',
-  openness: '开放程度',
-  technique: '技巧掌握',
-}
-
 const FUN_FACTS = [
   '据统计，人一生平均会接吻超过20000次',
   '全球首次性行为平均年龄约为17岁',

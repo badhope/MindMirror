@@ -70,7 +70,7 @@ function getTypeDescription(type: string): string {
   return descriptions[type] || '独特而有魅力的人格类型'
 }
 
-function getStrengths(type: string): string[] {
+function getStrengths(_type: string): string[] {
   const allStrengths = [
     '强大的分析和战略思维能力',
     '高度的自律和责任感',
@@ -90,7 +90,7 @@ function getCareers(type: string): string[] {
 }
 
 export function calculateSBTI(answers: Answer[]): SBTIResult {
-  const normalized = answers.map((a: any) => {
+  const normalized = answers.map((a: Answer) => {
     const qid = typeof a.questionId === 'number'
       ? a.questionId
       : parseInt(String(a.questionId || '').replace('sbti-', '') || '1')
@@ -99,14 +99,13 @@ export function calculateSBTI(answers: Answer[]): SBTIResult {
   })
 
   let eScore = 0, sScore = 0, tScore = 0, jScore = 0
-  let eCount = 0, sCount = 0, tCount = 0, jCount = 0
 
   normalized.forEach(({ qid, val }) => {
     const adjusted = val - 3
-    if (qid <= 10) { eScore += adjusted; eCount++ }
-    else if (qid <= 20) { sScore += adjusted; sCount++ }
-    else if (qid <= 30) { tScore += adjusted; tCount++ }
-    else { jScore += adjusted; jCount++ }
+    if (qid <= 10) { eScore += adjusted }
+    else if (qid <= 20) { sScore += adjusted }
+    else if (qid <= 30) { tScore += adjusted }
+    else { jScore += adjusted }
   })
 
   const E = eScore + 25

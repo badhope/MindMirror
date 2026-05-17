@@ -23,8 +23,11 @@ export async function benchmarkAssessmentLoading(
   }
 }> {
   if (ids.length === 0) {
-    const mod = await import('../data/assessments' as any)
-    ids = mod.standardAssessmentList.map((a: any) => a.id)
+    const mod = await import('../data/assessments')
+    const assessments = (mod as { standardAssessmentList?: { id: string }[] }).standardAssessmentList
+    if (assessments) {
+      ids = assessments.map((a) => a.id)
+    }
   }
 
   console.log('\n' + '='.repeat(60))

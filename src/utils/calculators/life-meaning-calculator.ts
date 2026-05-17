@@ -17,7 +17,7 @@ import type { Answer } from '../../types'
  * 2. 这里的字段名必须与 ReportTemplate.tsx 中使用的完全一致！
  *    不一致 = Report 里 result.xxx 返回 undefined = 页面空白！
  */
-export interface LifeMeaningResult extends Record<string, any> {
+export interface LifeMeaningResult extends Record<string, unknown> {
   rawScore: number              // 原始总分
   meaningIndex: number          // 人生意义指数 0-100
   classification: string        // 分类标识

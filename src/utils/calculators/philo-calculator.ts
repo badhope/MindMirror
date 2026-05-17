@@ -39,7 +39,7 @@ export interface PhiloDimension {
   leaning: 'left' | 'center' | 'right'
 }
 
-export interface PhiloResult extends Record<string, any> {
+export interface PhiloResult extends Record<string, unknown> {
   dimensionScores: {
     realism: number
     individualism: number

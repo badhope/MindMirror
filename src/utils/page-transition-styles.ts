@@ -1,4 +1,4 @@
-import type { Variants, Transition } from 'framer-motion'
+import type { Variants } from 'framer-motion'
 import { animationConfig } from './animation-config'
 
 const isMobile = typeof window !== 'undefined' && window.innerWidth < 768

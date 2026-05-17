@@ -198,14 +198,6 @@ export function calculateOcean(answers: Answer[]): OceanResult {
     profileEmoji = '🌟'
   }
 
-  const dimensions = {
-    O: openness,
-    C: conscientiousness,
-    E: extraversion,
-    A: agreeableness,
-    N: neuroticism,
-  }
-
   const radarData = [
     { axis: '开放性', value: openness },
     { axis: '尽责性', value: conscientiousness },

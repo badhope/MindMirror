@@ -81,7 +81,7 @@ function normalizeDimensions(dimensions: unknown): Dimension[] {
   return []
 }
 
-export function normalizeResult(rawResult: any, assessmentType?: string): AssessmentResult {
+export function normalizeResult(rawResult: unknown, assessmentType?: string): AssessmentResult {
   if (!rawResult || typeof rawResult !== 'object') {
     return {
       type: sanitizeText(assessmentType) || 'unknown',
@@ -97,20 +97,21 @@ export function normalizeResult(rawResult: any, assessmentType?: string): Assess
     }
   }
 
-  const dimensions = normalizeDimensions(rawResult.dimensions)
+  const r = rawResult as Record<string, unknown>
+  const dimensions = normalizeDimensions(r.dimensions)
 
   // 确保不保留原始数据的未知属性，防止意外注入
   return {
-    type: sanitizeText(rawResult.type) || sanitizeText(assessmentType) || 'unknown',
-    score: typeof rawResult.score === 'number' ? Math.max(0, Math.min(200, rawResult.score)) : 0,
-    accuracy: typeof rawResult.accuracy === 'number' ? Math.max(0, Math.min(100, rawResult.accuracy)) : 85,
-    title: sanitizeText(rawResult.title),
-    description: sanitizeText(rawResult.description),
+    type: sanitizeText(r.type) || sanitizeText(assessmentType) || 'unknown',
+    score: typeof r.score === 'number' ? Math.max(0, Math.min(200, r.score)) : 0,
+    accuracy: typeof r.accuracy === 'number' ? Math.max(0, Math.min(100, r.accuracy)) : 85,
+    title: sanitizeText(r.title),
+    description: sanitizeText(r.description),
     dimensions,
-    strengths: sanitizeArray(rawResult.strengths),
-    weaknesses: sanitizeArray(rawResult.weaknesses),
-    careers: sanitizeArray(rawResult.careers),
-    suggestions: sanitizeArray(rawResult.suggestions),
+    strengths: sanitizeArray(r.strengths),
+    weaknesses: sanitizeArray(r.weaknesses),
+    careers: sanitizeArray(r.careers),
+    suggestions: sanitizeArray(r.suggestions),
   }
 }
 

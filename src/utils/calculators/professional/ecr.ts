@@ -1,5 +1,5 @@
 import type { Answer, ProfessionalAssessmentResult } from './types'
-import { calculatePercentileFromTScore, getScoreRange, ATTACHMENT_MATH_SYSTEM, calculateAccuracy } from './types'
+import { getScoreRange, ATTACHMENT_MATH_SYSTEM, calculateAccuracy } from './types'
 import { attachmentStyles, determineAttachmentStyle } from '../../../data/professional/attachment-professional'
 import { generateProfessionalResult } from '../../professionalScoring'
 

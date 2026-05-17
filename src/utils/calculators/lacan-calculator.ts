@@ -31,7 +31,7 @@ export type ClinicalStructure = 'neurosis' | 'psychosis' | 'perversion'
 export type NeurosisSubtype = 'obsession' | 'hysteria' | 'phobia'
 export type DimensionKey = ClinicalStructure | NeurosisSubtype
 
-export interface LacanResult extends Record<string, any> {
+export interface LacanResult extends Record<string, unknown> {
   dimensionScores: Record<DimensionKey, number>
   dimensionDetails: LacanDimension[]
   radarData: { dimension: string; score: number; fullMark: number }[]
@@ -76,6 +76,15 @@ const dimensionInfo = [
   { name: '癔症', interpretation: '认同与表演，他者的欲望' },
   { name: '恐怖症', interpretation: '逃避与置换，缺失的具象化' },
 ]
+
+const dimensionNames: Record<string, string> = {
+  neurosis: '神经症',
+  psychosis: '精神病',
+  perversion: '倒错',
+  obsession: '强迫症',
+  hysteria: '癔症',
+  phobia: '恐怖症',
+}
 
 const clinicalStructures = [
   {

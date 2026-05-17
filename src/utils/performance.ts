@@ -23,9 +23,9 @@ export function shallowEqual(objA: any, objB: any): boolean {
   return true
 }
 
-export function memoEqual<T extends React.ComponentType<any>>(
+export function memoEqual<T extends React.ComponentType<unknown>>(
   Component: T,
-  customEqual?: (prev: any, next: any) => boolean
+  customEqual?: (prev: unknown, next: unknown) => boolean
 ) {
   return memo(Component, customEqual || shallowEqual)
 }
@@ -126,7 +126,7 @@ export class LRUCache<K, V> {
   }
 }
 
-export function createCacheKey(...parts: any[]): string {
+export function createCacheKey(...parts: unknown[]): string {
   return parts.map(p => {
     if (typeof p === 'object' && p !== null) {
       if (Array.isArray(p)) {

@@ -1,4 +1,4 @@
-import type { Answer, Dimension, TraitScore } from '../../types'
+import type { Answer, TraitScore } from '../../types'
 import { createProfessionalCalculator } from './BaseProfessionalCalculator'
 
 export const calculateHardiness = createProfessionalCalculator({

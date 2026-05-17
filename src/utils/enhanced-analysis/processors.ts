@@ -4,7 +4,6 @@ import type {
   BenchmarkConfig,
   InterpretationRange,
   EnhancedAnalysisDimension,
-  DimensionCorrelation,
   CorrelationResult,
   DimensionMetadata,
 } from './types'
