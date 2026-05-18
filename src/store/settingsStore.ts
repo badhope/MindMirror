@@ -24,6 +24,11 @@ export interface AppSettings {
   // 隐私设置
   privacyMode: boolean
 
+  // 性能设置
+  batterySaver: boolean
+  offlineMode: boolean
+  cacheOptimization: boolean
+  
   // 方法
   setTheme: (theme: 'dark' | 'light' | 'system') => void
   toggleAnimations: () => void
@@ -37,6 +42,9 @@ export interface AppSettings {
   toggleHighContrast: () => void
   toggleReducedMotion: () => void
   togglePrivacyMode: () => void
+  toggleBatterySaver: () => void
+  toggleOfflineMode: () => void
+  toggleCacheOptimization: () => void
   resetSettings: () => void
 }
 
@@ -67,6 +75,9 @@ const defaultSettings: Omit<AppSettings, keyof {
   highContrast: false,
   reducedMotion: false,
   privacyMode: true,
+  batterySaver: false,
+  offlineMode: true,
+  cacheOptimization: true,
 }
 
 export const useSettingsStore = create<AppSettings>()(
@@ -120,8 +131,19 @@ export const useSettingsStore = create<AppSettings>()(
 
       togglePrivacyMode: () => set((state) => ({ privacyMode: !state.privacyMode })),
 
+      toggleBatterySaver: () => set((state) => ({ batterySaver: !state.batterySaver })),
+
+      toggleOfflineMode: () => set((state) => ({ offlineMode: !state.offlineMode })),
+
+      toggleCacheOptimization: () => set((state) => ({ cacheOptimization: !state.cacheOptimization })),
+
       resetSettings: () => {
-        set(defaultSettings)
+        set({
+          ...defaultSettings,
+          batterySaver: false,
+          offlineMode: true,
+          cacheOptimization: true,
+        })
         const root = document.documentElement
         root.classList.remove('light', 'dark', 'system', 'high-contrast', 'reduced-motion')
         root.classList.add('dark')
