@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心镜 MindMirror - 网站概览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        .status-card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-right: 20px;
+        }
+        
+        .status-content h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .status-content p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-card .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .nav-item .emoji {
+            font-size: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .stat-item .number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-item .label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .module-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+        
+        .module-card.website {
+            border-left-color: #667eea;
+        }
+        
+        .module-card.miniprogram {
+            border-left-color: #00C853;
+        }
+        
+        .module-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .module-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .module-card .tech {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪞 心镜 MindMirror</h1>
+            <p>专业的心理测评与成长训练平台</p>
+        </div>
+        
+        <div class="status-card">
+            <h2>✅ 网站状态</h2>
+            <div class="status-item">
+                <div class="status-icon">🚀</div>
+                <div class="status-content">
+                    <h3>开发服务器运行中</h3>
+                    <p>http://localhost:5173/ - 网站已成功启动并可访问</p>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="number">48</div>
+                    <div class="label">专业测评</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">1593+</div>
+                    <div class="label">测试题目</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">10</div>
+                    <div class="label">功能模块</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">5</div>
+                    <div class="label">内容分类</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-card">
+            <h2>📱 主要功能模块</h2>
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <span class="emoji">🏠</span>
+                    <span>首页</span>
+                </div>
+                <div class="nav-item">
+                    <span class="emoji">📋</span>
+                    <span>测评</span>
+                </div>
+                <div class="nav-item">
+                    <span class="emoji">💪</span>
+                    <span>训练</span>
+                </div>
+                <div class="nav-item">
+                    <span class="emoji">👤</span>
+                    <span>我的</span>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="feature-card">
+                    <div class="icon">🧠</div>
+                    <h3>专业心理测评</h3>
+                    <p>涵盖人格、情绪、职业、关系等多维度心理测评，采用科学算法提供准确分析</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📚</div>
+                    <h3>成长训练系统</h3>
+                    <p>认知、情绪、社交等多维度训练课程，帮助用户全面提升心理能力</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>可视化报告</h3>
+                    <p>专业的多维度分析报告，雷达图、柱状图等可视化图表展示测评结果</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎯</div>
+                    <h3>个性化推荐</h3>
+                    <p>基于测评结果智能推荐适合的训练内容和发展建议</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-card">
+            <h2>📦 项目模块划分</h2>
+            <div class="modules">
+                <div class="module-card website">
+                    <h4>🌐 网站模块</h4>
+                    <p>主要平台，提供完整的心理测评、训练、报告查看等功能</p>
+                    <span class="tech">React + TypeScript + Vite</span>
+                </div>
+                <div class="module-card miniprogram">
+                    <h4>📱 微信小程序</h4>
+                    <p>轻量级入口，方便用户随时随地进行测评和查看结果</p>
+                    <span class="tech">微信小程序原生开发</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="http://localhost:5173/" class="btn" target="_blank">
+                🚀 立即访问网站
+            </a>
+        </div>
+    </div>
+</body>
+</html>
