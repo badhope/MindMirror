@@ -35,6 +35,9 @@ import { ModeSelectPage } from './app/pages/assessment'
 import { AssessmentConfirmPage } from './app/pages/assessment'
 import { LoadingPage } from './app/pages/assessment'
 import { ResultsPage } from './app/pages/assessment'
+import DashboardPage from './app/pages/DashboardPage'
+import ProfilePage from './app/pages/ProfilePage'
+import AboutPage from './app/pages/AboutPage'
 
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const About = lazy(() => import('./pages/About'))
@@ -97,6 +100,9 @@ export default function App() {
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
                     <Route path="settings" element={<SettingsPage />} />
+                    <Route path="dashboard" element={<DashboardPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="about" element={<AboutPage />} />
                     <Route path="getting-started" element={<GettingStarted />} />
                     <Route path="library" element={<LibraryArticles />} />
                     <Route path="library/articles" element={<LibraryArticles />} />
