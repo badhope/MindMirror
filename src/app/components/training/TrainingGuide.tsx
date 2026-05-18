@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { 
   Brain, 
   Users, 
@@ -16,7 +15,6 @@ import {
   Briefcase as CareerIcon,
   Gauge
 } from 'lucide-react'
-import { cn } from '@utils/cn'
 import { useNavigate } from 'react-router-dom'
 
 interface ProblemGuide {
@@ -176,32 +174,26 @@ export default function TrainingGuide() {
         <p className="text-sm text-white/50">选择一个最符合你当前状态的问题，我们为你推荐合适的训练</p>
       </div>
 
-      {PROBLEM_GUIDES.map((guide, index) => {
+      {PROBLEM_GUIDES.map((guide) => {
         const Icon = guide.icon
         const isSelected = selectedGuide === guide.id
         
         return (
-          <motion.div
+          <div
             key={guide.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-            className={cn(
-              'rounded-2xl border-2 transition-all overflow-hidden',
+            className={`rounded-2xl border-2 transition-all overflow-hidden ${
               isSelected 
                 ? `${guide.borderColor} ${guide.bgGradient}`
                 : 'border-white/10 bg-white/5 hover:border-white/20'
-            )}
+            }`}
           >
             <button
+              type="button"
               onClick={() => handleToggle(guide.id)}
-              className="w-full p-5 text-left"
+              className="w-full p-5 text-left cursor-pointer"
             >
               <div className="flex items-start gap-4">
-                <div className={cn(
-                  'w-12 h-12 rounded-xl flex items-center justify-center shrink-0',
-                  guide.bgGradient
-                )}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${guide.bgGradient}`}>
                   <Icon size={24} className={guide.color} />
                 </div>
                 
@@ -209,7 +201,7 @@ export default function TrainingGuide() {
                   <div className="flex items-center justify-between mb-1">
                     <h3 className="text-base font-bold text-white">{guide.title}</h3>
                     {isSelected && (
-                      <div className={cn('w-5 h-5 rounded-full flex items-center justify-center', guide.bgGradient)}>
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center ${guide.bgGradient}`}>
                         <Check size={12} className={guide.color} />
                       </div>
                     )}
@@ -221,9 +213,7 @@ export default function TrainingGuide() {
 
             {isSelected && (
               <div className="px-5 pb-5 space-y-4 border-t border-white/10 pt-4">
-                <div className={cn(
-                  'p-4 rounded-xl bg-white/5 border border-white/10',
-                )}>
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                   <p className="text-sm text-white/80 leading-relaxed">
                     {guide.tip}
                   </p>
@@ -231,15 +221,12 @@ export default function TrainingGuide() {
 
                 <div className="space-y-3">
                   <h4 className="text-sm font-semibold text-white/70">推荐训练</h4>
-                  {guide.recommendedTrainings.map((training, idx) => (
+                  {guide.recommendedTrainings.map((training) => (
                     <button
                       key={training.id}
+                      type="button"
                       onClick={() => handleStartTraining(training.id)}
-                      className={cn(
-                        'w-full p-3 rounded-xl border border-white/10 transition-all text-left',
-                        'bg-white/5 hover:bg-white/10 hover:border-violet-500/50',
-                        'flex items-center justify-between group'
-                      )}
+                      className="w-full p-3 rounded-xl border border-white/10 transition-all text-left cursor-pointer bg-white/5 hover:bg-white/10 hover:border-violet-500/50 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center">
@@ -262,20 +249,16 @@ export default function TrainingGuide() {
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => handleStartFromGuide(guide)}
-                  className={cn(
-                    'w-full py-3 rounded-xl font-semibold text-white',
-                    'bg-gradient-to-r from-violet-500 to-purple-600',
-                    'flex items-center justify-center gap-2',
-                    'shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 transition-shadow'
-                  )}
+                  className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-violet-500 to-purple-600 flex items-center justify-center gap-2 shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 transition-shadow cursor-pointer"
                 >
                   <span>开始训练</span>
                   <ArrowRight size={16} />
                 </button>
               </div>
             )}
-          </motion.div>
+          </div>
         )
       })}
     </div>

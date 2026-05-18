@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import { ChevronRight, Lock, Play, Brain, Heart, Users, Briefcase, Sun, Sparkles, Gamepad2, Zap, Compass } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore, type TrainingRecord } from '../../store'
@@ -12,8 +11,6 @@ import {
   SOCIAL_TRAININGS_FULL,
   FUN_TRAININGS_FULL,
   getRecommendedTrainings,
-  getRelatedTrainings,
-  getTrainingsForAssessment,
 } from '../data/training-library'
 import {
   ALL_TRAINING_TRACKS,
@@ -103,31 +100,16 @@ export default function Training() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="p-4 md:p-6 space-y-6"
-    >
+    <div className="p-4 md:p-6 space-y-6">
       <div className="py-4 md:hidden md:text-left">
-        <motion.h2 
-          className="text-2xl md:text-3xl font-bold mb-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-        >
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">
           💪 我的训练
-        </motion.h2>
+        </h2>
         <p className="text-white/50">心灵健身房</p>
       </div>
 
       {lastTraining ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-violet-500/20 via-pink-500/20 to-orange-500/20 rounded-2xl p-5 border border-violet-500/20"
-        >
+        <div className="bg-gradient-to-br from-violet-500/20 via-pink-500/20 to-orange-500/20 rounded-2xl p-5 border border-violet-500/20">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
               🔥
@@ -147,19 +129,14 @@ export default function Training() {
 
           <button 
             onClick={() => navigate('/app/training/emotion-anchoring')}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-500 to-blue-500 text-white font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-500 to-blue-500 text-white font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
           >
             <Play size={18} />
             开始今日训练
           </button>
-        </motion.div>
+        </div>
       ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-violet-500/20 via-pink-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 text-center"
-        >
+        <div className="bg-gradient-to-br from-violet-500/20 via-pink-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 text-center">
           <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4 text-3xl">
             🎯
           </div>
@@ -167,20 +144,15 @@ export default function Training() {
           <p className="text-sm text-white/50 mb-4">每天5分钟，看见更好的自己</p>
           <button 
             onClick={() => navigate('/app/training/emotion-anchoring')}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-500 to-blue-500 text-white font-medium flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-500 to-blue-500 text-white font-medium flex items-center justify-center gap-2 cursor-pointer"
           >
             <Play size={18} />
             开始体验
           </button>
-        </motion.div>
+        </div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="flex flex-wrap gap-2 p-1 bg-white/5 rounded-xl"
-      >
+      <div className="flex flex-wrap gap-2 p-1 bg-white/5 rounded-xl">
         {(Object.keys(TRACK_CONFIG) as TabType[]).map((tabId) => {
           const config = TRACK_CONFIG[tabId]
           const Icon = config.icon
@@ -188,9 +160,10 @@ export default function Training() {
             <button
               key={tabId}
               onClick={() => setActiveTab(tabId)}
-              className={`flex-1 min-w-[80px] py-2 px-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1.5 ${activeTab === tabId
-                ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
-                : 'text-white/60 hover:text-white hover:bg-white/5'
+              className={`flex-1 min-w-[80px] py-2 px-3 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                activeTab === tabId
+                  ? `bg-gradient-to-r ${config.gradient} text-white shadow-lg`
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
               }`}
             >
               <Icon size={14} />
@@ -198,26 +171,19 @@ export default function Training() {
             </button>
           )
         })}
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
+      <div>
         <div className={`grid gap-3 ${isDesktop ? 'grid-cols-2' : 'grid-cols-1'}`}>
-          {displayTrainings.map((plan, i) => {
+          {displayTrainings.map((plan) => {
             const unlocked = isTrainingUnlocked(plan.id)
             return (
-              <motion.div
+              <div
                 key={plan.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 + i * 0.05 }}
                 onClick={() => unlocked && navigate(`/app/training/${plan.id}`)}
                 className={`rounded-xl p-4 border transition-all ${
                   unlocked 
-                    ? `cursor-pointer hover:scale-[1.01] group ${
+                    ? `cursor-pointer hover:scale-[1.01] ${
                         plan.category === 'fun'
                           ? 'bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-rose-500/10 border-amber-500/10 hover:border-amber-500/30'
                           : 'bg-white/5 border-white/5 hover:border-violet-500/30'
@@ -268,18 +234,15 @@ export default function Training() {
                     <Lock size={16} className="text-white/30 shrink-0 mt-1" />
                   )}
                 </div>
-              </motion.div>
+              </div>
             )
           })}
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+      <button
         onClick={() => navigate('/app/growth')}
-        className="bg-gradient-to-r from-violet-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 cursor-pointer hover:scale-[1.01] transition-transform"
+        className="w-full bg-gradient-to-r from-violet-500/20 to-blue-500/20 rounded-2xl p-5 border border-violet-500/20 cursor-pointer hover:scale-[1.01] transition-transform text-left"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -292,7 +255,7 @@ export default function Training() {
           </div>
           <ChevronRight size={20} className="text-violet-400" />
         </div>
-      </motion.div>
-    </motion.div>
+      </button>
+    </div>
   )
 }
