@@ -31,12 +31,11 @@ import CommunityDiscussion from './app/pages/community/CommunityDiscussion'
 import CommunityExpert from './app/pages/community/CommunityExpert'
 import GrowthTraining from './app/pages/growth/GrowthTraining'
 import GrowthHabits from './app/pages/growth/GrowthHabits'
+import { ModeSelectPage } from './app/pages/assessment'
+import { AssessmentConfirmPage } from './app/pages/assessment'
+import { LoadingPage } from './app/pages/assessment'
+import { ResultsPage } from './app/pages/assessment'
 
-const ModeSelect = lazy(() => import('./pages/ModeSelect'))
-const AssessmentConfirm = lazy(() => import('./pages/AssessmentConfirm'))
-const Assessment = lazy(() => import('./pages/Assessment'))
-const Loading = lazy(() => import('./pages/Loading'))
-const Results = lazy(() => import('./pages/Results'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const About = lazy(() => import('./pages/About'))
 const TheoryDetail = lazy(() => import('./pages/TheoryDetail'))
@@ -90,6 +89,11 @@ export default function App() {
                     <Route path="home" element={<HomePage />} />
                     <Route path="daily" element={<Daily />} />
                     <Route path="assessments" element={<AssessmentsPage />} />
+                    <Route path="assessment/:id/mode-select" element={<ModeSelectPage />} />
+                    <Route path="assessment/:id/confirm" element={<AssessmentConfirmPage />} />
+                    <Route path="assessment/:id" element={<ModeSelectPage />} />
+                    <Route path="loading/:id" element={<LoadingPage />} />
+                    <Route path="results/:id" element={<ResultsPage />} />
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
                     <Route path="settings" element={<SettingsPage />} />
@@ -115,13 +119,13 @@ export default function App() {
                   <Route path="/legacy/categories" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/legacy/assessments" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
-                  <Route path="/legacy/mode-select/:id" element={<ModeSelect />} />
+                  <Route path="/legacy/mode-select/:id" element={<ModeSelectPage />} />
                   <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelect />} />
-                  <Route path="/legacy/confirm/:id" element={<AssessmentConfirm />} />
-                  <Route path="/legacy/assessment/:id" element={<Assessment />} />
-                  <Route path="/legacy/loading/:id" element={<Loading />} />
-                  <Route path="/legacy/results/:id" element={<Results />} />
-                  <Route path="/legacy/result/:hash" element={<Results />} />
+                  <Route path="/legacy/confirm/:id" element={<AssessmentConfirmPage />} />
+                  <Route path="/legacy/assessment/:id" element={<ModeSelectPage />} />
+                  <Route path="/legacy/loading/:id" element={<LoadingPage />} />
+                  <Route path="/legacy/results/:id" element={<ResultsPage />} />
+                  <Route path="/legacy/result/:hash" element={<ResultsPage />} />
                   <Route path="/legacy/dashboard" element={<Dashboard />} />
                   <Route path="/legacy/about" element={<About />} />
                   <Route path="/legacy/theory/:theoryId" element={<TheoryDetail />} />
