@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, Dumbbell, TrendingUp, Compass, User, Settings, X } from 'lucide-react'
+import { Home, TestTube, Dumbbell, TrendingUp, Compass, User, Settings, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { buttonPress, cardHover } from '../../utils/motionPresets'
 
 const menuItems = [
   { path: '/app/home', label: '首页', icon: Home },
+  { path: '/app/assessments', label: '测评', icon: TestTube },
   { path: '/app/training', label: '训练', icon: Dumbbell },
   { path: '/app/progress', label: '进度', icon: TrendingUp },
   { path: '/app/discover', label: '探索', icon: Compass },

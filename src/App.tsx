@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound'
 import AppLayout from './app/layout/AppLayout'
 import HomePage from './app/pages/HomePage'
 import Daily from './app/pages/Daily'
+import AssessmentsPage from './app/pages/AssessmentsPage'
 import Training from './app/pages/Training'
 import Progress from './app/pages/Progress'
 import Discover from './app/pages/Discover'
@@ -89,6 +90,7 @@ export default function App() {
                   <Route path="/app" element={<AppLayout title="心镜" />}>
                     <Route path="home" element={<HomePage />} />
                     <Route path="daily" element={<Daily />} />
+                    <Route path="assessments" element={<AssessmentsPage />} />
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
                     <Route path="discover" element={<Discover />} />
