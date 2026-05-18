@@ -1,424 +1,117 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import type { UserProfile, CompletedAssessment, Answer } from '../types'
+// ============ 新模块化导出 ============
+export * from './user'
+export * from './assessment'
+export * from './achievement'
+export * from './training'
+export * from './mood'
+export * from './settings'
 
-export type { UserProfile, CompletedAssessment, Answer }
+// ============ 类型导出 ============
+export type { UserState, UserActions, UserStore } from './user/types'
+export type { AssessmentState, AssessmentActions, AssessmentStore, AssessmentRecord } from './assessment/types'
+export type { AchievementState, AchievementActions, AchievementStore, Achievement } from './achievement/types'
+export type { TrainingState, TrainingActions, TrainingStore } from './training/types'
+export type { MoodState, MoodActions, MoodStore } from './mood/types'
+export type { SettingsState, SettingsActions, SettingsStore } from './settings/types'
 
-// ============ 类型定义 ============
+// ============ 兼容层（向后兼容） ============
+import { useUserStore } from './user/userStore'
+import { useAssessmentStore } from './assessment/assessmentStore'
+import { useAchievementStore } from './achievement/achievementStore'
+import { useTrainingStore } from './training/trainingStore'
+import { useMoodStore } from './mood/moodStore'
+import { useSettingsStore } from './settings/settingsStore'
+import type { UserProfile, CompletedAssessment, Answer } from '@/types'
 
-export interface AssessmentRecord {
-  assessmentId: string
-  completedAt: number
-  answers: Record<string, string | number>
-  result: Record<string, number | string>
-}
+// 组合所有 store 状态
+export const useAppStore = {
+  // User Profile
+  getUser: () => useUserStore.getState().user,
+  setUser: (user: UserProfile) => useUserStore.getState().setUser(user),
 
-export interface Achievement {
-  id: string
-  title: string
-  description: string
-  icon: string
-  unlockedAt?: number
-  progress?: number
-  target?: number
-}
-
-export interface MoodRecord {
-  date: string
-  mood: number
-  timestamp: number
-  note?: string
-}
-
-export interface TrainingRecord {
-  id: string
-  programId: string
-  completedAt: number
-  duration: number
-  category: string
-}
-
-export interface UserStats {
-  totalAssessments: number
-  totalTime: number
-  favoriteCategory: string
-  personalityTags: string[]
-  level: number
-  points: number
-  streak: number
-}
-
-// ============ 默认成就 ============
-
-const defaultAchievements: Achievement[] = [
-  { id: 'first-assessment', title: '初次测评', description: '完成你的第一个测评', icon: '🌟', progress: 0, target: 1 },
-  { id: 'explorer', title: '探索者', description: '尝试5个不同的测评', icon: '🔍', progress: 0, target: 5 },
-  { id: 'psychologist', title: '心理学爱好者', description: '完成10个心理测评', icon: '🧠', progress: 0, target: 10 },
-  { id: 'knowledge-seeker', title: '知识追寻者', description: '完成所有认知能力测评', icon: '📚', progress: 0, target: 5 },
-  { id: 'social-butterfly', title: '社交达人', description: '分享3次测评结果', icon: '🦋', progress: 0, target: 3 },
-  { id: 'streak-7', title: '连续7天', description: '连续7天完成测评', icon: '🔥', progress: 0, target: 7 },
-  { id: 'streak-30', title: '月度坚持', description: '连续30天完成测评', icon: '💎', progress: 0, target: 30 },
-  { id: 'completionist', title: '完美主义', description: '完成50个测评', icon: '🏆', progress: 0, target: 50 },
-  { id: 'night-owl', title: '夜猫子', description: '在凌晨完成测评', icon: '🦉' },
-  { id: 'early-bird', title: '早起鸟', description: '在早晨6点前完成测评', icon: '🐦' },
-]
-
-// ============ 统一 Store ============
-
-interface AppStore {
-  // User Profile (from both stores)
-  user: UserProfile | null
-  setUser: (user: UserProfile) => void
-  updateUserName: (name: string) => void
-  updateUserProfile: (updates: Partial<UserProfile>) => void
-
-  // Current Assessment
-  currentAssessmentId: string | null
-  currentAnswers: Answer[]
-  setCurrentAssessment: (id: string) => void
-  addAnswer: (answer: Answer) => void
-  updateAnswer: (questionId: string, answer: Answer) => void
-  clearCurrentAssessment: () => void
-
-  // Assessment History (from useStore)
-  completedAssessments: CompletedAssessment[]
-  addCompletedAssessment: (assessment: CompletedAssessment) => void
-  deleteAssessment: (recordId: string) => void
-  clearAllAssessments: () => void
-
-  // Assessment Records (from useUserStore)
-  records: AssessmentRecord[]
-  addRecord: (record: AssessmentRecord) => void
-
-  // Results cache for training recommendations
-  results: Record<string, { data: Record<string, any> }> | null
-  setResults: (results: Record<string, { data: Record<string, any> }>) => void
+  // Assessment
+  getCurrentAssessment: () => useAssessmentStore.getState().currentAssessmentId,
+  setCurrentAssessment: (id: string) => useAssessmentStore.getState().setCurrentAssessment(id),
+  getCompletedAssessments: () => useAssessmentStore.getState().completedAssessments,
+  getRecords: () => useAssessmentStore.getState().records,
 
   // Achievements
-  achievements: Achievement[]
-  unlockAchievement: (id: string) => void
-  updateAchievementProgress: (id: string, progress: number) => void
+  getAchievements: () => useAchievementStore.getState().achievements,
+  unlockAchievement: (id: string) => useAchievementStore.getState().unlockAchievement(id),
 
-  // Favorites
-  favorites: string[]
-  toggleFavorite: (assessmentId: string) => void
+  // Training
+  getTrainingRecords: () => useTrainingStore.getState().trainingRecords,
+  addTrainingRecord: (record: any) => useTrainingStore.getState().addTrainingRecord(record),
 
-  // Stats
-  stats: UserStats
+  // Mood
+  getMoodHistory: () => useMoodStore.getState().moodHistory,
+  recordMood: (mood: number, note?: string) => useMoodStore.getState().recordMood(mood, note),
 
   // Settings
-  theme: 'dark' | 'light'
-  toggleTheme: () => void
-
-  // UI
-  isLoading: boolean
-  setIsLoading: (loading: boolean) => void
-
-  // User Flags (merged from useUserStore)
-  hasCompletedAssessment: boolean
-  hasDismissedWelcome: boolean
-  hasDismissedAssessmentCard: boolean
-  markAssessmentCompleted: () => void
-  dismissWelcome: () => void
-  dismissAssessmentCard: () => void
-
-  // Mood Tracking
-  moodHistory: MoodRecord[]
-  recordMood: (mood: number, note?: string) => void
-  getMoodForDate: (date: string) => MoodRecord | undefined
-  getMoodTrend: (days: number) => MoodRecord[]
-
-  // Training Records
-  trainingRecords: TrainingRecord[]
-  addTrainingRecord: (record: Omit<TrainingRecord, 'id'>) => void
-  getTrainingRecords: () => TrainingRecord[]
-  getTrainingRecordsByCategory: (category: string) => TrainingRecord[]
-  getTrainingRecordsCount: () => number
-  getTotalTrainingDuration: () => number
-
-  // Backward compatibility
-  assessmentHistory: CompletedAssessment[]
-  addAssessmentRecord: (record: any) => void
+  getTheme: () => useSettingsStore.getState().theme,
+  setTheme: (theme: 'dark' | 'light') => useSettingsStore.getState().setTheme(theme),
+  toggleTheme: () => useSettingsStore.getState().toggleTheme(),
 }
-
-export const useAppStore = create<AppStore>()(
-  persist(
-    (set, get) => ({
-      // User Profile
-      user: null,
-      setUser: (user) => set({ user }),
-      updateUserName: (name) => {
-        const { user } = get()
-        if (user) {
-          set({
-            user: {
-              ...user,
-              name,
-              updatedAt: new Date(),
-            },
-          })
-        }
-      },
-      updateUserProfile: (updates) => set((state) => ({
-        user: state.user ? { ...state.user, ...updates } : null
-      })),
-
-      // Current Assessment
-      currentAssessmentId: null,
-      currentAnswers: [],
-      setCurrentAssessment: (id) => set({
-        currentAssessmentId: id,
-        currentAnswers: []
-      }),
-      addAnswer: (answer) => set((state) => ({
-        currentAnswers: [...state.currentAnswers, answer],
-      })),
-      updateAnswer: (questionId, answer) => set((state) => ({
-        currentAnswers: state.currentAnswers.map((a) =>
-          a.questionId === questionId ? answer : a
-        ),
-      })),
-      clearCurrentAssessment: () => set({
-        currentAssessmentId: null,
-        currentAnswers: [],
-      }),
-
-      // History
-      completedAssessments: [],
-      addCompletedAssessment: (assessment) => set((state) => ({
-        completedAssessments: [
-          assessment,
-          ...state.completedAssessments,
-        ],
-      })),
-      deleteAssessment: (recordId: string) => set((state) => ({
-        completedAssessments: state.completedAssessments.filter((a) => a.id !== recordId),
-      })),
-      clearAllAssessments: () => set({
-        completedAssessments: [],
-        records: [],
-      }),
-
-      // Records
-      records: [],
-      addRecord: (record) => set((state) => {
-        const newRecords = [{ id: crypto.randomUUID(), ...record }, ...state.records]
-        const completedIds = new Set(newRecords.map(r => r.assessmentId))
-
-        const updatedAchievements = state.achievements.map(a => {
-          if (a.id === 'first-assessment' && newRecords.length >= 1) {
-            return { ...a, progress: 1, unlockedAt: Date.now() }
-          }
-          if (a.id === 'explorer' && completedIds.size >= 5) {
-            return { ...a, progress: 5, unlockedAt: Date.now() }
-          }
-          if (a.id === 'completionist' && newRecords.length >= 50) {
-            return { ...a, progress: 50, unlockedAt: Date.now() }
-          }
-          return a
-        })
-
-        return {
-          records: newRecords,
-          achievements: updatedAchievements,
-        }
-      }),
-
-      // Results cache for training recommendations
-      results: null,
-      setResults: (results) => set({ results }),
-
-      // Achievements
-      achievements: [...defaultAchievements],
-      unlockAchievement: (id) => set((state) => ({
-        achievements: state.achievements.map(a =>
-          a.id === id ? { ...a, unlockedAt: Date.now(), progress: a.target || 1 } : a
-        )
-      })),
-      updateAchievementProgress: (id, progress) => set((state) => ({
-        achievements: state.achievements.map(a =>
-          a.id === id ? { ...a, progress } : a
-        )
-      })),
-
-      // Favorites
-      favorites: [],
-      toggleFavorite: (assessmentId) => set((state) => {
-        const isFav = state.favorites.includes(assessmentId)
-        return {
-          favorites: isFav
-            ? state.favorites.filter(id => id !== assessmentId)
-            : [...state.favorites, assessmentId]
-        }
-      }),
-
-      // Stats
-      stats: {
-        totalAssessments: 0,
-        totalTime: 0,
-        favoriteCategory: '心理测评',
-        personalityTags: [],
-        level: 1,
-        points: 0,
-        streak: 0,
-      },
-
-      // Theme
-      theme: 'dark',
-      toggleTheme: () => set((state) => ({
-        theme: state.theme === 'dark' ? 'light' : 'dark'
-      })),
-
-      // UI
-      isLoading: false,
-      setIsLoading: (loading) => set({ isLoading: loading }),
-
-      // User Flags (merged from useUserStore)
-      hasCompletedAssessment: false,
-      hasDismissedWelcome: false,
-      hasDismissedAssessmentCard: false,
-      markAssessmentCompleted: () => set({ hasCompletedAssessment: true }),
-      dismissWelcome: () => set({ hasDismissedWelcome: true }),
-      dismissAssessmentCard: () => set({ hasDismissedAssessmentCard: true }),
-
-      // assessmentHistory alias & methods (backward compatible)
-      get assessmentHistory() { return get().completedAssessments },
-      addAssessmentRecord: (record) => set((state) => {
-        const existingIndex = state.completedAssessments.findIndex((r: any) => r.id === record.id)
-        if (existingIndex >= 0) {
-          const newHistory = [...state.completedAssessments]
-          newHistory[existingIndex] = record as any
-          return { completedAssessments: newHistory, hasCompletedAssessment: true }
-        }
-        return { completedAssessments: [record as any, ...state.completedAssessments], hasCompletedAssessment: true }
-      }),
-
-      // Mood Tracking System
-      moodHistory: [],
-      recordMood: (mood, note) => set((state) => {
-        const today = new Date().toISOString().split('T')[0]
-        const timestamp = Date.now()
-        
-        const existingIndex = state.moodHistory.findIndex(m => m.date === today)
-        const newRecord: MoodRecord = {
-          date: today,
-          mood,
-          timestamp,
-          note,
-        }
-
-        if (existingIndex >= 0) {
-          const newHistory = [...state.moodHistory]
-          newHistory[existingIndex] = newRecord
-          return { moodHistory: newHistory }
-        }
-
-        return {
-          moodHistory: [newRecord, ...state.moodHistory],
-        }
-      }),
-      getMoodForDate: (date) => get().moodHistory.find(m => m.date === date),
-      getMoodTrend: (days) => {
-        const history = get().moodHistory
-        return history
-          .sort((a, b) => b.timestamp - a.timestamp)
-          .slice(0, days)
-          .reverse()
-      },
-
-      // Training Records System
-      trainingRecords: [],
-      addTrainingRecord: (record) => set((state) => {
-        const newRecord: TrainingRecord = {
-          ...record,
-          id: crypto.randomUUID(),
-        }
-        return {
-          trainingRecords: [newRecord, ...state.trainingRecords],
-        }
-      }),
-      getTrainingRecords: () => get().trainingRecords,
-      getTrainingRecordsByCategory: (category) => 
-        get().trainingRecords.filter(r => r.category === category),
-      getTrainingRecordsCount: () => get().trainingRecords.length,
-      getTotalTrainingDuration: () => 
-        get().trainingRecords.reduce((acc, r) => acc + r.duration, 0),
-    }),
-    {
-      name: 'human-os-unified', // 统一存储键
-    }
-  )
-)
-
-// ============ 兼容导出 (向后兼容) ============
 
 // 兼容旧的 useStore
 export const useStore = {
   getState: () => {
-    const state = useAppStore.getState()
+    const userState = useUserStore.getState()
+    const assessmentState = useAssessmentStore.getState()
+    const settingsState = useSettingsStore.getState()
+
     return {
-      user: state.user,
-      setUser: state.setUser,
-      updateUserName: state.updateUserName,
-      currentAssessmentId: state.currentAssessmentId,
-      currentAnswers: state.currentAnswers,
-      setCurrentAssessment: state.setCurrentAssessment,
-      addAnswer: state.addAnswer,
-      updateAnswer: state.updateAnswer,
-      clearCurrentAssessment: state.clearCurrentAssessment,
-      completedAssessments: state.completedAssessments,
-      addCompletedAssessment: state.addCompletedAssessment,
-      deleteAssessment: state.deleteAssessment,
-      isLoading: state.isLoading,
-      setIsLoading: state.setIsLoading,
-      theme: state.theme,
-      toggleTheme: state.toggleTheme,
+      user: userState.user,
+      setUser: userState.setUser,
+      updateUserName: (name: string) => {
+        const user = useUserStore.getState().user
+        if (user) {
+          useUserStore.getState().updateUser({ ...user, name })
+        }
+      },
+      currentAssessmentId: assessmentState.currentAssessmentId,
+      currentAnswers: assessmentState.currentAnswers,
+      setCurrentAssessment: assessmentState.setCurrentAssessment,
+      addAnswer: assessmentState.addAnswer,
+      updateAnswer: assessmentState.updateAnswer,
+      clearCurrentAssessment: assessmentState.clearCurrentAssessment,
+      completedAssessments: assessmentState.completedAssessments,
+      addCompletedAssessment: assessmentState.addCompletedAssessment,
+      deleteAssessment: assessmentState.deleteAssessment,
+      isLoading: userState.isLoading || assessmentState.isLoading,
+      setIsLoading: (loading: boolean) => {
+        userState.setLoading(loading)
+        assessmentState.setLoading(loading)
+      },
+      theme: settingsState.theme,
+      toggleTheme: settingsState.toggleTheme,
     }
   },
-  subscribe: (listener: (state: any) => void) => useAppStore.subscribe(listener),
+  subscribe: (listener: (state: any) => void) => useUserStore.subscribe(listener),
 }
 
 // 兼容旧的 useUserStore
-export const useUserStore = {
+export const useUserStoreCompat = {
   getState: () => {
-    const state = useAppStore.getState()
+    const userState = useUserStore.getState()
+    const assessmentState = useAssessmentStore.getState()
+    const achievementState = useAchievementStore.getState()
+
     return {
-      profile: state.user,
-      records: state.records,
-      achievements: state.achievements,
-      favorites: state.favorites,
-      settings: {
-        theme: state.theme,
-        notifications: true,
-      },
-      setProfile: state.setUser,
-      updateProfile: state.updateUserProfile,
-      addRecord: state.addRecord,
-      getRecords: () => state.records,
-      getRecordById: (id: string) => state.records.find(r => r.assessmentId === id),
-      unlockAchievement: state.unlockAchievement,
-      updateAchievementProgress: state.updateAchievementProgress,
-      getAchievements: () => state.achievements,
-      toggleFavorite: state.toggleFavorite,
-      isFavorite: (id: string) => state.favorites.includes(id),
-      getFavorites: () => state.favorites,
-      getStats: () => {
-        const records = state.records
-        const points = records.length * 10
-        const level = Math.floor(points / 100) + 1
-        return {
-          totalAssessments: records.length,
-          totalTime: records.length * 5,
-          favoriteCategory: '心理测评',
-          personalityTags: ['内向', '理性', '好奇'],
-          level,
-          points,
-          streak: 0,
-        }
-      },
+      profile: userState.user,
+      records: assessmentState.records,
+      achievements: achievementState.achievements,
+      setProfile: userState.setUser,
+      updateProfile: userState.updateUser,
+      addRecord: assessmentState.addRecord,
+      getRecords: () => assessmentState.records,
+      getRecordById: (id: string) => assessmentState.records.find(r => r.assessmentId === id),
+      unlockAchievement: achievementState.unlockAchievement,
+      updateAchievementProgress: achievementState.updateAchievementProgress,
+      getAchievements: () => achievementState.achievements,
     }
   },
-  subscribe: (listener: (state: any) => void) => useAppStore.subscribe(listener),
+  subscribe: (listener: (state: any) => void) => useUserStore.subscribe(listener),
 }
 
 export const createDefaultProfile = (): UserProfile => ({
