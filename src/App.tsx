@@ -38,15 +38,18 @@ import { ResultsPage } from './app/pages/assessment'
 import DashboardPage from './app/pages/DashboardPage'
 import ProfilePage from './app/pages/ProfilePage'
 import AboutPage from './app/pages/AboutPage'
+import LeaderboardPage from './app/pages/LeaderboardPage'
+import SoulMatchPage from './app/pages/SoulMatchPage'
+import TheoryDetailPage from './app/pages/TheoryDetailPage'
+import PhilosophyHistoryPage from './app/pages/PhilosophyHistoryPage'
+import PsychologyHistoryPage from './app/pages/PsychologyHistoryPage'
+import IdeologyHistoryPage from './app/pages/IdeologyHistoryPage'
+import IsmsPage from './app/pages/IsmsPage'
+import PlatformStoryPage from './app/pages/PlatformStoryPage'
 
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const About = lazy(() => import('./pages/About'))
 const TheoryDetail = lazy(() => import('./pages/TheoryDetail'))
-const PhilosophyHistoryPage = lazy(() => import('./pages/PhilosophyHistoryPage'))
-const PsychologyHistoryPage = lazy(() => import('./pages/PsychologyHistoryPage'))
-const IdeologyHistoryPage = lazy(() => import('./pages/IdeologyHistoryPage'))
-const IsmsPage = lazy(() => import('./pages/IsmsPage'))
-const PlatformStoryPage = lazy(() => import('./pages/PlatformStoryPage'))
 const OnePieceModeSelect = lazy(() => import('./pages/OnePieceModeSelect'))
 const QuestionOptimizer = lazy(() => import('./pages/QuestionOptimizer'))
 const ThemeAnalysisDemo = lazy(() => import('./pages/ThemeAnalysisDemo'))
@@ -103,6 +106,14 @@ export default function App() {
                     <Route path="dashboard" element={<DashboardPage />} />
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="about" element={<AboutPage />} />
+                    <Route path="leaderboard" element={<LeaderboardPage />} />
+                    <Route path="soul-match" element={<SoulMatchPage />} />
+                    <Route path="theory/:theoryId" element={<TheoryDetailPage />} />
+                    <Route path="history/philosophy" element={<PhilosophyHistoryPage />} />
+                    <Route path="history/psychology" element={<PsychologyHistoryPage />} />
+                    <Route path="history/ideology" element={<IdeologyHistoryPage />} />
+                    <Route path="isms" element={<IsmsPage />} />
+                    <Route path="story" element={<PlatformStoryPage />} />
                     <Route path="getting-started" element={<GettingStarted />} />
                     <Route path="library" element={<LibraryArticles />} />
                     <Route path="library/articles" element={<LibraryArticles />} />
