@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { PageSkeleton } from './components/Loading'
 import GlobalMenu from './components/GlobalMenu'
@@ -48,16 +48,6 @@ import PlatformStoryPage from './app/pages/PlatformStoryPage'
 import AssessmentPage from './app/pages/AssessmentPage'
 import OnePieceModeSelectPage from './app/pages/OnePieceModeSelectPage'
 import NotFoundPage from './app/pages/NotFoundPage'
-
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const About = lazy(() => import('./pages/About'))
-const TheoryDetail = lazy(() => import('./pages/TheoryDetail'))
-const QuestionOptimizer = lazy(() => import('./pages/QuestionOptimizer'))
-const ThemeAnalysisDemo = lazy(() => import('./pages/ThemeAnalysisDemo'))
-const ChartShowcase = lazy(() => import('./pages/ChartShowcase'))
-const Leaderboard = lazy(() => import('./pages/Leaderboard'))
-const SoulMatch = lazy(() => import('./pages/SoulMatch'))
-const Profile = lazy(() => import('./pages/Profile'))
 
 export default function App() {
   const theme = useAppStore((state) => state.theme)
@@ -136,30 +126,6 @@ export default function App() {
                   <Route path="/app/discover" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/assessments" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/categories" element={<Navigate to="/app/assessments" replace />} />
-                  <Route path="/legacy/categories" element={<Navigate to="/app/assessments" replace />} />
-                  <Route path="/legacy/assessments" element={<Navigate to="/app/assessments" replace />} />
-                  <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
-                  <Route path="/legacy/mode-select/:id" element={<ModeSelectPage />} />
-                  <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelectPage />} />
-                  <Route path="/legacy/confirm/:id" element={<AssessmentConfirmPage />} />
-                  <Route path="/legacy/assessment/:id" element={<ModeSelectPage />} />
-                  <Route path="/legacy/loading/:id" element={<LoadingPage />} />
-                  <Route path="/legacy/results/:id" element={<ResultsPage />} />
-                  <Route path="/legacy/result/:hash" element={<ResultsPage />} />
-                  <Route path="/legacy/dashboard" element={<Dashboard />} />
-                  <Route path="/legacy/about" element={<About />} />
-                  <Route path="/legacy/theory/:theoryId" element={<TheoryDetail />} />
-                  <Route path="/legacy/history/philosophy" element={<PhilosophyHistoryPage />} />
-                  <Route path="/legacy/history/psychology" element={<PsychologyHistoryPage />} />
-                  <Route path="/legacy/history/ideology" element={<IdeologyHistoryPage />} />
-                  <Route path="/legacy/isms" element={<IsmsPage />} />
-                  <Route path="/legacy/story" element={<PlatformStoryPage />} />
-                  <Route path="/legacy/tools/question-optimizer" element={<QuestionOptimizer />} />
-                  <Route path="/legacy/demos/theme-analysis" element={<ThemeAnalysisDemo />} />
-                  <Route path="/legacy/demos/charts" element={<ChartShowcase />} />
-                  <Route path="/legacy/leaderboard" element={<Leaderboard />} />
-                  <Route path="/legacy/soul-match" element={<SoulMatch />} />
-                  <Route path="/legacy/profile" element={<Profile />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>
