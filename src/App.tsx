@@ -10,7 +10,6 @@ import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp'
 import ShortcutInitializer from './components/ShortcutInitializer'
 import { ToastProvider } from './components/ui/Toast'
 import { ShortcutProvider } from './components/ShortcutProvider'
-import NotFound from './pages/NotFound'
 
 import AppLayout from './app/layout/AppLayout'
 import HomePage from './app/pages/HomePage'
@@ -46,11 +45,13 @@ import PsychologyHistoryPage from './app/pages/PsychologyHistoryPage'
 import IdeologyHistoryPage from './app/pages/IdeologyHistoryPage'
 import IsmsPage from './app/pages/IsmsPage'
 import PlatformStoryPage from './app/pages/PlatformStoryPage'
+import AssessmentPage from './app/pages/AssessmentPage'
+import OnePieceModeSelectPage from './app/pages/OnePieceModeSelectPage'
+import NotFoundPage from './app/pages/NotFoundPage'
 
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const About = lazy(() => import('./pages/About'))
 const TheoryDetail = lazy(() => import('./pages/TheoryDetail'))
-const OnePieceModeSelect = lazy(() => import('./pages/OnePieceModeSelect'))
 const QuestionOptimizer = lazy(() => import('./pages/QuestionOptimizer'))
 const ThemeAnalysisDemo = lazy(() => import('./pages/ThemeAnalysisDemo'))
 const ChartShowcase = lazy(() => import('./pages/ChartShowcase'))
@@ -97,9 +98,11 @@ export default function App() {
                     <Route path="assessments" element={<AssessmentsPage />} />
                     <Route path="assessment/:id/mode-select" element={<ModeSelectPage />} />
                     <Route path="assessment/:id/confirm" element={<AssessmentConfirmPage />} />
+                    <Route path="assessment/:id/take" element={<AssessmentPage />} />
                     <Route path="assessment/:id" element={<ModeSelectPage />} />
                     <Route path="loading/:id" element={<LoadingPage />} />
                     <Route path="results/:id" element={<ResultsPage />} />
+                    <Route path="onepiece" element={<OnePieceModeSelectPage />} />
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
                     <Route path="settings" element={<SettingsPage />} />
@@ -137,7 +140,7 @@ export default function App() {
                   <Route path="/legacy/assessments" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/legacy/home" element={<Navigate to="/app/daily" replace />} />
                   <Route path="/legacy/mode-select/:id" element={<ModeSelectPage />} />
-                  <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelect />} />
+                  <Route path="/legacy/mode-select/onepiece/:id" element={<OnePieceModeSelectPage />} />
                   <Route path="/legacy/confirm/:id" element={<AssessmentConfirmPage />} />
                   <Route path="/legacy/assessment/:id" element={<ModeSelectPage />} />
                   <Route path="/legacy/loading/:id" element={<LoadingPage />} />
@@ -157,7 +160,7 @@ export default function App() {
                   <Route path="/legacy/leaderboard" element={<Leaderboard />} />
                   <Route path="/legacy/soul-match" element={<SoulMatch />} />
                   <Route path="/legacy/profile" element={<Profile />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>
             </div>
