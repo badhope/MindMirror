@@ -90,10 +90,8 @@ interface ColorOption {
 function ToggleItem({ setting }: { setting: ToggleSetting }) {
   const Icon = setting.icon
   return (
-    <motion.div
+    <div
       key={setting.id}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
       className="flex items-center justify-between p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl bg-white/5 gap-3"
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -105,21 +103,23 @@ function ToggleItem({ setting }: { setting: ToggleSetting }) {
           <p className="text-xs sm:text-sm text-white/40 mt-0.5 sm:mt-1 line-clamp-2">{setting.description}</p>
         </div>
       </div>
-      <motion.button
+      <button
         onClick={setting.onToggle}
         className={cn(
-          'relative w-14 h-8 sm:w-16 sm:h-9 rounded-full transition-colors shrink-0',
-          setting.enabled ? 'bg-gradient-to-r from-violet-500 to-purple-500' : 'bg-white/20'
+          'relative w-14 h-8 sm:w-16 sm:h-9 rounded-full transition-all duration-200 shrink-0 cursor-pointer',
+          setting.enabled 
+            ? 'bg-gradient-to-r from-violet-500 to-purple-500' 
+            : 'bg-white/20'
         )}
-        whileTap={{ scale: 0.95 }}
       >
-        <motion.span
-          className="absolute top-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white shadow-lg"
-          animate={{ left: setting.enabled ? '28px' : '4px' }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        <span
+          className={cn(
+            'absolute top-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white shadow-md transition-transform duration-200',
+            setting.enabled ? 'translate-x-[28px] sm:translate-x-[32px]' : 'translate-x-[4px]'
+          )}
         />
-      </motion.button>
-    </motion.div>
+      </button>
+    </div>
   )
 }
 
@@ -299,6 +299,12 @@ export default function SettingsPage() {
     toggleReducedMotion,
     privacyMode,
     togglePrivacyMode,
+    batterySaver,
+    toggleBatterySaver,
+    offlineMode,
+    toggleOfflineMode,
+    cacheOptimization,
+    toggleCacheOptimization,
     resetSettings,
   } = useSettingsStore()
 
@@ -358,9 +364,9 @@ export default function SettingsPage() {
   ]
 
   const performanceSettings: ToggleSetting[] = [
-    { id: 'battery', label: '省电模式', description: '减少动画以节省电量', enabled: false, onToggle: () => toast.info('省电模式开发中', 2000), icon: Battery },
-    { id: 'offline', label: '离线模式', description: '优先使用本地数据', enabled: true, onToggle: () => toast.info('离线模式已启用', 2000), icon: Wifi },
-    { id: 'cache', label: '缓存优化', description: '预加载常用资源', enabled: true, onToggle: () => toast.info('缓存优化已启用', 2000), icon: Cpu },
+    { id: 'battery', label: '省电模式', description: '减少动画以节省电量', enabled: batterySaver, onToggle: toggleBatterySaver, icon: Battery },
+    { id: 'offline', label: '离线模式', description: '优先使用本地数据', enabled: offlineMode, onToggle: toggleOfflineMode, icon: Wifi },
+    { id: 'cache', label: '缓存优化', description: '预加载常用资源', enabled: cacheOptimization, onToggle: toggleCacheOptimization, icon: Cpu },
   ]
 
   const exportDataJSON = () => {
