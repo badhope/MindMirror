@@ -133,5 +133,65 @@ export const sdsStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
       { id: '3', text: '兴趣淡了很多', value: 3 },
       { id: '4', text: '对什么都没兴趣', value: 4 },
     ]},
+    { id: 'sds_n21', type: 'likert-4', text: '我感到对周围的一切都漠不关心', reverseScored: false, dimension: 'affective', options: [
+      { id: '1', text: '完全不会', value: 1 },
+      { id: '2', text: '偶尔有一点', value: 2 },
+      { id: '3', text: '经常这样', value: 3 },
+      { id: '4', text: '大部分时间都这样', value: 4 },
+    ]},
+    { id: 'sds_n22', type: 'likert-4', text: '我觉得很难集中注意力做事情', reverseScored: false, dimension: 'cognitive', options: [
+      { id: '1', text: '完全没问题', value: 1 },
+      { id: '2', text: '偶尔有点困难', value: 2 },
+      { id: '3', text: '经常难以集中', value: 3 },
+      { id: '4', text: '根本无法集中', value: 4 },
+    ]},
+    { id: 'sds_n23', type: 'likert-4', text: '我觉得做任何事情都需要付出很大的努力', reverseScored: false, dimension: 'psychomotor', options: [
+      { id: '1', text: '做事情很轻松', value: 1 },
+      { id: '2', text: '和平时差不多', value: 2 },
+      { id: '3', text: '比以前费劲', value: 3 },
+      { id: '4', text: '连简单的事都做不了', value: 4 },
+    ]},
+    { id: 'sds_n24', type: 'likert-4', text: '我对自己感到非常失望', reverseScored: false, dimension: 'cognitive', options: [
+      { id: '1', text: '对自己很满意', value: 1 },
+      { id: '2', text: '偶尔有点不满意', value: 2 },
+      { id: '3', text: '经常感到失望', value: 3 },
+      { id: '4', text: '对自己彻底失望', value: 4 },
+    ]},
+    { id: 'sds_n25', type: 'likert-4', text: '我感到自己的精力严重不足', reverseScored: false, dimension: 'somatic', options: [
+      { id: '1', text: '精力充沛', value: 1 },
+      { id: '2', text: '偶尔有点累', value: 2 },
+      { id: '3', text: '经常感到疲惫', value: 3 },
+      { id: '4', text: '一点力气都没有', value: 4 },
+    ]},
+    { id: 'sds_n26', type: 'likert-4', text: '我觉得和别人交流变得困难', reverseScored: false, dimension: 'psychomotor', options: [
+      { id: '1', text: '交流很顺畅', value: 1 },
+      { id: '2', text: '偶尔有点不想说话', value: 2 },
+      { id: '3', text: '经常不想交流', value: 3 },
+      { id: '4', text: '完全不想和人说话', value: 4 },
+    ]},
+    { id: 'sds_n27', type: 'likert-4', text: '我对自己的未来感到一片黑暗', reverseScored: false, dimension: 'cognitive', options: [
+      { id: '1', text: '未来充满希望', value: 1 },
+      { id: '2', text: '还行，不确定', value: 2 },
+      { id: '3', text: '不太乐观', value: 3 },
+      { id: '4', text: '完全看不到希望', value: 4 },
+    ]},
+    { id: 'sds_n28', type: 'likert-4', text: '我经常感到孤独无助', reverseScored: false, dimension: 'affective', options: [
+      { id: '1', text: '从不感到孤独', value: 1 },
+      { id: '2', text: '偶尔有这种感觉', value: 2 },
+      { id: '3', text: '经常感到孤独', value: 3 },
+      { id: '4', text: '一直都很孤独', value: 4 },
+    ]},
+    { id: 'sds_n29', type: 'likert-4', text: '我觉得自己一无是处', reverseScored: false, dimension: 'cognitive', options: [
+      { id: '1', text: '觉得自己很有价值', value: 1 },
+      { id: '2', text: '偶尔有点自卑', value: 2 },
+      { id: '3', text: '经常觉得没用', value: 3 },
+      { id: '4', text: '完全觉得自己没用', value: 4 },
+    ]},
+    { id: 'sds_n30', type: 'likert-4', text: '我对曾经喜欢的活动完全失去了兴趣', reverseScored: false, dimension: 'psychomotor', options: [
+      { id: '1', text: '依然很喜欢', value: 1 },
+      { id: '2', text: '兴趣有所减退', value: 2 },
+      { id: '3', text: '兴趣几乎没了', value: 3 },
+      { id: '4', text: '完全没兴趣了', value: 4 },
+    ]},
   ]
 }

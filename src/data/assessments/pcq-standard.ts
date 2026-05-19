@@ -195,6 +195,34 @@ export const pcqStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
       { id: '4', text: '🟢 经常这样', value: 4 },
       { id: '5', text: '✅ 几乎总是这样', value: 5 },
     ]},
+    { id: 'pcq27', type: 'likert-5', text: '即使在最困难的时候，我也能保持对未来的信念', reverseScored: false, dimension: 'resilience', options: [
+      { id: '1', text: '❌ 几乎从不这样', value: 1 },
+      { id: '2', text: '⚪️ 偶尔这样', value: 2 },
+      { id: '3', text: '🔵 一半时间这样', value: 3 },
+      { id: '4', text: '🟢 经常这样', value: 4 },
+      { id: '5', text: '✅ 几乎总是这样', value: 5 },
+    ]},
+    { id: 'pcq28', type: 'likert-5', text: '我相信通过努力工作最终会带来好的结果', reverseScored: false, dimension: 'efficacy', options: [
+      { id: '1', text: '❌ 几乎从不这样', value: 1 },
+      { id: '2', text: '⚪️ 偶尔这样', value: 2 },
+      { id: '3', text: '🔵 一半时间这样', value: 3 },
+      { id: '4', text: '🟢 经常这样', value: 4 },
+      { id: '5', text: '✅ 几乎总是这样', value: 5 },
+    ]},
+    { id: 'pcq29', type: 'likert-5', text: '面对挑战时，我会主动寻求创新的解决方案', reverseScored: false, dimension: 'hope', options: [
+      { id: '1', text: '❌ 几乎从不这样', value: 1 },
+      { id: '2', text: '⚪️ 偶尔这样', value: 2 },
+      { id: '3', text: '🔵 一半时间这样', value: 3 },
+      { id: '4', text: '🟢 经常这样', value: 4 },
+      { id: '5', text: '✅ 几乎总是这样', value: 5 },
+    ]},
+    { id: 'pcq30', type: 'likert-5', text: '我相信每一次挫折都是成长的机会', reverseScored: false, dimension: 'optimism', options: [
+      { id: '1', text: '❌ 几乎从不这样', value: 1 },
+      { id: '2', text: '⚪️ 偶尔这样', value: 2 },
+      { id: '3', text: '🔵 一半时间这样', value: 3 },
+      { id: '4', text: '🟢 经常这样', value: 4 },
+      { id: '5', text: '✅ 几乎总是这样', value: 5 },
+    ]},
   ],
 
   resultInterpretation: {
