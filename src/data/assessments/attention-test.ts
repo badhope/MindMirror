@@ -4,12 +4,12 @@ import { calculateAttention } from '../../utils/calculators/attention-calculator
 export const attentionTestAssessment: Omit<Assessment, 'id'> & { id: string } = {
   id: 'attention-test',
   title: '注意力测试',
-  description: '聚焦你的注意力 | 评估持续性、选择性、分配性和转换性注意力',
+  description: '全面评估你的注意力能力，包括持续性、选择性、分配性和转换性注意力',
   icon: '🎯',
   category: '认知功能',
   subcategory: '注意力',
   difficulty: 'easy',
-  duration: 5,
+  duration: 8,
   quality: '专业',
   resultCalculator: calculateAttention,
   questions: [
@@ -223,6 +223,216 @@ export const attentionTestAssessment: Omit<Assessment, 'id'> & { id: string } = 
         { id: '5', text: '✅ 完全符合', value: 5 },
       ],
     },
+    {
+      id: 'att16',
+      type: 'likert-5',
+      text: '当需要专注时，我能主动排除外界干扰',
+      reverseScored: false,
+      dimension: 'selective',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att17',
+      type: 'likert-5',
+      text: '我经常发现自己在做一件事时，脑子里却想着另一件事',
+      reverseScored: true,
+      dimension: 'sustained',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att18',
+      type: 'likert-5',
+      text: '在开车时，我能同时注意路况、导航和音乐',
+      reverseScored: false,
+      dimension: 'divided',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att19',
+      type: 'likert-5',
+      text: '即使任务很枯燥，我也能坚持完成',
+      reverseScored: false,
+      dimension: 'sustained',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att20',
+      type: 'likert-5',
+      text: '我能快速从多个同时出现的信息中，识别出重要的内容',
+      reverseScored: false,
+      dimension: 'selective',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att21',
+      type: 'likert-5',
+      text: '我能边听别人说话，同时思考如何回应',
+      reverseScored: false,
+      dimension: 'divided',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att22',
+      type: 'likert-5',
+      text: '突然被打断后，我能很快回到之前的任务中',
+      reverseScored: false,
+      dimension: 'shifting',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att23',
+      type: 'likert-5',
+      text: '我能在规定时间内专注完成一项任务',
+      reverseScored: false,
+      dimension: 'sustained',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att24',
+      type: 'likert-5',
+      text: '在人群中，我能轻易找到自己要找的人',
+      reverseScored: false,
+      dimension: 'selective',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att25',
+      type: 'likert-5',
+      text: '我能一边走路一边思考问题',
+      reverseScored: false,
+      dimension: 'divided',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att26',
+      type: 'likert-5',
+      text: '任务切换时，我不会感到混乱或压力',
+      reverseScored: false,
+      dimension: 'shifting',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att27',
+      type: 'likert-5',
+      text: '我能连续工作/学习数小时而不需要频繁休息',
+      reverseScored: false,
+      dimension: 'sustained',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att28',
+      type: 'likert-5',
+      text: '即使有很多事情同时发生，我也能抓住重点',
+      reverseScored: false,
+      dimension: 'selective',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att29',
+      type: 'likert-5',
+      text: '我能边看视频边记笔记',
+      reverseScored: false,
+      dimension: 'divided',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
+    {
+      id: 'att30',
+      type: 'likert-5',
+      text: '我能根据任务的重要性，灵活调整注意力分配',
+      reverseScored: false,
+      dimension: 'shifting',
+      options: [
+        { id: '1', text: '❌ 完全不符合', value: 1 },
+        { id: '2', text: '⚪️ 比较不符合', value: 2 },
+        { id: '3', text: '🔵 一般', value: 3 },
+        { id: '4', text: '🟢 比较符合', value: 4 },
+        { id: '5', text: '✅ 完全符合', value: 5 },
+      ],
+    },
   ],
 
   resultInterpretation: {
@@ -234,17 +444,17 @@ export const attentionTestAssessment: Omit<Assessment, 'id'> & { id: string } = 
         type: 'cover-card',
         content: `
           <div className="relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-amber-950 via-orange-800 to-red-700">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/10 rounded-full -translate-y-24 translate-x-24 blur-2xl" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-500/15 rounded-full translate-y-20 -translate-x-20 blur-xl" />
+            <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/10 rounded-full -translate-y-24 translate-x-24 blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-500/15 rounded-full translate-y-20 -translate-x-20 blur-xl"></div>
             
             <div className="relative z-10 text-center">
               <div className="text-7xl mb-4">🎯</div>
-              <h2 className="text-3xl font-black text-white mb-2">\${result.attentionLevel || '注意力水平评估'}</h2>
+              <h2 className="text-3xl font-black text-white mb-2">注意力水平评估</h2>
               <p className="text-amber-200/80 text-lg mb-4">Attention Test Report</p>
               
               <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur rounded-full px-8 py-4 border border-amber-400/30">
                 <span className="text-white">注意力指数</span>
-                <span className="text-2xl font-black text-amber-300">\${result.totalScore || 75}</span>
+                <span className="text-2xl font-black text-amber-300">75</span>
                 <span className="text-white/60">分</span>
               </div>
               

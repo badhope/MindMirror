@@ -13,11 +13,11 @@ const likert6Options = [
 export const burnoutAssessment: Assessment = {
   id: 'burnout-mbi',
   title: 'MBI 职业倦怠测评',
-  description: '帮助你了解在工作中的身心疲劳程度',
+  description: '专业评估你的职业倦怠状态，包括情绪衰竭、去人格化和个人成就感',
   category: '职业发展',
   subcategory: '职业耗竭',
   difficulty: 'standard',
-  duration: 5,
+  duration: 8,
   quality: '专业',
   resultCalculator: calculateBurnout,
   questions: [
@@ -43,6 +43,14 @@ export const burnoutAssessment: Assessment = {
     { id: 'burnout_20', type: 'likert-6', text: '我认为自己的工作贡献是重要的', reverseScored: true, dimension: 'personalAccomplishment', options: likert6Options },
     { id: 'burnout_21', type: 'likert-6', text: '我感到工作让我快要崩溃了', reverseScored: false, dimension: 'emotionalExhaustion', options: likert6Options },
     { id: 'burnout_22', type: 'likert-6', text: '我对自己是否能有效地完成工作感到怀疑', reverseScored: false, dimension: 'personalAccomplishment', options: likert6Options },
+    { id: 'burnout_23', type: 'likert-6', text: '我开始逃避工作中需要与人接触的场合', reverseScored: false, dimension: 'depersonalization', options: likert6Options },
+    { id: 'burnout_24', type: 'likert-6', text: '即使是简单的工作任务，也让我感到难以承受', reverseScored: false, dimension: 'emotionalExhaustion', options: likert6Options },
+    { id: 'burnout_25', type: 'likert-6', text: '我对工作成果的质量要求越来越低', reverseScored: false, dimension: 'personalAccomplishment', options: likert6Options },
+    { id: 'burnout_26', type: 'likert-6', text: '我对工作中的挑战越来越没有兴趣', reverseScored: false, dimension: 'depersonalization', options: likert6Options },
+    { id: 'burnout_27', type: 'likert-6', text: '我感到工作剥夺了我大部分的精力', reverseScored: false, dimension: 'emotionalExhaustion', options: likert6Options },
+    { id: 'burnout_28', type: 'likert-6', text: '我觉得自己在工作中取得的成就越来越少', reverseScored: false, dimension: 'personalAccomplishment', options: likert6Options },
+    { id: 'burnout_29', type: 'likert-6', text: '我对同事和客户的感受越来越不敏感', reverseScored: false, dimension: 'depersonalization', options: likert6Options },
+    { id: 'burnout_30', type: 'likert-6', text: '周末结束后，我害怕周一的到来', reverseScored: false, dimension: 'emotionalExhaustion', options: likert6Options },
   ],
 
   resultInterpretation: {
