@@ -63,6 +63,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
       '@components': resolve(__dirname, 'src/components'),
       '@pages': resolve(__dirname, 'src/pages'),
+      '@api': resolve(__dirname, 'src/api'),
       '@hooks': resolve(__dirname, 'src/hooks'),
       '@store': resolve(__dirname, 'src/store'),
       '@utils': resolve(__dirname, 'src/utils'),
