@@ -101,9 +101,19 @@ export default defineConfig({
             if (id.includes('@types')) return 'types'
             return 'vendor'
           }
-          if (id.includes('src/data/assessments')) return 'assessments-data'
+          if (id.includes('src/data/assessments')) {
+            if (id.includes('entertainment')) return 'assessments-entertainment'
+            if (id.includes('professional')) return 'assessments-professional'
+            return 'assessments-basic'
+          }
+          if (id.includes('src/data/entertainment')) return 'assessments-entertainment'
           if (id.includes('src/data/simulations')) return 'simulations-data'
-          if (id.includes('src/data/professional')) return 'professional-data'
+          if (id.includes('src/data/professional')) {
+            if (id.includes('questions')) return 'professional-questions'
+            return 'professional-data'
+          }
+          if (id.includes('src/data/knowledge-base')) return 'knowledge-base'
+          if (id.includes('src/data/political-ideology')) return 'political-ideology'
           if (id.includes('src/components/economy')) return 'economy-components'
           if (id.includes('src/components/charts')) return 'charts-components'
           if (id.includes('src/components/ui')) return 'ui-components'
@@ -118,6 +128,7 @@ export default defineConfig({
           if (id.includes('src/utils/')) return 'utils'
           if (id.includes('src/store/')) return 'store'
           if (id.includes('src/types/')) return 'types'
+          if (id.includes('src/api/')) return 'api'
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
