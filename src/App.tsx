@@ -84,17 +84,11 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Navigate to="/app/home" replace />} />
 
+                  {/* 带侧边栏的 App 布局路由 */}
                   <Route path="/app" element={<AppLayout title="心镜" />}>
                     <Route path="home" element={<HomePage />} />
                     <Route path="daily" element={<Daily />} />
                     <Route path="assessments" element={<AssessmentsPage />} />
-                    <Route path="assessment/:id/mode-select" element={<ModeSelectPage />} />
-                    <Route path="assessment/:id/confirm" element={<AssessmentConfirmPage />} />
-                    <Route path="assessment/:id/take" element={<AssessmentPage />} />
-                    <Route path="assessment/:id" element={<ModeSelectPage />} />
-                    <Route path="loading/:id" element={<LoadingPage />} />
-                    <Route path="results/:id" element={<ResultsPage />} />
-                    <Route path="onepiece" element={<OnePieceModeSelectPage />} />
                     <Route path="training" element={<Training />} />
                     <Route path="progress" element={<Progress />} />
                     <Route path="settings" element={<SettingsPage />} />
@@ -124,6 +118,15 @@ export default function App() {
                     <Route path="growth/habits" element={<GrowthHabits />} />
                     <Route path="training/:programId" element={<UniversalTraining />} />
                   </Route>
+
+                  {/* 全屏测评流程路由（不带侧边栏） */}
+                  <Route path="/app/assessment/:id/mode-select" element={<ModeSelectPage />} />
+                  <Route path="/app/assessment/:id/confirm" element={<AssessmentConfirmPage />} />
+                  <Route path="/app/assessment/:id/take" element={<AssessmentPage />} />
+                  <Route path="/app/assessment/:id" element={<ModeSelectPage />} />
+                  <Route path="/app/loading/:id" element={<LoadingPage />} />
+                  <Route path="/app/results/:id" element={<ResultsPage />} />
+                  <Route path="/app/onepiece" element={<OnePieceModeSelectPage />} />
 
                   <Route path="/app/discover" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/assessments" element={<Navigate to="/app/assessments" replace />} />
