@@ -49,6 +49,15 @@ const PoliticalCompassProfessionalReport = lazy(() => import('./PoliticalCompass
 const MoralFoundationsProfessionalReport = lazy(() => import('./MoralFoundationsProfessionalReport'))
 const ASIProfessionalReport = lazy(() => import('./ASIProfessionalReport'))
 const OnePieceBountyProfessionalReport = lazy(() => import('./OnePieceBountyProfessionalReport'))
+const SCL90ProfessionalReport = lazy(() => import('./SCL90ProfessionalReport'))
+const GAD7ProfessionalReport = lazy(() => import('./GAD7ProfessionalReport'))
+const PHQ9ProfessionalReport = lazy(() => import('./PHQ9ProfessionalReport'))
+const PHQ15ProfessionalReport = lazy(() => import('./PHQ15ProfessionalReport'))
+const CriticalThinkingProfessionalReport = lazy(() => import('./CriticalThinkingProfessionalReport'))
+const RavenProfessionalReport = lazy(() => import('./RavenProfessionalReport'))
+const BelbinProfessionalReport = lazy(() => import('./BelbinProfessionalReport'))
+const AttentionProfessionalReport = lazy(() => import('./AttentionProfessionalReport'))
+const HollandAdvancedReport = lazy(() => import('./HollandAdvancedReport'))
 const EnhancedReportTemplate = lazy(() => import('../EnhancedReportTemplate'))
 
 interface ReportRouterProps {
@@ -366,17 +375,34 @@ export default function LazyReportRouter(props: ReportRouterProps) {
     case type.includes('bounty') || type.includes('onepiece') || type.includes('海贼') || type.includes('悬赏'):
       ReportComponent = OnePieceBountyProfessionalReport
       break
+    case type.includes('scl90') || type.includes('scl-90') || type.includes('symptom') || type.includes('症状') || type.includes('综合心理健康'):
+      ReportComponent = SCL90ProfessionalReport
+      break
+    case type.includes('gad7') || type.includes('gad-7') || type.includes('广泛性焦虑'):
+      ReportComponent = GAD7ProfessionalReport
+      break
+    case type.includes('phq9') || type.includes('phq-9') || type.includes('抑郁筛查'):
+      ReportComponent = PHQ9ProfessionalReport
+      break
+    case type.includes('phq15') || type.includes('phq-15') || type.includes('躯体症状'):
+      ReportComponent = PHQ15ProfessionalReport
+      break
+    case type.includes('critical') || type.includes('批判性思维') || type.includes('ct-standard') || type.includes('ct-professional'):
+      ReportComponent = CriticalThinkingProfessionalReport
+      break
+    case type.includes('raven') || type.includes('瑞文') || type.includes('iq-professional') || type.includes('智力完整'):
+      ReportComponent = RavenProfessionalReport
+      break
+    case type.includes('belbin') || type.includes('贝尔宾') || type.includes('团队角色'):
+      ReportComponent = BelbinProfessionalReport
+      break
+    case type.includes('attention') || type.includes('注意力') || type.includes('focus'):
+      ReportComponent = AttentionProfessionalReport
+      break
+    case type.includes('holland-professional') || type.includes('holland-advanced') || type.includes('霍兰德完整'):
+      ReportComponent = HollandAdvancedReport
+      break
     case type.includes('sleep') || type.includes('psqi') || type.includes('睡眠'):
-      ReportComponent = EnhancedReportTemplate
-      extraProps.assessmentType = assessmentType
-      extraProps.matchScore = matchScore
-      break
-    case type.includes('scl90') || type.includes('scl-90') || type.includes('symptom') || type.includes('症状'):
-      ReportComponent = EnhancedReportTemplate
-      extraProps.assessmentType = assessmentType
-      extraProps.matchScore = matchScore
-      break
-    case type.includes('attention') || type.includes('focus') || type.includes('注意力'):
       ReportComponent = EnhancedReportTemplate
       extraProps.assessmentType = assessmentType
       extraProps.matchScore = matchScore
