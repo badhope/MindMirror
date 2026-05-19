@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '../../../store'
-import { Button } from '../../ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/Card'
-import { Progress } from '../../ui/Progress'
+import { Button } from '../../../components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card'
+import { Progress } from '../../../components/ui/Progress'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play, Pause, SkipForward, Volume2, VolumeX, Check } from 'lucide-react'
 

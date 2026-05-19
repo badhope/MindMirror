@@ -43,7 +43,9 @@ const safeStorage = {
     try {
       const payload = JSON.stringify({ data, timestamp: Date.now() })
       localStorage.setItem(key, payload)
-    } catch {}
+    } catch {
+      // Ignore storage errors
+    }
   },
   getItem: <T,>(key: string): T | null => {
     try {
@@ -63,7 +65,9 @@ const safeStorage = {
   removeItem: (key: string): void => {
     try {
       localStorage.removeItem(key)
-    } catch {}
+    } catch {
+      // Ignore storage errors
+    }
   },
 }
 
