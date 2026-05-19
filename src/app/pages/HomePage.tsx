@@ -134,7 +134,7 @@ export default function HomePage() {
   }
 
   const handleSelectAssessment = (id: string) => {
-    navigate(`/legacy/mode-select/${id}`)
+    navigate(`/app/assessment/${id}/mode-select`)
   }
 
   return (

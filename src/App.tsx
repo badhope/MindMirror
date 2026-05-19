@@ -128,6 +128,8 @@ export default function App() {
                   <Route path="/app/discover" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/assessments" element={<Navigate to="/app/assessments" replace />} />
                   <Route path="/categories" element={<Navigate to="/app/assessments" replace />} />
+                  <Route path="/legacy/mode-select/:id" element={<Navigate to="/app/assessment/:id/mode-select" replace />} />
+                  <Route path="/legacy/results/:id" element={<Navigate to="/app/results/:id" replace />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>
