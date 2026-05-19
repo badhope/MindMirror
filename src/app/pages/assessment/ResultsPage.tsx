@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, QrCode, Home, Trophy } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import { QRCodeSVG } from 'qrcode.react'
-import { useAssessmentStore } from '@/store'
+import { useAppStore } from '@store'
 import { getAssessmentById } from '@data/assessments'
 import ReportRenderer from '@components/reports/ReportRenderer'
 import ResultExportButton from '@components/ResultExportButton'
@@ -14,8 +14,8 @@ export default function ResultsPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const locationState = location.state as any
-  const completedAssessments = useAssessmentStore((state) => state.completedAssessments)
-  const addCompletedAssessment = useAssessmentStore((state) => state.addCompletedAssessment)
+  const completedAssessments = useAppStore((state) => state.completedAssessments)
+  const addCompletedAssessment = useAppStore((state) => state.addCompletedAssessment)
   const [showQRCode, setShowQRCode] = useState(false)
   const reportRef = useRef<HTMLDivElement>(null)
 
@@ -74,7 +74,7 @@ export default function ResultsPage() {
     
     const retryInterval = setInterval(() => {
       attempts++
-      const latestRecord = useAssessmentStore.getState().completedAssessments.find((a) => a.id === id)
+      const latestRecord = useAppStore.getState().completedAssessments.find((a) => a.id === id)
       
       if (latestRecord) {
         clearInterval(retryInterval)
