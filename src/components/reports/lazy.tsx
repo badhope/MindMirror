@@ -58,6 +58,7 @@ const RavenProfessionalReport = lazy(() => import('./RavenProfessionalReport'))
 const BelbinProfessionalReport = lazy(() => import('./BelbinProfessionalReport'))
 const AttentionProfessionalReport = lazy(() => import('./AttentionProfessionalReport'))
 const HollandAdvancedReport = lazy(() => import('./HollandAdvancedReport'))
+const SleepQualityReport = lazy(() => import('./SleepQualityReport'))
 const EnhancedReportTemplate = lazy(() => import('../EnhancedReportTemplate'))
 
 interface ReportRouterProps {
@@ -403,7 +404,7 @@ export default function LazyReportRouter(props: ReportRouterProps) {
       ReportComponent = HollandAdvancedReport
       break
     case type.includes('sleep') || type.includes('psqi') || type.includes('睡眠'):
-      ReportComponent = EnhancedReportTemplate
+      ReportComponent = SleepQualityReport
       extraProps.assessmentType = assessmentType
       extraProps.matchScore = matchScore
       break
