@@ -1,5 +1,5 @@
 import api from '../base/client'
-import type { ApiResponse, PaginatedResponse } from '../types'
+import type { PaginatedResponse } from '../types'
 
 export interface MoodRecord {
   id: string
@@ -17,6 +17,12 @@ export interface CreateMoodRequest {
   tags?: string[]
 }
 
+export interface MoodStats {
+  averageIntensity: number
+  totalRecords: number
+  dominantMood?: string
+}
+
 export const moodApi = {
   list: () => api.get<PaginatedResponse<MoodRecord>>('/mood/records'),
   
@@ -26,9 +32,9 @@ export const moodApi = {
   
   delete: (id: string) => api.delete(`/mood/records/${id}`),
   
-  getHistory: (days: number = 30) => api.get<any>(`/mood/history?days=${days}`),
+  getHistory: (days: number = 30) => api.get<MoodRecord[]>(`/mood/history?days=${days}`),
   
-  getStats: () => api.get<any>('/mood/stats'),
+  getStats: () => api.get<MoodStats>('/mood/stats'),
 }
 
 export default moodApi

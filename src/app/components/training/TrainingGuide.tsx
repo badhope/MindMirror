@@ -4,7 +4,6 @@ import {
   Users, 
   Compass,
   Sparkles,
-  ChevronRight,
   Check,
   Clock,
   ArrowRight,

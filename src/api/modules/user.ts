@@ -1,5 +1,4 @@
 import api from '../base/client'
-import type { ApiResponse, PaginatedResponse } from '../types'
 
 export interface User {
   id: string

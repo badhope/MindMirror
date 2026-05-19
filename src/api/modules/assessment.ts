@@ -1,5 +1,5 @@
 import api from '../base/client'
-import type { ApiResponse, PaginatedResponse } from '../types'
+import type { PaginatedResponse } from '../types'
 
 export interface Assessment {
   id: string
@@ -22,8 +22,14 @@ export interface Submission {
   id: string
   assessmentId: string
   answers: Answer[]
-  result?: any
+  result?: AssessmentResult
   submittedAt: string
+}
+
+export interface AssessmentResult {
+  score: number
+  traits: Record<string, number>
+  recommendations: string[]
 }
 
 export const assessmentApi = {
@@ -34,7 +40,7 @@ export const assessmentApi = {
   submit: (id: string, answers: Answer[]) => 
     api.post<Submission>(`/assessment/${id}/submit`, { answers }),
     
-  getResult: (id: string) => api.get<any>(`/assessment/${id}/result`),
+  getResult: (id: string) => api.get<AssessmentResult>(`/assessment/${id}/result`),
 }
 
 export default assessmentApi

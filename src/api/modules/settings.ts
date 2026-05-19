@@ -1,5 +1,4 @@
 import api from '../base/client'
-import type { ApiResponse } from '../types'
 
 export interface UserSettings {
   id: string

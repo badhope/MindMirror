@@ -1,5 +1,5 @@
 import api from '../base/client'
-import type { ApiResponse, PaginatedResponse } from '../types'
+import type { PaginatedResponse } from '../types'
 
 export interface Achievement {
   id: string

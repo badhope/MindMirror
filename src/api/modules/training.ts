@@ -1,5 +1,5 @@
 import api from '../base/client'
-import type { ApiResponse, PaginatedResponse } from '../types'
+import type { PaginatedResponse } from '../types'
 
 export interface TrainingRecord {
   id: string
@@ -18,6 +18,13 @@ export interface CreateTrainingRequest {
   programId?: string
 }
 
+export interface TrainingStats {
+  totalSessions: number
+  totalDuration: number
+  currentStreak: number
+  longestStreak: number
+}
+
 export const trainingApi = {
   list: () => api.get<PaginatedResponse<TrainingRecord>>('/training/records'),
   
@@ -27,9 +34,9 @@ export const trainingApi = {
   
   delete: (id: string) => api.delete(`/training/records/${id}`),
   
-  getStats: () => api.get<any>('/training/stats'),
+  getStats: () => api.get<TrainingStats>('/training/stats'),
   
-  getPrograms: () => api.get<any>('/training/programs'),
+  getPrograms: () => api.get<TrainingRecord[]>('/training/programs'),
 }
 
 export default trainingApi
