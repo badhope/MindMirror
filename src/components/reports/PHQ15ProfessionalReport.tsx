@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Heart, Brain, Shield, AlertTriangle, Award, TrendingUp, Wind, Droplets, Moon, Sparkles, Activity, Timer, Target, Zap, Coffee, Eye, Smile, Battery, Thermometer, Stomach, Pulse, Lungs, Bone, Muscle, ThermometerSun } from 'lucide-react'
+import { Heart, Brain, Shield, AlertTriangle, Award, TrendingUp, Wind, Droplets, Moon, Sparkles, Activity, Timer, Target, Zap, Coffee, Eye, Smile, Battery, Thermometer, Stethoscope, Pulse, Lungs, Bone, Dumbbell, ThermometerSun } from 'lucide-react'
 import { AdvancedBarChart, CircularProgressChart, AdvancedRadarChart } from '../charts'
 import type { AssessmentResult } from '../../types'
 import { safeDimensions, getScoreBand } from './utils'
@@ -10,9 +10,9 @@ interface PHQ15ReportProps {
 }
 
 const PHQ15_ITEMS = [
-  { id: 1, text: '胃痛、肚子痛', dimension: '消化系统', icon: Stomach },
+  { id: 1, text: '胃痛、肚子痛', dimension: '消化系统', icon: Stethoscope },
   { id: 2, text: '背痛', dimension: '肌肉骨骼', icon: Bone },
-  { id: 3, text: '手臂、腿关节疼痛', dimension: '肌肉骨骼', icon: Muscle },
+  { id: 3, text: '手臂、腿关节疼痛', dimension: '肌肉骨骼', icon: Dumbbell },
   { id: 4, text: '生理期痛经或其他月经问题', dimension: '生殖系统', icon: Droplets },
   { id: 5, text: '头痛', dimension: '神经系统', icon: Brain },
   { id: 6, text: '胸口痛', dimension: '心血管', icon: Pulse },

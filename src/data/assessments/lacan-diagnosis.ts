@@ -365,3 +365,5 @@ export const lacanDiagnosisAssessment: Assessment = {
     ]},
   ],
 }
+
+export const lacanAssessment = lacanDiagnosisAssessment

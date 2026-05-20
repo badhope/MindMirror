@@ -294,3 +294,5 @@ export const sdsStandard: Assessment = {
     },
   ],
 }
+
+export const sdsStandardAssessment = sdsStandard

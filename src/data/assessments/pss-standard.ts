@@ -294,3 +294,5 @@ export const pssStandard: Assessment = {
     },
   ],
 }
+
+export const pssStandardAssessment = pssStandard

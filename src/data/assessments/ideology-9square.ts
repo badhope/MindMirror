@@ -364,3 +364,5 @@ export const ideology9Square: Assessment = {
     },
   ],
 }
+
+export const ideologyAssessment = ideology9Square

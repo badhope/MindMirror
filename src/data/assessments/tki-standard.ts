@@ -294,3 +294,5 @@ export const tkiStandard: Assessment = {
     },
   ],
 }
+
+export const tkiStandardAssessment = tkiStandard

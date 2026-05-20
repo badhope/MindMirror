@@ -294,3 +294,5 @@ export const patriotismPurity: Assessment = {
     },
   ],
 }
+
+export const patriotismPurityAssessment = patriotismPurity

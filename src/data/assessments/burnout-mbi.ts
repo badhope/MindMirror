@@ -53,3 +53,5 @@ export const burnoutMbiAssessment: Assessment = {
   createdAt: new Date('2024-01-15'),
   updatedAt: new Date('2024-01-15'),
 }
+
+export const burnoutAssessment = burnoutMbiAssessment

@@ -48,8 +48,7 @@ const BELBIN_ROLES = {
     color: 'from-purple-500 to-violet-500', 
     description: '追求卓越，关注细节，确保高质量成果',
     strengths: ['注重细节，追求完美', '工作认真负责', '发现并纠正错误'],
-    weaknesses: ['过度关注细节可能拖延进度', '有时难以放手'],
-    color: 'from-purple-500 to-violet-500'
+    weaknesses: ['过度关注细节可能拖延进度', '有时难以放手']
   },
   'coordinator': { 
     name: '协调者 (CO)', 

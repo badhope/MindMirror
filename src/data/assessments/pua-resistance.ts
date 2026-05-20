@@ -294,3 +294,5 @@ export const puaResistance: Assessment = {
     },
   ],
 }
+
+export const puaResistanceAssessment = puaResistance

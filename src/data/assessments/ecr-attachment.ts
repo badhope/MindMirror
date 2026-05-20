@@ -294,3 +294,5 @@ export const ecrAttachment: Assessment = {
     },
   ],
 }
+
+export const ecrAttachmentAssessment = ecrAttachment

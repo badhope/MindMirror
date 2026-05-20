@@ -342,7 +342,7 @@ export default function EnhancedReportTemplate({
         </motion.div>
       )}
 
-      {safeResult.strengths.length > 0 || safeResult.weaknesses.length > 0 || safeResult.suggestions.length > 0 ? (
+      {(safeResult.strengths.length > 0 || safeResult.weaknesses.length > 0 || safeResult.suggestions.length > 0) && (
         <div className="grid md:grid-cols-3 gap-6">
           {safeResult.strengths.length > 0 && (
             <motion.div

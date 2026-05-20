@@ -294,3 +294,5 @@ export const sbtiPersonality: Assessment = {
     },
   ],
 }
+
+export const sbtiAssessment = sbtiPersonality
