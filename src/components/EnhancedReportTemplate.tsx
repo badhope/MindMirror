@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { Award, TrendingUp, Lightbulb, Briefcase, Brain, BarChart3, GitBranch, Users, Target, Sparkles } from 'lucide-react'
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts'
-import { ComprehensiveChartSystem } from './charts'
-import type { AssessmentResult, ProfessionalAssessmentResult, Dimension } from '../types'
+import { ComprehensiveChartSystem, CircularProgressChart } from './charts'
+import type { AssessmentResult, ProfessionalAssessmentResult, Dimension, ThemeRelevance } from '../types'
 
 function ScatterDistributionChart({
   userPosition,
@@ -62,40 +62,6 @@ function ScatterDistributionChart({
           <Legend />
         </ScatterChart>
       </ResponsiveContainer>
-    </div>
-  )
-}
-
-function CircularProgressChart({
-  score,
-  size = 'medium',
-  colorScheme = 'violet',
-  showPercentage = true,
-}: {
-  score: number
-  size?: 'small' | 'medium' | 'large'
-  colorScheme?: 'violet' | 'amber' | 'emerald' | 'cyan' | 'rose'
-  showPercentage?: boolean
-}) {
-  const sizeMap = { small: 80, medium: 120, large: 160 }
-  const colorMap: Record<string, string> = {
-    violet: 'from-violet-500 to-purple-500',
-    amber: 'from-amber-500 to-orange-500',
-    emerald: 'from-emerald-500 to-teal-500',
-    cyan: 'from-cyan-500 to-blue-500',
-    rose: 'from-rose-500 to-pink-500',
-  }
-
-  return (
-    <div
-      className={`relative rounded-full bg-gradient-to-br ${colorMap[colorScheme]} p-1`}
-      style={{ width: sizeMap[size], height: sizeMap[size] }}
-    >
-      <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-        {showPercentage && (
-          <span className="text-white font-bold text-lg">{score.toFixed(0)}</span>
-        )}
-      </div>
     </div>
   )
 }
@@ -182,11 +148,13 @@ export default function EnhancedReportTemplate({
             transition={{ delay: 0.3 }}
           >
             <CircularProgressChart
-              score={safeResult.score}
-              size="small"
-              colorScheme={isIQTest ? 'amber' : 'violet'}
-              showPercentage
-            />
+                score={safeResult.score}
+                size="small"
+                colorScheme={isIQTest ? 'amber' : 'violet'}
+                showPercentage
+                showScore={false}
+                animated
+              />
           </motion.div>
         </div>
         <p className="text-white/80 leading-relaxed">{safeResult.description}</p>

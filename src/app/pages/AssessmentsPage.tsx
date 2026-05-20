@@ -96,7 +96,7 @@ const ALL_ASSESSMENTS: Assessment[] = [
   { id: 'onepiece-bounty', title: '海贼王悬赏金测试', description: '你值多少赏金？', icon: Flame, path: '/app/assessment/onepiece-bounty/mode-select', questionCount: 20, duration: 4, category: '趣味' },
   { id: 'pua-resistance', title: 'PUA抵抗力测试', description: '测试你的防坑能力', icon: Shield, path: '/app/assessment/pua-resistance/mode-select', questionCount: 28, duration: 6, category: '趣味' },
   { id: 'berry-standard', title: '贝瑞测试', description: '测测你的性格色彩', icon: MountainSnow, path: '/app/assessment/berry-standard/mode-select', questionCount: 28, duration: 5, category: '趣味' },
-  { id: 'abm-love-animal', title: '爱情风格测试', description: '了解你的爱情观', icon: Heart, path: '/app/assessment/abm-love-animal/mode-select', badge: '趣味', questionCount: 20, duration: 4, category: '趣味' },
+  { id: 'love-style-test', title: '爱情风格测试', description: '了解你的爱情观', icon: Heart, path: '/app/assessment/love-style-test/mode-select', badge: '趣味', questionCount: 20, duration: 4, category: '趣味' },
 ]
 
 export default function AssessmentsPage() {
