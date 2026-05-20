@@ -21,6 +21,7 @@ const createEQQuestion = (
 
 export const eqProfessionalQuestions: ProfessionalQuestionSet = {
   normal: [
+    // 自我认知 - 自我尊重 - 15题
     createEQQuestion('eq-sr-1', '我对自己感到满意', 'self-regard', 'self-perception'),
     createEQQuestion('eq-sr-2', '我接受自己的缺点', 'self-regard', 'self-perception'),
     createEQQuestion('eq-sr-3', '我尊重自己', 'self-regard', 'self-perception'),
@@ -29,6 +30,15 @@ export const eqProfessionalQuestions: ProfessionalQuestionSet = {
     createEQQuestion('eq-sr-6', '我认为自己有价值', 'self-regard', 'self-perception'),
     createEQQuestion('eq-sr-7', '我能够接受自己的不完美', 'self-regard', 'self-perception'),
     createEQQuestion('eq-sr-8', '我为自己的成就感到自豪', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-9', '我认可自己的优点', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-10', '我觉得自己值得被爱', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-11', '我感到自信', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-12', '我对自己有积极的看法', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-13', '我相信自己的判断', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-14', '我重视自己的意见', 'self-regard', 'self-perception'),
+    createEQQuestion('eq-sr-15', '我对自己的整体感到满意', 'self-regard', 'self-perception'),
+
+    // 自我认知 - 自我实现 - 15题
     createEQQuestion('eq-sa-1', '我努力实现自己的目标', 'self-actualization', 'self-perception'),
     createEQQuestion('eq-sa-2', '我追求个人成长', 'self-actualization', 'self-perception'),
     createEQQuestion('eq-sa-3', '我能够发挥自己的潜能', 'self-actualization', 'self-perception'),
@@ -39,6 +49,13 @@ export const eqProfessionalQuestions: ProfessionalQuestionSet = {
     createEQQuestion('eq-sa-8', '我对自己的发展感到满意', 'self-actualization', 'self-perception'),
     createEQQuestion('eq-sa-9', '我能够实现自己的理想', 'self-actualization', 'self-perception'),
     createEQQuestion('eq-sa-10', '我享受追求目标的过程', 'self-actualization', 'self-perception'),
+    createEQQuestion('eq-sa-11', '我设定有挑战性的目标', 'self-actualization', 'self-perception'),
+    createEQQuestion('eq-sa-12', '我追求卓越', 'self-actualization', 'self-perception'),
+    createEQQuestion('eq-sa-13', '我不断提升自己', 'self-actualization', 'self-perception'),
+    createEQQuestion('eq-sa-14', '我寻找学习机会', 'self-actualization', 'self-perception'),
+    createEQQuestion('eq-sa-15', '我对自己的进步感到满意', 'self-actualization', 'self-perception'),
+
+    // 自我认知 - 情绪自我觉察 - 15题
     createEQQuestion('eq-esa-1', '我能够识别自己的情绪', 'emotional-self-awareness', 'self-perception'),
     createEQQuestion('eq-esa-2', '我了解自己为什么会有某种感觉', 'emotional-self-awareness', 'self-perception'),
     createEQQuestion('eq-esa-3', '我能够准确描述自己的感受', 'emotional-self-awareness', 'self-perception'),
@@ -47,6 +64,66 @@ export const eqProfessionalQuestions: ProfessionalQuestionSet = {
     createEQQuestion('eq-esa-6', '我能够区分不同的情绪', 'emotional-self-awareness', 'self-perception'),
     createEQQuestion('eq-esa-7', '我对自己的情绪有深刻的理解', 'emotional-self-awareness', 'self-perception'),
     createEQQuestion('eq-esa-8', '我能够意识到情绪对我的影响', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-9', '我注意到自己的身体反应', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-10', '我理解自己的情绪模式', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-11', '我觉察到自己的情绪状态', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-12', '我认识到自己的情绪需求', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-13', '我注意到情绪对思维的影响', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-14', '我认识到情绪对行为的影响', 'emotional-self-awareness', 'self-perception'),
+    createEQQuestion('eq-esa-15', '我能够预测自己的情绪反应', 'emotional-self-awareness', 'self-perception'),
+
+    // 自我表达 - 情绪表达 - 15题
+    createEQQuestion('eq-ee-1', '我能够适当地表达自己的情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-2', '我愿意与他人分享我的感受', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-3', '我能够清楚地表达自己的情感', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-4', '我能够用语言描述自己的情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-5', '我能够向他人展示真实的自己', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-6', '我能够表达自己的需要和愿望', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-7', '我能够与他人分享我的想法', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-8', '我能够坦诚地表达自己的感受', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-9', '我敢于表达真实情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-10', '我能够表达积极情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-11', '我能够表达消极情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-12', '我表达情绪时不会伤害他人', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-13', '我选择适当的时机表达情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-14', '我能够用建设性的方式表达情绪', 'emotional-expression', 'self-expression'),
+    createEQQuestion('eq-ee-15', '我能够接受自己的情绪表达', 'emotional-expression', 'self-expression'),
+
+    // 自我表达 - 自信表达 - 10题
+    createEQQuestion('eq-as-1', '我能够自信地表达自己的观点', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-2', '我能够坚持自己的立场', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-3', '我能够拒绝不合理的要求', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-4', '我能够为自己争取权益', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-5', '我能够在冲突中表达自己', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-6', '我能够坦率地说出自己的想法', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-7', '我能够表达不同意见', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-8', '我能够维护自己的边界', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-9', '我能够自信地说话', 'assertiveness', 'self-expression'),
+    createEQQuestion('eq-as-10', '我能够在压力下保持自信', 'assertiveness', 'self-expression'),
+
+    // 人际关系 - 人际关系 - 10题
+    createEQQuestion('eq-ir-1', '我能够建立和维持良好的人际关系', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-2', '我能够与他人建立亲密关系', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-3', '我能够信任他人', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-4', '我能够给予和接受情感支持', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-5', '我能够与他人分享感受', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-6', '我能够与他人建立深厚的友谊', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-7', '我能够与他人保持联系', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-8', '我能够理解他人的感受', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-9', '我能够与他人合作', 'interpersonal-relationships', 'interpersonal'),
+    createEQQuestion('eq-ir-10', '我能够与他人建立互信关系', 'interpersonal-relationships', 'interpersonal'),
+
+    // 决策 - 现实检验 - 10题
+    createEQQuestion('eq-rt-1', '我能够客观地评估现实情况', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-2', '我能够区分事实和幻想', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-3', '我能够准确理解他人的意图', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-4', '我能够客观地看待问题', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-5', '我能够识别他人的真实动机', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-6', '我能够准确判断情况', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-7', '我能够看到事物的本质', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-8', '我能够理性地分析问题', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-9', '我能够收集必要的信息', 'reality-testing', 'decision-making'),
+    createEQQuestion('eq-rt-10', '我能够验证自己的假设', 'reality-testing', 'decision-making'),
   ],
   advanced: [
     createEQQuestion('eq-sr-1', '我对自己感到满意', 'self-regard', 'self-perception'),

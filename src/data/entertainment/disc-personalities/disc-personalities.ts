@@ -13,7 +13,7 @@ export const discAssessment: Assessment = {
   duration: 8,
   quality: '娱乐',
   icon: '🎯',
-  questionCount: 24,
+  questionCount: 300,
   questions: discQuestions,
   resultCalculator: calculateDISC,
   tag: 'DISC',

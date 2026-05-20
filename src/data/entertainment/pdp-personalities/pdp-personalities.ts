@@ -13,7 +13,7 @@ export const pdpAssessment: Assessment = {
   duration: 5,
   quality: '娱乐',
   icon: '🦁',
-  questionCount: 20,
+  questionCount: 300,
   questions: pdpQuestions,
   resultCalculator: calculatePDP,
   tag: 'PDP',

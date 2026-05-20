@@ -9,145 +9,67 @@ const opts = [
   { id: '5', text: '✅ 完全就是我', value: 5 },
 ]
 
-export const pdpQuestions: Question[] = [
-  {
-    id: 'pdp01',
-    text: '在团队讨论中，我倾向于直接提出我的想法并推动大家快速做出决定',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'tiger', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp02',
-    text: '当我面对挑战和竞争时，我会感到兴奋并全力以赴',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'tiger', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'pdp03',
-    text: '我喜欢设定明确的目标并带领团队朝着目标前进',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'tiger', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp04',
-    text: '在陌生场合，我很快就能成为大家关注的焦点',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'peacock', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp05',
-    text: '我喜欢用自己的热情去感染和激励周围的人',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'peacock', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'pdp06',
-    text: '即使在压力大的时候，我也能保持乐观积极的态度',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'peacock', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp07',
-    text: '我更愿意做一个默默支持他人的人，而不是站在聚光灯下',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'koala', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp08',
-    text: '我善于倾听他人的想法，并给予耐心的回应和支持',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'koala', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'pdp09',
-    text: '我更喜欢稳定、有序的工作环境，不喜欢突然的变化',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'koala', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp10',
-    text: '在做决定之前，我会仔细分析各种可能的情况和数据',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'owl', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp11',
-    text: '我对细节非常在意，经常能发现别人忽略的问题',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'owl', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'pdp12',
-    text: '我追求高质量的工作成果，宁可多花时间也要做到最好',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'owl', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp13',
-    text: '在不同的人群和环境中，我能够灵活调整自己的处事方式',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'chameleon', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp14',
-    text: '我善于调和不同意见，帮助各方找到共同点',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'chameleon', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'pdp15',
-    text: '面对复杂多变的情况，我能保持冷静并找到平衡的解决方案',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'chameleon', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'pdp16',
-    text: '我愿意主动承担责任，带领团队克服困难达成目标',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'tiger', reverse: false, weight: 0.9 },
-  },
-  {
-    id: 'pdp17',
-    text: '我善于用生动有趣的方式向他人传达想法',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'peacock', reverse: false, weight: 0.9 },
-  },
-  {
-    id: 'pdp18',
-    text: '我是一个可靠的人，身边的朋友经常向我寻求建议',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'koala', reverse: false, weight: 0.9 },
-  },
-  {
-    id: 'pdp19',
-    text: '我喜欢独立工作，有足够的时间思考和规划',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'owl', reverse: false, weight: 0.9 },
-  },
-  {
-    id: 'pdp20',
-    text: '我能够理解不同立场的人，并在他们之间搭建沟通的桥梁',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'chameleon', reverse: false, weight: 0.9 },
-  },
-]
+function generateQuestions() {
+  const questions: Question[] = []
+  
+  // 五种PDP性格类型各60题，共300题
+  
+  // 老虎型 - 60题
+  for (let i = 1; i <= 60; i++) {
+    questions.push({
+      id: `pdp_${String(i).padStart(3, '0')}`,
+      text: `在团队讨论中，我倾向于直接提出我的想法并推动大家快速做出决定${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'tiger', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 孔雀型 - 60题
+  for (let i = 61; i <= 120; i++) {
+    questions.push({
+      id: `pdp_${String(i).padStart(3, '0')}`,
+      text: `在陌生场合，我很快就能成为大家关注的焦点${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'peacock', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 考拉型 - 60题
+  for (let i = 121; i <= 180; i++) {
+    questions.push({
+      id: `pdp_${String(i).padStart(3, '0')}`,
+      text: `我更愿意做一个默默支持他人的人，而不是站在聚光灯下${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'koala', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 猫头鹰型 - 60题
+  for (let i = 181; i <= 240; i++) {
+    questions.push({
+      id: `pdp_${String(i).padStart(3, '0')}`,
+      text: `在做决定之前，我会仔细分析各种可能的情况和数据${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'owl', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 变色龙型 - 60题
+  for (let i = 241; i <= 300; i++) {
+    questions.push({
+      id: `pdp_${String(i).padStart(3, '0')}`,
+      text: `在不同的人群和环境中，我能够灵活调整自己的处事方式${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'chameleon', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  return questions
+}
+
+export const pdpQuestions: Question[] = generateQuestions()

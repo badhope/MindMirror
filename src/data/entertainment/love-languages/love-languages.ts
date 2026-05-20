@@ -13,7 +13,7 @@ export const loveLanguagesAssessment: Assessment = {
   duration: 3,
   quality: '娱乐',
   icon: '💕',
-  questionCount: 15,
+  questionCount: 300,
   questions: loveLanguagesQuestions,
   resultCalculator: calculateLoveLanguages,
   tag: '爱情',

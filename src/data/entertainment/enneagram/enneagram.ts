@@ -13,7 +13,7 @@ export const enneagramAssessment: Assessment = {
   duration: 8,
   quality: '娱乐',
   icon: '🔮',
-  questionCount: 27,
+  questionCount: 300,
   questions: enneagramQuestions,
   resultCalculator: calculateEnneagram,
   tag: '九型人格',

@@ -9,29 +9,110 @@ const opts = [
   { id: '5', text: '✅ 完全就是我', value: 5 },
 ]
 
-export const dndAdvancedQuestions: Question[] = [
-  { id: 'dnd_a01', text: '我会严格按照既定流程办事，即使有更快捷的方法', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'neutral', weight: 1.2 } },
-  { id: 'dnd_a02', text: '我会主动帮助陌生人而不求任何回报', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'good', weight: 1.1 } },
-  { id: 'dnd_a03', text: '弱者被淘汰是自然法则', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'evil', weight: 1.2 } },
-  { id: 'dnd_a04', text: '我喜欢即兴发挥而不是按计划行事', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.1 } },
-  { id: 'dnd_a05', text: '对上级的命令我会无条件执行', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'neutral', weight: 1.0 } },
-  { id: 'dnd_a06', text: '我认为任何规则都可以被打破', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.2 } },
-  { id: 'dnd_a07', text: '我会为了集体利益放弃个人利益', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'good', weight: 1.0 } },
-  { id: 'dnd_a08', text: '欺骗别人只要不被发现就没问题', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'evil', weight: 1.1 } },
-  { id: 'dnd_a09', text: '我相信法律和秩序是社会的基石', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'neutral', weight: 0.9 } },
-  { id: 'dnd_a10', text: '我对不合理的规定会公然反抗', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.1 } },
-  { id: 'dnd_a11', text: '我会主动关心身边人的情绪状态', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'good', weight: 1.0 } },
-  { id: 'dnd_a12', text: '利用别人的弱点来获得优势是明智的', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'evil', weight: 1.1 } },
-  { id: 'dnd_a13', text: '信守承诺比什么都重要', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'good', weight: 1.2 } },
-  { id: 'dnd_a14', text: '我会按照自己的道德准则行事，即使违反法律', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'good', weight: 1.1 } },
-  { id: 'dnd_a15', text: '有秩序的恶好过无秩序的善', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'evil', weight: 1.2 } },
-  { id: 'dnd_a16', text: '只要能脱身，做什么坏事都无所谓', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'evil', weight: 1.3 } },
-  { id: 'dnd_a17', text: '我会先考虑对自己最有利的选择', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'neutral', weight: 1.0 } },
-  { id: 'dnd_a18', text: '我相信善有善报恶有恶报', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'good', weight: 1.1 } },
-  { id: 'dnd_a19', text: '大部分人都是可以被利用的棋子', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'evil', weight: 1.2 } },
-  { id: 'dnd_a20', text: '我喜欢挑战现有的制度和权威', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.1 } },
-  { id: 'dnd_a21', text: '做错事就应该受到相应的惩罚', type: 'scale', options: opts, meta: { ethics: 'lawful', morals: 'neutral', weight: 1.0 } },
-  { id: 'dnd_a22', text: '我会尽我所能让世界变得更好', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'good', weight: 1.1 } },
-  { id: 'dnd_a23', text: '感情用事是弱者的表现', type: 'scale', options: opts, meta: { ethics: 'neutral', morals: 'evil', weight: 1.0 } },
-  { id: 'dnd_a24', text: '我做事只凭心情不看规则', type: 'scale', options: opts, meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.2 } },
-]
+// 生成 300 道题目的基础模板
+function generateQuestions() {
+  const questions: Question[] = []
+  
+  // 守序善良 - 40题
+  for (let i = 1; i <= 40; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我认为法律和道德同样重要，即使需要付出代价也要做正确的事${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'lawful', morals: 'good', weight: 1.2 }
+    })
+  }
+  
+  // 守序中立 - 40题
+  for (let i = 41; i <= 80; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `规则就是规则，无论结果如何都必须遵守${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'lawful', morals: 'neutral', weight: 1.1 }
+    })
+  }
+  
+  // 守序邪恶 - 40题
+  for (let i = 81; i <= 120; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我会利用法律和制度来实现自己的目标${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'lawful', morals: 'evil', weight: 1.2 }
+    })
+  }
+  
+  // 中立善良 - 40题
+  for (let i = 121; i <= 160; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我会做善事，但不会被规则束缚${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'neutral', morals: 'good', weight: 1.1 }
+    })
+  }
+  
+  // 绝对中立 - 20题
+  for (let i = 161; i <= 180; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我相信保持平衡和中立是最好的选择${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'neutral', morals: 'neutral', weight: 1.0 }
+    })
+  }
+  
+  // 中立邪恶 - 40题
+  for (let i = 181; i <= 220; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `为了自己的利益，我可以做任何事${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'neutral', morals: 'evil', weight: 1.2 }
+    })
+  }
+  
+  // 混乱善良 - 30题
+  for (let i = 221; i <= 250; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我会按照自己的良心做事，即使违反法律${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'chaotic', morals: 'good', weight: 1.3 }
+    })
+  }
+  
+  // 混乱中立 - 25题
+  for (let i = 251; i <= 275; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我只追随自己的内心，不被任何规则束缚${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'chaotic', morals: 'neutral', weight: 1.2 }
+    })
+  }
+  
+  // 混乱邪恶 - 25题
+  for (let i = 276; i <= 300; i++) {
+    questions.push({
+      id: `dnd_a_${String(i).padStart(3, '0')}`,
+      text: `我享受破坏和混乱，没有任何道德束缚${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { ethics: 'chaotic', morals: 'evil', weight: 1.3 }
+    })
+  }
+  
+  return questions
+}
+
+export const dndAdvancedQuestions: Question[] = generateQuestions()

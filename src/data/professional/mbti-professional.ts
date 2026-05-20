@@ -111,6 +111,182 @@ export const mbtiProfessionalQuestions: ProfessionalQuestionSet = {
       { trait: 'I', text: '是的，社交让我疲惫' },
       { trait: 'E', text: '不是，社交给我能量' }
     ),
+    createMBTIQuestion('mbti-ei-20', '周末我更喜欢外出社交，而不是在家休息', 'EI',
+      { trait: 'E', text: '是的，我喜欢外出活动' },
+      { trait: 'I', text: '不是，我享受安静时光' }
+    ),
+    createMBTIQuestion('mbti-sn-1', '在学习全新的专业技能（如编程语言或设计软件）时，我的学习偏好是什么？', 'SN',
+      { trait: 'N', text: '先理解核心概念和底层原理，再学习具体操作' },
+      { trait: 'S', text: '从实际案例和动手操作开始，逐步理解理论' }
+    ),
+    createMBTIQuestion('mbti-sn-2', '阅读专业报告或技术文档时，我最关注什么信息？', 'SN',
+      { trait: 'S', text: '具体数据、事实细节和可操作的建议' },
+      { trait: 'N', text: '整体论点、潜在含义和未来趋势预测' }
+    ),
+    createMBTIQuestion('mbti-sn-3', '在职业发展规划中，我更看重什么因素？', 'SN',
+      { trait: 'N', text: '行业前景、创新机会和个人成长潜力' },
+      { trait: 'S', text: '具体职位要求、薪资待遇和工作稳定性' }
+    ),
+    createMBTIQuestion('mbti-sn-4', '参加完一场重要的商务会议后，我记得最清楚的是什么？', 'SN',
+      { trait: 'S', text: '具体的数字、决议事项和时间节点' },
+      { trait: 'N', text: '讨论的整体氛围、各方立场和潜在影响' }
+    ),
+    createMBTIQuestion('mbti-sn-5', '在做重大投资决策时，我主要依据什么来判断？', 'SN',
+      { trait: 'N', text: '市场趋势、未来发展潜力和直觉判断' },
+      { trait: 'S', text: '历史业绩、财务数据和风险分析报告' }
+    ),
+    createMBTIQuestion('mbti-sn-6', '我更喜欢处理具体、实际的问题，而不是抽象的概念', 'SN',
+      { trait: 'S', text: '是的，实际问题更有意义' },
+      { trait: 'N', text: '不是，抽象问题更有趣' }
+    ),
+    createMBTIQuestion('mbti-sn-7', '我经常思考未来的可能性和潜在的发展', 'SN',
+      { trait: 'N', text: '是的，我喜欢展望未来' },
+      { trait: 'S', text: '不是，我更关注当下' }
+    ),
+    createMBTIQuestion('mbti-sn-8', '我注重细节，善于发现细微的变化', 'SN',
+      { trait: 'S', text: '是的，细节很重要' },
+      { trait: 'N', text: '不是，我更关注整体' }
+    ),
+    createMBTIQuestion('mbti-sn-9', '我喜欢探索新的想法和理论', 'SN',
+      { trait: 'N', text: '是的，新想法让我兴奋' },
+      { trait: 'S', text: '不是，我更喜欢已知的方法' }
+    ),
+    createMBTIQuestion('mbti-sn-10', '我更依赖过去的经验来做决定', 'SN',
+      { trait: 'S', text: '是的，经验是最好的老师' },
+      { trait: 'N', text: '不是，我更愿意尝试新方法' }
+    ),
+    createMBTIQuestion('mbti-sn-11', '我经常能看到事物之间的隐藏联系', 'SN',
+      { trait: 'N', text: '是的，我善于发现关联' },
+      { trait: 'S', text: '不是，我看到的是独立事物' }
+    ),
+    createMBTIQuestion('mbti-sn-12', '我更喜欢按部就班地完成任务', 'SN',
+      { trait: 'S', text: '是的，步骤很重要' },
+      { trait: 'N', text: '不是，我更喜欢灵活方式' }
+    ),
+    createMBTIQuestion('mbti-sn-13', '我善于想象可能发生的情况', 'SN',
+      { trait: 'N', text: '是的，想象力丰富' },
+      { trait: 'S', text: '不是，我更关注现实' }
+    ),
+    createMBTIQuestion('mbti-sn-14', '我更信任可以测量和验证的事实', 'SN',
+      { trait: 'S', text: '是的，事实更可靠' },
+      { trait: 'N', text: '不是，直觉也很有价值' }
+    ),
+    createMBTIQuestion('mbti-sn-15', '我喜欢讨论抽象的概念和理论', 'SN',
+      { trait: 'N', text: '是的，理论讨论很有趣' },
+      { trait: 'S', text: '不是，我更喜欢实际话题' }
+    ),
+    createMBTIQuestion('mbti-sn-16', '我更关注当前的现实情况', 'SN',
+      { trait: 'S', text: '是的，现实最重要' },
+      { trait: 'N', text: '不是，我更关注可能性' }
+    ),
+    createMBTIQuestion('mbti-sn-17', '我经常有灵感闪现的时刻', 'SN',
+      { trait: 'N', text: '是的，灵感很重要' },
+      { trait: 'S', text: '不是，我更依赖逻辑推理' }
+    ),
+    createMBTIQuestion('mbti-sn-18', '我更喜欢具体明确的指示', 'SN',
+      { trait: 'S', text: '是的，明确指示更有效' },
+      { trait: 'N', text: '不是，我喜欢自己探索' }
+    ),
+    createMBTIQuestion('mbti-sn-19', '我善于发现模式和发展趋势', 'SN',
+      { trait: 'N', text: '是的，模式识别是我的强项' },
+      { trait: 'S', text: '不是，我更关注具体事件' }
+    ),
+    createMBTIQuestion('mbti-sn-20', '我更重视实际经验而非理论', 'SN',
+      { trait: 'S', text: '是的，经验更可靠' },
+      { trait: 'N', text: '不是，理论指导实践' }
+    ),
+    createMBTIQuestion('mbti-sn-21', '我喜欢思考"如果...会怎样"的问题', 'SN',
+      { trait: 'N', text: '是的，假设性思考很有趣' },
+      { trait: 'S', text: '不是，我更关注实际情况' }
+    ),
+    createMBTIQuestion('mbti-sn-22', '我更擅长处理具体的任务', 'SN',
+      { trait: 'S', text: '是的，具体任务更适合我' },
+      { trait: 'N', text: '不是，我更喜欢概念性工作' }
+    ),
+    createMBTIQuestion('mbti-sn-23', '我经常能看到别人看不到的可能性', 'SN',
+      { trait: 'N', text: '是的，我善于发现机会' },
+      { trait: 'S', text: '不是，我关注可见的事实' }
+    ),
+    createMBTIQuestion('mbti-tf-1', '作为团队领导，在处理成员之间的严重冲突时，我的首要考虑是什么？', 'TF',
+      { trait: 'T', text: '依据事实和规则，公正地判断对错' },
+      { trait: 'F', text: '关注各方感受，寻求和谐共赢的解决方案' }
+    ),
+    createMBTIQuestion('mbti-tf-2', '当亲密的朋友或同事向我倾诉个人困扰时，我通常的第一反应是什么？', 'TF',
+      { trait: 'T', text: '分析问题根源，提供切实可行的解决方案' },
+      { trait: 'F', text: '先表达理解和共情，给予情感支持' }
+    ),
+    createMBTIQuestion('mbti-tf-3', '在公司需要进行人员优化（裁员）的艰难决策时，我的决策依据主要是什么？', 'TF',
+      { trait: 'F', text: '充分考虑对员工生活的影响，尽量寻找替代方案' },
+      { trait: 'T', text: '基于绩效数据和业务需求，做出理性选择' }
+    ),
+    createMBTIQuestion('mbti-tf-4', '收到上级对我工作的严厉批评后，我的第一反应通常是？', 'TF',
+      { trait: 'T', text: '冷静分析批评内容的合理性和改进空间' },
+      { trait: 'F', text: '先处理情绪反应，再考虑具体内容' }
+    ),
+    createMBTIQuestion('mbti-tf-5', '在商务谈判中遇到对方的强烈情感诉求时，我的应对策略是什么？', 'TF',
+      { trait: 'T', text: '坚持基于事实和数据的专业立场' },
+      { trait: 'F', text: '适当让步以维护关系，寻求情感共鸣' }
+    ),
+    createMBTIQuestion('mbti-tf-6', '我更容易被逻辑论证说服，而不是情感诉求', 'TF',
+      { trait: 'T', text: '是的，逻辑更有说服力' },
+      { trait: 'F', text: '不是，情感也很重要' }
+    ),
+    createMBTIQuestion('mbti-tf-7', '我重视和谐的人际关系胜过客观真理', 'TF',
+      { trait: 'F', text: '是的，和谐很重要' },
+      { trait: 'T', text: '不是，真理更重要' }
+    ),
+    createMBTIQuestion('mbti-tf-8', '我认为公平比仁慈更重要', 'TF',
+      { trait: 'T', text: '是的，公平是原则' },
+      { trait: 'F', text: '不是，仁慈也很重要' }
+    ),
+    createMBTIQuestion('mbti-tf-9', '我经常能感知到他人的情绪变化', 'TF',
+      { trait: 'F', text: '是的，我善于感知情绪' },
+      { trait: 'T', text: '不是，我更关注事实' }
+    ),
+    createMBTIQuestion('mbti-tf-10', '做决定时，我更看重客观标准而非个人情况', 'TF',
+      { trait: 'T', text: '是的，标准很重要' },
+      { trait: 'F', text: '不是，个人情况也重要' }
+    ),
+    createMBTIQuestion('mbti-tf-11', '我倾向于避免伤害他人的感情', 'TF',
+      { trait: 'F', text: '是的，我会小心措辞' },
+      { trait: 'T', text: '不是，直接表达更好' }
+    ),
+    createMBTIQuestion('mbti-tf-12', '我认为诚实比圆滑更重要', 'TF',
+      { trait: 'T', text: '是的，诚实是原则' },
+      { trait: 'F', text: '不是，方式也很重要' }
+    ),
+    createMBTIQuestion('mbti-jp-1', '面对一个为期三个月的复杂项目，我的工作方式更接近哪种？', 'JP',
+      { trait: 'J', text: '制定详细的项目计划，设定明确的里程碑和截止日期' },
+      { trait: 'P', text: '确定大方向后，根据进展灵活调整工作节奏' }
+    ),
+    createMBTIQuestion('mbti-jp-2', '我的办公桌和工作空间通常呈现什么状态？', 'JP',
+      { trait: 'J', text: '整洁有序，物品分类摆放，随时可以找到需要的资料' },
+      { trait: 'P', text: '看似凌乱但我知道东西在哪里，保持创造性混乱' }
+    ),
+    createMBTIQuestion('mbti-jp-3', '安排一次重要的商务出差时，我的准备方式是什么？', 'JP',
+      { trait: 'J', text: '提前制定详细行程，预订酒店和会议，准备备选方案' },
+      { trait: 'P', text: '确定主要目标后，到达后再根据实际情况灵活安排' }
+    ),
+    createMBTIQuestion('mbti-jp-4', '我喜欢在最后期限前完成任务', 'JP',
+      { trait: 'J', text: '是的，提前完成更安心' },
+      { trait: 'P', text: '不是，压力下效率更高' }
+    ),
+    createMBTIQuestion('mbti-jp-5', '我更喜欢有明确结构和规则的工作环境', 'JP',
+      { trait: 'J', text: '是的，结构让我高效' },
+      { trait: 'P', text: '不是，我喜欢自由' }
+    ),
+    createMBTIQuestion('mbti-jp-6', '我经常在最后一刻改变计划', 'JP',
+      { trait: 'P', text: '是的，我保持开放' },
+      { trait: 'J', text: '不是，我坚持计划' }
+    ),
+    createMBTIQuestion('mbti-jp-7', '我认为规则应该被遵守', 'JP',
+      { trait: 'J', text: '是的，规则很重要' },
+      { trait: 'P', text: '不是，规则可以灵活' }
+    ),
+    createMBTIQuestion('mbti-jp-8', '我喜欢探索各种可能性，而不是快速做决定', 'JP',
+      { trait: 'P', text: '是的，探索很有趣' },
+      { trait: 'J', text: '不是，我倾向于快速决定' }
+    ),
   ],
   advanced: [
     createMBTIQuestion('mbti-ei-1', '在需要长时间专注工作的项目中，我更倾向于哪种工作模式？', 'EI',
@@ -209,6 +385,30 @@ export const mbtiProfessionalQuestions: ProfessionalQuestionSet = {
       { trait: 'E', text: '是的，我喜欢外出活动' },
       { trait: 'I', text: '不是，我享受安静时光' }
     ),
+    createMBTIQuestion('mbti-ei-25', '我喜欢在人群中展现自己', 'EI',
+      { trait: 'E', text: '是的，我喜欢表现' },
+      { trait: 'I', text: '不是，我更喜欢低调' }
+    ),
+    createMBTIQuestion('mbti-ei-26', '我经常主动联系朋友', 'EI',
+      { trait: 'E', text: '是的，我保持联系' },
+      { trait: 'I', text: '不是，我等待联系' }
+    ),
+    createMBTIQuestion('mbti-ei-27', '我喜欢在热闹的环境中工作', 'EI',
+      { trait: 'E', text: '是的，活力让我高效' },
+      { trait: 'I', text: '不是，安静让我专注' }
+    ),
+    createMBTIQuestion('mbti-ei-28', '我经常和陌生人聊天', 'EI',
+      { trait: 'E', text: '是的，我喜欢交流' },
+      { trait: 'I', text: '不是，我保持距离' }
+    ),
+    createMBTIQuestion('mbti-ei-29', '我喜欢组织团队活动', 'EI',
+      { trait: 'E', text: '是的，我擅长组织' },
+      { trait: 'I', text: '不是，我参与即可' }
+    ),
+    createMBTIQuestion('mbti-ei-30', '我喜欢在独处中充电', 'EI',
+      { trait: 'I', text: '是的，独处恢复' },
+      { trait: 'E', text: '不是，社交恢复' }
+    ),
     createMBTIQuestion('mbti-sn-1', '在学习全新的专业技能（如编程语言或设计软件）时，我的学习偏好是什么？', 'SN',
       { trait: 'N', text: '先理解核心概念和底层原理，再学习具体操作' },
       { trait: 'S', text: '从实际案例和动手操作开始，逐步理解理论' }
@@ -300,6 +500,274 @@ export const mbtiProfessionalQuestions: ProfessionalQuestionSet = {
     createMBTIQuestion('mbti-sn-23', '我经常能看到别人看不到的可能性', 'SN',
       { trait: 'N', text: '是的，我善于发现机会' },
       { trait: 'S', text: '不是，我关注可见的事实' }
+    ),
+    createMBTIQuestion('mbti-sn-24', '我喜欢阅读科幻小说', 'SN',
+      { trait: 'N', text: '是的，想象未来' },
+      { trait: 'S', text: '不是，现实故事' }
+    ),
+    createMBTIQuestion('mbti-sn-25', '我喜欢关注细节的工作', 'SN',
+      { trait: 'S', text: '是的，精准细致' },
+      { trait: 'N', text: '不是，创意工作' }
+    ),
+    createMBTIQuestion('mbti-sn-26', '我喜欢尝试新的生活方式', 'SN',
+      { trait: 'N', text: '是的，探索变化' },
+      { trait: 'S', text: '不是，保持传统' }
+    ),
+    createMBTIQuestion('mbti-sn-27', '我喜欢看到大局', 'SN',
+      { trait: 'N', text: '是的，整体视角' },
+      { trait: 'S', text: '不是，关注细节' }
+    ),
+    createMBTIQuestion('mbti-sn-28', '我喜欢动手实践', 'SN',
+      { trait: 'S', text: '是的，实践学习' },
+      { trait: 'N', text: '不是，理论学习' }
+    ),
+    createMBTIQuestion('mbti-sn-29', '我喜欢发现新的模式', 'SN',
+      { trait: 'N', text: '是的，发现规律' },
+      { trait: 'S', text: '不是，遵循模式' }
+    ),
+    createMBTIQuestion('mbti-sn-30', '我喜欢关注未来', 'SN',
+      { trait: 'N', text: '是的，展望前景' },
+      { trait: 'S', text: '不是，立足当下' }
+    ),
+    createMBTIQuestion('mbti-tf-1', '作为团队领导，在处理成员之间的严重冲突时，我的首要考虑是什么？', 'TF',
+      { trait: 'T', text: '依据事实和规则，公正地判断对错' },
+      { trait: 'F', text: '关注各方感受，寻求和谐共赢的解决方案' }
+    ),
+    createMBTIQuestion('mbti-tf-2', '当亲密的朋友或同事向我倾诉个人困扰时，我通常的第一反应是什么？', 'TF',
+      { trait: 'T', text: '分析问题根源，提供切实可行的解决方案' },
+      { trait: 'F', text: '先表达理解和共情，给予情感支持' }
+    ),
+    createMBTIQuestion('mbti-tf-3', '在公司需要进行人员优化（裁员）的艰难决策时，我的决策依据主要是什么？', 'TF',
+      { trait: 'F', text: '充分考虑对员工生活的影响，尽量寻找替代方案' },
+      { trait: 'T', text: '基于绩效数据和业务需求，做出理性选择' }
+    ),
+    createMBTIQuestion('mbti-tf-4', '收到上级对我工作的严厉批评后，我的第一反应通常是？', 'TF',
+      { trait: 'T', text: '冷静分析批评内容的合理性和改进空间' },
+      { trait: 'F', text: '先处理情绪反应，再考虑具体内容' }
+    ),
+    createMBTIQuestion('mbti-tf-5', '在商务谈判中遇到对方的强烈情感诉求时，我的应对策略是什么？', 'TF',
+      { trait: 'T', text: '坚持基于事实和数据的专业立场' },
+      { trait: 'F', text: '适当让步以维护关系，寻求情感共鸣' }
+    ),
+    createMBTIQuestion('mbti-tf-6', '我更容易被逻辑论证说服，而不是情感诉求', 'TF',
+      { trait: 'T', text: '是的，逻辑更有说服力' },
+      { trait: 'F', text: '不是，情感也很重要' }
+    ),
+    createMBTIQuestion('mbti-tf-7', '我重视和谐的人际关系胜过客观真理', 'TF',
+      { trait: 'F', text: '是的，和谐很重要' },
+      { trait: 'T', text: '不是，真理更重要' }
+    ),
+    createMBTIQuestion('mbti-tf-8', '我认为公平比仁慈更重要', 'TF',
+      { trait: 'T', text: '是的，公平是原则' },
+      { trait: 'F', text: '不是，仁慈也很重要' }
+    ),
+    createMBTIQuestion('mbti-tf-9', '我经常能感知到他人的情绪变化', 'TF',
+      { trait: 'F', text: '是的，我善于感知情绪' },
+      { trait: 'T', text: '不是，我更关注事实' }
+    ),
+    createMBTIQuestion('mbti-tf-10', '做决定时，我更看重客观标准而非个人情况', 'TF',
+      { trait: 'T', text: '是的，标准很重要' },
+      { trait: 'F', text: '不是，个人情况也重要' }
+    ),
+    createMBTIQuestion('mbti-tf-11', '我倾向于避免伤害他人的感情', 'TF',
+      { trait: 'F', text: '是的，我会小心措辞' },
+      { trait: 'T', text: '不是，直接表达更好' }
+    ),
+    createMBTIQuestion('mbti-tf-12', '我认为诚实比圆滑更重要', 'TF',
+      { trait: 'T', text: '是的，诚实是原则' },
+      { trait: 'F', text: '不是，方式也很重要' }
+    ),
+    createMBTIQuestion('mbti-tf-13', '我更容易被他人的故事感动', 'TF',
+      { trait: 'F', text: '是的，我容易共情' },
+      { trait: 'T', text: '不是，我保持客观' }
+    ),
+    createMBTIQuestion('mbti-tf-14', '在争论中，我更关注事实正确而非感受', 'TF',
+      { trait: 'T', text: '是的，事实最重要' },
+      { trait: 'F', text: '不是，感受也重要' }
+    ),
+    createMBTIQuestion('mbti-tf-15', '我倾向于根据情况灵活处理，而非严格执行规则', 'TF',
+      { trait: 'F', text: '是的，灵活性很重要' },
+      { trait: 'T', text: '不是，规则应该遵守' }
+    ),
+    createMBTIQuestion('mbti-tf-16', '我认为批评应该直接坦率', 'TF',
+      { trait: 'T', text: '是的，直接更有效' },
+      { trait: 'F', text: '不是，应该委婉表达' }
+    ),
+    createMBTIQuestion('mbti-tf-17', '我经常为他人的处境担忧', 'TF',
+      { trait: 'F', text: '是的，我关心他人' },
+      { trait: 'T', text: '不是，我保持距离' }
+    ),
+    createMBTIQuestion('mbti-tf-18', '我认为效率比人情更重要', 'TF',
+      { trait: 'T', text: '是的，效率优先' },
+      { trait: 'F', text: '不是，人情也重要' }
+    ),
+    createMBTIQuestion('mbti-tf-19', '我倾向于支持弱者', 'TF',
+      { trait: 'F', text: '是的，我同情弱者' },
+      { trait: 'T', text: '不是，应该公平对待' }
+    ),
+    createMBTIQuestion('mbti-tf-20', '在决策时，我会优先考虑数据和逻辑', 'TF',
+      { trait: 'T', text: '是的，数据驱动决策' },
+      { trait: 'F', text: '不是，我会考虑价值观' }
+    ),
+    createMBTIQuestion('mbti-tf-21', '我认为同理心是重要的品质', 'TF',
+      { trait: 'F', text: '是的，同理心很重要' },
+      { trait: 'T', text: '不是，理性更重要' }
+    ),
+    createMBTIQuestion('mbti-tf-22', '我更喜欢客观分析而非主观感受', 'TF',
+      { trait: 'T', text: '是的，客观分析更好' },
+      { trait: 'F', text: '不是，感受也有价值' }
+    ),
+    createMBTIQuestion('mbti-tf-23', '我会为了维护关系而妥协', 'TF',
+      { trait: 'F', text: '是的，关系很重要' },
+      { trait: 'T', text: '不是，原则不能妥协' }
+    ),
+    createMBTIQuestion('mbti-tf-24', '我认为真相比感受更重要', 'TF',
+      { trait: 'T', text: '是的，真相优先' },
+      { trait: 'F', text: '不是，感受也重要' }
+    ),
+    createMBTIQuestion('mbti-tf-25', '我经常关心他人的感受', 'TF',
+      { trait: 'F', text: '是的，体贴他人' },
+      { trait: 'T', text: '不是，关注事实' }
+    ),
+    createMBTIQuestion('mbti-tf-26', '我喜欢帮助他人解决情感问题', 'TF',
+      { trait: 'F', text: '是的，情感支持' },
+      { trait: 'T', text: '不是，解决问题' }
+    ),
+    createMBTIQuestion('mbti-tf-27', '我认为决策应该基于逻辑', 'TF',
+      { trait: 'T', text: '是的，逻辑决策' },
+      { trait: 'F', text: '不是，价值决策' }
+    ),
+    createMBTIQuestion('mbti-tf-28', '我容易对他人产生同情心', 'TF',
+      { trait: 'F', text: '是的，同情他人' },
+      { trait: 'T', text: '不是，保持理性' }
+    ),
+    createMBTIQuestion('mbti-tf-29', '我喜欢和谐的团队氛围', 'TF',
+      { trait: 'F', text: '是的，和谐重要' },
+      { trait: 'T', text: '不是，效率重要' }
+    ),
+    createMBTIQuestion('mbti-tf-30', '我认为应该公正对待每个人', 'TF',
+      { trait: 'T', text: '是的，公正原则' },
+      { trait: 'F', text: '不是，因人而异' }
+    ),
+    createMBTIQuestion('mbti-jp-1', '面对一个为期三个月的复杂项目，我的工作方式更接近哪种？', 'JP',
+      { trait: 'J', text: '制定详细的项目计划，设定明确的里程碑和截止日期' },
+      { trait: 'P', text: '确定大方向后，根据进展灵活调整工作节奏' }
+    ),
+    createMBTIQuestion('mbti-jp-2', '我的办公桌和工作空间通常呈现什么状态？', 'JP',
+      { trait: 'J', text: '整洁有序，物品分类摆放，随时可以找到需要的资料' },
+      { trait: 'P', text: '看似凌乱但我知道东西在哪里，保持创造性混乱' }
+    ),
+    createMBTIQuestion('mbti-jp-3', '安排一次重要的商务出差时，我的准备方式是什么？', 'JP',
+      { trait: 'J', text: '提前制定详细行程，预订酒店和会议，准备备选方案' },
+      { trait: 'P', text: '确定主要目标后，到达后再根据实际情况灵活安排' }
+    ),
+    createMBTIQuestion('mbti-jp-4', '在重要客户汇报前的准备工作，我通常会怎么做？', 'JP',
+      { trait: 'J', text: '提前几天准备好演示文稿和发言要点，多次演练' },
+      { trait: 'P', text: '整理核心观点和关键数据，临场发挥具体表述' }
+    ),
+    createMBTIQuestion('mbti-jp-5', '对于未来3-5年的职业发展，我的规划态度是什么？', 'JP',
+      { trait: 'J', text: '有清晰的职业路径图和阶段性目标' },
+      { trait: 'P', text: '有大方向但保持开放性，随机会调整' }
+    ),
+    createMBTIQuestion('mbti-jp-6', '我喜欢在最后期限前完成任务', 'JP',
+      { trait: 'J', text: '是的，提前完成更安心' },
+      { trait: 'P', text: '不是，压力下效率更高' }
+    ),
+    createMBTIQuestion('mbti-jp-7', '我更喜欢有明确结构和规则的工作环境', 'JP',
+      { trait: 'J', text: '是的，结构让我高效' },
+      { trait: 'P', text: '不是，我喜欢自由' }
+    ),
+    createMBTIQuestion('mbti-jp-8', '我经常在最后一刻改变计划', 'JP',
+      { trait: 'P', text: '是的，我保持开放' },
+      { trait: 'J', text: '不是，我坚持计划' }
+    ),
+    createMBTIQuestion('mbti-jp-9', '我认为规则应该被遵守', 'JP',
+      { trait: 'J', text: '是的，规则很重要' },
+      { trait: 'P', text: '不是，规则可以灵活' }
+    ),
+    createMBTIQuestion('mbti-jp-10', '我喜欢探索各种可能性，而不是快速做决定', 'JP',
+      { trait: 'P', text: '是的，探索很有趣' },
+      { trait: 'J', text: '不是，我倾向于快速决定' }
+    ),
+    createMBTIQuestion('mbti-jp-11', '我会在完成任务后才开始放松', 'JP',
+      { trait: 'J', text: '是的，先工作后娱乐' },
+      { trait: 'P', text: '不是，我边工作边放松' }
+    ),
+    createMBTIQuestion('mbti-jp-12', '我更喜欢保持选择的开放性', 'JP',
+      { trait: 'P', text: '是的，开放性很重要' },
+      { trait: 'J', text: '不是，我喜欢确定的事' }
+    ),
+    createMBTIQuestion('mbti-jp-13', '我喜欢制定长期计划并坚持执行', 'JP',
+      { trait: 'J', text: '是的，计划让我安心' },
+      { trait: 'P', text: '不是，我更喜欢灵活' }
+    ),
+    createMBTIQuestion('mbti-jp-14', '我经常在最后一刻才做决定', 'JP',
+      { trait: 'P', text: '是的，我需要更多信息' },
+      { trait: 'J', text: '不是，我提前做决定' }
+    ),
+    createMBTIQuestion('mbti-jp-15', '我认为完成比完美更重要', 'JP',
+      { trait: 'P', text: '是的，完成是第一步' },
+      { trait: 'J', text: '不是，我追求完美' }
+    ),
+    createMBTIQuestion('mbti-jp-16', '我喜欢有条理的生活方式', 'JP',
+      { trait: 'J', text: '是的，条理让我高效' },
+      { trait: 'P', text: '不是，我喜欢随性' }
+    ),
+    createMBTIQuestion('mbti-jp-17', '我经常在项目中改变方向', 'JP',
+      { trait: 'P', text: '是的，我适应变化' },
+      { trait: 'J', text: '不是，我坚持原计划' }
+    ),
+    createMBTIQuestion('mbti-jp-18', '我喜欢把事情安排妥当', 'JP',
+      { trait: 'J', text: '是的，安排让我安心' },
+      { trait: 'P', text: '不是，我喜欢即兴' }
+    ),
+    createMBTIQuestion('mbti-jp-19', '我认为计划可以随时调整', 'JP',
+      { trait: 'P', text: '是的，灵活很重要' },
+      { trait: 'J', text: '不是，计划应该执行' }
+    ),
+    createMBTIQuestion('mbti-jp-20', '我喜欢在决定前收集所有信息', 'JP',
+      { trait: 'P', text: '是的，信息很重要' },
+      { trait: 'J', text: '不是，我快速决定' }
+    ),
+    createMBTIQuestion('mbti-jp-21', '我认为截止日期很重要', 'JP',
+      { trait: 'J', text: '是的，截止日期必须遵守' },
+      { trait: 'P', text: '不是，可以灵活处理' }
+    ),
+    createMBTIQuestion('mbti-jp-22', '我喜欢提前准备', 'JP',
+      { trait: 'J', text: '是的，准备充分' },
+      { trait: 'P', text: '不是，临场发挥' }
+    ),
+    createMBTIQuestion('mbti-jp-23', '我喜欢固定的日程安排', 'JP',
+      { trait: 'J', text: '是的，规律生活' },
+      { trait: 'P', text: '不是，灵活安排' }
+    ),
+    createMBTIQuestion('mbti-jp-24', '我喜欢快速做出决定', 'JP',
+      { trait: 'J', text: '是的，果断决策' },
+      { trait: 'P', text: '不是，保持开放' }
+    ),
+    createMBTIQuestion('mbti-jp-25', '我喜欢整理和组织', 'JP',
+      { trait: 'J', text: '是的，喜欢整洁' },
+      { trait: 'P', text: '不是，接受混乱' }
+    ),
+    createMBTIQuestion('mbti-jp-26', '我喜欢有明确的目标', 'JP',
+      { trait: 'J', text: '是的，目标导向' },
+      { trait: 'P', text: '不是，过程导向' }
+    ),
+    createMBTIQuestion('mbti-jp-27', '我喜欢按计划行事', 'JP',
+      { trait: 'J', text: '是的，遵循计划' },
+      { trait: 'P', text: '不是，灵活应变' }
+    ),
+    createMBTIQuestion('mbti-jp-28', '我喜欢保持选择开放', 'JP',
+      { trait: 'P', text: '是的，开放心态' },
+      { trait: 'J', text: '不是，确定方向' }
+    ),
+    createMBTIQuestion('mbti-jp-29', '我喜欢准时', 'JP',
+      { trait: 'J', text: '是的，守时重要' },
+      { trait: 'P', text: '不是，弹性时间' }
+    ),
+    createMBTIQuestion('mbti-jp-30', '我喜欢有秩序的环境', 'JP',
+      { trait: 'J', text: '是的，秩序重要' },
+      { trait: 'P', text: '不是，灵活环境' }
     ),
   ],
   professional: [

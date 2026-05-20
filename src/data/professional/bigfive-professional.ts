@@ -22,6 +22,7 @@ const createBigFiveQuestion = (
 
 export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
   normal: [
+    // N1: 焦虑 (Anxiety) - 12题
     createBigFiveQuestion('neo-n1-1', '我经常感到紧张和焦虑', 'N1'),
     createBigFiveQuestion('neo-n1-2', '我很少感到恐惧或忧虑', 'N1', true),
     createBigFiveQuestion('neo-n1-3', '我容易感到紧张不安', 'N1'),
@@ -30,6 +31,12 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n1-6', '我很少感到惊慌失措', 'N1', true),
     createBigFiveQuestion('neo-n1-7', '我容易对事情感到担忧', 'N1'),
     createBigFiveQuestion('neo-n1-8', '我很少感到焦虑不安', 'N1', true),
+    createBigFiveQuestion('neo-n1-9', '我经常担心未来的事情', 'N1'),
+    createBigFiveQuestion('neo-n1-10', '我很少感到心神不宁', 'N1', true),
+    createBigFiveQuestion('neo-n1-11', '我容易感到不安', 'N1'),
+    createBigFiveQuestion('neo-n1-12', '我很少感到过度紧张', 'N1', true),
+
+    // N2: 愤怒敌意 (Angry Hostility) - 12题
     createBigFiveQuestion('neo-n2-1', '我经常感到愤怒或恼火', 'N2'),
     createBigFiveQuestion('neo-n2-2', '我很少发脾气', 'N2', true),
     createBigFiveQuestion('neo-n2-3', '我容易对他人感到不满', 'N2'),
@@ -38,6 +45,12 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n2-6', '我很少对他人发火', 'N2', true),
     createBigFiveQuestion('neo-n2-7', '我容易被激怒', 'N2'),
     createBigFiveQuestion('neo-n2-8', '我很少感到怨恨', 'N2', true),
+    createBigFiveQuestion('neo-n2-9', '我经常感到不耐烦', 'N2'),
+    createBigFiveQuestion('neo-n2-10', '我很少感到生气', 'N2', true),
+    createBigFiveQuestion('neo-n2-11', '我容易对小事感到不满', 'N2'),
+    createBigFiveQuestion('neo-n2-12', '我很少与人发生冲突', 'N2', true),
+
+    // N3: 抑郁 (Depression) - 12题
     createBigFiveQuestion('neo-n3-1', '我经常感到情绪低落', 'N3'),
     createBigFiveQuestion('neo-n3-2', '我很少感到悲伤', 'N3', true),
     createBigFiveQuestion('neo-n3-3', '我容易感到沮丧', 'N3'),
@@ -46,6 +59,12 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n3-6', '我很少感到空虚', 'N3', true),
     createBigFiveQuestion('neo-n3-7', '我容易感到消沉', 'N3'),
     createBigFiveQuestion('neo-n3-8', '我很少感到忧郁', 'N3', true),
+    createBigFiveQuestion('neo-n3-9', '我经常对事情失去兴趣', 'N3'),
+    createBigFiveQuestion('neo-n3-10', '我很少感到无望', 'N3', true),
+    createBigFiveQuestion('neo-n3-11', '我容易感到疲劳', 'N3'),
+    createBigFiveQuestion('neo-n3-12', '我很少感到缺乏动力', 'N3', true),
+
+    // N4: 自我意识 (Self-Consciousness) - 12题
     createBigFiveQuestion('neo-n4-1', '我经常感到害羞或尴尬', 'N4'),
     createBigFiveQuestion('neo-n4-2', '我很少在人群中感到不自在', 'N4', true),
     createBigFiveQuestion('neo-n4-3', '我容易感到自卑', 'N4'),
@@ -54,6 +73,12 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n4-6', '我很少感到局促不安', 'N4', true),
     createBigFiveQuestion('neo-n4-7', '我容易在社交场合感到紧张', 'N4'),
     createBigFiveQuestion('neo-n4-8', '我很少担心被评判', 'N4', true),
+    createBigFiveQuestion('neo-n4-9', '我经常担心自己的表现', 'N4'),
+    createBigFiveQuestion('neo-n4-10', '我很少感到被关注', 'N4', true),
+    createBigFiveQuestion('neo-n4-11', '我容易感到不自在', 'N4'),
+    createBigFiveQuestion('neo-n4-12', '我很少在社交中感到焦虑', 'N4', true),
+
+    // N5: 冲动性 (Impulsiveness) - 10题
     createBigFiveQuestion('neo-n5-1', '我经常冲动行事', 'N5'),
     createBigFiveQuestion('neo-n5-2', '我很少不经思考就行动', 'N5', true),
     createBigFiveQuestion('neo-n5-3', '我容易控制不住自己', 'N5'),
@@ -62,6 +87,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n5-6', '我很少事后后悔自己的行为', 'N5', true),
     createBigFiveQuestion('neo-n5-7', '我容易一时冲动做决定', 'N5'),
     createBigFiveQuestion('neo-n5-8', '我很少因冲动而犯错', 'N5', true),
+    createBigFiveQuestion('neo-n5-9', '我经常冲动购物', 'N5'),
+    createBigFiveQuestion('neo-n5-10', '我很少不加思考地说话', 'N5', true),
+
+    // N6: 脆弱性 (Vulnerability) - 10题
     createBigFiveQuestion('neo-n6-1', '我在压力下容易崩溃', 'N6'),
     createBigFiveQuestion('neo-n6-2', '我很少在困难面前感到无助', 'N6', true),
     createBigFiveQuestion('neo-n6-3', '我容易感到不知所措', 'N6'),
@@ -70,56 +99,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-n6-6', '我很少感到力不从心', 'N6', true),
     createBigFiveQuestion('neo-n6-7', '我容易在困难时感到绝望', 'N6'),
     createBigFiveQuestion('neo-n6-8', '我很少感到无法处理问题', 'N6', true),
-  ],
-  advanced: [
-    createBigFiveQuestion('neo-n1-1', '我经常感到紧张和焦虑', 'N1'),
-    createBigFiveQuestion('neo-n1-2', '我很少感到恐惧或忧虑', 'N1', true),
-    createBigFiveQuestion('neo-n1-3', '我容易感到紧张不安', 'N1'),
-    createBigFiveQuestion('neo-n1-4', '我很少担心事情会出错', 'N1', true),
-    createBigFiveQuestion('neo-n1-5', '我经常感到内心紧张', 'N1'),
-    createBigFiveQuestion('neo-n1-6', '我很少感到惊慌失措', 'N1', true),
-    createBigFiveQuestion('neo-n1-7', '我容易对事情感到担忧', 'N1'),
-    createBigFiveQuestion('neo-n1-8', '我很少感到焦虑不安', 'N1', true),
-    createBigFiveQuestion('neo-n2-1', '我经常感到愤怒或恼火', 'N2'),
-    createBigFiveQuestion('neo-n2-2', '我很少发脾气', 'N2', true),
-    createBigFiveQuestion('neo-n2-3', '我容易对他人感到不满', 'N2'),
-    createBigFiveQuestion('neo-n2-4', '我很少记仇', 'N2', true),
-    createBigFiveQuestion('neo-n2-5', '我经常感到烦躁', 'N2'),
-    createBigFiveQuestion('neo-n2-6', '我很少对他人发火', 'N2', true),
-    createBigFiveQuestion('neo-n2-7', '我容易被激怒', 'N2'),
-    createBigFiveQuestion('neo-n2-8', '我很少感到怨恨', 'N2', true),
-    createBigFiveQuestion('neo-n3-1', '我经常感到情绪低落', 'N3'),
-    createBigFiveQuestion('neo-n3-2', '我很少感到悲伤', 'N3', true),
-    createBigFiveQuestion('neo-n3-3', '我容易感到沮丧', 'N3'),
-    createBigFiveQuestion('neo-n3-4', '我很少感到绝望', 'N3', true),
-    createBigFiveQuestion('neo-n3-5', '我经常感到孤独', 'N3'),
-    createBigFiveQuestion('neo-n3-6', '我很少感到空虚', 'N3', true),
-    createBigFiveQuestion('neo-n3-7', '我容易感到消沉', 'N3'),
-    createBigFiveQuestion('neo-n3-8', '我很少感到忧郁', 'N3', true),
-    createBigFiveQuestion('neo-n4-1', '我经常感到害羞或尴尬', 'N4'),
-    createBigFiveQuestion('neo-n4-2', '我很少在人群中感到不自在', 'N4', true),
-    createBigFiveQuestion('neo-n4-3', '我容易感到自卑', 'N4'),
-    createBigFiveQuestion('neo-n4-4', '我很少担心别人怎么看我', 'N4', true),
-    createBigFiveQuestion('neo-n4-5', '我经常感到自己不如别人', 'N4'),
-    createBigFiveQuestion('neo-n4-6', '我很少感到局促不安', 'N4', true),
-    createBigFiveQuestion('neo-n4-7', '我容易在社交场合感到紧张', 'N4'),
-    createBigFiveQuestion('neo-n4-8', '我很少担心被评判', 'N4', true),
-    createBigFiveQuestion('neo-n5-1', '我经常冲动行事', 'N5'),
-    createBigFiveQuestion('neo-n5-2', '我很少不经思考就行动', 'N5', true),
-    createBigFiveQuestion('neo-n5-3', '我容易控制不住自己', 'N5'),
-    createBigFiveQuestion('neo-n5-4', '我很少做出鲁莽的决定', 'N5', true),
-    createBigFiveQuestion('neo-n5-5', '我经常无法控制冲动', 'N5'),
-    createBigFiveQuestion('neo-n5-6', '我很少事后后悔自己的行为', 'N5', true),
-    createBigFiveQuestion('neo-n5-7', '我容易一时冲动做决定', 'N5'),
-    createBigFiveQuestion('neo-n5-8', '我很少因冲动而犯错', 'N5', true),
-    createBigFiveQuestion('neo-n6-1', '我在压力下容易崩溃', 'N6'),
-    createBigFiveQuestion('neo-n6-2', '我很少在困难面前感到无助', 'N6', true),
-    createBigFiveQuestion('neo-n6-3', '我容易感到不知所措', 'N6'),
-    createBigFiveQuestion('neo-n6-4', '我很少在紧急情况下慌乱', 'N6', true),
-    createBigFiveQuestion('neo-n6-5', '我经常感到无法应对压力', 'N6'),
-    createBigFiveQuestion('neo-n6-6', '我很少感到力不从心', 'N6', true),
-    createBigFiveQuestion('neo-n6-7', '我容易在困难时感到绝望', 'N6'),
-    createBigFiveQuestion('neo-n6-8', '我很少感到无法处理问题', 'N6', true),
+    createBigFiveQuestion('neo-n6-9', '我经常感到被压垮', 'N6'),
+    createBigFiveQuestion('neo-n6-10', '我很少在挫折面前退缩', 'N6', true),
+
+    // E1: 热情 (Warmth) - 10题
     createBigFiveQuestion('neo-e1-1', '我很容易与人交朋友', 'E1'),
     createBigFiveQuestion('neo-e1-2', '我很少主动接近他人', 'E1', true),
     createBigFiveQuestion('neo-e1-3', '我喜欢与人交往', 'E1'),
@@ -128,6 +111,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e1-6', '我很少主动关心他人', 'E1', true),
     createBigFiveQuestion('neo-e1-7', '我喜欢结交新朋友', 'E1'),
     createBigFiveQuestion('neo-e1-8', '我很少在社交中表现出温暖', 'E1', true),
+    createBigFiveQuestion('neo-e1-9', '我经常对他人表示关心', 'E1'),
+    createBigFiveQuestion('neo-e1-10', '我很少对人冷漠', 'E1', true),
+
+    // E2: 合群 (Gregariousness) - 10题
     createBigFiveQuestion('neo-e2-1', '我喜欢参加社交活动', 'E2'),
     createBigFiveQuestion('neo-e2-2', '我很少喜欢大型聚会', 'E2', true),
     createBigFiveQuestion('neo-e2-3', '我喜欢热闹的环境', 'E2'),
@@ -136,6 +123,115 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e2-6', '我很少喜欢人群聚集的地方', 'E2', true),
     createBigFiveQuestion('neo-e2-7', '我喜欢成为群体的一部分', 'E2'),
     createBigFiveQuestion('neo-e2-8', '我很少享受社交场合', 'E2', true),
+    createBigFiveQuestion('neo-e2-9', '我经常参加聚会', 'E2'),
+    createBigFiveQuestion('neo-e2-10', '我很少喜欢独处', 'E2', true),
+  ],
+  advanced: [
+    // N1: 焦虑 (Anxiety) - 12题
+    createBigFiveQuestion('neo-n1-1', '我经常感到紧张和焦虑', 'N1'),
+    createBigFiveQuestion('neo-n1-2', '我很少感到恐惧或忧虑', 'N1', true),
+    createBigFiveQuestion('neo-n1-3', '我容易感到紧张不安', 'N1'),
+    createBigFiveQuestion('neo-n1-4', '我很少担心事情会出错', 'N1', true),
+    createBigFiveQuestion('neo-n1-5', '我经常感到内心紧张', 'N1'),
+    createBigFiveQuestion('neo-n1-6', '我很少感到惊慌失措', 'N1', true),
+    createBigFiveQuestion('neo-n1-7', '我容易对事情感到担忧', 'N1'),
+    createBigFiveQuestion('neo-n1-8', '我很少感到焦虑不安', 'N1', true),
+    createBigFiveQuestion('neo-n1-9', '我经常担心未来的事情', 'N1'),
+    createBigFiveQuestion('neo-n1-10', '我很少感到心神不宁', 'N1', true),
+    createBigFiveQuestion('neo-n1-11', '我容易感到不安', 'N1'),
+    createBigFiveQuestion('neo-n1-12', '我很少感到过度紧张', 'N1', true),
+
+    // N2: 愤怒敌意 (Angry Hostility) - 12题
+    createBigFiveQuestion('neo-n2-1', '我经常感到愤怒或恼火', 'N2'),
+    createBigFiveQuestion('neo-n2-2', '我很少发脾气', 'N2', true),
+    createBigFiveQuestion('neo-n2-3', '我容易对他人感到不满', 'N2'),
+    createBigFiveQuestion('neo-n2-4', '我很少记仇', 'N2', true),
+    createBigFiveQuestion('neo-n2-5', '我经常感到烦躁', 'N2'),
+    createBigFiveQuestion('neo-n2-6', '我很少对他人发火', 'N2', true),
+    createBigFiveQuestion('neo-n2-7', '我容易被激怒', 'N2'),
+    createBigFiveQuestion('neo-n2-8', '我很少感到怨恨', 'N2', true),
+    createBigFiveQuestion('neo-n2-9', '我经常感到不耐烦', 'N2'),
+    createBigFiveQuestion('neo-n2-10', '我很少感到生气', 'N2', true),
+    createBigFiveQuestion('neo-n2-11', '我容易对小事感到不满', 'N2'),
+    createBigFiveQuestion('neo-n2-12', '我很少与人发生冲突', 'N2', true),
+
+    // N3: 抑郁 (Depression) - 12题
+    createBigFiveQuestion('neo-n3-1', '我经常感到情绪低落', 'N3'),
+    createBigFiveQuestion('neo-n3-2', '我很少感到悲伤', 'N3', true),
+    createBigFiveQuestion('neo-n3-3', '我容易感到沮丧', 'N3'),
+    createBigFiveQuestion('neo-n3-4', '我很少感到绝望', 'N3', true),
+    createBigFiveQuestion('neo-n3-5', '我经常感到孤独', 'N3'),
+    createBigFiveQuestion('neo-n3-6', '我很少感到空虚', 'N3', true),
+    createBigFiveQuestion('neo-n3-7', '我容易感到消沉', 'N3'),
+    createBigFiveQuestion('neo-n3-8', '我很少感到忧郁', 'N3', true),
+    createBigFiveQuestion('neo-n3-9', '我经常对事情失去兴趣', 'N3'),
+    createBigFiveQuestion('neo-n3-10', '我很少感到无望', 'N3', true),
+    createBigFiveQuestion('neo-n3-11', '我容易感到疲劳', 'N3'),
+    createBigFiveQuestion('neo-n3-12', '我很少感到缺乏动力', 'N3', true),
+
+    // N4: 自我意识 (Self-Consciousness) - 12题
+    createBigFiveQuestion('neo-n4-1', '我经常感到害羞或尴尬', 'N4'),
+    createBigFiveQuestion('neo-n4-2', '我很少在人群中感到不自在', 'N4', true),
+    createBigFiveQuestion('neo-n4-3', '我容易感到自卑', 'N4'),
+    createBigFiveQuestion('neo-n4-4', '我很少担心别人怎么看我', 'N4', true),
+    createBigFiveQuestion('neo-n4-5', '我经常感到自己不如别人', 'N4'),
+    createBigFiveQuestion('neo-n4-6', '我很少感到局促不安', 'N4', true),
+    createBigFiveQuestion('neo-n4-7', '我容易在社交场合感到紧张', 'N4'),
+    createBigFiveQuestion('neo-n4-8', '我很少担心被评判', 'N4', true),
+    createBigFiveQuestion('neo-n4-9', '我经常担心自己的表现', 'N4'),
+    createBigFiveQuestion('neo-n4-10', '我很少感到被关注', 'N4', true),
+    createBigFiveQuestion('neo-n4-11', '我容易感到不自在', 'N4'),
+    createBigFiveQuestion('neo-n4-12', '我很少在社交中感到焦虑', 'N4', true),
+
+    // N5: 冲动性 (Impulsiveness) - 10题
+    createBigFiveQuestion('neo-n5-1', '我经常冲动行事', 'N5'),
+    createBigFiveQuestion('neo-n5-2', '我很少不经思考就行动', 'N5', true),
+    createBigFiveQuestion('neo-n5-3', '我容易控制不住自己', 'N5'),
+    createBigFiveQuestion('neo-n5-4', '我很少做出鲁莽的决定', 'N5', true),
+    createBigFiveQuestion('neo-n5-5', '我经常无法控制冲动', 'N5'),
+    createBigFiveQuestion('neo-n5-6', '我很少事后后悔自己的行为', 'N5', true),
+    createBigFiveQuestion('neo-n5-7', '我容易一时冲动做决定', 'N5'),
+    createBigFiveQuestion('neo-n5-8', '我很少因冲动而犯错', 'N5', true),
+    createBigFiveQuestion('neo-n5-9', '我经常冲动购物', 'N5'),
+    createBigFiveQuestion('neo-n5-10', '我很少不加思考地说话', 'N5', true),
+
+    // N6: 脆弱性 (Vulnerability) - 10题
+    createBigFiveQuestion('neo-n6-1', '我在压力下容易崩溃', 'N6'),
+    createBigFiveQuestion('neo-n6-2', '我很少在困难面前感到无助', 'N6', true),
+    createBigFiveQuestion('neo-n6-3', '我容易感到不知所措', 'N6'),
+    createBigFiveQuestion('neo-n6-4', '我很少在紧急情况下慌乱', 'N6', true),
+    createBigFiveQuestion('neo-n6-5', '我经常感到无法应对压力', 'N6'),
+    createBigFiveQuestion('neo-n6-6', '我很少感到力不从心', 'N6', true),
+    createBigFiveQuestion('neo-n6-7', '我容易在困难时感到绝望', 'N6'),
+    createBigFiveQuestion('neo-n6-8', '我很少感到无法处理问题', 'N6', true),
+    createBigFiveQuestion('neo-n6-9', '我经常感到被压垮', 'N6'),
+    createBigFiveQuestion('neo-n6-10', '我很少在挫折面前退缩', 'N6', true),
+
+    // E1: 热情 (Warmth) - 10题
+    createBigFiveQuestion('neo-e1-1', '我很容易与人交朋友', 'E1'),
+    createBigFiveQuestion('neo-e1-2', '我很少主动接近他人', 'E1', true),
+    createBigFiveQuestion('neo-e1-3', '我喜欢与人交往', 'E1'),
+    createBigFiveQuestion('neo-e1-4', '我很少对他人表现出热情', 'E1', true),
+    createBigFiveQuestion('neo-e1-5', '我容易与他人建立亲密关系', 'E1'),
+    createBigFiveQuestion('neo-e1-6', '我很少主动关心他人', 'E1', true),
+    createBigFiveQuestion('neo-e1-7', '我喜欢结交新朋友', 'E1'),
+    createBigFiveQuestion('neo-e1-8', '我很少在社交中表现出温暖', 'E1', true),
+    createBigFiveQuestion('neo-e1-9', '我经常对他人表示关心', 'E1'),
+    createBigFiveQuestion('neo-e1-10', '我很少对人冷漠', 'E1', true),
+
+    // E2: 合群 (Gregariousness) - 10题
+    createBigFiveQuestion('neo-e2-1', '我喜欢参加社交活动', 'E2'),
+    createBigFiveQuestion('neo-e2-2', '我很少喜欢大型聚会', 'E2', true),
+    createBigFiveQuestion('neo-e2-3', '我喜欢热闹的环境', 'E2'),
+    createBigFiveQuestion('neo-e2-4', '我很少主动组织活动', 'E2', true),
+    createBigFiveQuestion('neo-e2-5', '我喜欢与人待在一起', 'E2'),
+    createBigFiveQuestion('neo-e2-6', '我很少喜欢人群聚集的地方', 'E2', true),
+    createBigFiveQuestion('neo-e2-7', '我喜欢成为群体的一部分', 'E2'),
+    createBigFiveQuestion('neo-e2-8', '我很少享受社交场合', 'E2', true),
+    createBigFiveQuestion('neo-e2-9', '我经常参加聚会', 'E2'),
+    createBigFiveQuestion('neo-e2-10', '我很少喜欢独处', 'E2', true),
+
+    // E3: 自信 (Assertiveness) - 10题
     createBigFiveQuestion('neo-e3-1', '我能够自信地表达自己的观点', 'E3'),
     createBigFiveQuestion('neo-e3-2', '我很少在讨论中占主导地位', 'E3', true),
     createBigFiveQuestion('neo-e3-3', '我喜欢领导他人', 'E3'),
@@ -144,6 +240,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e3-6', '我很少说服他人接受我的观点', 'E3', true),
     createBigFiveQuestion('neo-e3-7', '我喜欢承担责任', 'E3'),
     createBigFiveQuestion('neo-e3-8', '我很少主动采取行动', 'E3', true),
+    createBigFiveQuestion('neo-e3-9', '我经常带头做事', 'E3'),
+    createBigFiveQuestion('neo-e3-10', '我很少在团队中发挥领导作用', 'E3', true),
+
+    // E4: 活跃 (Activity) - 10题
     createBigFiveQuestion('neo-e4-1', '我喜欢保持忙碌', 'E4'),
     createBigFiveQuestion('neo-e4-2', '我很少同时做很多事情', 'E4', true),
     createBigFiveQuestion('neo-e4-3', '我精力充沛', 'E4'),
@@ -152,6 +252,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e4-6', '我很少感到精力旺盛', 'E4', true),
     createBigFiveQuestion('neo-e4-7', '我喜欢积极活动', 'E4'),
     createBigFiveQuestion('neo-e4-8', '我很少主动做事', 'E4', true),
+    createBigFiveQuestion('neo-e4-9', '我经常保持活跃', 'E4'),
+    createBigFiveQuestion('neo-e4-10', '我很少感到懒散', 'E4', true),
+
+    // E5: 寻求刺激 (Excitement-Seeking) - 10题
     createBigFiveQuestion('neo-e5-1', '我喜欢冒险和刺激', 'E5'),
     createBigFiveQuestion('neo-e5-2', '我很少寻求刺激体验', 'E5', true),
     createBigFiveQuestion('neo-e5-3', '我喜欢尝试新事物', 'E5'),
@@ -160,6 +264,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e5-6', '我很少参与冒险活动', 'E5', true),
     createBigFiveQuestion('neo-e5-7', '我喜欢挑战和刺激', 'E5'),
     createBigFiveQuestion('neo-e5-8', '我很少渴望刺激', 'E5', true),
+    createBigFiveQuestion('neo-e5-9', '我经常寻找新体验', 'E5'),
+    createBigFiveQuestion('neo-e5-10', '我很少喜欢单调的生活', 'E5', true),
+
+    // E6: 积极情绪 (Positive Emotions) - 10题
     createBigFiveQuestion('neo-e6-1', '我经常感到快乐', 'E6'),
     createBigFiveQuestion('neo-e6-2', '我很少感到兴奋', 'E6', true),
     createBigFiveQuestion('neo-e6-3', '我容易感到愉快', 'E6'),
@@ -168,6 +276,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-e6-6', '我很少感到乐观', 'E6', true),
     createBigFiveQuestion('neo-e6-7', '我经常感到满足', 'E6'),
     createBigFiveQuestion('neo-e6-8', '我很少感到热情洋溢', 'E6', true),
+    createBigFiveQuestion('neo-e6-9', '我经常感到开心', 'E6'),
+    createBigFiveQuestion('neo-e6-10', '我很少感到悲观', 'E6', true),
+
+    // O1: 幻想 (Fantasy) - 10题
     createBigFiveQuestion('neo-o1-1', '我有丰富的想象力', 'O1'),
     createBigFiveQuestion('neo-o1-2', '我很少做白日梦', 'O1', true),
     createBigFiveQuestion('neo-o1-3', '我喜欢幻想和想象', 'O1'),
@@ -176,6 +288,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-o1-6', '我很少幻想不可能的事情', 'O1', true),
     createBigFiveQuestion('neo-o1-7', '我喜欢想象各种可能性', 'O1'),
     createBigFiveQuestion('neo-o1-8', '我很少让想象力自由驰骋', 'O1', true),
+    createBigFiveQuestion('neo-o1-9', '我经常想象未来', 'O1'),
+    createBigFiveQuestion('neo-o1-10', '我很少有创意的想法', 'O1', true),
+
+    // O2: 审美 (Aesthetics) - 10题
     createBigFiveQuestion('neo-o2-1', '我对艺术和美有深刻的欣赏', 'O2'),
     createBigFiveQuestion('neo-o2-2', '我很少被艺术作品打动', 'O2', true),
     createBigFiveQuestion('neo-o2-3', '我喜欢音乐、艺术和文学', 'O2'),
@@ -184,6 +300,10 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-o2-6', '我很少欣赏艺术作品', 'O2', true),
     createBigFiveQuestion('neo-o2-7', '我喜欢探索艺术和美', 'O2'),
     createBigFiveQuestion('neo-o2-8', '我很少被自然美景感动', 'O2', true),
+    createBigFiveQuestion('neo-o2-9', '我经常参观艺术展览', 'O2'),
+    createBigFiveQuestion('neo-o2-10', '我很少注意到周围的美', 'O2', true),
+
+    // O3: 情感 (Feelings) - 10题
     createBigFiveQuestion('neo-o3-1', '我能够深刻体验情感', 'O3'),
     createBigFiveQuestion('neo-o3-2', '我很少关注自己的内心感受', 'O3', true),
     createBigFiveQuestion('neo-o3-3', '我对情感有敏锐的觉察力', 'O3'),
@@ -192,6 +312,8 @@ export const bigFiveProfessionalQuestions: ProfessionalQuestionSet = {
     createBigFiveQuestion('neo-o3-6', '我很少被情感深深打动', 'O3', true),
     createBigFiveQuestion('neo-o3-7', '我重视情感体验', 'O3'),
     createBigFiveQuestion('neo-o3-8', '我很少关注情感世界', 'O3', true),
+    createBigFiveQuestion('neo-o3-9', '我经常反思自己的情感', 'O3'),
+    createBigFiveQuestion('neo-o3-10', '我很少对自己的情绪有深刻理解', 'O3', true),
   ],
   professional: [
     // N1: 焦虑 (Anxiety) - 8题

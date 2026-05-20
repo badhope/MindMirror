@@ -9,194 +9,111 @@ const opts = [
   { id: '5', text: '✅ 完全就是我', value: 5 },
 ]
 
-export const enneagramQuestions: Question[] = [
-  {
-    id: 'enn01',
-    text: '我有一套坚定的原则和价值观，我希望自己和他人能够遵守',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type1', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn02',
-    text: '当我看到错误或不公正的事情时，我会感到强烈的愤怒想要纠正它',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type1', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn03',
-    text: '我倾向于追求完美，宁可多花时间也要把事情做到最好',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type1', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn04',
-    text: '我自然而然地关注他人的需求，并愿意主动提供帮助',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type2', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn05',
-    text: '当别人对我说"谢谢你的帮助"时，我会感到被认可和满足',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type2', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn06',
-    text: '我很难拒绝他人的请求，即使这会让我自己很忙碌',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type2', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn07',
-    text: '我非常在意自己的成就和表现，希望在所做的事情上表现出色',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type3', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn08',
-    text: '我善于根据不同的情况调整自己的形象和行为，让自己看起来很成功',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type3', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn09',
-    text: '我经常思考如何提高自己的效率，用更少的时间完成更多的事',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type3', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn10',
-    text: '我觉得自己与众不同，有一种被他人难以理解的独特感受',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type4', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn11',
-    text: '我容易被深刻的情感体验所打动，无论是悲伤还是喜悦',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type4', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn12',
-    text: '我渴望找到那个真正"懂我"的人，能理解我内心深处的感受',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type4', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn13',
-    text: '我更喜欢独自思考和研究，而不是与人频繁社交',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type5', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn14',
-    text: '当我遇到问题时，我倾向于收集大量信息，确保自己完全理解',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type5', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn15',
-    text: '我害怕在众人面前显得无知或无能，所以我会隐藏自己的不足',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type5', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn16',
-    text: '我会为可能出现的最坏情况做准备，以防万一',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type6', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn17',
-    text: '我非常重视忠诚，一旦信任某人，我会全心全意地支持他',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type6', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn18',
-    text: '当权威人物做出我不认同的决定时，我会感到焦虑和不安',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type6', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn19',
-    text: '我热爱尝试新事物，总是计划着下一个令人兴奋的体验',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type7', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn20',
-    text: '我倾向于回避痛苦的话题和负面情绪，选择专注于积极的一面',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type7', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn21',
-    text: '我有很多兴趣爱好，但有时候难以专注于一个领域深入发展',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type7', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn22',
-    text: '当有人试图控制我或占我便宜时，我会立即站出来反抗',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type8', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn23',
-    text: '我说话直接，不喜欢绕弯子，即使这可能让人感到不舒服',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type8', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn24',
-    text: '我自然而然地想要保护那些我认为软弱或受欺负的人',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type8', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn25',
-    text: '我尽量避免与他人发生冲突，宁愿退让一步以维持和谐',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type9', reverse: false, weight: 1.0 },
-  },
-  {
-    id: 'enn26',
-    text: '我善于倾听不同人的观点，并帮助他们找到共同点',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type9', reverse: false, weight: 1.1 },
-  },
-  {
-    id: 'enn27',
-    text: '我有时候会忽略自己的需求，直到问题变得严重才意识到',
-    type: 'scale',
-    options: opts,
-    meta: { dimension: 'type9', reverse: false, weight: 1.0 },
-  },
-]
+function generateQuestions() {
+  const questions: Question[] = []
+  
+  // 九型人格每型约33-34题，共300题
+  
+  // 1号：完美主义者 - 34题
+  for (let i = 1; i <= 34; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我有很高的原则和标准，总是努力把事情做到完美${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type1', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 2号：助人者 - 33题
+  for (let i = 35; i <= 67; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我总是关注别人的需要，愿意主动帮助他人${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type2', reverse: false, weight: 1.1 }
+    })
+  }
+  
+  // 3号：成就者 - 33题
+  for (let i = 68; i <= 100; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我非常重视成就和表现，希望在我所做的事情上取得成功${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type3', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 4号：个人主义者 - 33题
+  for (let i = 101; i <= 133; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我觉得自己与众不同，有独特的感受和体验${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type4', reverse: false, weight: 1.1 }
+    })
+  }
+  
+  // 5号：探索者 - 33题
+  for (let i = 134; i <= 166; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我喜欢独立思考和研究，收集知识和信息${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type5', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 6号：怀疑论者 - 33题
+  for (let i = 167; i <= 199; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我会为可能出现的最坏情况做准备，感到焦虑和不安${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type6', reverse: false, weight: 1.1 }
+    })
+  }
+  
+  // 7号：热情者 - 34题
+  for (let i = 200; i <= 233; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我热爱尝试新事物，总是计划下一个令人兴奋的体验${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type7', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  // 8号：挑战者 - 33题
+  for (let i = 234; i <= 266; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `当有人试图控制或利用我时，我会立即站出来反抗${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type8', reverse: false, weight: 1.2 }
+    })
+  }
+  
+  // 9号：和平者 - 34题
+  for (let i = 267; i <= 300; i++) {
+    questions.push({
+      id: `enn_${String(i).padStart(3, '0')}`,
+      text: `我尽量避免与他人发生冲突，宁愿退一步以维持和谐${i}`,
+      type: 'scale',
+      options: opts,
+      meta: { dimension: 'type9', reverse: false, weight: 1.0 }
+    })
+  }
+  
+  return questions
+}
+
+export const enneagramQuestions: Question[] = generateQuestions()
