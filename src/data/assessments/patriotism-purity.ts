@@ -27,7 +27,7 @@ export const patriotismPurityAssessment: Assessment = {
   category: '意识形态',
   subcategory: '国家认同',
   difficulty: 'standard',
-  duration: 4
+  duration: 4,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculatePatriotism,

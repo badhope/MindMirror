@@ -9,7 +9,7 @@ export const sdsStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '心理健康',
   subcategory: '情绪健康',
   difficulty: 'standard',
-  duration: 5
+  duration: 5,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateSDS,

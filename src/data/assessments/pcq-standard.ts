@@ -9,7 +9,7 @@ export const pcqStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '心理健康',
   subcategory: '积极心理学',
   difficulty: 'standard',
-  duration: 8
+  duration: 8,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculatePCQ,

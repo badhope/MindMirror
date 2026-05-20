@@ -9,7 +9,7 @@ export const metacognitionStandardAssessment: Omit<Assessment, 'id'> & { id: str
   category: '经典心理学',
   subcategory: '流体智力',
   difficulty: 'standard',
-  duration: 9
+  duration: 9,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateMetacognition,

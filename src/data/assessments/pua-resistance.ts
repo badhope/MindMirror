@@ -27,7 +27,7 @@ export const puaResistanceAssessment: Assessment = {
   category: '社交关系',
   subcategory: '反操纵能力',
   difficulty: 'standard',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculatePUA,

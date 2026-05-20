@@ -1,6 +1,29 @@
 import type { Question } from '../types'
 
 /**
+ * 题目难度类型
+ */
+export type Difficulty = 'easy' | 'medium' | 'hard'
+
+/**
+ * 难度配置
+ */
+export interface DifficultyConfig {
+  easy: number    // easy题目标记的比例
+  medium: number  // medium题目标记的比例
+  hard: number    // hard题目标记的比例
+}
+
+/**
+ * 版本难度分配
+ */
+export interface VersionDifficultyConfig {
+  version: string
+  difficulties: Difficulty[]
+  ratios: number[]  // 对应difficulties的比例
+}
+
+/**
  * 题目版本配置
  */
 export interface VersionConfig {
@@ -42,10 +65,38 @@ export const VERSION_CONFIGS: VersionConfig[] = [
 ]
 
 /**
+ * 版本难度分配配置
+ */
+export const VERSION_DIFFICULTY_CONFIGS: VersionDifficultyConfig[] = [
+  {
+    version: 'standard',
+    difficulties: ['easy'],
+    ratios: [1.0]
+  },
+  {
+    version: 'advanced',
+    difficulties: ['easy', 'medium'],
+    ratios: [0.4, 0.6]
+  },
+  {
+    version: 'professional',
+    difficulties: ['easy', 'medium', 'hard'],
+    ratios: [0.3, 0.4, 0.3]
+  }
+]
+
+/**
  * 获取版本配置
  */
 export function getVersionConfig(version: string): VersionConfig {
   return VERSION_CONFIGS.find(config => config.id === version) || VERSION_CONFIGS[0]
+}
+
+/**
+ * 获取版本难度配置
+ */
+export function getVersionDifficultyConfig(version: string): VersionDifficultyConfig {
+  return VERSION_DIFFICULTY_CONFIGS.find(config => config.version === version) || VERSION_DIFFICULTY_CONFIGS[0]
 }
 
 /**
@@ -58,6 +109,116 @@ function shuffleArray<T>(array: T[]): T[] {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
+}
+
+/**
+ * 为题目数组添加难度标记
+ * @param questions - 题目数组
+ * @param config - 难度配置（可选，默认使用60% easy, 30% medium, 10% hard）
+ */
+export function addDifficultyTags(
+  questions: Question[],
+  config: DifficultyConfig = { easy: 0.6, medium: 0.3, hard: 0.1 }
+): Question[] {
+  const total = questions.length
+  const easyCount = Math.floor(total * config.easy)
+  const mediumCount = Math.floor(total * config.medium)
+  
+  return questions.map((q, index) => {
+    let difficulty: Difficulty = 'easy'
+    if (index >= easyCount + mediumCount) {
+      difficulty = 'hard'
+    } else if (index >= easyCount) {
+      difficulty = 'medium'
+    }
+    
+    // 保留原有的difficulty标记（如果有的话）
+    const existingDifficulty = (q as any).difficulty as Difficulty
+    if (existingDifficulty) {
+      difficulty = existingDifficulty
+    }
+    
+    return {
+      ...q,
+      difficulty
+    }
+  })
+}
+
+/**
+ * 为单个题目添加难度标记
+ */
+export function addDifficultyTag(
+  question: Question,
+  difficulty: Difficulty = 'easy'
+): Question & { difficulty: Difficulty } {
+  return {
+    ...question,
+    difficulty
+  }
+}
+
+/**
+ * 按难度过滤题目
+ */
+export function filterQuestionsByDifficulty(
+  questions: (Question & { difficulty?: Difficulty })[],
+  difficulties: Difficulty[]
+): (Question & { difficulty?: Difficulty })[] {
+  if (difficulties.length === 0) {
+    return questions
+  }
+  return questions.filter(q => {
+    const qDiff = q.difficulty || 'easy'
+    return difficulties.includes(qDiff)
+  })
+}
+
+/**
+ * 根据版本配置智能抽取题目（考虑难度）
+ */
+export function getQuestionsByVersion(
+  questions: Question[],
+  version: string,
+  seed?: string
+): Question[] {
+  const versionConfig = getVersionConfig(version)
+  const difficultyConfig = getVersionDifficultyConfig(version)
+  
+  // 确保题目有难度标记
+  const questionsWithDifficulty = addDifficultyTags(questions)
+  
+  // 按难度分组
+  const questionsByDifficulty: Record<Difficulty, (Question & { difficulty: Difficulty })[]> = {
+    easy: [],
+    medium: [],
+    hard: []
+  }
+  
+  questionsWithDifficulty.forEach(q => {
+    const diff = q.difficulty || 'easy'
+    questionsByDifficulty[diff].push(q)
+  })
+  
+  // 根据版本配置按比例抽取
+  const selectedQuestions: Question[] = []
+  const count = versionConfig.questionCount
+  
+  difficultyConfig.difficulties.forEach((diff, i) => {
+    const diffCount = Math.floor(count * difficultyConfig.ratios[i])
+    const diffQuestions = questionsByDifficulty[diff]
+    if (diffQuestions.length > 0) {
+      selectedQuestions.push(...getRandomQuestions(diffQuestions, diffCount, seed))
+    }
+  })
+  
+  // 如果抽取的题目不够，从所有题目中补充
+  if (selectedQuestions.length < count) {
+    const remaining = questionsWithDifficulty.filter(q => !selectedQuestions.includes(q))
+    selectedQuestions.push(...getRandomQuestions(remaining, count - selectedQuestions.length, seed))
+  }
+  
+  return shuffleArray(selectedQuestions).slice(0, count)
 }
 
 /**

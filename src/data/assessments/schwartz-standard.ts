@@ -9,7 +9,7 @@ export const schwartzStandardAssessment: Omit<Assessment, 'id'> & { id: string }
   category: '意识形态',
   subcategory: '哲学立场',
   difficulty: 'standard',
-  duration: 10
+  duration: 10,
   questionCount: 300,
   quality: '学术级',
   resultCalculator: calculateSchwartz,

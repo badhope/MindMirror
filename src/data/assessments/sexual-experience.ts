@@ -25,7 +25,7 @@ export const sexualExperienceAssessment: Assessment = {
   category: '娱乐趣味',
   subcategory: '亲密探索',
   difficulty: 'standard',
-  duration: 4
+  duration: 4,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateSexualExperience,

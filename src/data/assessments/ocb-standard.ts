@@ -9,7 +9,7 @@ export const ocbStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '职业发展',
   subcategory: '企业文化',
   difficulty: 'standard',
-  duration: 8
+  duration: 8,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateOCB,

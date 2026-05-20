@@ -8,7 +8,7 @@ export const hollandSDSAssessment: Assessment = {
   category: '职业发展',
   subcategory: '职业兴趣',
   difficulty: 'standard',
-  duration: 13
+  duration: 13,
   questionCount: 300,
   quality: '学术',
   resultCalculator: calculateHolland,

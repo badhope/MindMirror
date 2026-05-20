@@ -9,7 +9,7 @@ export const mftStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '意识形态',
   subcategory: '哲学立场',
   difficulty: 'standard',
-  duration: 8
+  duration: 8,
   questionCount: 300,
   quality: '学术级',
   resultCalculator: calculateMFT,

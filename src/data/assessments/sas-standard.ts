@@ -9,7 +9,7 @@ export const sasStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '自我认知',
   subcategory: '焦虑水平',
   difficulty: 'standard',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateSAS,

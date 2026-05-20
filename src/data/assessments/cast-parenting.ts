@@ -30,7 +30,7 @@ export const castAssessment: Assessment = {
   category: '社交关系',
   subcategory: '亲子关系',
   difficulty: 'standard',
-  duration: 6
+  duration: 6,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateCAST,

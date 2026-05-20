@@ -9,7 +9,7 @@ export const attentionTestAssessment: Omit<Assessment, 'id'> & { id: string } = 
   category: '认知功能',
   subcategory: '注意力',
   difficulty: 'easy',
-  duration: 8
+  duration: 8,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateAttention,

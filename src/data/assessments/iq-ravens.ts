@@ -8,7 +8,7 @@ export const iqAssessment: Assessment = {
   category: '自我认知',
   subcategory: '流体智力',
   difficulty: 'expert',
-  duration: 9
+  duration: 9,
   questionCount: 300,
   quality: '学术',
   resultCalculator: calculateIQ,

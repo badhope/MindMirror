@@ -9,7 +9,7 @@ export const mlqStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '职业发展',
   subcategory: '权力适应',
   difficulty: 'standard',
-  duration: 9
+  duration: 9,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateMLQ,

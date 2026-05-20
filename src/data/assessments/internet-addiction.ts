@@ -25,7 +25,7 @@ export const internetAddictionAssessment: Assessment = {
   category: '娱乐趣味',
   subcategory: '数字生活',
   difficulty: 'standard',
-  duration: 4
+  duration: 4,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateInternetAddiction,

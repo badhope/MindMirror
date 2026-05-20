@@ -31,7 +31,7 @@ export const officialdomAssessment: Assessment = {
   category: '职业发展',
   subcategory: '权力适应',
   difficulty: 'expert',
-  duration: 6
+  duration: 6,
   questionCount: 300,
   quality: '入门',
   resultCalculator: calculateOfficialdom,

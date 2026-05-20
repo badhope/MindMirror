@@ -1,19 +1,18 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Clock, Target, Sparkles, Play, AlertCircle, ChevronDown, ChevronUp, Home } from 'lucide-react'
+import { ArrowLeft, Clock, Target, Sparkles, Play, AlertCircle, ChevronDown, ChevronUp, Home, Zap, TrendingUp, Crown } from 'lucide-react'
 import { getAssessmentById } from '@data/assessments'
+import { getVersionConfig } from '@utils/questionPool'
 import ProfessionalCredibility from '@components/professional-credibility/ProfessionalCredibility'
 import { useState } from 'react'
-
-const MAX_NORMAL_QUESTIONS = 28
 
 export default function AssessmentConfirmPage() {
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const assessment = id ? getAssessmentById(id) : undefined
-  const modeFromUrl = searchParams.get('mode') as 'normal' | 'professional'
-  const selectedMode = modeFromUrl === 'professional' ? 'professional' : 'normal'
+  const modeFromUrl = searchParams.get('mode') as 'standard' | 'advanced' | 'professional'
+  const selectedMode = modeFromUrl || 'standard'
   const [showCredibility, setShowCredibility] = useState(false)
 
   if (!assessment) {
@@ -37,30 +36,46 @@ export default function AssessmentConfirmPage() {
     navigate(`/app/assessment/${id}/take?mode=${selectedMode}`)
   }
 
-  const totalQuestionCount = assessment.questions?.length || 0
+  // 获取所有可用的题目数量
+  const allQuestions = assessment.questions || []
   const hasProfessionalQuestions = !!(assessment as any).professionalQuestions
-  const normalQuestionCount = hasProfessionalQuestions
-    ? (assessment as any).professionalQuestions.normal?.length || totalQuestionCount
-    : Math.min(MAX_NORMAL_QUESTIONS, totalQuestionCount)
-  const displayQuestionCount = selectedMode === 'normal' ? normalQuestionCount : totalQuestionCount
+  
+  let totalPoolSize = allQuestions.length
+  if (hasProfessionalQuestions) {
+    const pq = (assessment as any).professionalQuestions
+    totalPoolSize = (pq.normal?.length || 0) + (pq.advanced?.length || 0) + (pq.professional?.length || 0)
+    if (totalPoolSize === 0) totalPoolSize = allQuestions.length
+  }
+
+  // 获取版本配置
+  const versionConfig = getVersionConfig(selectedMode)
+  const displayQuestionCount = versionConfig.questionCount
   const durationMinutes = Math.max(3, Math.ceil(displayQuestionCount * 10 / 60))
 
   const modeConfigs = {
-    normal: {
+    standard: {
       label: '标准版',
       sublabel: '推荐选择',
       accuracy: '高准确率',
       color: 'from-violet-500 to-pink-500',
-      description: normalQuestionCount < totalQuestionCount
-        ? `从${totalQuestionCount}题中科学抽样${normalQuestionCount}题，去重优化，快速获得准确结果`
-        : `${normalQuestionCount}道精选题目，适合快速获得准确结果`
+      icon: Zap,
+      description: `从${totalPoolSize}+题库中智能抽取${displayQuestionCount}题，包含简单题型，快速获得准确结果`
+    },
+    advanced: {
+      label: '进阶版',
+      sublabel: '深度分析',
+      accuracy: '超高精度',
+      color: 'from-blue-500 to-cyan-500',
+      icon: TrendingUp,
+      description: `从${totalPoolSize}+题库中智能抽取${displayQuestionCount}题，包含中等难度题型，获得更全面精准的结果`
     },
     professional: {
       label: '专业版',
-      sublabel: '深度分析',
+      sublabel: '专家级',
       accuracy: '学术级精度',
       color: 'from-amber-500 to-orange-500',
-      description: '完整量表，信效度最高，适合心理学爱好者和专业人士'
+      icon: Crown,
+      description: `从${totalPoolSize}+题库中智能抽取${displayQuestionCount}题，包含高难度题型，获得最全面精准的专业级分析`
     },
   }
   const qualityLabel = {
@@ -68,6 +83,9 @@ export default function AssessmentConfirmPage() {
     standard: '专业',
     expert: '学术',
   }[assessment.difficulty] || '专业'
+
+  const currentConfig = modeConfigs[selectedMode]
+  const Icon = currentConfig.icon
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -102,7 +120,7 @@ export default function AssessmentConfirmPage() {
           className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 text-center mb-8 border border-white/10"
         >
           <motion.div
-            className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-r from-violet-500 to-pink-500 flex items-center justify-center"
+            className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-r ${currentConfig.color} flex items-center justify-center`}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', delay: 0.2 }}
@@ -134,38 +152,22 @@ export default function AssessmentConfirmPage() {
             transition={{ delay: 0.45 }}
             className="mb-8"
           >
-            <div className={`relative p-6 rounded-2xl border-2 border-violet-500/40 ${
-                selectedMode === 'normal' 
-                  ? 'bg-gradient-to-br from-violet-500/20 to-pink-500/10' 
-                  : 'bg-gradient-to-br from-amber-500/20 to-orange-500/10'
-              }`}>
+            <div className={`relative p-6 rounded-2xl border-2 border-violet-500/40 bg-gradient-to-br ${currentConfig.color}/20`}>
               <div className="absolute inset-0 bg-black/35 rounded-2xl"></div>
               <div className="relative z-10 flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${modeConfigs[selectedMode].color} flex items-center justify-center shadow-lg`}>
-                  {selectedMode === 'normal' ? (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${currentConfig.color} flex items-center justify-center shadow-lg`}>
+                  <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-lg font-bold text-white">
-                      {modeConfigs[selectedMode].label}
+                      {currentConfig.label}
                     </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${
-                      selectedMode === 'normal'
-                        ? 'bg-violet-500/20 text-violet-400'
-                        : 'bg-amber-500/20 text-amber-400'
-                    }`}>
-                      {modeConfigs[selectedMode].sublabel}
+                    <span className={`text-xs px-2 py-0.5 rounded-full bg-gradient-to-r ${currentConfig.color}/20 text-violet-300`}>
+                      {currentConfig.sublabel}
                     </span>
                   </div>
-                  <p className="text-white/90 text-sm">{modeConfigs[selectedMode].description}</p>
+                  <p className="text-white/90 text-sm">{currentConfig.description}</p>
                 </div>
               </div>
             </div>
@@ -229,7 +231,7 @@ export default function AssessmentConfirmPage() {
 
             <motion.button
               onClick={handleStart}
-              className="px-10 py-4 rounded-xl bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all flex items-center justify-center gap-2"
+              className={`px-10 py-4 rounded-xl bg-gradient-to-r ${currentConfig.color} text-white font-semibold shadow-lg transition-all flex items-center justify-center gap-2`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               type="button"

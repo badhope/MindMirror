@@ -8,7 +8,7 @@ export const ecrAttachmentAssessment: Assessment = {
   category: '社交关系',
   subcategory: '依恋风格',
   difficulty: 'standard',
-  duration: 5
+  duration: 5,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateECR,

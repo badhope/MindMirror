@@ -8,7 +8,7 @@ export const ideologyAssessment: Assessment = {
   category: '意识形态',
   subcategory: '政治坐标',
   difficulty: 'standard',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateIdeology,

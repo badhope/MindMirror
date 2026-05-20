@@ -8,7 +8,7 @@ export const lacanAssessment: Assessment = {
   category: '意识形态',
   subcategory: '精神分析',
   difficulty: 'expert',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '学术',
   resultCalculator: calculateLacan,

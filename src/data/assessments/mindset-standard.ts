@@ -9,7 +9,7 @@ export const mindsetStandardAssessment: Omit<Assessment, 'id'> & { id: string } 
   category: '经典心理学',
   subcategory: '心智成熟度',
   difficulty: 'standard',
-  duration: 5
+  duration: 5,
   questionCount: 300,
   quality: '经典',
   resultCalculator: calculateMindset,

@@ -8,7 +8,7 @@ export const darkAssessment: Assessment = {
   category: '自我认知',
   subcategory: '黑暗三角',
   difficulty: 'standard',
-  duration: 5
+  duration: 5,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateDark,

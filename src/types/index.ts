@@ -55,6 +55,7 @@ export interface ProfessionalQuestion {
   subscale?: string
   reverseScored?: boolean
   normGroup?: string
+  difficulty?: 'easy' | 'medium' | 'hard'
 }
 
 export interface ProfessionalOption {
@@ -137,6 +138,7 @@ export interface Question {
   options: Option[]
   category?: string
   meta?: Record<string, any>
+  difficulty?: 'easy' | 'medium' | 'hard'
 }
 
 export interface Option {

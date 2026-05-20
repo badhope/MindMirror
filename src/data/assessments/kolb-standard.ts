@@ -9,7 +9,7 @@ export const kolbStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '经典心理学',
   subcategory: '流体智力',
   difficulty: 'standard',
-  duration: 9
+  duration: 9,
   questionCount: 300,
   quality: '经典',
   resultCalculator: calculateKolb,

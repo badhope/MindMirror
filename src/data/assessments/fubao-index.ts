@@ -27,7 +27,7 @@ export const fubaoIndexAssessment: Assessment = {
   category: '职业发展',
   subcategory: '企业文化',
   difficulty: 'standard',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateFuBao,

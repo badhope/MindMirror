@@ -27,7 +27,7 @@ export const lifeMeaningAssessment: Assessment = {
   category: '意识形态',
   subcategory: '存在主义',
   difficulty: 'standard',
-  duration: 3
+  duration: 3,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateLifeMeaning,

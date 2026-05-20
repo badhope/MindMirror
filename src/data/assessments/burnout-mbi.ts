@@ -17,7 +17,7 @@ export const burnoutAssessment: Assessment = {
   category: '职业发展',
   subcategory: '职业耗竭',
   difficulty: 'standard',
-  duration: 8
+  duration: 8,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateBurnout,

@@ -1,9 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Crown, Zap, Sparkles } from 'lucide-react'
+import { Zap, TrendingUp, Crown, Sparkles } from 'lucide-react'
 import { getAssessmentById } from '@data/assessments'
-
-const MAX_NORMAL_QUESTIONS = 28
+import { getVersionConfig } from '@utils/questionPool'
 
 export default function ModeSelectPage() {
   const navigate = useNavigate()
@@ -27,51 +26,75 @@ export default function ModeSelectPage() {
     )
   }
 
-  const totalQuestionCount = assessment.questions?.length || 0
+  // 获取所有可用的题目
+  const allQuestions = assessment.questions || []
   const hasProfessionalQuestions = !!(assessment as any).professionalQuestions
-  const normalQuestionCount = hasProfessionalQuestions
-    ? (assessment as any).professionalQuestions.normal?.length || totalQuestionCount
-    : Math.min(MAX_NORMAL_QUESTIONS, totalQuestionCount)
-  const proQuestionCount = totalQuestionCount
-  const normalDuration = Math.max(3, Math.ceil(normalQuestionCount * 10 / 60))
-  const proDuration = Math.max(10, Math.ceil(proQuestionCount * 10 / 60))
+  
+  // 合并所有题库以获取最大题目数量
+  let totalPoolSize = allQuestions.length
+  if (hasProfessionalQuestions) {
+    const pq = (assessment as any).professionalQuestions
+    totalPoolSize = (pq.normal?.length || 0) + (pq.advanced?.length || 0) + (pq.professional?.length || 0)
+    if (totalPoolSize === 0) totalPoolSize = allQuestions.length
+  }
+
+  // 获取三个版本的配置
+  const standardConfig = getVersionConfig('standard')
+  const advancedConfig = getVersionConfig('advanced')
+  const professionalConfig = getVersionConfig('professional')
+
+  // 计算题目数量和预估时间
+  const standardCount = standardConfig.questionCount
+  const advancedCount = advancedConfig.questionCount
+  const professionalCount = professionalConfig.questionCount
+
+  const standardDuration = Math.max(3, Math.ceil(standardCount * 10 / 60))
+  const advancedDuration = Math.max(5, Math.ceil(advancedCount * 10 / 60))
+  const professionalDuration = Math.max(10, Math.ceil(professionalCount * 10 / 60))
 
   const modes = [
     {
-      id: 'normal',
+      id: 'standard',
       icon: Zap,
       label: '⚡ 标准版',
       tag: '推荐选择',
-      questionCount: `${normalQuestionCount} 题`,
-      duration: `约 ${normalDuration} 分钟`,
+      questionCount: `${standardCount} 题`,
+      duration: `约 ${standardDuration} 分钟`,
       accuracy: '高准确率',
       color: 'from-violet-400 to-pink-400',
       borderColor: 'border-violet-400/50 bg-white/5',
       bgHover: 'hover:bg-violet-500/10',
-      description: normalQuestionCount < totalQuestionCount
-        ? `从${totalQuestionCount}题中科学抽样${normalQuestionCount}题，去重优化，快速获得准确结果`
-        : `${normalQuestionCount}道精选题目，适合快速获得准确结果`
+      description: `从${totalPoolSize}+题库中智能抽取${standardCount}题，包含简单题型，快速获得准确结果`
+    },
+    {
+      id: 'advanced',
+      icon: TrendingUp,
+      label: '🚀 进阶版',
+      tag: '深度分析',
+      questionCount: `${advancedCount} 题`,
+      duration: `约 ${advancedDuration} 分钟`,
+      accuracy: '超高精度',
+      color: 'from-blue-400 to-cyan-400',
+      borderColor: 'border-blue-400/50 bg-white/5',
+      bgHover: 'hover:bg-blue-500/10',
+      description: `从${totalPoolSize}+题库中智能抽取${advancedCount}题，包含中等难度题型，获得更全面精准的结果`
     },
     {
       id: 'professional',
       icon: Crown,
       label: '👑 专业版',
-      tag: '暂不开放',
-      questionCount: `全量 ${proQuestionCount} 题`,
-      duration: `约 ${proDuration} 分钟`,
+      tag: '专家级',
+      questionCount: `${professionalCount} 题`,
+      duration: `约 ${professionalDuration} 分钟`,
       accuracy: '学术级精度',
-      color: 'from-gray-500 to-gray-600',
-      borderColor: 'border-gray-500/30',
-      bgHover: '',
-      description: '完整量表正在升级维护中，敬请期待',
-      disabled: true,
+      color: 'from-amber-400 to-orange-400',
+      borderColor: 'border-amber-400/50 bg-white/5',
+      bgHover: 'hover:bg-amber-500/10',
+      description: `从${totalPoolSize}+题库中智能抽取${professionalCount}题，包含高难度题型，获得最全面精准的专业级分析`
     },
   ]
 
   const handleSelect = (mode: string) => {
-    if (mode === 'professional') {
-      return
-    }
     navigate(`/app/assessment/${id}/confirm?mode=${mode}`)
   }
 
@@ -100,9 +123,9 @@ export default function ModeSelectPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + index * 0.1 }}
                 onClick={() => handleSelect(mode.id)}
-                className={`relative overflow-hidden rounded-2xl border-2 ${mode.borderColor} ${mode.bgHover} ${mode.disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} transition-all p-6 group`}
-                whileHover={mode.disabled ? {} : { scale: 1.02 }}
-                whileTap={mode.disabled ? {} : { scale: 0.98 }}
+                className={`relative overflow-hidden rounded-2xl border-2 ${mode.borderColor} ${mode.bgHover} transition-all p-6 group cursor-pointer`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${mode.color} opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:opacity-20 transition-opacity`} />
                 

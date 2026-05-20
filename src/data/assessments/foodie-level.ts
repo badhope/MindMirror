@@ -29,7 +29,7 @@ export const foodieLevelAssessment: Assessment = {
   category: '娱乐趣味',
   subcategory: '饮食文化',
   difficulty: 'standard',
-  duration: 5
+  duration: 5,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateFoodie,

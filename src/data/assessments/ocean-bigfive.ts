@@ -9,7 +9,7 @@ export const oceanAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '自我认知',
   subcategory: '特质论人格',
   difficulty: 'standard',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateOcean,

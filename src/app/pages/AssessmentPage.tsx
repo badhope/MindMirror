@@ -33,6 +33,11 @@ import {
   convertBackToOriginalAnswer,
   generateSeed,
 } from '@utils/questionRandomizer'
+import { 
+  getQuestionsByVersion, 
+  addDifficultyTags, 
+  getVersionConfig,
+} from '@utils/questionPool'
 
 const QUESTION_TIME_LIMIT = 45
 const ANSWER_STORAGE_KEY = 'assessment-answers-draft'
@@ -149,22 +154,27 @@ export default function AssessmentPage() {
     if (isInitializedRef.current) return
     isInitializedRef.current = true
 
-    let selectedQuestions: Question[] = []
+    let allQuestions: Question[] = []
     const professionalQuestions = getProfessionalQuestions(assessment.id)
     
+    // 优先使用专业题，如果没有则使用标准题
     if (assessment.professionalQuestions) {
-      if (mode === 'normal' && assessment.professionalQuestions.normal) {
-        selectedQuestions = assessment.professionalQuestions.normal
-      } else if (mode === 'advanced' && assessment.professionalQuestions.advanced) {
-        selectedQuestions = assessment.professionalQuestions.advanced
-      } else if (mode === 'professional' && assessment.professionalQuestions.professional) {
-        selectedQuestions = assessment.professionalQuestions.professional
-      } else {
-        selectedQuestions = assessment.questions
+      // 合并所有专业题库
+      const normalQuestions = assessment.professionalQuestions.normal || []
+      const advancedQuestions = assessment.professionalQuestions.advanced || []
+      const profQuestions = assessment.professionalQuestions.professional || []
+      allQuestions = [...normalQuestions, ...advancedQuestions, ...profQuestions]
+      
+      // 如果合并后还是没有足够的题，补充标准题
+      if (allQuestions.length < 100) {
+        allQuestions = [...allQuestions, ...assessment.questions]
       }
     } else {
-      selectedQuestions = assessment.questions
+      allQuestions = assessment.questions
     }
+
+    // 使用新的难度感知的题目选择系统
+    const selectedQuestions = getQuestionsByVersion(allQuestions, mode)
 
     const processedQuestions = processAssessmentQuestions(selectedQuestions, mode as any)
     const storageKey = `${ANSWER_STORAGE_KEY}-${assessment.id}-${mode}`

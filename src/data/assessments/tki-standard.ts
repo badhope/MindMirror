@@ -9,7 +9,7 @@ export const tkiStandardAssessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '职业发展',
   subcategory: '职场行为',
   difficulty: 'standard',
-  duration: 6
+  duration: 6,
   questionCount: 300,
   quality: '经典',
   resultCalculator: calculateTKI,

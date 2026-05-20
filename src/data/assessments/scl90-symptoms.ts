@@ -10,7 +10,7 @@ export const scl90Assessment: Omit<Assessment, 'id'> & { id: string } = {
   category: '心理健康',
   subcategory: '症状筛查',
   difficulty: 'standard',
-  duration: 10
+  duration: 10,
   questionCount: 300,
   quality: '专业',
   resultCalculator: calculateSCL90,

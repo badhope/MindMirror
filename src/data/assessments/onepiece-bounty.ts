@@ -8,7 +8,7 @@ export const bountyAssessment: Assessment = {
   category: '娱乐趣味',
   subcategory: '动漫同人',
   difficulty: 'lite',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '娱乐',
   resultCalculator: calculateBounty,

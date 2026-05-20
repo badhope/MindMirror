@@ -16,7 +16,7 @@ export const philoAssessment: Assessment = {
   category: '意识形态',
   subcategory: '哲学立场',
   difficulty: 'expert',
-  duration: 7
+  duration: 7,
   questionCount: 300,
   quality: '专业级',
   resultCalculator: calculatePhilo,
