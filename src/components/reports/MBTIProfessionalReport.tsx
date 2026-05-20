@@ -330,116 +330,126 @@ export default function MBTIProfessionalReport({ result, mode = 'normal' }: MBTI
         </div>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      {(result.strengths?.length > 0 || result.weaknesses?.length > 0) && (
+        <div className="grid md:grid-cols-2 gap-6">
+          {result.strengths?.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <Award className="w-6 h-6 text-green-400" />
+                核心天赋优势
+              </h3>
+              <ul className="space-y-4">
+                {result.strengths?.map((strength, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2 flex-shrink-0" />
+                    <span className="text-white/80 leading-relaxed">{strength}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          {result.weaknesses?.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <AlertTriangle className="w-6 h-6 text-amber-400" />
+                潜在成长盲区
+              </h3>
+              <ul className="space-y-4">
+                {result.weaknesses?.map((weakness, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2 flex-shrink-0" />
+                    <span className="text-white/80 leading-relaxed">{weakness}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {result.careers?.length > 0 && (
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
           className="glass rounded-3xl p-8"
         >
           <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <Award className="w-6 h-6 text-green-400" />
-            核心天赋优势
+            <Briefcase className="w-6 h-6 text-blue-400" />
+            职业发展指南
           </h3>
-          <ul className="space-y-4">
-            {result.strengths?.map((strength, index) => (
-              <motion.li
+          <div className="grid md:grid-cols-3 gap-4">
+            {result.careers?.map((career, index) => (
+              <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.55 + index * 0.1 }}
-                className="flex items-start gap-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65 + index * 0.1 }}
+                className="bg-gradient-to-br from-blue-500/15 to-indigo-500/15 rounded-xl p-5 border border-blue-500/20"
               >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2 flex-shrink-0" />
-                <span className="text-white/80 leading-relaxed">{strength}</span>
-              </motion.li>
+                <div className="flex items-center gap-2 mb-3">
+                  <Target className="w-5 h-5 text-blue-400" />
+                  <span className="text-white font-semibold">推荐方向 {index + 1}</span>
+                </div>
+                <p className="text-white/80">{career}</p>
+              </motion.div>
             ))}
-          </ul>
+          </div>
         </motion.div>
+      )}
 
+      {result.suggestions?.length > 0 && (
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
           className="glass rounded-3xl p-8"
         >
           <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <AlertTriangle className="w-6 h-6 text-amber-400" />
-            潜在成长盲区
+            <TrendingUp className="w-6 h-6 text-emerald-400" />
+            个性化成长建议
           </h3>
-          <ul className="space-y-4">
-            {result.weaknesses?.map((weakness, index) => (
-              <motion.li
+          <div className="grid md:grid-cols-2 gap-4">
+            {result.suggestions?.map((suggestion, index) => (
+              <motion.div
                 key={index}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.55 + index * 0.1 }}
-                className="flex items-start gap-3"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.75 + index * 0.08 }}
+                className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-4 border border-emerald-500/20"
               >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2 flex-shrink-0" />
-                <span className="text-white/80 leading-relaxed">{weakness}</span>
-              </motion.li>
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-emerald-400 font-bold text-sm">{index + 1}</span>
+                </div>
+                <p className="text-white/80 leading-relaxed pt-0.5">{suggestion}</p>
+              </motion.div>
             ))}
-          </ul>
+          </div>
         </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Briefcase className="w-6 h-6 text-blue-400" />
-          职业发展指南
-        </h3>
-        <div className="grid md:grid-cols-3 gap-4">
-          {result.careers?.map((career, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65 + index * 0.1 }}
-              className="bg-gradient-to-br from-blue-500/15 to-indigo-500/15 rounded-xl p-5 border border-blue-500/20"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <Target className="w-5 h-5 text-blue-400" />
-                <span className="text-white font-semibold">推荐方向 {index + 1}</span>
-              </div>
-              <p className="text-white/80">{career}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-emerald-400" />
-          个性化成长建议
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {result.suggestions?.map((suggestion, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.75 + index * 0.08 }}
-              className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-4 border border-emerald-500/20"
-            >
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-emerald-400 font-bold text-sm">{index + 1}</span>
-              </div>
-              <p className="text-white/80 leading-relaxed pt-0.5">{suggestion}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      )}
 
       {mode === 'professional' && (
         <motion.div

@@ -342,114 +342,124 @@ export default function EnhancedReportTemplate({
         </motion.div>
       )}
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="glass rounded-3xl p-8"
-        >
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Award className="w-6 h-6 text-green-400" />
-            {isIQTest ? '认知优势' : '核心优势'}
-          </h3>
-          <ul className="space-y-3">
-            {safeResult.strengths.map((strength, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2" />
-                <span className="text-white/80">{strength}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
+      {safeResult.strengths.length > 0 || safeResult.weaknesses.length > 0 || safeResult.suggestions.length > 0 ? (
+        <div className="grid md:grid-cols-3 gap-6">
+          {safeResult.strengths.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Award className="w-6 h-6 text-green-400" />
+                {isIQTest ? '认知优势' : '核心优势'}
+              </h3>
+              <ul className="space-y-3">
+                {safeResult.strengths.map((strength, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2" />
+                    <span className="text-white/80">{strength}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
 
+          {safeResult.weaknesses.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-red-400" />
+                待提升领域
+              </h3>
+              <ul className="space-y-3">
+                {safeResult.weaknesses.map((weakness, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-red-400 to-rose-400 mt-2" />
+                    <span className="text-white/80">{weakness}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          {safeResult.suggestions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Lightbulb className="w-6 h-6 text-amber-400" />
+                {isIQTest ? '提升建议' : '成长建议'}
+              </h3>
+              <ul className="space-y-3">
+                {safeResult.suggestions.map((suggestion, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2" />
+                    <span className="text-white/80">{suggestion}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {safeResult.careers.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.5 }}
           className="glass rounded-3xl p-8"
         >
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-red-400" />
-            待提升领域
+          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <Briefcase className={`w-6 h-6 ${isIQTest ? 'text-amber-400' : 'text-violet-400'}`} />
+            适合的职业方向
           </h3>
-          <ul className="space-y-3">
-            {safeResult.weaknesses.map((weakness, index) => (
-              <motion.li
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {safeResult.careers.map((career, index) => (
+              <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="flex items-start gap-3"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + index * 0.05 }}
+                className={`rounded-xl px-4 py-3 text-center text-white/80 transition-all cursor-default border ${
+                  isIQTest
+                    ? 'bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border-amber-500/20'
+                    : 'bg-gradient-to-br from-violet-500/10 to-pink-500/10 hover:from-violet-500/20 hover:to-pink-500/20 border-violet-500/20'
+                }`}
               >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-red-400 to-rose-400 mt-2" />
-                <span className="text-white/80">{weakness}</span>
-              </motion.li>
+                {career}
+              </motion.div>
             ))}
-          </ul>
+          </div>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="glass rounded-3xl p-8"
-        >
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Lightbulb className="w-6 h-6 text-amber-400" />
-            {isIQTest ? '提升建议' : '成长建议'}
-          </h3>
-          <ul className="space-y-3">
-            {safeResult.suggestions.map((suggestion, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2" />
-                <span className="text-white/80">{suggestion}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <Briefcase className={`w-6 h-6 ${isIQTest ? 'text-amber-400' : 'text-violet-400'}`} />
-          适合的职业方向
-        </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {safeResult.careers.map((career, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6 + index * 0.05 }}
-              className={`rounded-xl px-4 py-3 text-center text-white/80 transition-all cursor-default border ${
-                isIQTest
-                  ? 'bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border-amber-500/20'
-                  : 'bg-gradient-to-br from-violet-500/10 to-pink-500/10 hover:from-violet-500/20 hover:to-pink-500/20 border-violet-500/20'
-              }`}
-            >
-              {career}
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      )}
 
       {mode === 'professional' && result.accuracy && (
         <motion.div
