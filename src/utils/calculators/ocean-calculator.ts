@@ -89,17 +89,17 @@ export function calculateOcean(answers: Answer[]): OceanResult {
     answerMap[a.questionId] = typeof a.value === 'number' ? a.value : parseInt(String(a.value || 3))
   })
 
-  const oItems = ['ocean-1', 'ocean-2', 'ocean-3', 'ocean-4', 'ocean-5', 'ocean-6', 'ocean-7', 'ocean-8', 'ocean-9', 'ocean-10']
-  const cItems = ['ocean-11', 'ocean-12', 'ocean-13', 'ocean-14', 'ocean-15', 'ocean-16', 'ocean-17', 'ocean-18', 'ocean-19', 'ocean-20']
-  const eItems = ['ocean-21', 'ocean-22', 'ocean-23', 'ocean-24', 'ocean-25', 'ocean-26', 'ocean-27', 'ocean-28', 'ocean-29', 'ocean-30']
-  const aItems = ['ocean-31', 'ocean-32', 'ocean-33', 'ocean-34', 'ocean-35', 'ocean-36', 'ocean-37', 'ocean-38', 'ocean-39', 'ocean-40']
-  const nItems = ['ocean-41', 'ocean-42', 'ocean-43', 'ocean-44', 'ocean-45', 'ocean-46', 'ocean-47', 'ocean-48', 'ocean-49', 'ocean-50']
+  const oItems = ['ocean-001', 'ocean-002', 'ocean-003', 'ocean-004', 'ocean-005', 'ocean-006', 'ocean-007', 'ocean-008', 'ocean-009', 'ocean-010', 'ocean-011', 'ocean-012', 'ocean-013', 'ocean-014', 'ocean-015', 'ocean-016', 'ocean-017', 'ocean-018', 'ocean-019', 'ocean-020', 'ocean-021', 'ocean-022', 'ocean-023', 'ocean-024', 'ocean-025', 'ocean-026', 'ocean-027', 'ocean-028', 'ocean-029', 'ocean-030']
+  const cItems = ['ocean-031', 'ocean-032', 'ocean-033', 'ocean-034', 'ocean-035', 'ocean-036', 'ocean-037', 'ocean-038', 'ocean-039', 'ocean-040', 'ocean-041', 'ocean-042', 'ocean-043', 'ocean-044', 'ocean-045', 'ocean-046', 'ocean-047', 'ocean-048', 'ocean-049', 'ocean-050', 'ocean-051', 'ocean-052', 'ocean-053', 'ocean-054', 'ocean-055', 'ocean-056', 'ocean-057', 'ocean-058', 'ocean-059', 'ocean-060']
+  const eItems = ['ocean-061', 'ocean-062', 'ocean-063', 'ocean-064', 'ocean-065', 'ocean-066', 'ocean-067', 'ocean-068', 'ocean-069', 'ocean-070', 'ocean-071', 'ocean-072', 'ocean-073', 'ocean-074', 'ocean-075', 'ocean-076', 'ocean-077', 'ocean-078', 'ocean-079', 'ocean-080', 'ocean-081', 'ocean-082', 'ocean-083', 'ocean-084', 'ocean-085', 'ocean-086', 'ocean-087', 'ocean-088', 'ocean-089', 'ocean-090']
+  const aItems = ['ocean-091', 'ocean-092', 'ocean-093', 'ocean-094', 'ocean-095', 'ocean-096', 'ocean-097', 'ocean-098', 'ocean-099', 'ocean-100', 'ocean-101', 'ocean-102', 'ocean-103', 'ocean-104', 'ocean-105', 'ocean-106', 'ocean-107', 'ocean-108', 'ocean-109', 'ocean-110', 'ocean-111', 'ocean-112', 'ocean-113', 'ocean-114', 'ocean-115', 'ocean-116', 'ocean-117', 'ocean-118', 'ocean-119', 'ocean-120']
+  const nItems = ['ocean-121', 'ocean-122', 'ocean-123', 'ocean-124', 'ocean-125', 'ocean-126', 'ocean-127', 'ocean-128', 'ocean-129', 'ocean-130', 'ocean-131', 'ocean-132', 'ocean-133', 'ocean-134', 'ocean-135', 'ocean-136', 'ocean-137', 'ocean-138', 'ocean-139', 'ocean-140', 'ocean-141', 'ocean-142', 'ocean-143', 'ocean-144', 'ocean-145', 'ocean-146', 'ocean-147', 'ocean-148', 'ocean-149', 'ocean-150']
 
-  const reverseO = ['ocean-5']
-  const reverseC = ['ocean-15', 'ocean-18']
-  const reverseE = ['ocean-25']
-  const reverseA = ['ocean-33', 'ocean-38']
-  const reverseN = ['ocean-45']
+  const reverseO = ['ocean-005', 'ocean-010', 'ocean-015', 'ocean-020', 'ocean-025', 'ocean-030']
+  const reverseC = ['ocean-031', 'ocean-035', 'ocean-040', 'ocean-045', 'ocean-050', 'ocean-055', 'ocean-060']
+  const reverseE = ['ocean-061', 'ocean-065', 'ocean-070', 'ocean-075', 'ocean-080', 'ocean-085', 'ocean-090']
+  const reverseA = ['ocean-091', 'ocean-095', 'ocean-100', 'ocean-105', 'ocean-110', 'ocean-115', 'ocean-120']
+  const reverseN = ['ocean-121', 'ocean-125', 'ocean-130', 'ocean-135', 'ocean-140', 'ocean-145', 'ocean-150']
 
   const calcScore = (items: string[], reverse: string[]) => {
     let raw = 0

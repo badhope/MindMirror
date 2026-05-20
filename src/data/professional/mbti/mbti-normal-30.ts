@@ -39,4 +39,9 @@ export const mbtiNormal30Questions: Question[] = [
   { id: 'mbti30_028', text: '我受不了别人做事马马虎虎', type: 'scale', options: opts, meta: { dimension: 'AT', pole: 'T', reverseScored: true, factorLoading: 0.84, discrimination: 0.81, facet: '完美主义' } },
   { id: 'mbti30_029', text: '搞砸了我也能很快翻篇', type: 'scale', options: opts, meta: { dimension: 'AT', pole: 'A', reverseScored: false, factorLoading: 0.85, discrimination: 0.82, facet: '失败耐受' } },
   { id: 'mbti30_030', text: '我觉得自己哪里都不够好', type: 'scale', options: opts, meta: { dimension: 'AT', pole: 'T', reverseScored: true, factorLoading: 0.86, discrimination: 0.83, facet: '自我接纳' } },
+  { id: 'mbti30_031', text: '我经常在人群中成为关注的焦点', type: 'scale', options: opts, meta: { dimension: 'EI', pole: 'E', reverseScored: false, factorLoading: 0.85, discrimination: 0.82, facet: '表现欲' } },
+  { id: 'mbti30_032', text: '我更喜欢关注细节而不是整体', type: 'scale', options: opts, meta: { dimension: 'SN', pole: 'S', reverseScored: false, factorLoading: 0.84, discrimination: 0.81, facet: '信息处理' } },
+  { id: 'mbti30_033', text: '我善于安慰和鼓励他人', type: 'scale', options: opts, meta: { dimension: 'TF', pole: 'F', reverseScored: true, factorLoading: 0.85, discrimination: 0.82, facet: '共情能力' } },
+  { id: 'mbti30_034', text: '我喜欢把所有事情安排得井井有条', type: 'scale', options: opts, meta: { dimension: 'JP', pole: 'J', reverseScored: false, factorLoading: 0.84, discrimination: 0.81, facet: '秩序感' } },
+  { id: 'mbti30_035', text: '我对自己的人生目标非常明确', type: 'scale', options: opts, meta: { dimension: 'AT', pole: 'A', reverseScored: false, factorLoading: 0.85, discrimination: 0.82, facet: '目标感' } },
 ]
