@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Heart, Brain, Shield, AlertTriangle, Award, TrendingUp, Wind, Droplets, Moon, Sparkles, Activity, Timer, Target, Zap, Coffee, Eye, Smile, Battery, Thermometer, Stethoscope, Pulse, Lungs, Bone, Dumbbell, ThermometerSun } from 'lucide-react'
+import { Heart, Brain, Shield, AlertTriangle, Award, TrendingUp, Wind, Droplets, Moon, Sparkles, Activity, Timer, Target, Zap, Coffee, Eye, Smile, Battery, Thermometer, Stethoscope, Activity as PulseIcon, Wind as LungsIcon, Bone, Dumbbell, ThermometerSun } from 'lucide-react'
 import { AdvancedBarChart, CircularProgressChart, AdvancedRadarChart } from '../charts'
 import type { AssessmentResult } from '../../types'
 import { safeDimensions, getScoreBand } from './utils'
@@ -15,14 +15,14 @@ const PHQ15_ITEMS = [
   { id: 3, text: '手臂、腿关节疼痛', dimension: '肌肉骨骼', icon: Dumbbell },
   { id: 4, text: '生理期痛经或其他月经问题', dimension: '生殖系统', icon: Droplets },
   { id: 5, text: '头痛', dimension: '神经系统', icon: Brain },
-  { id: 6, text: '胸口痛', dimension: '心血管', icon: Pulse },
+  { id: 6, text: '胸口痛', dimension: '心血管', icon: PulseIcon },
   { id: 7, text: '眩晕', dimension: '神经系统', icon: Sparkles },
   { id: 8, text: '心跳过速或心悸', dimension: '心血管', icon: Heart },
-  { id: 9, text: '透不过气来', dimension: '呼吸系统', icon: Lungs },
+  { id: 9, text: '透不过气来', dimension: '呼吸系统', icon: LungsIcon },
   { id: 10, text: '性交疼痛或其他问题', dimension: '生殖系统', icon: Shield },
-  { id: 11, text: '恶心、胀气或消化不良', dimension: '消化系统', icon: Stomach },
+  { id: 11, text: '恶心、胀气或消化不良', dimension: '消化系统', icon: Stethoscope },
   { id: 12, text: '便秘、稀便或腹泻', dimension: '消化系统', icon: Droplets },
-  { id: 13, text: '气促', dimension: '呼吸系统', icon: Lungs },
+  { id: 13, text: '气促', dimension: '呼吸系统', icon: LungsIcon },
   { id: 14, text: '觉得冷', dimension: '全身症状', icon: Thermometer },
   { id: 15, text: '觉得累或精力不足', dimension: '全身症状', icon: Battery },
 ]
@@ -36,11 +36,11 @@ const PHQ15_LEVELS = [
 ]
 
 const PHQ15_DIMENSIONS = [
-  { name: '消化系统', key: 'digestive', icon: Stomach, color: 'text-amber-400', bgColor: 'bg-amber-500/20' },
+  { name: '消化系统', key: 'digestive', icon: Stethoscope, color: 'text-amber-400', bgColor: 'bg-amber-500/20' },
   { name: '肌肉骨骼', key: 'musculoskeletal', icon: Bone, color: 'text-orange-400', bgColor: 'bg-orange-500/20' },
   { name: '神经系统', key: 'neurological', icon: Brain, color: 'text-violet-400', bgColor: 'bg-violet-500/20' },
   { name: '心血管', key: 'cardiovascular', icon: Heart, color: 'text-red-400', bgColor: 'bg-red-500/20' },
-  { name: '呼吸系统', key: 'respiratory', icon: Lungs, color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
+  { name: '呼吸系统', key: 'respiratory', icon: LungsIcon, color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
   { name: '全身症状', key: 'systemic', icon: Battery, color: 'text-teal-400', bgColor: 'bg-teal-500/20' },
 ]
 

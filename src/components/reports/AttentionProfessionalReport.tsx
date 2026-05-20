@@ -11,7 +11,7 @@ import {
   Focus,
   Clock,
   Layers,
-  Switch
+  ArrowRightLeft
 } from 'lucide-react'
 import { ComprehensiveChartSystem, AdvancedBarChart, CircularProgressChart, AdvancedRadarChart } from '../charts'
 import type { AssessmentResult } from '../../types'
@@ -46,7 +46,7 @@ const ATTENTION_DIMENSIONS = {
   },
   'shifting': { 
     name: '转移性注意', 
-    icon: Switch, 
+    icon: ArrowRightLeft, 
     color: 'from-amber-500 to-orange-500', 
     description: '根据需要将注意力从一个对象灵活转移到另一个的能力',
     abilities: ['灵活转换', '适应变化', '情境切换']
