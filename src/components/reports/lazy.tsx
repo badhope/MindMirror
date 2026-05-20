@@ -59,6 +59,12 @@ const BelbinProfessionalReport = lazy(() => import('./BelbinProfessionalReport')
 const AttentionProfessionalReport = lazy(() => import('./AttentionProfessionalReport'))
 const HollandAdvancedReport = lazy(() => import('./HollandAdvancedReport'))
 const SleepQualityReport = lazy(() => import('./SleepQualityReport'))
+const MBTIAdvancedReport = lazy(() => import('./MBTIAdvancedReport'))
+const SASAdvancedReport = lazy(() => import('./SASAdvancedReport'))
+const SDSAdvancedReport = lazy(() => import('./SDSAdvancedReport'))
+const PSSAdvancedReport = lazy(() => import('./PSSAdvancedReport'))
+const BigFiveAdvancedReport = lazy(() => import('./BigFiveAdvancedReport'))
+const DISCAdvancedReport = lazy(() => import('./DISCAdvancedReport'))
 const EnhancedReportTemplate = lazy(() => import('../EnhancedReportTemplate'))
 
 interface ReportRouterProps {
@@ -236,14 +242,23 @@ export default function LazyReportRouter(props: ReportRouterProps) {
     case type.includes('mbti') || type === 'mbti' || type.includes('sbti'):
       ReportComponent = MBTIProfessionalReport
       break
+    case type.includes('sbti-60') || type.includes('mbti-60') || type.includes('mbti-advanced') || type.includes('sbti-professional') || type.includes('mbti-professional'):
+      ReportComponent = MBTIAdvancedReport
+      break
     case type.includes('bigfive') || type.includes('big-five') || type.includes('ocean') || type === 'big5' || type === 'fivefactor':
       ReportComponent = BigFiveProfessionalReport
+      break
+    case type.includes('bigfive-advanced') || type.includes('bigfive-professional') || type.includes('大五进阶'):
+      ReportComponent = BigFiveAdvancedReport
       break
     case type.includes('eq') || type.includes('emotional') || type.includes('情商') || type === 'ei':
       ReportComponent = EQProfessionalReport
       break
     case type.includes('disc') || type.includes('behavior') || type.includes('行为风格'):
       ReportComponent = DISCProfessionalReport
+      break
+    case type.includes('disc-professional') || type.includes('disc-advanced') || type.includes('disc完整'):
+      ReportComponent = DISCAdvancedReport
       break
     case type.includes('attachment') || type.includes('依恋') || type.includes('亲密关系') || type === 'ecr':
       ReportComponent = AttachmentProfessionalReport
@@ -267,6 +282,9 @@ export default function LazyReportRouter(props: ReportRouterProps) {
       break
     case type.includes('sas') || type.includes('anxiety') || type.includes('焦虑') || type.includes('zung'):
       ReportComponent = SASProfessionalReport
+      break
+    case type.includes('sas-professional') || type.includes('sas-advanced') || type.includes('焦虑深度'):
+      ReportComponent = SASAdvancedReport
       break
     case type.includes('lacan') || type.includes('拉康') || type.includes('精神分析'):
       ReportComponent = LacanProfessionalReport
@@ -337,6 +355,9 @@ export default function LazyReportRouter(props: ReportRouterProps) {
     case type.includes('pss') || type.includes('压力') || type.includes('stress'):
       ReportComponent = PSSProfessionalReport
       break
+    case type.includes('pss-professional') || type.includes('pss-advanced') || type.includes('压力完整'):
+      ReportComponent = PSSAdvancedReport
+      break
     case type.includes('tki') || type.includes('冲突模式'):
       ReportComponent = TKIProfessionalReport
       break
@@ -354,6 +375,9 @@ export default function LazyReportRouter(props: ReportRouterProps) {
       break
     case type.includes('sds') && type.includes('抑郁'):
       ReportComponent = SDSDepressionProfessionalReport
+      break
+    case type.includes('sds-professional') || type.includes('sds-advanced') || type.includes('抑郁深度'):
+      ReportComponent = SDSAdvancedReport
       break
     case type.includes('via') || type.includes('性格优势'):
       ReportComponent = VIACharacterStrengthsProfessionalReport
