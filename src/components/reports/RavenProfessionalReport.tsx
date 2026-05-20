@@ -342,59 +342,65 @@ export default function RavenProfessionalReport({ result, mode = 'normal' }: Rav
       )}
 
       {/* 优势与不足对比 */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="glass rounded-3xl p-8"
-        >
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <Star className="w-6 h-6 text-green-400" />
-            认知优势
-          </h3>
-          <ul className="space-y-4">
-            {result.strengths?.map((strength, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.55 + index * 0.1 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2 flex-shrink-0" />
-                <span className="text-white/80 leading-relaxed">{strength}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
+      {((result.strengths?.length ?? 0) > 0 || (result.weaknesses?.length ?? 0) > 0) && (
+        <div className="grid md:grid-cols-2 gap-6">
+          {(result.strengths?.length ?? 0) > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <Star className="w-6 h-6 text-green-400" />
+                认知优势
+              </h3>
+              <ul className="space-y-4">
+                {result.strengths.map((strength, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400 mt-2 flex-shrink-0" />
+                    <span className="text-white/80 leading-relaxed">{strength}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="glass rounded-3xl p-8"
-        >
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <AlertTriangle className="w-6 h-6 text-amber-400" />
-            发展领域
-          </h3>
-          <ul className="space-y-4">
-            {result.weaknesses?.map((weakness, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.55 + index * 0.1 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2 flex-shrink-0" />
-                <span className="text-white/80 leading-relaxed">{weakness}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      </div>
+          {(result.weaknesses?.length ?? 0) > 0 && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass rounded-3xl p-8"
+            >
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <AlertTriangle className="w-6 h-6 text-amber-400" />
+                发展领域
+              </h3>
+              <ul className="space-y-4">
+                {result.weaknesses.map((weakness, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 + index * 0.1 }}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 mt-2 flex-shrink-0" />
+                    <span className="text-white/80 leading-relaxed">{weakness}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </div>
+      )}
 
       {/* 瑞文测验说明 */}
       <motion.div
@@ -428,33 +434,35 @@ export default function RavenProfessionalReport({ result, mode = 'normal' }: Rav
       </motion.div>
 
       {/* 提升建议 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-emerald-400" />
-          智力发展建议
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {result.suggestions?.map((suggestion, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.75 + index * 0.08 }}
-              className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-5 border border-emerald-500/20"
-            >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-emerald-400 font-bold">{index + 1}</span>
-              </div>
-              <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {(result.suggestions?.length ?? 0) > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="glass rounded-3xl p-8"
+        >
+          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-emerald-400" />
+            智力发展建议
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {result.suggestions.map((suggestion, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.75 + index * 0.08 }}
+                className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-5 border border-emerald-500/20"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-emerald-400 font-bold">{index + 1}</span>
+                </div>
+                <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* 专业版专属内容 */}
       {mode === 'professional' && (

@@ -402,40 +402,42 @@ export default function PHQ15ProfessionalReport({ result, mode = 'normal' }: PHQ
         </div>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.55 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-emerald-400" />
-          健康管理行动计划
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {(result.suggestions || [
-            '开始记录每日症状日记，关注症状变化规律',
-            '制定个人运动计划，从轻度活动开始',
-            '学习压力管理技巧，如冥想或深呼吸',
-            '预约全科医生进行常规体检',
-            '保证充足睡眠，建立良好睡眠习惯',
-            '增加社交活动，减少孤独感',
-          ]).map((suggestion, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6 + index * 0.08 }}
-              className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-5 border border-emerald-500/20"
-            >
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-emerald-400 font-bold">{index + 1}</span>
-              </div>
-              <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {(result.suggestions?.length > 0) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+          className="glass rounded-3xl p-8"
+        >
+          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-emerald-400" />
+            健康管理行动计划
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {(result.suggestions || [
+              '开始记录每日症状日记，关注症状变化规律',
+              '制定个人运动计划，从轻度活动开始',
+              '学习压力管理技巧，如冥想或深呼吸',
+              '预约全科医生进行常规体检',
+              '保证充足睡眠，建立良好睡眠习惯',
+              '增加社交活动，减少孤独感',
+            ]).map((suggestion, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 + index * 0.08 }}
+                className="flex items-start gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-xl p-5 border border-emerald-500/20"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-emerald-400 font-bold">{index + 1}</span>
+                </div>
+                <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {phq15Score >= 15 && (
         <motion.div

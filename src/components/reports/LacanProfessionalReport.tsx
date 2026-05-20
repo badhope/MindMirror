@@ -266,38 +266,35 @@ export default function LacanProfessionalReport({ result, mode = 'normal' }: Lac
         </motion.div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="glass rounded-3xl p-8"
-      >
-        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-emerald-400" />
-          精神分析式生活建议
-        </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {(result.suggestions || [
-            '不要试图"做自己"，自我本来就是虚构的',
-            '接受根本的孤独：没有人能真正理解你',
-            '学会爱症状，它是无意识的真理显现',
-            '在欲望上坚持，不要让社会替你做选择',
-          ]).map((suggestion, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.55 + index * 0.08 }}
-              className="flex items-start gap-4 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-xl p-5 border border-violet-500/20"
-            >
-              <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center flex-shrink-0">
-                <span className="text-violet-400 font-bold">{index + 1}</span>
-              </div>
-              <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {(result.suggestions?.length ?? 0) > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="glass rounded-3xl p-8"
+        >
+          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-emerald-400" />
+            精神分析式生活建议
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            {result.suggestions.map((suggestion, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.55 + index * 0.08 }}
+                className="flex items-start gap-4 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-xl p-5 border border-violet-500/20"
+              >
+                <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-violet-400 font-bold">{index + 1}</span>
+                </div>
+                <p className="text-white/80 leading-relaxed pt-1">{suggestion}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
     </div>
   )
 }
