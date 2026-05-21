@@ -2,7 +2,7 @@ import type { Assessment, Question } from '../../types'
 
 export const sbtiPersonality: Assessment = {
   id: 'sbti-personality',
-  title: 'SBTI傻屌人格测试',
+  title: 'MBTI 16型人格测试',
   description: '探索您的人格类型，了解自己的行为模式、优势和潜在发展领域。',
   category: '趣味测评',
   subcategory: '人格测试',
