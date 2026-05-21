@@ -1,0 +1,11 @@
+{
+  "id": "sas-standard",
+  "title": "焦虑自评量表",
+  "description": "评估您当前的焦虑水平。",
+  "category": "心理测评",
+  "subcategory": "情绪测评",
+  "difficulty": "easy",
+  "duration": 3,
+  "question_count": 20,
+  "questions": []
+}

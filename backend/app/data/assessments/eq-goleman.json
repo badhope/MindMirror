@@ -1,0 +1,11 @@
+{
+  "id": "eq-goleman",
+  "title": "情商测评",
+  "description": "了解您的情绪智力水平，提升人际交往能力。",
+  "category": "心理测评",
+  "subcategory": "情绪测评",
+  "difficulty": "medium",
+  "duration": 10,
+  "question_count": 40,
+  "questions": []
+}

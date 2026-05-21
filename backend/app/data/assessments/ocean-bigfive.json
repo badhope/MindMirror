@@ -1,0 +1,11 @@
+{
+  "id": "ocean-bigfive",
+  "title": "大五人格OCEAN",
+  "description": "心理学界黄金标准的人格测评模型。",
+  "category": "心理测评",
+  "subcategory": "人格测试",
+  "difficulty": "medium",
+  "duration": 15,
+  "question_count": 150,
+  "questions": []
+}

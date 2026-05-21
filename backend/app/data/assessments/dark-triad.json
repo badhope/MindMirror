@@ -1,0 +1,11 @@
+{
+  "id": "dark-triad",
+  "title": "暗黑三人格",
+  "description": "探索您黑暗人格特质的倾向。",
+  "category": "心理测评",
+  "subcategory": "人格测试",
+  "difficulty": "medium",
+  "duration": 5,
+  "question_count": 27,
+  "questions": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "holland-sds",
+  "title": "霍兰德职业兴趣",
+  "description": "了解您的职业兴趣倾向，规划职业发展方向。",
+  "category": "职业测评",
+  "subcategory": "职业兴趣",
+  "difficulty": "easy",
+  "duration": 10,
+  "question_count": 60,
+  "questions": []
+}
