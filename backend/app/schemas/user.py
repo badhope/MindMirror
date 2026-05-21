@@ -1,12 +1,11 @@
 from pydantic import BaseModel, EmailStr
-from datetime import datetime
 from typing import Optional, Dict, Any
+from datetime import datetime
 
 
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    avatar: Optional[str] = None
 
 
 class UserCreate(UserBase):
@@ -22,7 +21,22 @@ class UserUpdate(BaseModel):
 
 class UserResponse(UserBase):
     id: str
+    avatar: Optional[str] = None
+    settings: Optional[Dict[str, Any]] = None
     created_at: datetime
     updated_at: datetime
+    is_active: bool
 
-    model_config = {"from_attributes": True}
+    class Config:
+        from_attributes = True
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
