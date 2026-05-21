@@ -4,28 +4,20 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=sqlite:///./data/mindmirror.db
     volumes:
-      - ./backend/data:/app/data
+      - ./backend/app/data:/app/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./app/data/mindmirror.db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 5s
-
-  frontend:
-    build:
-      context: .
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    environment:
-      - VITE_API_BASE_URL=http://localhost:8000/api
+    restart: unless-stopped
 
   frontend-dev:
     image: node:18-alpine
@@ -34,7 +26,12 @@ services:
       - "5173:5173"
     volumes:
       - .:/app
-    command: >
-      sh -c "npm install && npm run dev"
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - backend
     environment:
       - VITE_API_BASE_URL=http://localhost:8000/api
+
+volumes:
+  backend-data:
