@@ -9,9 +9,15 @@ import { Training } from './pages/Training';
 import TrainingDetail from './pages/TrainingDetail';
 import { PersonalDashboard } from './components/dashboard/PersonalDashboard';
 import { Sidebar, MenuButton } from './components/Sidebar';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { useAppStore } from './store';
+import { t, getTranslation } from './i18n';
 import './index.css';
 
 export default function App() {
+  const { locale } = useAppStore();
+  const i18n = getTranslation(locale);
+  
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -23,26 +29,26 @@ export default function App() {
                 <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white text-lg sm:text-xl">
                   🧠
                 </div>
-                <span className="hidden sm:inline">MindMirror</span>
-                <span className="sm:hidden">MindMirror</span>
+                <span className="hidden sm:inline">{i18n.app.name}</span>
+                <span className="sm:hidden">{i18n.app.name}</span>
               </Link>
               
-              {/* 桌面端导航链接 - 隐藏，都放在侧边栏 */}
+              {/* 桌面端导航链接 */}
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">
-                  首页
+                  {i18n.nav.home}
                 </Link>
                 <Link to="/assessments" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">
-                  测评
+                  {i18n.nav.assessments}
                 </Link>
-                {/* 登录占位 */}
-                <button className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl font-medium">
-                  登录
-                </button>
+                <LanguageSwitcher />
               </div>
               
-              {/* 侧边栏菜单按钮 - 始终显示在最右边 */}
-              <MenuButton />
+              {/* 移动端：语言切换器和菜单按钮 */}
+              <div className="flex items-center gap-3 md:hidden">
+                <LanguageSwitcher />
+                <MenuButton />
+              </div>
             </div>
           </div>
         </nav>
@@ -68,7 +74,7 @@ export default function App() {
         {/* 页脚 */}
         <footer className="mt-auto border-t border-slate-200 py-6 sm:py-10 bg-white/50">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center text-slate-500">
-            <p className="text-sm sm:text-lg">© 2024 MindMirror - 发现自我，每天成长</p>
+            <p className="text-sm sm:text-lg">{i18n.app.copyright}</p>
           </div>
         </footer>
       </div>

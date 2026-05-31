@@ -7,8 +7,10 @@ import {
 } from '../services/bigFiveScoring';
 import { calculateStressTestTraits } from '../services/stressTestScoring';
 import { calculateGAD7Traits } from '../services/anxietyGad7Scoring';
+import type { Locale } from '../i18n';
 
 const STORAGE_KEY_HISTORY = 'assessmentHistory';
+const STORAGE_KEY_LOCALE = 'locale';
 
 interface AppState {
   // 测评相关
@@ -26,6 +28,9 @@ interface AppState {
   currentStep: 'intro' | 'quiz' | 'result';
   isSidebarOpen: boolean;
   
+  // 语言和主题
+  locale: Locale;
+  
   // 历史记录
   assessmentHistory: AssessmentResult[];
   
@@ -40,6 +45,9 @@ interface AppState {
   resetAssessment: () => void;
   calculateResult: (assessmentId: string, assessmentTitle: string) => void;
   
+  // 语言设置
+  setLocale: (locale: Locale) => void;
+  
   // 历史记录相关
   loadHistory: () => void;
   addToHistory: (result: AssessmentResult) => void;
@@ -52,8 +60,9 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set, get) => {
-  // 初始化时从localStorage加载历史记录
+  // 初始化时从localStorage加载历史记录和语言设置
   const initialHistory = storage.get<AssessmentResult[]>(STORAGE_KEY_HISTORY, []);
+  const initialLocale = storage.get<Locale>(STORAGE_KEY_LOCALE, 'en');
   
   return {
     // 初始状态
@@ -66,6 +75,7 @@ export const useAppStore = create<AppState>((set, get) => {
     isLoading: false,
     currentStep: 'intro',
     isSidebarOpen: false,
+    locale: initialLocale,
     assessmentHistory: initialHistory,
     
     // Actions
@@ -85,6 +95,11 @@ export const useAppStore = create<AppState>((set, get) => {
     setCurrentStep: (step) => set({ currentStep: step }),
     
     setResult: (result) => set({ result }),
+    
+    setLocale: (locale) => {
+      storage.set(STORAGE_KEY_LOCALE, locale);
+      set({ locale });
+    },
     
     resetAssessment: () => 
       set({ 

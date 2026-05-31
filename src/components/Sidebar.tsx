@@ -1,57 +1,25 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppStore } from '../store';
+import { getTranslation } from '../i18n';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { cn } from '../lib/utils';
-
-// 导航项配置
-const navItems = [
-  {
-    id: 'home',
-    label: '首页',
-    href: '/',
-    icon: '🏠'
-  },
-  {
-    id: 'assessments',
-    label: '测评中心',
-    href: '/assessments',
-    icon: '📝'
-  },
-  {
-    id: 'training',
-    label: '心理训练',
-    href: '/training',
-    icon: '💪'
-  },
-  {
-    id: 'dashboard',
-    label: '个人中心',
-    href: '/dashboard',
-    icon: '📊'
-  },
-  {
-    id: 'history',
-    label: '历史记录',
-    href: '/history',
-    icon: '📚'
-  },
-  {
-    id: 'settings',
-    label: '设置',
-    href: '/settings',
-    icon: '⚙️'
-  },
-  {
-    id: 'about',
-    label: '关于我们',
-    href: '/about',
-    icon: 'ℹ️'
-  }
-];
 
 export function Sidebar() {
   const location = useLocation();
-  const { isSidebarOpen, setSidebarOpen } = useAppStore();
+  const { isSidebarOpen, setSidebarOpen, locale } = useAppStore();
+  const i18n = getTranslation(locale);
+
+  // 动态导航项配置
+  const navItems = [
+    { id: 'home', label: i18n.nav.home, href: '/', icon: '🏠' },
+    { id: 'assessments', label: i18n.nav.assessments, href: '/assessments', icon: '📝' },
+    { id: 'training', label: i18n.nav.training, href: '/training', icon: '💪' },
+    { id: 'dashboard', label: i18n.nav.dashboard, href: '/dashboard', icon: '📊' },
+    { id: 'history', label: i18n.nav.history, href: '/history', icon: '📚' },
+    { id: 'settings', label: i18n.nav.settings, href: '/settings', icon: '⚙️' },
+    { id: 'about', label: i18n.nav.about, href: '/about', icon: 'ℹ️' }
+  ];
 
   // 点击外部区域关闭侧边栏
   useEffect(() => {
@@ -107,8 +75,8 @@ export function Sidebar() {
                   🧠
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800">MindMirror</h2>
-                  <p className="text-sm text-slate-500">发现自我，每天成长</p>
+                  <h2 className="text-xl font-bold text-slate-800">{i18n.app.name}</h2>
+                  <p className="text-sm text-slate-500">{i18n.app.tagline}</p>
                 </div>
               </div>
               <button
@@ -128,14 +96,19 @@ export function Sidebar() {
                   👤
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-700">游客模式</p>
-                  <p className="text-xs text-slate-500">登录后体验更多功能</p>
+                  <p className="text-sm font-medium text-slate-700">{locale === 'zh' ? '游客模式' : 'Guest Mode'}</p>
+                  <p className="text-xs text-slate-500">{locale === 'zh' ? '登录后体验更多功能' : 'Login for more features'}</p>
                 </div>
               </div>
               <button className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-colors text-sm font-medium">
-                立即登录
+                {locale === 'zh' ? '立即登录' : 'Sign In'}
               </button>
             </div>
+          </div>
+
+          {/* 语言切换器 */}
+          <div className="px-6 pt-4">
+            <LanguageSwitcher />
           </div>
 
           {/* 导航菜单 */}
@@ -165,8 +138,7 @@ export function Sidebar() {
           {/* 底部信息 */}
           <div className="p-6 border-t border-slate-200">
             <div className="text-center text-sm text-slate-500">
-              <p>© 2024 MindMirror</p>
-              <p className="mt-1 text-xs">发现自我，每天成长</p>
+              <p>{i18n.app.copyright}</p>
             </div>
           </div>
         </div>
