@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Home } from './pages/Home';
 import { Assessments } from './pages/Assessments';
 import AssessmentDetail from './pages/AssessmentDetail';
@@ -10,13 +11,19 @@ import TrainingDetail from './pages/TrainingDetail';
 import { PersonalDashboard } from './components/dashboard/PersonalDashboard';
 import { Sidebar, MenuButton } from './components/Sidebar';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
 import { useAppStore } from './store';
-import { t, getTranslation } from './i18n';
+import { getTranslation } from './i18n';
 import './index.css';
 
 export default function App() {
-  const { locale } = useAppStore();
+  const { locale, initializeAuth } = useAppStore();
   const i18n = getTranslation(locale);
+
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
   
   return (
     <Router>
@@ -60,6 +67,8 @@ export default function App() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/assessments" element={<Assessments />} />
           <Route path="/assessments/:id" element={<AssessmentDetail />} />
           <Route path="/training" element={<Training />} />

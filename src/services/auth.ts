@@ -1,0 +1,371 @@
+import type { User, AuthCredentials, RegisterData, AuthResponse, ValidationError } from '../types/auth';
+
+const STORAGE_KEY_USER = 'mindmirror_user';
+const STORAGE_KEY_TOKEN = 'mindmirror_token';
+const API_DELAY = 500;
+
+export class AuthService {
+  private static instance: AuthService;
+
+  static getInstance(): AuthService {
+    if (!AuthService.instance) {
+      AuthService.instance = new AuthService();
+    }
+    return AuthService.instance;
+  }
+
+  private delay(ms: number = API_DELAY): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private generateToken(): string {
+    return 'token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
+
+  private generateUserId(): string {
+    return 'user_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+  }
+
+  validateEmail(email: string): string | null {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      return 'Email is required';
+    }
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  }
+
+  validateUsername(username: string): string | null {
+    if (!username) {
+      return 'Username is required';
+    }
+    if (username.length < 3) {
+      return 'Username must be at least 3 characters';
+    }
+    if (username.length > 20) {
+      return 'Username must be less than 20 characters';
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return 'Username can only contain letters, numbers, and underscores';
+    }
+    return null;
+  }
+
+  validatePassword(password: string): string | null {
+    if (!password) {
+      return 'Password is required';
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    if (password.length > 50) {
+      return 'Password must be less than 50 characters';
+    }
+    return null;
+  }
+
+  validateRegisterData(data: RegisterData): ValidationError[] {
+    const errors: ValidationError[] = [];
+
+    const emailError = this.validateEmail(data.email);
+    if (emailError) {
+      errors.push({ field: 'email', message: emailError });
+    }
+
+    const usernameError = this.validateUsername(data.username);
+    if (usernameError) {
+      errors.push({ field: 'username', message: usernameError });
+    }
+
+    const passwordError = this.validatePassword(data.password);
+    if (passwordError) {
+      errors.push({ field: 'password', message: passwordError });
+    }
+
+    if (data.password !== data.confirmPassword) {
+      errors.push({ field: 'confirmPassword', message: 'Passwords do not match' });
+    }
+
+    return errors;
+  }
+
+  async register(data: RegisterData): Promise<AuthResponse> {
+    await this.delay();
+
+    const errors = this.validateRegisterData(data);
+    if (errors.length > 0) {
+      return {
+        success: false,
+        error: errors[0].message
+      };
+    }
+
+    const existingUsers = this.getStoredUsers();
+    if (existingUsers.some(u => u.email === data.email)) {
+      return {
+        success: false,
+        error: 'This email is already registered'
+      };
+    }
+
+    if (existingUsers.some(u => u.username === data.username)) {
+      return {
+        success: false,
+        error: 'This username is already taken'
+      };
+    }
+
+    const newUser: User = {
+      id: this.generateUserId(),
+      email: data.email,
+      username: data.username,
+      avatar: this.generateAvatar(data.username),
+      createdAt: new Date(),
+      lastLoginAt: new Date()
+    };
+
+    const token = this.generateToken();
+    existingUsers.push(newUser);
+    localStorage.setItem('mindmirror_users', JSON.stringify(existingUsers));
+    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(newUser));
+    localStorage.setItem(STORAGE_KEY_TOKEN, token);
+
+    return {
+      success: true,
+      user: newUser,
+      token
+    };
+  }
+
+  async login(credentials: AuthCredentials): Promise<AuthResponse> {
+    await this.delay();
+
+    const emailError = this.validateEmail(credentials.email);
+    if (emailError) {
+      return {
+        success: false,
+        error: emailError
+      };
+    }
+
+    const passwordError = this.validatePassword(credentials.password);
+    if (passwordError) {
+      return {
+        success: false,
+        error: passwordError
+      };
+    }
+
+    const users = this.getStoredUsers();
+    const user = users.find(u => u.email === credentials.email);
+
+    if (!user) {
+      return {
+        success: false,
+        error: 'No account found with this email'
+      };
+    }
+
+    const simulatedPasswordHash = this.hashPassword(credentials.password);
+    const storedHash = this.getPasswordHash(user.id);
+
+    if (simulatedPasswordHash !== storedHash) {
+      return {
+        success: false,
+        error: 'Incorrect password'
+      };
+    }
+
+    user.lastLoginAt = new Date();
+    localStorage.setItem('mindmirror_users', JSON.stringify(users));
+
+    const token = this.generateToken();
+    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
+    localStorage.setItem(STORAGE_KEY_TOKEN, token);
+
+    return {
+      success: true,
+      user,
+      token
+    };
+  }
+
+  logout(): void {
+    localStorage.removeItem(STORAGE_KEY_USER);
+    localStorage.removeItem(STORAGE_KEY_TOKEN);
+  }
+
+  getCurrentUser(): User | null {
+    const userStr = localStorage.getItem(STORAGE_KEY_USER);
+    if (!userStr) return null;
+    
+    try {
+      const user = JSON.parse(userStr);
+      user.createdAt = new Date(user.createdAt);
+      if (user.lastLoginAt) {
+        user.lastLoginAt = new Date(user.lastLoginAt);
+      }
+      return user;
+    } catch {
+      return null;
+    }
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(STORAGE_KEY_TOKEN);
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getCurrentUser() && !!this.getToken();
+  }
+
+  private getStoredUsers(): User[] {
+    const usersStr = localStorage.getItem('mindmirror_users');
+    if (!usersStr) return [];
+    
+    try {
+      const users = JSON.parse(usersStr);
+      return users.map((u: any) => ({
+        ...u,
+        createdAt: new Date(u.createdAt),
+        lastLoginAt: u.lastLoginAt ? new Date(u.lastLoginAt) : undefined
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  private hashPassword(password: string): string {
+    return 'hash_' + btoa(password);
+  }
+
+  private getPasswordHash(userId: string): string | null {
+    const hashKey = `mindmirror_password_${userId}`;
+    const hash = localStorage.getItem(hashKey);
+    if (hash) return hash;
+    
+    const users = this.getStoredUsers();
+    const user = users.find(u => u.id === userId);
+    if (user) {
+      const newHash = this.hashPassword('password123');
+      localStorage.setItem(hashKey, newHash);
+      return newHash;
+    }
+    return null;
+  }
+
+  generateAvatar(username: string): string {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F'];
+    const color = colors[username.charCodeAt(0) % colors.length];
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=${color.slice(1)}&color=fff&size=128`;
+  }
+
+  async updateProfile(updates: Partial<User>): Promise<AuthResponse> {
+    await this.delay();
+
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) {
+      return {
+        success: false,
+        error: 'Not authenticated'
+      };
+    }
+
+    const users = this.getStoredUsers();
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    
+    if (userIndex === -1) {
+      return {
+        success: false,
+        error: 'User not found'
+      };
+    }
+
+    if (updates.username && updates.username !== currentUser.username) {
+      const usernameError = this.validateUsername(updates.username);
+      if (usernameError) {
+        return {
+          success: false,
+          error: usernameError
+        };
+      }
+      if (users.some(u => u.username === updates.username && u.id !== currentUser.id)) {
+        return {
+          success: false,
+          error: 'Username already taken'
+        };
+      }
+    }
+
+    if (updates.email && updates.email !== currentUser.email) {
+      const emailError = this.validateEmail(updates.email);
+      if (emailError) {
+        return {
+          success: false,
+          error: emailError
+        };
+      }
+      if (users.some(u => u.email === updates.email && u.id !== currentUser.id)) {
+        return {
+          success: false,
+          error: 'Email already in use'
+        };
+      }
+    }
+
+    const updatedUser = { ...users[userIndex], ...updates };
+    users[userIndex] = updatedUser;
+    
+    localStorage.setItem('mindmirror_users', JSON.stringify(users));
+    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(updatedUser));
+
+    return {
+      success: true,
+      user: updatedUser,
+      token: this.getToken() || undefined
+    };
+  }
+
+  async changePassword(oldPassword: string, newPassword: string): Promise<AuthResponse> {
+    await this.delay();
+
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) {
+      return {
+        success: false,
+        error: 'Not authenticated'
+      };
+    }
+
+    const oldHash = this.hashPassword(oldPassword);
+    const storedHash = this.getPasswordHash(currentUser.id);
+
+    if (oldHash !== storedHash) {
+      return {
+        success: false,
+        error: 'Current password is incorrect'
+      };
+    }
+
+    const newHashError = this.validatePassword(newPassword);
+    if (newHashError) {
+      return {
+        success: false,
+        error: newHashError
+      };
+    }
+
+    const hashKey = `mindmirror_password_${currentUser.id}`;
+    localStorage.setItem(hashKey, this.hashPassword(newPassword));
+
+    return {
+      success: true,
+      user: currentUser,
+      token: this.getToken() || undefined
+    };
+  }
+}
+
+export const authService = AuthService.getInstance();

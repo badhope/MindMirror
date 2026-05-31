@@ -7,8 +7,13 @@ import { cn } from '../lib/utils';
 
 export function Sidebar() {
   const location = useLocation();
-  const { isSidebarOpen, setSidebarOpen, locale } = useAppStore();
+  const { isSidebarOpen, setSidebarOpen, locale, user, isAuthenticated, logout } = useAppStore();
   const i18n = getTranslation(locale);
+
+  const handleLogout = () => {
+    logout();
+    setSidebarOpen(false);
+  };
 
   // 动态导航项配置
   const navItems = [
@@ -90,20 +95,67 @@ export function Sidebar() {
 
           {/* 用户区域 */}
           <div className="p-6 border-b border-slate-100">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center text-2xl">
-                  👤
+            {isAuthenticated && user ? (
+              // 已登录状态
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=4F46E5&color=fff&size=128`}
+                    alt={user.username}
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-slate-800 truncate">{user.username}</p>
+                    <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-slate-700">{locale === 'zh' ? '游客模式' : 'Guest Mode'}</p>
-                  <p className="text-xs text-slate-500">{locale === 'zh' ? '登录后体验更多功能' : 'Login for more features'}</p>
+                <div className="mt-3 space-y-2">
+                  <Link
+                    to="/settings"
+                    className="w-full px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-center block"
+                  >
+                    {i18n.nav.settings}
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-4 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+                  >
+                    {i18n.auth?.logout || 'Logout'}
+                  </button>
                 </div>
               </div>
-              <button className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-colors text-sm font-medium">
-                {locale === 'zh' ? '立即登录' : 'Sign In'}
-              </button>
-            </div>
+            ) : (
+              // 未登录状态
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center text-2xl">
+                    👤
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-slate-700">
+                      {i18n.settings?.guestMode || 'Guest Mode'}
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      {i18n.settings?.loginForMore || 'Login for more features'}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-2">
+                  <Link
+                    to="/login"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-colors text-sm font-medium text-center block"
+                  >
+                    {i18n.auth?.login || 'Login'}
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="w-full px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-center block"
+                  >
+                    {i18n.auth?.register || 'Register'}
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 语言切换器 */}
@@ -112,7 +164,7 @@ export function Sidebar() {
           </div>
 
           {/* 导航菜单 */}
-          <nav className="flex-1 p-4">
+          <nav className="flex-1 p-4 overflow-y-auto">
             <div className="space-y-1">
               {navItems.map((item) => {
                 const isActive = location.pathname === item.href;
@@ -150,18 +202,26 @@ export function Sidebar() {
 // 汉堡菜单按钮组件
 export function MenuButton() {
   const { toggleSidebar } = useAppStore();
-
+  
   return (
     <button
       onClick={toggleSidebar}
-      className="p-2.5 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition-all"
-      aria-label="打开菜单"
+      className="p-2 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors md:hidden"
+      aria-label="Toggle menu"
     >
-      <div className="w-6 h-5 flex flex-col justify-between">
-        <span className="w-full h-0.5 bg-current rounded-full transition-all"></span>
-        <span className="w-full h-0.5 bg-current rounded-full transition-all"></span>
-        <span className="w-full h-0.5 bg-current rounded-full transition-all"></span>
-      </div>
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
     </button>
   );
 }
