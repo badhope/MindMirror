@@ -72,7 +72,25 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial loading shell, shown before React mounts.
+           This is replaced by the React app as soon as main.tsx runs.
+           It guarantees the user sees content even if JS loads slowly. -->
+      <div id="__app_boot__" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f8fafc 0%,#eff6ff 50%,#e0e7ff 100%);font-family:system-ui,-apple-system,sans-serif">
+        <div style="text-align:center;max-width:560px;padding:0 24px">
+          <div style="width:64px;height:64px;margin:0 auto 20px;background:linear-gradient(135deg,#3b82f6,#4f46e5);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 10px 30px rgba(79,70,229,0.3)">🧠</div>
+          <h1 style="margin:0 0 12px;font-size:28px;font-weight:700;color:#1e293b">MindMirror</h1>
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#475569">Open-source psychological assessment platform. Big Five personality, stress, anxiety, mood tracking and mental training.</p>
+          <div style="display:inline-flex;align-items:center;gap:10px;padding:10px 20px;background:white;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-size:14px;color:#475569">
+            <span style="display:inline-block;width:14px;height:14px;border:2px solid #cbd5e1;border-top-color:#4f46e5;border-radius:50%;animation:mmspin 0.8s linear infinite"></span>
+            Loading…
+          </div>
+        </div>
+      </div>
+      <style>
+        @keyframes mmspin { to { transform: rotate(360deg); } }
+      </style>
+    </div>
     <noscript>
       <div style="max-width:640px;margin:80px auto;font-family:system-ui,sans-serif;text-align:center;padding:0 20px;color:#1e293b">
         <h1 style="margin:0 0 12px">MindMirror requires JavaScript</h1>
