@@ -1,8 +1,16 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+user_answer_options = Table(
+    'user_answer_options',
+    Base.metadata,
+    Column('user_answer_id', String(36), ForeignKey('user_answers.id', ondelete='CASCADE'), primary_key=True),
+    Column('option_id', String(36), ForeignKey('options.id', ondelete='CASCADE'), primary_key=True)
+)
 
 
 class Assessment(Base):
@@ -18,8 +26,12 @@ class Assessment(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    questions = relationship("Question", back_populates="assessment", cascade="all, delete-orphan", order_by="Question.sort_order")
-    results = relationship("AssessmentResult", back_populates="assessment")
+    questions = relationship(
+        "Question",
+        back_populates="assessment",
+        cascade="all, delete-orphan",
+        order_by="Question.sort_order"
+    )
 
     def __repr__(self):
         return f"<Assessment(id={self.id}, title={self.title}, category={self.category})>"
@@ -36,7 +48,12 @@ class Question(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     assessment = relationship("Assessment", back_populates="questions")
-    options = relationship("Option", back_populates="question", cascade="all, delete-orphan", order_by="Option.sort_order")
+    options = relationship(
+        "Option",
+        back_populates="question",
+        cascade="all, delete-orphan",
+        order_by="Option.sort_order"
+    )
     user_answers = relationship("UserAnswer", back_populates="question")
 
     def __repr__(self):
@@ -55,7 +72,32 @@ class Option(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     question = relationship("Question", back_populates="options")
-    user_answers = relationship("UserAnswer", secondary="user_answer_options", back_populates="selected_options")
+    user_answers = relationship(
+        "UserAnswer",
+        secondary="user_answer_options",
+        back_populates="selected_options"
+    )
 
     def __repr__(self):
         return f"<Option(id={self.id}, text={self.option_text[:30]}, score={self.score_value})>"
+
+
+class UserAnswer(Base):
+    """保留旧版 API 用的中间表：用于后端管理测评题库时的用户答案"""
+    __tablename__ = "user_answers"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    result_id = Column(String(36), ForeignKey("assessment_results.id", ondelete="CASCADE"), nullable=False)
+    question_id = Column(String(36), ForeignKey("questions.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    result = relationship("AssessmentResult", back_populates="user_answers")
+    question = relationship("Question", back_populates="user_answers")
+    selected_options = relationship(
+        "Option",
+        secondary="user_answer_options",
+        back_populates="user_answers"
+    )
+
+    def __repr__(self):
+        return f"<UserAnswer(id={self.id}, result_id={self.result_id})>"

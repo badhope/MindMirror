@@ -10,7 +10,6 @@ import { calculateStressTestTraits } from '../services/stressTestScoring';
 import { calculateGAD7Traits } from '../services/anxietyGad7Scoring';
 import { authService } from '../services/auth';
 import { pluginLoader } from '../services/plugin/PluginLoader';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import type { Locale } from '../i18n';
 
 const STORAGE_KEY_HISTORY = 'assessmentHistory';
@@ -43,6 +42,7 @@ interface AppState {
   initializeAuth: () => Promise<void>;
   login: (credentials: AuthCredentials) => Promise<boolean>;
   register: (data: RegisterData) => Promise<boolean>;
+  loginAsGuest: () => Promise<boolean>;
   loginWithOAuth: (provider: 'google' | 'github') => Promise<void>;
   logout: () => Promise<void>;
   clearAuthError: () => void;
@@ -74,49 +74,6 @@ export const useAppStore = create<AppState>((set, get) => {
   const initialHistory = storage.get<AssessmentResult[]>(STORAGE_KEY_HISTORY, []);
   const initialLocale = storage.get<Locale>(STORAGE_KEY_LOCALE, 'zh');
   const initialUser = authService.getCurrentUser();
-
-  if (isSupabaseConfigured()) {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session?.user) {
-        const user = {
-          id: session.user.id,
-          email: session.user.email || '',
-          username: (session.user.user_metadata?.username as string) ||
-                    (session.user.user_metadata?.full_name as string) ||
-                    (session.user.email?.split('@')[0] || 'user'),
-          avatar: (session.user.user_metadata?.avatar_url as string) ||
-                  (session.user.user_metadata?.picture as string),
-          createdAt: session.user.created_at ? new Date(session.user.created_at) : new Date(),
-          lastLoginAt: session.user.last_sign_in_at ? new Date(session.user.last_sign_in_at) : new Date(),
-          provider: (session.user.app_metadata?.provider as string || 'email') as 'email' | 'google' | 'github',
-        };
-        localStorage.setItem('mindmirror_user', JSON.stringify(user));
-        localStorage.setItem('mindmirror_token', session.access_token);
-        set({ user, isAuthenticated: true, authLoading: false, authError: null });
-      } else if (event === 'SIGNED_OUT') {
-        localStorage.removeItem('mindmirror_user');
-        localStorage.removeItem('mindmirror_token');
-        set({ user: null, isAuthenticated: false, authError: null });
-      } else if (event === 'TOKEN_REFRESHED' && session) {
-        localStorage.setItem('mindmirror_token', session.access_token);
-      } else if (event === 'USER_UPDATED' && session?.user) {
-        const user = {
-          id: session.user.id,
-          email: session.user.email || '',
-          username: (session.user.user_metadata?.username as string) ||
-                    (session.user.user_metadata?.full_name as string) ||
-                    (session.user.email?.split('@')[0] || 'user'),
-          avatar: (session.user.user_metadata?.avatar_url as string) ||
-                  (session.user.user_metadata?.picture as string),
-          createdAt: session.user.created_at ? new Date(session.user.created_at) : new Date(),
-          lastLoginAt: session.user.last_sign_in_at ? new Date(session.user.last_sign_in_at) : new Date(),
-          provider: (session.user.app_metadata?.provider as string || 'email') as 'email' | 'google' | 'github',
-        };
-        localStorage.setItem('mindmirror_user', JSON.stringify(user));
-        set({ user });
-      }
-    });
-  }
 
   return {
     user: initialUser,
@@ -182,13 +139,12 @@ export const useAppStore = create<AppState>((set, get) => {
             authError: null,
           });
           return true;
-        } else {
-          set({
-            authLoading: false,
-            authError: response.error || 'Login failed',
-          });
-          return false;
         }
+        set({
+          authLoading: false,
+          authError: response.error || 'Login failed',
+        });
+        return false;
       } catch {
         set({
           authLoading: false,
@@ -212,13 +168,12 @@ export const useAppStore = create<AppState>((set, get) => {
             authError: null,
           });
           return true;
-        } else {
-          set({
-            authLoading: false,
-            authError: response.error || 'Registration failed',
-          });
-          return false;
         }
+        set({
+          authLoading: false,
+          authError: response.error || 'Registration failed',
+        });
+        return false;
       } catch {
         set({
           authLoading: false,
@@ -228,7 +183,34 @@ export const useAppStore = create<AppState>((set, get) => {
       }
     },
 
-    loginWithOAuth: async (provider: 'google' | 'github') => {
+    loginAsGuest: async () => {
+      set({ authLoading: true, authError: null });
+      try {
+        const response = await authService.loginAsGuest();
+        if (response.success && response.user) {
+          set({
+            user: response.user,
+            isAuthenticated: true,
+            authLoading: false,
+            authError: null,
+          });
+          return true;
+        }
+        set({
+          authLoading: false,
+          authError: response.error || 'Guest login failed',
+        });
+        return false;
+      } catch {
+        set({
+          authLoading: false,
+          authError: 'An unexpected error occurred',
+        });
+        return false;
+      }
+    },
+
+    loginWithOAuth: async (provider) => {
       set({ authLoading: true, authError: null });
       try {
         const response = await authService.loginWithOAuth(provider);
@@ -237,6 +219,8 @@ export const useAppStore = create<AppState>((set, get) => {
             authLoading: false,
             authError: response.error,
           });
+        } else {
+          set({ authLoading: false });
         }
       } catch {
         set({

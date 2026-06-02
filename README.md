@@ -5,10 +5,13 @@
 ![MindMirror](https://img.shields.io/badge/MindMirror-Psychological%20Assessment-4F46E5?style=for-the-badge&logo=brain&logoColor=white)
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-6DD58C?style=flat-square)
 ![PRs](https://img.shields.io/badge/PRs-Welcome-FF6B6B?style=flat-square)
 
-**🌐 [Live Demo](https://mindmirror.app)** | **📖 [中文文档](#中文介绍)** | **🤝 [Contributing](CONTRIBUTING.md)**
+**📖 [中文文档](#-mindmirror-1)** | **🤝 [Contributing](CONTRIBUTING.md)**
 
 *Discover yourself, grow every day.*
 
@@ -28,52 +31,56 @@
 | 📊 **Results Comparison** | Compare assessments across different time periods |
 | 💪 **Mental Training** | CBT-based exercises for stress management |
 | 🌐 **Bilingual Support** | Full English / Chinese (简体中文) internationalization |
-| 🔐 **OAuth Authentication** | GitHub & Google social login support |
+| 🔐 **JWT Authentication** | Email/password sign-up, login and guest accounts |
 | 📱 **Responsive Design** | Mobile-first, works on all devices |
 | 🔌 **Plugin System** | Extensible architecture for custom assessments |
 | 🎨 **Smooth Animations** | Polished micro-interactions with Framer Motion |
+| 🐳 **One-Command Deploy** | `docker compose up` boots the full stack |
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js ≥ 18.0.0
-- npm ≥ 9.0.0 or pnpm ≥ 8.0.0
-
-### Installation
+### Option A — Docker (recommended for production)
 
 ```bash
-# Clone the repository
 git clone https://github.com/badhope/MindMirror.git
 cd MindMirror
 
-# Install dependencies
-npm install
+cp .env.example .env
+# Edit .env and set a strong SECRET_KEY (used to sign JWTs)
 
-# Start development server
-npm run dev
+docker compose up -d --build
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+The app is then available at:
 
-### Backend Setup (Optional)
+- Frontend (nginx → React SPA): `http://localhost`
+- Backend API (internal): `http://localhost/api/v1/...`
+- Backend docs: `http://localhost/api/v1/docs`
+- PostgreSQL: `localhost:5432` (only if you map the port)
 
-MindMirror works with localStorage by default. To enable cloud sync with Supabase:
+`docker compose` brings up three containers: `postgres`, `backend` (FastAPI on
+port 8000, exposed only to the internal network) and `frontend` (nginx on
+port 80) which proxies `/api/*` to the backend.
 
-1. Create a project at [supabase.com](https://supabase.com)
-2. Run the migration SQL in `supabase/migrations/001_initial_schema.sql`
-3. Enable GitHub and Google OAuth providers in Supabase dashboard
-4. Copy `.env.example` to `.env` and fill in your credentials:
+### Option B — Local development (hot reload)
 
 ```bash
-cp .env.example .env
-```
+# Frontend
+npm install
+npm run dev          # http://localhost:5173  (proxies /api -> :8000)
 
-```env
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+# Backend (separate terminal)
+cd backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# For local dev without Postgres, edit .env and set:
+#   DATABASE_URL=sqlite:///./mental_health.db
+#   SECRET_KEY=dev-secret-key-replace-in-production
+python3 init_db.py --seed   # creates tables + demo@example.com / demo123
+python3 run.py              # http://localhost:8000
 ```
 
 ---
@@ -86,10 +93,10 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 | **State Management** | Zustand 5 |
 | **Styling** | Tailwind CSS 3, Framer Motion 12 |
 | **Routing** | React Router v7 |
-| **Backend (Optional)** | Supabase (PostgreSQL + Auth) |
-| **API** | Express.js (Vercel Serverless Functions) |
-| **i18n** | Custom lightweight i18n (EN/ZH) |
-| **Build** | Vite + TypeScript Compiler |
+| **Backend** | Python 3.12, FastAPI 0.115, SQLAlchemy 2, Pydantic v2 |
+| **Auth** | JWT (HS256) via `python-jose` + `bcrypt` |
+| **Database** | PostgreSQL 15 (containerised) / SQLite (local dev) |
+| **Container** | Docker + Docker Compose, nginx reverse proxy for the API |
 
 ---
 
@@ -97,22 +104,37 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 
 ```
 MindMirror/
-├── src/
-│   ├── components/       # Reusable UI components
-│   │   └── animations/  # Framer Motion animation components
-│   ├── data/            # Assessment question data
-│   ├── hooks/           # Custom React hooks
-│   ├── i18n/            # EN/ZH translation files
-│   ├── lib/              # Supabase client, utilities
-│   ├── pages/            # Route page components (15+ pages)
-│   ├── services/         # Business logic (scoring, auth)
-│   ├── store/            # Zustand global state
-│   └── types/            # TypeScript type definitions
-├── api/                  # Express.js serverless API routes
-│   └── routes/          # auth.ts, data.ts
-├── supabase/             # Database migrations
-├── public/               # Static assets, PWA files
-└── tests/                # Unit tests for scoring logic
+├── src/                     # React + TypeScript frontend
+│   ├── components/          # Reusable UI components
+│   ├── data/                # Assessment question banks
+│   ├── i18n/                # EN/ZH translation files
+│   ├── lib/                 # apiClient, utility helpers
+│   ├── pages/               # Route page components
+│   ├── services/            # Scoring, auth, mood, training, plugins
+│   ├── store/               # Zustand global state
+│   └── types/               # TypeScript type definitions
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── api/             # Route handlers (auth, results, mood, …)
+│   │   ├── core/            # Security, config helpers
+│   │   ├── models/          # SQLAlchemy ORM models
+│   │   ├── schemas/         # Pydantic request/response models
+│   │   ├── config.py        # pydantic-settings
+│   │   ├── database.py      # SQLAlchemy engine + session
+│   │   ├── dependencies.py  # Reusable FastAPI dependencies
+│   │   └── main.py          # FastAPI app entrypoint
+│   ├── .env.example         # Backend env template
+│   ├── init_db.py           # Create tables + optional demo user
+│   ├── requirements.txt
+│   └── run.py               # Dev server (auto-detects docker vs sqlite)
+├── public/                  # Static assets, PWA manifest, icons
+├── Dockerfile               # Backend image
+├── Dockerfile.frontend      # Frontend image (multi-stage: node build → nginx)
+├── docker-compose.yml       # postgres + backend + frontend
+├── nginx.conf               # Reverse proxy / SPA fallback
+├── .env.example             # Compose env template
+├── package.json
+└── vite.config.ts
 ```
 
 ---
@@ -139,24 +161,35 @@ MindMirror/
 
 ---
 
+## 🔌 API
+
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/v1/auth/register` | Create a new user (email + username + password) |
+| `POST /api/v1/auth/login` | OAuth2 password flow → returns JWT |
+| `POST /api/v1/auth/guest` | Issue a guest account |
+| `GET /api/v1/auth/me` / `PATCH /api/v1/auth/me` | Read / update current user |
+| `GET/POST /api/v1/results/` | Cross-device sync of assessment results |
+| `GET/POST/PATCH/DELETE /api/v1/mood/` | Mood entries CRUD |
+| `GET/POST/DELETE /api/v1/achievements/` | Achievements |
+| `GET /api/v1/training/` | Training plans |
+| `GET /api/v1/assessments/` | Built-in assessment definitions |
+| `GET /health` | Liveness probe (used by Docker `HEALTHCHECK`) |
+| `GET /docs` | Interactive Swagger UI |
+
+All authenticated routes expect `Authorization: Bearer <jwt>`.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) before submitting PRs.
 
-**Development workflow:**
-
 ```bash
-# Create a feature branch
 git checkout -b feature/amazing-feature
-
-# Make your changes and run type checking
 npm run typecheck
 npm run lint
-
-# Commit your changes (conventional commits)
 git commit -m "feat: add amazing feature"
-
-# Push and open a Pull Request
 git push origin feature/amazing-feature
 ```
 
@@ -196,9 +229,12 @@ If MindMirror helps you, please give it a ⭐ — it means a lot!
 ![MindMirror](https://img.shields.io/badge/MindMirror-心理测评平台-4F46E5?style=for-the-badge&logo=brain&logoColor=white)
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-6DD58C?style=flat-square)
 
-**🌐 [在线体验](https://mindmirror.app)** | **🇺🇸 [English Version](#)** | **🤝 [贡献指南](CONTRIBUTING.md)**
+**🇺🇸 [English Version](#)** | **🤝 [贡献指南](CONTRIBUTING.md)**
 
 *发现自我，每天成长。*
 
@@ -218,28 +254,55 @@ If MindMirror helps you, please give it a ⭐ — it means a lot!
 | 📊 **结果对比** | 对比不同时期的测评结果 |
 | 💪 **心理训练** | CBT 认知行为疗法练习 |
 | 🌐 **双语支持** | 完整英文 / 中文国际化 |
-| 🔐 **OAuth 登录** | GitHub & Google 社交登录 |
+| 🔐 **JWT 认证** | 邮箱密码注册、登录、游客账号 |
 | 📱 **响应式设计** | 移动端优先，适配所有设备 |
 | 🔌 **插件系统** | 可扩展架构，支持自定义测评 |
 | 🎨 **流畅动画** | Framer Motion 精制微交互动画 |
+| 🐳 **一键部署** | `docker compose up` 启动完整技术栈 |
 
 ---
 
 ## 🚀 快速开始
 
+### 方式一：Docker（推荐用于生产环境）
+
 ```bash
-# 克隆仓库
 git clone https://github.com/badhope/MindMirror.git
 cd MindMirror
 
-# 安装依赖
-npm install
+cp .env.example .env
+# 编辑 .env，至少设置一个强随机 SECRET_KEY（用于 JWT 签名）
 
-# 启动开发服务器
-npm run dev
+docker compose up -d --build
 ```
 
-在浏览器中打开 [http://localhost:5173](http://localhost:5173)。
+启动后：
+
+- 前端（nginx → React SPA）：`http://localhost`
+- 后端 API（仅内网）：`http://localhost/api/v1/...`
+- 后端文档：`http://localhost/api/v1/docs`
+- PostgreSQL：默认不对外暴露
+
+`docker compose` 会启动三个容器：`postgres`、`backend`（FastAPI 8000，仅内网）、`frontend`（nginx 80，反向代理 `/api/*` 到 backend）。
+
+### 方式二：本地开发（热更新）
+
+```bash
+# 前端
+npm install
+npm run dev            # http://localhost:5173  （自动代理 /api -> :8000）
+
+# 后端（另开终端）
+cd backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# 本地无 Postgres 时，编辑 .env：
+#   DATABASE_URL=sqlite:///./mental_health.db
+#   SECRET_KEY=dev-secret-key-replace-in-production
+python3 init_db.py --seed   # 建表 + 演示账号 demo@example.com / demo123
+python3 run.py              # http://localhost:8000
+```
 
 ---
 
@@ -251,10 +314,10 @@ npm run dev
 | **状态管理** | Zustand 5 |
 | **样式** | Tailwind CSS 3, Framer Motion 12 |
 | **路由** | React Router v7 |
-| **后端（可选）** | Supabase (PostgreSQL + Auth) |
-| **API** | Express.js (Vercel Serverless) |
-| **国际化** | 轻量级 i18n (EN/ZH) |
-| **构建** | Vite + TypeScript Compiler |
+| **后端** | Python 3.12, FastAPI 0.115, SQLAlchemy 2, Pydantic v2 |
+| **认证** | JWT (HS256) via `python-jose` + `bcrypt` |
+| **数据库** | PostgreSQL 15（容器化）/ SQLite（本地开发） |
+| **容器** | Docker + Docker Compose, nginx 反向代理 API |
 
 ---
 
@@ -280,9 +343,37 @@ npm run dev
 
 ---
 
+## 🔌 API
+
+| 接口 | 说明 |
+|------|------|
+| `POST /api/v1/auth/register` | 新用户注册（邮箱 + 用户名 + 密码） |
+| `POST /api/v1/auth/login` | OAuth2 密码流登录，返回 JWT |
+| `POST /api/v1/auth/guest` | 游客账号 |
+| `GET / PATCH /api/v1/auth/me` | 获取/更新当前用户 |
+| `GET/POST /api/v1/results/` | 测评结果跨设备同步 |
+| `GET/POST/PATCH/DELETE /api/v1/mood/` | 心情记录 CRUD |
+| `GET/POST/DELETE /api/v1/achievements/` | 成就管理 |
+| `GET /api/v1/training/` | 训练计划 |
+| `GET /api/v1/assessments/` | 内置测评定义 |
+| `GET /health` | 健康探针（Docker HEALTHCHECK 使用） |
+| `GET /docs` | 交互式 Swagger 文档 |
+
+所有需要登录的接口都需要 `Authorization: Bearer <jwt>` 头。
+
+---
+
 ## 🤝 贡献指南
 
 欢迎贡献！提交 PR 前请阅读 [贡献指南](CONTRIBUTING.md)。
+
+```bash
+git checkout -b feature/amazing-feature
+npm run typecheck
+npm run lint
+git commit -m "feat: add amazing feature"
+git push origin feature/amazing-feature
+```
 
 ---
 

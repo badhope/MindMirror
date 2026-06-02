@@ -1,45 +1,75 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: mental_health_postgres
+    container_name: mindmirror_postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: mental_user
-      POSTGRES_PASSWORD: mental_password
-      POSTGRES_DB: mental_health_db
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER:-mental_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mental_password}
+      POSTGRES_DB: ${POSTGRES_DB:-mental_health_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mental_user -d mental_health_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mental_user} -d ${POSTGRES_DB:-mental_health_db}"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+    networks:
+      - mindmirror_net
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mental_health_backend
+    image: mindmirror-backend:latest
+    container_name: mindmirror_backend
+    restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://mental_user:mental_password@postgres:5432/mental_health_db
-      SECRET_KEY: your-super-secret-key-change-in-production-!@#$%^&*()
-      ALGORITHM: HS256
-      ACCESS_TOKEN_EXPIRE_MINUTES: 30
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
+      DATABASE_URL: postgresql://${POSTGRES_USER:-mental_user}:${POSTGRES_PASSWORD:-mental_password}@postgres:5432/${POSTGRES_DB:-mental_health_db}
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-10080}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
     depends_on:
       postgres:
         condition: service_healthy
-    command: >
-      sh -c "
-        pip install -r requirements.txt &&
-        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-      "
+    expose:
+      - "8000"
+    networks:
+      - mindmirror_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    image: mindmirror-frontend:latest
+    container_name: mindmirror_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    networks:
+      - mindmirror_net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  mindmirror_net:
+    driver: bridge
 
 volumes:
   postgres_data:

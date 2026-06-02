@@ -13,7 +13,6 @@ dist-ssr/
 .env.local
 .env.*.local
 .env.production
-.vercel
 
 # Editor directories and files
 .vscode/*
@@ -45,25 +44,24 @@ coverage/
 .parcel-cache/
 
 # Vite
+.vite/
 vite.config.ts.timestamp-*
 vite.config.ts.timestamp-*.log
 
 # TypeScript
 *.tsbuildinfo
 
-# API build (use Vercel deployment instead)
-/api/dist/
-
-# Supabase (local dev only)
-/supabase/.branches/
-/supabase/tmp/
-
-# Python backend (separate project)
-backend/
-*.pyc
+# Python backend
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
 *.db
 *.sqlite
-
-# Internal docs
-ENHANCEMENT_PLAN.md
+*.sqlite3
+backend/mental_health.db
+backend/.venv/
+backend/venv/
+backend/.env

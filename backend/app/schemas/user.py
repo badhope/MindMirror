@@ -6,7 +6,7 @@ from uuid import UUID
 
 class UserBase(BaseModel):
     email: EmailStr
-    name: str = Field(..., min_length=1, max_length=100)
+    username: str = Field(..., min_length=3, max_length=100)
 
 
 class UserCreate(UserBase):
@@ -14,12 +14,14 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=1, max_length=100)
+    username: Optional[str] = Field(None, min_length=3, max_length=100)
     email: Optional[EmailStr] = None
+    avatar_url: Optional[str] = Field(None, max_length=500)
 
 
 class UserResponse(UserBase):
     id: UUID
+    avatar_url: Optional[str] = None
     is_guest: bool = False
     is_active: bool = True
     created_at: datetime
@@ -37,6 +39,7 @@ class UserLogin(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    user: UserResponse
 
 
 class TokenData(BaseModel):

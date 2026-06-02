@@ -1,19 +1,37 @@
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
-from app.schemas.assessment import (
-    AssessmentCreate, AssessmentResponse, AssessmentListResponse,
-    QuestionResponse, OptionResponse
+from app.schemas.user import UserBase, UserCreate, UserUpdate, UserResponse, UserLogin, Token, TokenData
+from app.schemas.assessment import AssessmentBase, AssessmentCreate, AssessmentResponse, AssessmentListResponse
+from app.schemas.result import (
+    AssessmentResultCreate,
+    AssessmentResultResponse,
+    AssessmentResultListResponse,
+    UserAnswerCreate,
+    UserAnswerResponse,
+    OptionAnswerResponse,
+    LegacyAnswerSubmission,
+    LegacyResultResponse,
+    LegacyResultListResponse,
 )
-from app.schemas.result import ResultCreate, ResultResponse, ResultListResponse
 from app.schemas.training import (
-    TrainingPlanCreate, TrainingPlanResponse, TrainingPlanListResponse,
-    TrainingTaskResponse, TrainingTaskUpdate
+    TrainingPlanBase, TrainingPlanCreate, TrainingPlanUpdate,
+    TrainingPlanResponse, TrainingPlanListResponse,
+    TrainingTaskResponse, TrainingTaskUpdate,
+)
+from app.schemas.mood import (
+    MoodEntryBase, MoodEntryCreate, MoodEntryUpdate,
+    MoodEntryResponse, MoodEntryListResponse,
+    AchievementCreate, AchievementResponse, AchievementListResponse,
 )
 
 __all__ = [
-    "UserCreate", "UserResponse", "UserUpdate",
-    "AssessmentCreate", "AssessmentResponse", "AssessmentListResponse",
-    "QuestionResponse", "OptionResponse",
-    "ResultCreate", "ResultResponse", "ResultListResponse",
-    "TrainingPlanCreate", "TrainingPlanResponse", "TrainingPlanListResponse",
-    "TrainingTaskResponse", "TrainingTaskUpdate"
+    "UserBase", "UserCreate", "UserUpdate", "UserResponse", "UserLogin", "Token", "TokenData",
+    "AssessmentBase", "AssessmentCreate", "AssessmentResponse", "AssessmentListResponse",
+    "AssessmentResultCreate", "AssessmentResultResponse", "AssessmentResultListResponse",
+    "UserAnswerCreate", "UserAnswerResponse", "OptionAnswerResponse",
+    "LegacyAnswerSubmission", "LegacyResultResponse", "LegacyResultListResponse",
+    "TrainingPlanBase", "TrainingPlanCreate", "TrainingPlanUpdate",
+    "TrainingPlanResponse", "TrainingPlanListResponse",
+    "TrainingTaskResponse", "TrainingTaskUpdate",
+    "MoodEntryBase", "MoodEntryCreate", "MoodEntryUpdate",
+    "MoodEntryResponse", "MoodEntryListResponse",
+    "AchievementCreate", "AchievementResponse", "AchievementListResponse",
 ]

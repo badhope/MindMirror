@@ -61,14 +61,21 @@ MindMirror/
 │   ├── data/         # Assessment question data (JSON/TS)
 │   ├── hooks/        # Custom React hooks
 │   ├── i18n/         # Translation files (en.ts, zh.ts)
-│   ├── lib/          # Client utilities (Supabase, utils)
+│   ├── lib/          # apiClient + utility helpers
 │   ├── pages/        # Route page components
-│   ├── services/     # Business logic (scoring algorithms)
+│   ├── services/     # Business logic (scoring, auth, mood, plugins)
 │   ├── store/        # Zustand state management
 │   └── types/        # TypeScript type definitions
-├── api/              # Express.js API routes
-├── supabase/         # Database migrations
-└── tests/            # Unit tests
+├── backend/          # FastAPI backend (Python 3.12)
+│   ├── app/          # Application package (api, models, schemas, core, main.py)
+│   ├── .env.example
+│   ├── init_db.py
+│   ├── requirements.txt
+│   └── run.py
+├── Dockerfile            # Backend image
+├── Dockerfile.frontend   # Frontend image (multi-stage: node build → nginx)
+├── docker-compose.yml    # postgres + backend + frontend
+└── nginx.conf            # Reverse proxy + SPA fallback
 ```
 
 ## 🌐 Internationalization (i18n)

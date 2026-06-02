@@ -20,7 +20,6 @@ class TrainingPlan(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = relationship("User", back_populates="training_plans")
-    result = relationship("AssessmentResult", back_populates="training_plans")
     tasks = relationship("TrainingTask", back_populates="plan", cascade="all, delete-orphan", order_by="TrainingTask.task_date")
 
     def __repr__(self):
