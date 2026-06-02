@@ -1,4 +1,4 @@
-name: Build & Deploy to GitHub Pages
+name: Build & Deploy to GitHub Pages (gh-pages branch)
 
 on:
   push:
@@ -6,9 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -19,8 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Checkout
+      - name: Checkout (full history so we can push back)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,19 +42,33 @@ jobs:
         env:
           VITE_BASE_PATH: /MindMirror/
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+      - name: Add .nojekyll (skip Jekyll processing)
+        run: touch dist/.nojekyll
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Verify build output
+        run: |
+          set -e
+          echo "--- dist/ contents ---"
+          ls -la dist/
+          echo "--- dist/assets/ contents ---"
+          ls -la dist/assets/
+          echo "--- File counts ---"
+          echo "Total files in dist:        $(find dist -type f | wc -l)"
+          echo "Lazy chunks (Page-*.js):    $(find dist/assets -type f -name '*-*.js' | grep -v 'index-' | grep -v 'vendor-' | wc -l)"
+          echo "Vendor chunks:              $(find dist/assets -type f -name 'vendor-*.js' | wc -l)"
+          echo "Has 404.html:               $(test -f dist/404.html && echo YES || echo NO)"
+          echo "Has .nojekyll:              $(test -f dist/.nojekyll && echo YES || echo NO)"
+          echo "Has index.html:             $(test -f dist/index.html && echo YES || echo NO)"
+
+      - name: Deploy dist/ -> gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
+          keep_files: false
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "deploy: GitHub Pages build ${{ github.run_number }} (commit ${{ github.sha }})"
+          full_commit_message: "Deploy from GitHub Actions\n\nTriggered by ${{ github.event_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.run_id }}"
