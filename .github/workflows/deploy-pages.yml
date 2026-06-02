@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 12
     steps:
       - name: Checkout (full history so we can push back)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
