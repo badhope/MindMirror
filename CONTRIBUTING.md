@@ -1,229 +1,307 @@
 # Contributing to MindMirror
 
-Thank you for your interest in contributing to MindMirror! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to MindMirror! This document
+provides guidelines and instructions for contributing.
+
+> **Other languages:** [简体中文](README.zh-CN.md) (general README)
+
+---
 
 ## 🐛 Bug Reports
 
 Before submitting a bug report:
 
-- Search existing issues to avoid duplicates
-- Use the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.yml)
-- Include browser/OS information
-- Provide steps to reproduce and expected vs actual behavior
-- If possible, provide a minimal reproducible example
+- **Search** [existing issues](https://github.com/badhope/MindMirror/issues)
+  to avoid duplicates.
+- Use the [**Bug Report** template](.github/ISSUE_TEMPLATE/bug_report.yml).
+- Include **browser / OS** information.
+- Provide **steps to reproduce** and expected vs. actual behavior.
+- If possible, provide a **minimal reproducible example** (CodeSandbox,
+  StackBlitz, screenshots, screen recording, …).
 
 ## 💡 Feature Requests
 
 We welcome feature requests! Please:
 
-- Search existing issues and PRs first
-- Use the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.yml)
-- Clearly describe the problem you're solving
-- Explain why this feature would benefit the project
+- **Search** existing issues and PRs first.
+- Use the [**Feature Request** template](.github/ISSUE_TEMPLATE/feature_request.yml).
+- Clearly describe **the problem** you're solving.
+- Explain **why** this feature would benefit the project and the wider
+  community.
 
 ## 🔧 Development Setup
 
 ### Prerequisites
 
-- Node.js ≥ 18.0.0
-- npm ≥ 9.0.0
+- **Node.js** ≥ 18.0.0 (LTS recommended)
+- **npm** ≥ 9.0.0
+- **Python** 3.12 (only if you touch the backend)
+- **Docker** + **Docker Compose** (only for the full-stack integration test)
 
 ### Local Development
 
 ```bash
-# Clone the repository
+# 1) Clone the repository
 git clone https://github.com/badhope/MindMirror.git
 cd MindMirror
 
-# Install dependencies
+# 2) Install dependencies
 npm install
 
-# Start development server
+# 3) Start the dev server (with /api proxy)
 npm run dev
 
-# Run type checking
-npm run typecheck
-
-# Run linter
-npm run lint
-
-# Build for production
-npm run build
+# 4) (Optional) start the backend in another terminal
+cd backend
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+python3 init_db.py --seed
+python3 run.py
 ```
+
+### Useful Scripts
+
+| Command                | Purpose                                          |
+|------------------------|--------------------------------------------------|
+| `npm run dev`          | Start Vite dev server with HMR                   |
+| `npm run typecheck`    | Run TypeScript type checking                     |
+| `npm run lint`         | Run ESLint                                       |
+| `npm run format`       | Auto-format with Prettier                        |
+| `npm run format:check` | Verify formatting without writing                 |
+| `npm run build`        | Production build (custom backend deployment)     |
+| `npm run build:pages`  | Build with `--base=/MindMirror/` (for Pages)     |
+| `npm run preview`      | Preview the production build locally             |
 
 ### Project Structure
 
 ```
 MindMirror/
-├── src/
-│   ├── components/    # Reusable UI components
-│   │   └── animations/  # Framer Motion animation utilities
-│   ├── data/         # Assessment question data (JSON/TS)
-│   ├── hooks/        # Custom React hooks
-│   ├── i18n/         # Translation files (en.ts, zh.ts)
-│   ├── lib/          # apiClient + utility helpers
-│   ├── pages/        # Route page components
-│   ├── services/     # Business logic (scoring, auth, mood, plugins)
-│   ├── store/        # Zustand state management
-│   └── types/        # TypeScript type definitions
-├── backend/          # FastAPI backend (Python 3.12)
-│   ├── app/          # Application package (api, models, schemas, core, main.py)
+├── src/                          # React + TypeScript frontend
+│   ├── components/              # Reusable UI components
+│   │   ├── animations/          # Framer Motion animation primitives
+│   │   ├── dashboard/           # Personal dashboard widgets
+│   │   └── plugin/              # Plugin system UI
+│   ├── data/                    # Built-in assessment question banks
+│   ├── hooks/                   # Custom React hooks
+│   ├── i18n/                    # en.ts, zh.ts translation tables
+│   ├── lib/                     # apiClient + utility helpers
+│   ├── pages/                   # Route-level pages
+│   ├── services/                # Scoring, auth, mood, training, plugins
+│   ├── store/                   # Zustand global state
+│   ├── types/                   # TypeScript type definitions
+│   ├── App.tsx                  # Root component (Router, layout)
+│   └── main.tsx                 # Entry: createRoot, error boundary
+├── backend/                     # FastAPI backend (Python 3.12)
+│   ├── app/
+│   │   ├── api/                 # Route handlers
+│   │   ├── core/                # Security helpers
+│   │   ├── models/              # SQLAlchemy 2 ORM models
+│   │   ├── schemas/             # Pydantic v2 schemas
+│   │   ├── config.py            # pydantic-settings
+│   │   ├── database.py          # SQLAlchemy engine + session
+│   │   ├── dependencies.py      # Reusable FastAPI dependencies
+│   │   └── main.py              # FastAPI app entrypoint
 │   ├── .env.example
-│   ├── init_db.py
+│   ├── init_db.py               # Create tables + optional demo seed
 │   ├── requirements.txt
-│   └── run.py
-├── Dockerfile            # Backend image
-├── Dockerfile.frontend   # Frontend image (multi-stage: node build → nginx)
-├── docker-compose.yml    # postgres + backend + frontend
-└── nginx.conf            # Reverse proxy + SPA fallback
+│   └── run.py                   # Dev runner (auto-detects docker vs sqlite)
+├── scripts/                     # Build helpers (postbuild.mjs, …)
+├── public/                      # Static assets (favicons, og-image, docs/)
+├── .github/
+│   ├── workflows/               # CI + Pages deploy
+│   ├── ISSUE_TEMPLATE/          # Bug / feature / assessment templates
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── CODEOWNERS
+│   └── dependabot.yml
+├── Dockerfile                   # Backend image
+├── Dockerfile.frontend          # Frontend image (multi-stage: node build → nginx)
+├── docker-compose.yml           # postgres + backend + frontend
+└── nginx.conf                   # Reverse proxy + SPA fallback
 ```
+
+---
 
 ## 🌐 Internationalization (i18n)
 
-MindMirror supports English and Chinese. When adding new features:
+MindMirror ships in two languages with a built-in switcher: **English**
+(default) and **简体中文** (Simplified Chinese).
 
-1. Add translation keys to both `src/i18n/en.ts` AND `src/i18n/zh.ts`
-2. Use the `t()` helper function from `../i18n`
-3. All user-facing text must be translated
+When adding a user-facing string:
+
+1. Add the key to **both** `src/i18n/en.ts` and `src/i18n/zh.ts`.
+2. Use the `t()` helper from `../i18n`.
 
 ```typescript
 import { t } from '../i18n';
 
-// Usage
-t(locale, 'section.key', { param: value })
+t(locale, 'section.key', { param: value });
 ```
+
+To add a **new language**:
+
+1. Create `src/i18n/<lang>.ts` with the same shape as `en.ts`.
+2. Register it in `src/i18n/index.ts` (add to the `dictionaries` map and
+   to the `Locale` type).
+3. Add a button to `src/components/LanguageSwitcher.tsx`.
+4. Add a quick link in both `README.md` and `README.zh-CN.md`.
+
+---
 
 ## 📐 Code Style
 
-- **Formatting**: ESLint + Prettier (automated via `npm run lint`)
-- **TypeScript**: Strict mode enabled, no `any` types
-- **Commits**: Conventional Commits format
+- **Formatter**: Prettier — `npm run format`
+- **Linter**: ESLint — `npm run lint`
+- **TypeScript**: `strict: false` (intentionally — see `tsconfig.json`),
+  but new code should still avoid `any` and `// @ts-ignore`.
+- **Commits**: [Conventional Commits](https://www.conventionalcommits.org/)
 
 ```
 <type>(<scope>): <description>
 
-Types: feat, fix, docs, style, refactor, test, chore
-Scope: auth, scoring, i18n, assessment, etc.
+Types:  feat, fix, docs, style, refactor, test, chore, perf, build, ci
+Scope:  auth, scoring, i18n, assessment, training, mood, ui, …
 ```
 
 Examples:
+
 - `feat(i18n): add Portuguese language support`
 - `fix(scoring): correct T-score calculation for stress test`
-- `docs(assessments): update Big Five description text`
+- `docs(readme): clarify Docker quick-start`
+- `refactor(components): extract ErrorBoundary into a shared module`
+
+---
 
 ## 🧪 Testing
 
-### Scoring Logic Tests
-
-Tests for assessment scoring algorithms are in `tests/`:
+### Manual Smoke Test
 
 ```bash
-# Run tests
-npx vitest run
+# Build the production bundle
+npm run build:pages
 
-# Run tests in watch mode
-npx vitest
+# Serve it locally (Python 3)
+cd dist && python3 -m http.server 4173
+# open http://localhost:4173/MindMirror/
 ```
 
-### Writing Tests
+### Automated Tests
 
-When adding new assessment scoring:
+Currently the project relies on TypeScript type checking and ESLint for
+quality assurance. Unit tests with [Vitest](https://vitest.dev/) are on
+the roadmap — see [open issues](https://github.com/badhope/MindMirror/issues?q=is%3Aissue+is%3Aopen+label%3Atesting).
 
-```typescript
-describe('Big Five Scoring', () => {
-  it('should calculate correct O score', () => {
-    const result = calculateBigFiveScores(answers, questions);
-    expect(result[0].score).toBe(expectedScore);
-  });
-});
-```
+When writing a new assessment scoring algorithm, please:
+
+1. Cross-check your formula against a published source.
+2. Add at least one golden test (hand-calculated expected output).
+3. Document the source in the file header.
+
+---
 
 ## 📋 Pull Request Process
 
-1. **Fork & Branch**: Create a feature branch from `main`
+1. **Fork & branch** off `master`:
+
    ```bash
+   git checkout master
+   git pull upstream master
    git checkout -b feature/your-feature-name
+   # or
    git checkout -b fix/bug-description
    ```
 
-2. **Development**: Make your changes with passing tests
+2. **Develop**: make focused commits with clear messages.
 
-3. **Type Check & Lint**: Ensure clean code
+3. **Verify** locally before pushing:
+
    ```bash
    npm run typecheck
    npm run lint
+   npm run format:check
+   npm run build:pages
    ```
 
-4. **Commit**: Use conventional commits format
+4. **Push & open a PR** against `master`:
 
-5. **Push & PR**: Open a Pull Request against `main`
-   - Fill in the PR template completely
-   - Link related issues with `Closes #123` or `Refs #456`
-   - Request review from maintainers
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 
-6. **Review**: Address any feedback from maintainers
+   - Fill in the PR template completely.
+   - Link related issues with `Closes #123` or `Refs #456`.
+   - Add screenshots / recordings for UI changes.
+   - Wait for CI to pass (typecheck + lint + Pages build).
 
-## 🧭 Assessment Development Guide
+5. **Review**: address feedback from maintainers, push fixes to the same
+   branch — the PR will update automatically.
 
-### Adding a New Assessment
+---
 
-1. **Create question data** in `src/data/`:
+## 🧭 Adding a New Assessment
+
+1. **Create the question data** in `src/data/`:
+
    ```typescript
    // src/data/myAssessmentData.ts
    export const myAssessmentData = {
      id: 'my-assessment',
      title: { en: 'My Assessment', zh: '我的测评' },
+     description: { en: '…', zh: '…' },
      questions: [
        {
          id: 'q1',
          text: { en: 'Question text', zh: '问题文本' },
-         options: [...],
+         options: [
+           { value: 1, label: { en: 'Strongly disagree', zh: '非常不同意' } },
+           { value: 5, label: { en: 'Strongly agree',    zh: '非常同意' } },
+         ],
          reverse: false,
-       }
+         facet: 'openness', // which Big-Five facet, if applicable
+       },
      ],
    };
    ```
 
-2. **Create scoring service** in `src/services/`:
+2. **Implement scoring** in `src/services/`:
+
    ```typescript
    // src/services/myAssessmentScoring.ts
    export function calculateMyAssessmentScores(answers, questions) {
-     // Implement scoring logic
+     // Your scoring logic here. Document the source.
    }
    ```
 
-3. **Add to store** in `src/store/index.ts`
+3. **Register the plugin** in `src/store/index.ts` (or the plugin registry)
+   and **register the route** in `src/App.tsx`.
 
-4. **Add translations** in `src/i18n/en.ts` and `src/i18n/zh.ts`
+4. **Add translations** in `src/i18n/en.ts` and `src/i18n/zh.ts`.
 
-5. **Add navigation** in `Sidebar.tsx` and `Home.tsx`
+5. **Add navigation** in `src/components/Sidebar.tsx` and a card on
+   `src/pages/Home.tsx`.
 
-## 📖 Documentation
-
-- Update README.md if adding new features
-- Add inline comments for complex logic
-- Document scoring algorithms with references to sources
-
-## ⚠️ Important Notes
-
-- **Never commit secrets**: Use `.env` for secrets, `.env.example` for templates
-- **Assessment content**: Only use scientifically validated scales with proper references
-- **Privacy**: All user data handling must comply with privacy best practices
-- **Accessibility**: Follow WCAG 2.1 guidelines for UI components
-
-## 🙏 Thank You
-
-Every contribution is valuable. Thank you for making MindMirror better!
+6. **Cite the scale** in `CITATION.cff` and add a credit to
+   `README.md → License & Citation`.
 
 ---
 
-## 🇨🇳 中文贡献指南
+## ⚠️ Important Notes
 
-欢迎为 MindMirror 做出贡献！请遵循以下指南：
+- **Never commit secrets** — use `.env` for secrets, `.env.example` for
+  templates. CI will fail if a real `.env` is committed.
+- **Assessment content** — only use scientifically validated scales with
+  proper references. Don't invent your own personality taxonomy.
+- **Privacy** — all user-data handling must comply with privacy
+  best-practices: no third-party analytics, no tracking pixels, no
+  external fonts.
+- **Accessibility** — follow [WCAG 2.1 AA](https://www.w3.org/WAI/WCAG21/quickref/)
+  where feasible. Test with keyboard navigation and a screen reader.
+- **Dependencies** — Dependabot opens weekly PRs; review them but don't
+  blindly merge major-version bumps.
 
-- 使用英文提交信息（Conventional Commits）
-- 文档使用中英双语
-- 所有用户可见文本必须翻译
-- 遵循上述 Pull Request 流程
+---
 
-如有问题，可以在 [GitHub Issues](https://github.com/badhope/MindMirror/issues) 中提出。
+## 🙏 Thank You
+
+Every contribution matters — code, docs, bug reports, translations,
+design, and ideas. Thank you for making MindMirror better! 💚

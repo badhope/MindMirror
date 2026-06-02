@@ -2,9 +2,13 @@
   "name": "mindmirror",
   "version": "1.0.0",
   "private": false,
-  "description": "MindMirror - Open-source professional psychological assessment platform. Features Big Five personality, stress, anxiety assessments, mood tracking, and personalized mental training programs.",
-  "description_zh": "MindMirror 开源专业心理测评平台 · 大五人格/压力/焦虑测评 · 心情追踪 · 个性化心理训练",
+  "description": "MindMirror is an open-source, self-hostable, privacy-first psychological assessment platform: Big Five personality, PSS-10 stress, GAD-7 anxiety, mood tracking and mental training programs.",
+  "description_zh": "MindMirror 是一个开源、可自托管、隐私优先的心理测评平台：大五人格、PSS-10 压力、GAD-7 焦虑、心情追踪与心理训练。",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/postbuild.mjs",
@@ -12,7 +16,9 @@
     "deploy:pages": "npm run build:pages && touch dist/.nojekyll && npx gh-pages -d dist -b gh-pages -m 'deploy: GitHub Pages build'",
     "preview": "vite preview",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\" \"*.{json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,md}\" \"*.{json,md,yml,yaml}\""
   },
   "repository": {
     "type": "git",
@@ -22,22 +28,30 @@
     "psychology",
     "personality-assessment",
     "big-five",
+    "ocean",
+    "neo-pi-r",
+    "ipip",
     "mental-health",
     "self-discovery",
+    "self-hosted",
+    "privacy",
     "stress-test",
+    "pss-10",
     "anxiety-assessment",
+    "gad-7",
     "mood-tracker",
     "mental-training",
+    "cbt",
     "react",
     "typescript",
+    "vite",
+    "tailwindcss",
+    "framer-motion",
     "fastapi",
     "postgresql",
     "docker",
-    "open-source",
-    "心理健康",
-    "心理测评",
-    "大五人格",
-    "心理学"
+    "pwa",
+    "open-source"
   ],
   "author": {
     "name": "badhope",
@@ -47,15 +61,14 @@
   "bugs": {
     "url": "https://github.com/badhope/MindMirror/issues"
   },
-  "homepage": "https://mindmirror.app",
+  "homepage": "https://badhope.github.io/MindMirror/",
   "funding": [
     {
-      "type": "opencollective",
-      "url": "https://opencollective.com/mindmirror"
+      "type": "github",
+      "url": "https://github.com/sponsors/badhope"
     }
   ],
   "dependencies": {
-    "@types/qrcode": "^1.5.5",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
     "lucide-react": "^0.511.0",
@@ -69,6 +82,7 @@
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/node": "^22.19.19",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.29",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.4.1",
@@ -79,6 +93,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.5.0",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.60.0",

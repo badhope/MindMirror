@@ -1,0 +1,87 @@
+cff-version: 1.2.0
+message: >-
+  If you use MindMirror in academic work, please cite the software itself
+  and the underlying assessment scales (IPIP / NEO-PI-R, PSS-10, GAD-7).
+type: software
+title: "MindMirror"
+abstract: >-
+  MindMirror is an open-source, self-hostable, privacy-first psychological
+  assessment platform. It provides the Big Five personality test
+  (NEO-PI-R / IPIP derived), Cohen's Perceived Stress Scale (PSS-10),
+  the GAD-7 anxiety screener, a mood tracker, mental training plans,
+  and a plugin system for custom assessments. Ships with a React 18 +
+  TypeScript frontend and an optional FastAPI + PostgreSQL backend
+  (Docker Compose ready), and a fully offline localStorage demo mode
+  deployable to any static host (including GitHub Pages).
+authors:
+  - family-names: "badhope"
+    given-names: "badhope"
+    alias: "badhope"
+    orcid: null
+license: MIT
+license-url: https://github.com/badhope/MindMirror/blob/master/LICENSE
+repository-code: "https://github.com/badhope/MindMirror"
+url: "https://badhope.github.io/MindMirror/"
+keywords:
+  - psychology
+  - psychological-assessment
+  - big-five
+  - personality
+  - neo-pi-r
+  - pss-10
+  - gad-7
+  - stress
+  - anxiety
+  - mood-tracker
+  - mental-health
+  - mental-training
+  - self-host
+  - privacy
+  - open-source
+  - react
+  - typescript
+  - vite
+  - tailwindcss
+  - fastapi
+  - postgresql
+  - docker
+  - pwa
+date-released: 2026-06-02
+version: "1.0.0"
+references:
+  - type: article
+    title: "A brief measure for assessing generalized anxiety disorder"
+    authors:
+      - family-names: "Spitzer"
+        given-names: "Robert L."
+      - family-names: "Kroenke"
+        given-names: "Kurt"
+      - family-names: "Williams"
+        given-names: "Janet B. W."
+      - family-names: "Löwe"
+        given-names: "Bernd"
+    journal: "Archives of Internal Medicine"
+    year: 2006
+    volume: "166"
+    issue: "10"
+    pages: "1092-1097"
+    doi: "10.1001/archinte.166.10.1092"
+  - type: article
+    title: "A global measure of perceived stress"
+    authors:
+      - family-names: "Cohen"
+        given-names: "Sheldon"
+      - family-names: "Kamarck"
+        given-names: "Tom"
+      - family-names: "Mermelstein"
+        given-names: "Robin"
+    journal: "Journal of Health and Social Behavior"
+    year: 1983
+    volume: "24"
+    issue: "4"
+    pages: "385-396"
+    doi: "10.2307/2136404"
+  - type: webpage
+    title: "International Personality Item Pool (IPIP)"
+    url: "https://ipip.ori.org/"
+    date-accessed: 2026-06-02

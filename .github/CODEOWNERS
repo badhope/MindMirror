@@ -1,0 +1,37 @@
+# Code owners for MindMirror.
+# Each line is a file pattern followed by one or more owners.
+# Order matters — the last matching pattern wins.
+
+# Default owners for everything in the repo.
+*                               @badhope
+
+# Frontend (TypeScript / React / Vite / Tailwind)
+/src/                           @badhope
+/public/                        @badhope
+/index.html                     @badhope
+/vite.config.ts                 @badhope
+/tailwind.config.js             @badhope
+/postcss.config.js              @badhope
+/eslint.config.mjs              @badhope
+/tsconfig*.json                 @badhope
+/.prettierrc                    @badhope
+
+# Backend (FastAPI / Python)
+/backend/                       @badhope
+/Dockerfile                     @badhope
+/Dockerfile.frontend            @badhope
+/docker-compose.yml             @badhope
+/nginx.conf                     @badhope
+
+# CI / CD
+/.github/                       @badhope
+
+# Docs
+/README.md                      @badhope
+/README.zh-CN.md                @badhope
+/CHANGELOG.md                   @badhope
+/CONTRIBUTING.md                @badhope
+/CODE_OF_CONDUCT.md             @badhope
+/SECURITY.md                    @badhope
+/LICENSE                        @badhope
+/CITATION.cff                   @badhope

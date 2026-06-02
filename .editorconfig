@@ -1,0 +1,35 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Defaults for all files: LF line endings, UTF-8, trim trailing whitespace,
+# insert a final newline.
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Markdown files may have trailing whitespace as significant (line breaks).
+[*.md]
+trim_trailing_whitespace = false
+
+# Makefiles must use tabs for indentation.
+[Makefile]
+indent_style = tab
+
+# Python source (backend)
+[*.py]
+indent_size = 4
+max_line_length = 100
+
+# YAML
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON: keep 2-space indent
+[*.json]
+indent_size = 2

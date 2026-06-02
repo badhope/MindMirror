@@ -3,6 +3,44 @@
 All notable changes to MindMirror are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+> **Languages:** [English](CHANGELOG.md)
+
+---
+
+## [Unreleased]
+
+### 🐛 Bug Fixes
+- **Router basename** — add `basename={import.meta.env.BASE_URL}` to
+  `<Router>` in `src/App.tsx`. Without it, when deployed under a sub-path
+  (e.g. GitHub Pages at `/MindMirror/`), every route falls through to
+  the 404 NotFound page. Fixes the GitHub Pages "blank page" issue.
+- **Invalid `X-Frame-Options` meta tag** — removed from `index.html`;
+  this header can only be sent as an HTTP response header, not via
+  `<meta>`. (Was triggering a console warning.)
+- **Sitemap** — replaced hash-based URLs (`#/assessments`) with the new
+  clean BrowserRouter URLs (`/assessments`) in `public/sitemap.xml`.
+
+### 📚 Documentation
+- **Repository hygiene** — added `.editorconfig`, `.github/CODEOWNERS`,
+  `.github/dependabot.yml`, and `CITATION.cff`.
+- **README rewrite** — split the monolithic bilingual README into
+  `README.md` (English, primary) and `README.zh-CN.md` (简体中文) with
+  a language switcher at the top. Both versions are now self-contained
+  and easier to read.
+- **CHANGELOG** — this file.
+- **CONTRIBUTING** — clarified prerequisites, scripts, i18n flow, and
+  switched the default branch reference from `main` to `master`.
+
+### ⚙️ Configuration
+- **`package.json`** — added `engines` (Node ≥ 18, npm ≥ 9), `format`
+  / `format:check` scripts, added `prettier` as a dev dependency,
+  expanded keywords, fixed `homepage` to point to the live GitHub Pages
+  URL.
+- **Sitemap** — `public/sitemap.xml` paths now match the BrowserRouter
+  routes.
+
+---
+
 ## [1.0.0] - 2026-06-02
 
 ### 🎉 Initial Open-Source Release
@@ -50,11 +88,11 @@ psychological assessment platform.
 - Persistent PostgreSQL volume
 
 #### 🌐 GitHub Pages (showcase)
-- Live demo at https://badhope.github.io/MindMirror/
-- Hash-routed SPA, works under any sub-path
+- Live demo at <https://badhope.github.io/MindMirror/>
+- BrowserRouter with `basename=/MindMirror/`
 - `postbuild.mjs` produces `dist/404.html` for clean deep links
 - GitHub Actions: type-check + lint on every PR, build & deploy Pages
-  on push to `master`/`main`
+  on push to `master`
 
 #### 📦 Project Hygiene
 - Removed Vercel serverless `api/`, `vercel.json`, `@vercel/node`
