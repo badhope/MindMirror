@@ -1,7 +1,7 @@
 fastapi>=0.115.0,<0.116.0
 uvicorn[standard]>=0.32.0,<0.33.0
 sqlalchemy>=2.0.36,<2.1.0
-psycopg2-binary>=2.9.10,<2.10.0
+psycopg2-binary>=2.9.12,<2.10.0
 bcrypt>=4.0.0
 python-jose[cryptography]>=3.5.0,<4.0.0
 python-multipart>=0.0.20,<1.0.0
