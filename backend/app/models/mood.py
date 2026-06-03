@@ -1,7 +1,8 @@
 import uuid
-from datetime import datetime, date
+from datetime import date
 from sqlalchemy import Column, String, Integer, DateTime, Date, ForeignKey
 from sqlalchemy.orm import relationship
+from app.core.utils import utcnow
 from app.database import Base
 
 
@@ -15,8 +16,8 @@ class MoodEntry(Base):
     note = Column(String(1000), nullable=True)
     tags = Column(String(500), nullable=True)
     recorded_at = Column(Date, default=date.today, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
     user = relationship("User", back_populates="mood_entries")
 
@@ -33,7 +34,7 @@ class Achievement(Base):
     title = Column(String(200), nullable=False)
     description = Column(String(1000), nullable=False)
     icon = Column(String(20), nullable=True)
-    unlocked_at = Column(DateTime, default=datetime.utcnow)
+    unlocked_at = Column(DateTime(timezone=True), default=utcnow)
 
     user = relationship("User", back_populates="achievements")
 

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import Optional
 from uuid import UUID
-from datetime import datetime
+from app.core.utils import utcnow
 from app.database import get_db
 from app.models.result import AssessmentResult
 from app.models.user import User
@@ -47,7 +47,7 @@ async def create_result(
         traits=payload.traits or [],
         dimension_scores=payload.dimension_scores,
         raw_answers=payload.raw_answers,
-        completed_at=payload.completed_at or datetime.now(timezone.utc)
+        completed_at=payload.completed_at or utcnow()
     )
     db.add(result)
     db.commit()

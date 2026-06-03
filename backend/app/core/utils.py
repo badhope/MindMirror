@@ -1,9 +1,17 @@
 import uuid
+from datetime import datetime, timezone
 from typing import Any, Dict
 
 
 def generate_uuid() -> str:
     return str(uuid.uuid4())
+
+
+def utcnow() -> datetime:
+    """Timezone-aware UTC now. Use this everywhere instead of
+    ``datetime.utcnow()`` (deprecated) or ``datetime.now()`` (naive
+    local time on most servers)."""
+    return datetime.now(timezone.utc)
 
 
 def format_response(success: bool, message: str, data: Any = None) -> Dict[str, Any]:

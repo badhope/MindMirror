@@ -39,9 +39,12 @@ async def get_current_user(
         raise credentials_exception
 
     if not user.is_active:
+        # Generic 401 — do not let an observer distinguish "token still
+        # valid but account disabled" from "token bad/expired".
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
     return user
@@ -50,11 +53,9 @@ async def get_current_user(
 async def get_current_active_user(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    if not current_user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user"
-        )
+    # The dependency above already rejects inactive users with a generic
+    # 401; this wrapper is kept for callers that want to spell out the
+    # intent at the route level.
     return current_user
 
 

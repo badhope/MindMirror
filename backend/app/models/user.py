@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
 from sqlalchemy import Column, String, Boolean, DateTime
 from sqlalchemy.orm import relationship
+from app.core.utils import utcnow
 from app.database import Base
 
 
@@ -15,8 +15,8 @@ class User(Base):
     avatar_url = Column(String(500), nullable=True)
     is_guest = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
     assessment_results = relationship(
         "AssessmentResult",

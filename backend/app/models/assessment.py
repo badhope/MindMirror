@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
 from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime, ForeignKey, Table
 from sqlalchemy.orm import relationship
+from app.core.utils import utcnow
 from app.database import Base
 
 
@@ -23,8 +23,8 @@ class Assessment(Base):
     version = Column(String(20), default="1.0")
     total_questions = Column(Integer, nullable=False)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
     questions = relationship(
         "Question",
@@ -45,7 +45,7 @@ class Question(Base):
     question_text = Column(Text, nullable=False)
     question_type = Column(String(20), nullable=False, default="single")
     sort_order = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
 
     assessment = relationship("Assessment", back_populates="questions")
     options = relationship(
@@ -69,7 +69,7 @@ class Option(Base):
     score_value = Column(Integer, nullable=False)
     dimension = Column(String(50), nullable=True)
     sort_order = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
 
     question = relationship("Question", back_populates="options")
     user_answers = relationship(
@@ -89,7 +89,7 @@ class UserAnswer(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     result_id = Column(String(36), ForeignKey("assessment_results.id", ondelete="CASCADE"), nullable=False)
     question_id = Column(String(36), ForeignKey("questions.id", ondelete="CASCADE"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
 
     result = relationship("AssessmentResult", back_populates="user_answers")
     question = relationship("Question", back_populates="user_answers")

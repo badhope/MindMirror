@@ -9,6 +9,7 @@
     python init_db.py            # 仅创建表
     python init_db.py --seed     # 创建表 + 种子数据
 """
+import os
 import sys
 import uuid
 from pathlib import Path
@@ -34,6 +35,17 @@ def seed_demo(db):
     existing = db.query(User).filter(User.email == demo_email).first()
     if existing:
         print("Demo user already exists, skipping seed.")
+        return
+
+    # The demo password is a known public string — only safe to seed in
+    # non-production environments. Operators pointed at a real database
+    # get a clear error instead of a surprise account with a guessable
+    # password.
+    if os.environ.get("ENVIRONMENT", "development").lower() in {"production", "prod"}:
+        print(
+            "⚠️  Refusing to seed the demo user: ENVIRONMENT=production.\n"
+            "   Create real accounts via /api/v1/auth/register instead."
+        )
         return
 
     demo = User(

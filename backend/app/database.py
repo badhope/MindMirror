@@ -13,6 +13,11 @@ if not _is_sqlite:
             "pool_pre_ping": True,
             "pool_size": 10,
             "max_overflow": 20,
+            # Recycle connections well before NAT / load-balancer idle
+            # timeouts typically kick in (AWS NLB defaults to 350s, k8s
+            # service default is unlimited but proxies in front often
+            # aren't). 1800s is a conservative middle ground.
+            "pool_recycle": 1800,
         }
     )
 

@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
 from sqlalchemy import Column, String, Text, Float, Boolean, DateTime, ForeignKey, TypeDecorator, Integer
 from sqlalchemy.orm import relationship
+from app.core.utils import utcnow
 from app.database import Base
 import json
 
@@ -35,8 +35,8 @@ class AssessmentResult(Base):
     traits = Column(JSONB, nullable=False, default=list)
     dimension_scores = Column(JSONB, nullable=True)
     raw_answers = Column(JSONB, nullable=True)
-    completed_at = Column(DateTime, default=datetime.utcnow, index=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime(timezone=True), default=utcnow, index=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
 
     user = relationship("User", back_populates="assessment_results")
     user_answers = relationship(

@@ -197,6 +197,35 @@ def test_avatar_url_accepts_https(client, registered_user):
     assert r.json()["avatar_url"] == "https://cdn.example.com/me.png"
 
 
+def test_inactive_user_authenticated_request_returns_generic_401(client, db_session):
+    """A previously-valid token for a user that has since been disabled
+    must look identical to a token that was never valid. Returning a
+    400 with a literal "Inactive user" body would tell an attacker that
+    the account exists and is just disabled — that's the same oracle
+    problem the /login path avoids."""
+    from app.models.user import User
+    from app.core.security import get_password_hash, create_access_token
+
+    u = User(
+        id="11111111-1111-4111-8111-111111111111",
+        email="frozen@x.com",
+        username="frozen",
+        hashed_password=get_password_hash("hunter22"),
+        is_active=False,
+    )
+    db_session.add(u)
+    db_session.commit()
+
+    token = create_access_token({"sub": u.id})
+    r = client.get(
+        "/api/v1/auth/me",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert r.status_code == 401
+    assert r.json()["detail"] == "Could not validate credentials"
+    assert r.headers.get("www-authenticate") == "Bearer"
+
+
 def test_protected_endpoint_requires_token(client):
     r = client.get("/api/v1/auth/me")
     assert r.status_code == 401

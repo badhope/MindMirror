@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session, joinedload
 from typing import List
 from uuid import UUID
-from datetime import datetime
+from app.core.utils import utcnow
 from app.database import get_db
 from app.models.training import TrainingPlan, TrainingTask
+from app.models.result import AssessmentResult
 from app.models.user import User
 from app.schemas.training import (
     TrainingPlanCreate, TrainingPlanResponse, TrainingPlanListResponse,
@@ -46,9 +47,28 @@ async def create_training_plan(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    # If a result_id is supplied, it must belong to the caller. We could
+    # rely on the FK + ondelete=SET NULL to clean up if the result
+    # vanishes, but accepting a foreign result_id would let user A attach
+    # a plan to user B's assessment result (cross-user data pollution).
+    if plan_data.result_id is not None:
+        # The column is String(36); Pydantic turns the incoming UUID into
+        # a uuid.UUID instance, so compare against str(...) on both sides.
+        result_id = str(plan_data.result_id)
+        owner = (
+            db.query(AssessmentResult.user_id)
+            .filter(AssessmentResult.id == result_id)
+            .first()
+        )
+        if owner is None or owner[0] != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Training plan not found",
+            )
+
     new_plan = TrainingPlan(
         user_id=current_user.id,
-        result_id=plan_data.result_id,
+        result_id=str(plan_data.result_id) if plan_data.result_id else None,
         plan_name=plan_data.plan_name,
         description=plan_data.description,
         start_date=plan_data.start_date,
@@ -128,7 +148,7 @@ async def update_task(
     if task_update.is_completed is not None:
         task.is_completed = task_update.is_completed
         if task_update.is_completed:
-            task.completed_at = datetime.now(timezone.utc)
+            task.completed_at = utcnow()
         else:
             task.completed_at = None
     

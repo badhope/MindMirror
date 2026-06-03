@@ -1,7 +1,7 @@
 import uuid
-from datetime import datetime
 from sqlalchemy import Column, String, Text, Boolean, DateTime, Date, ForeignKey
 from sqlalchemy.orm import relationship
+from app.core.utils import utcnow
 from app.database import Base
 
 
@@ -16,8 +16,8 @@ class TrainingPlan(Base):
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
     user = relationship("User", back_populates="training_plans")
     tasks = relationship("TrainingTask", back_populates="plan", cascade="all, delete-orphan", order_by="TrainingTask.task_date")
@@ -35,9 +35,9 @@ class TrainingTask(Base):
     task_description = Column(Text, nullable=False)
     task_date = Column(Date, nullable=False)
     is_completed = Column(Boolean, default=False)
-    completed_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    updated_at = Column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
     plan = relationship("TrainingPlan", back_populates="tasks")
 
