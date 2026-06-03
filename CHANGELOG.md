@@ -107,6 +107,6 @@ Highlights:
 - JWT (HS256) auth, bcrypt passwords, CORS-aware, strict Pydantic
   schemas
 - GitHub Actions: type-check + lint + build on every PR; Pages
-  deploy on `master`
+  deploy on `main`
 
 [1.0.0]: https://github.com/badhope/MindMirror/releases/tag/v1.0.0

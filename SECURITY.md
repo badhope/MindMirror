@@ -13,7 +13,7 @@ PGP key: request one in your first email and we'll send it back.
 
 | Version  | Status               |
 | -------- | -------------------- |
-| `master` | Active development   |
+| `main`   | Active development   |
 | `v1.x`   | Bug & security fixes |
 | older    | End of life          |
 
@@ -26,9 +26,8 @@ PGP key: request one in your first email and we'll send it back.
 
 ## Out of scope (for now)
 
-- Rate limiting on `/auth/*` — please run a reverse proxy with
-  `limit_req` (nginx) or equivalent in front of the API. A
-  `slowapi`-based limiter is on the roadmap.
+- Rate limiting on `/auth/*` is now enforced in-app
+  (`slowapi`, 20 req/min) and returns HTTP 429 when exceeded.
 - 2FA / WebAuthn, password complexity rules beyond a 6-char minimum,
   and forensic audit logging.
 

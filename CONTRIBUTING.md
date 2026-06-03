@@ -222,7 +222,7 @@ When writing a new assessment scoring algorithm, please:
    npm run build:pages
    ```
 
-4. **Push & open a PR** against `master`:
+4. **Push & open a PR** against `main`:
 
    ```bash
    git push origin feature/your-feature-name
