@@ -10,6 +10,10 @@ import { apiRequest, configureApi, ApiError, API_BASE_URL } from '../lib/apiClie
 const STORAGE_KEY_USER = 'mindmirror_user';
 const STORAGE_KEY_TOKEN = 'mindmirror_token';
 const STORAGE_KEY_LOCAL_USERS = 'mindmirror_local_users';
+// One persistent secret per browser; used to HMAC local session tokens so they
+// can be detected as authentic but cannot be forged cross-origin. Rotated by
+// clearing localStorage (which is fine for an offline-only demo).
+const STORAGE_KEY_LOCAL_SECRET = 'mindmirror_local_secret';
 
 let configured = false;
 let backendAvailable: boolean | null = null;
@@ -57,6 +61,18 @@ function mapApiUser(u: ApiUser): User {
   };
 }
 
+function mapLocalUser(u: LocalUserRecord): User {
+  return {
+    id: u.id,
+    email: u.email,
+    username: u.username,
+    avatar: u.avatar,
+    createdAt: new Date(u.createdAt),
+    lastLoginAt: new Date(u.updatedAt),
+    provider: u.isGuest ? 'guest' : 'email',
+  };
+}
+
 function persistSession(token: string, user: User) {
   localStorage.setItem(STORAGE_KEY_TOKEN, token);
   localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
@@ -68,7 +84,7 @@ interface LocalUserRecord {
   id: string;
   email: string;
   username: string;
-  passwordHash: string;
+  passwordHash: string; // format: "pbkdf2$<saltB64>$<hashB64>$<iterations>$<hashFn>"
   avatar?: string;
   createdAt: string;
   updatedAt: string;
@@ -87,25 +103,64 @@ function saveLocalUsers(users: LocalUserRecord[]) {
   localStorage.setItem(STORAGE_KEY_LOCAL_USERS, JSON.stringify(users));
 }
 
-async function sha256(text: string): Promise<string> {
-  const data = new TextEncoder().encode(text);
-  if (typeof crypto !== 'undefined' && crypto.subtle) {
-    const buf = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(buf))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
-  }
-  // Fallback (older browsers) - not cryptographically strong but OK for local demo
-  let h1 = 0x811c9dc5;
-  for (let i = 0; i < text.length; i++) {
-    h1 ^= text.charCodeAt(i);
-    h1 = (h1 * 0x01000193) >>> 0;
-  }
-  return h1.toString(16);
+function bytesToBase64(bytes: Uint8Array): string {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
 }
 
-async function hashPassword(password: string, salt: string): Promise<string> {
-  return sha256(`${salt}::${password}`);
+function base64ToBytes(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+const PBKDF2_ITERATIONS = 200_000;
+const PBKDF2_HASH = 'SHA-256';
+const PBKDF2_KEY_BITS = 256;
+
+async function derivePasswordHash(password: string, saltB64: string): Promise<string> {
+  // SubtleCrypto is available in every modern browser we care about
+  // (Chrome 37+, Firefox 34+, Safari 10.1+). We intentionally fail closed
+  // rather than fall back to a non-cryptographic hash.
+  if (typeof crypto === 'undefined' || !crypto.subtle) {
+    throw new Error('WebCrypto is not available in this browser; offline mode is disabled.');
+  }
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+  const bits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: base64ToBytes(saltB64),
+      iterations: PBKDF2_ITERATIONS,
+      hash: PBKDF2_HASH,
+    },
+    keyMaterial,
+    PBKDF2_KEY_BITS
+  );
+  return bytesToBase64(new Uint8Array(bits));
+}
+
+function buildPasswordRecord(saltB64: string, hashB64: string): string {
+  return `pbkdf2$${saltB64}$${hashB64}$${PBKDF2_ITERATIONS}$${PBKDF2_HASH}`;
+}
+
+function verifyPasswordRecord(record: string, password: string): Promise<boolean> {
+  const parts = record.split('$');
+  if (parts.length !== 5 || parts[0] !== 'pbkdf2') return Promise.resolve(false);
+  const [, saltB64, expectedB64, iterStr, hashFn] = parts;
+  // We only support the current algorithm. Old records (sha256/fnv) are rejected
+  // and the user has to re-register — acceptable for an offline-only demo.
+  if (Number(iterStr) !== PBKDF2_ITERATIONS || hashFn !== PBKDF2_HASH) {
+    return Promise.resolve(false);
+  }
+  return derivePasswordHash(password, saltB64).then(provided => provided === expectedB64);
 }
 
 function uuid(): string {
@@ -119,21 +174,33 @@ function uuid(): string {
   });
 }
 
-function mapLocalUser(u: LocalUserRecord): User {
-  return {
-    id: u.id,
-    email: u.email,
-    username: u.username,
-    avatar: u.avatar,
-    createdAt: new Date(u.createdAt),
-    lastLoginAt: new Date(u.updatedAt),
-    provider: u.isGuest ? 'guest' : 'email',
-  };
+function getLocalSecret(): string {
+  let secret = localStorage.getItem(STORAGE_KEY_LOCAL_SECRET);
+  if (!secret) {
+    secret = uuid() + '.' + uuid();
+    localStorage.setItem(STORAGE_KEY_LOCAL_SECRET, secret);
+  }
+  return secret;
 }
 
-function localToken(userId: string): string {
-  // Local token is just the user id; not used for any real verification.
-  return `local.${userId}`;
+async function hmacShort(message: string): Promise<string> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(getLocalSecret()),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(message));
+  return bytesToBase64(new Uint8Array(sig)).slice(0, 22);
+}
+
+async function mintLocalToken(userId: string): Promise<string> {
+  // Token carries no userId; the session row in localStorage is the source
+  // of truth. The HMAC suffix makes it non-trivial to forge a "looks valid"
+  // token across browsers.
+  return `local.${await hmacShort(userId + ':' + uuid())}`;
 }
 
 function isLocalToken(token: string | null): boolean {
@@ -240,14 +307,14 @@ export class AuthService {
       return { success: false, error: 'This username is already taken' };
     }
     const id = uuid();
-    const salt = uuid();
-    const passwordHash = await hashPassword(data.password, salt);
+    const saltB64 = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
+    const hashB64 = await derivePasswordHash(data.password, saltB64);
     const now = new Date().toISOString();
     const record: LocalUserRecord = {
       id,
       email: data.email,
       username: data.username,
-      passwordHash: `${salt}$${passwordHash}`,
+      passwordHash: buildPasswordRecord(saltB64, hashB64),
       avatar: this.generateAvatar(data.username),
       createdAt: now,
       updatedAt: now,
@@ -255,7 +322,7 @@ export class AuthService {
     users.push(record);
     saveLocalUsers(users);
     const user = mapLocalUser(record);
-    const token = localToken(id);
+    const token = await mintLocalToken(id);
     persistSession(token, user);
     return { success: true, user, token, mode: 'offline' };
   }
@@ -294,21 +361,16 @@ export class AuthService {
   private async loginLocal(credentials: AuthCredentials): Promise<AuthResponse> {
     const users = getLocalUsers();
     const record = users.find(u => u.email.toLowerCase() === credentials.email.toLowerCase());
-    if (!record) {
-      return {
-        success: false,
-        error: 'No account found. Try the demo account demo@mindmirror.app / demo123',
-      };
-    }
-    const [salt, expected] = record.passwordHash.split('$');
-    const provided = await hashPassword(credentials.password, salt);
-    if (provided !== expected) {
-      return { success: false, error: 'Incorrect email or password' };
-    }
+    // Same error code for "no such user" and "wrong password" so the demo
+    // mode does not become a user-enumeration oracle.
+    const bad = { success: false, error: 'Incorrect email or password' } as const;
+    if (!record) return bad;
+    const ok = await verifyPasswordRecord(record.passwordHash, credentials.password);
+    if (!ok) return bad;
     record.updatedAt = new Date().toISOString();
     saveLocalUsers(users);
     const user = mapLocalUser(record);
-    const token = localToken(record.id);
+    const token = await mintLocalToken(record.id);
     persistSession(token, user);
     return { success: true, user, token, mode: 'offline' };
   }
@@ -351,7 +413,7 @@ export class AuthService {
     users.push(record);
     saveLocalUsers(users);
     const user = mapLocalUser(record);
-    const token = localToken(id);
+    const token = await mintLocalToken(id);
     persistSession(token, user);
     return { success: true, user, token, mode: 'offline' };
   }
@@ -496,29 +558,31 @@ export class AuthService {
   }
 }
 
-// Seed a demo account once for first-time visitors in offline mode
-function seedLocalDemoIfEmpty() {
+// Seed a demo account once for first-time visitors in offline mode.
+// Failure is non-fatal: the user just won't have a demo account to fall back on.
+async function seedLocalDemoIfEmpty() {
   try {
     if (localStorage.getItem(STORAGE_KEY_LOCAL_USERS)) return;
-    void hashPassword('demo123', 'demo-salt').then(hash => {
-      const record: LocalUserRecord = {
-        id: uuid(),
-        email: 'demo@mindmirror.app',
-        username: 'demo',
-        passwordHash: `demo-salt$${hash}`,
-        avatar: 'https://ui-avatars.com/api/?name=demo&background=4F46E5&color=fff&size=128',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      saveLocalUsers([record]);
-    });
+    if (typeof crypto === 'undefined' || !crypto.subtle) return;
+    const saltB64 = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
+    const hashB64 = await derivePasswordHash('demo123', saltB64);
+    const record: LocalUserRecord = {
+      id: uuid(),
+      email: 'demo@mindmirror.app',
+      username: 'demo',
+      passwordHash: buildPasswordRecord(saltB64, hashB64),
+      avatar: 'https://ui-avatars.com/api/?name=demo&background=4F46E5&color=fff&size=128',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    saveLocalUsers([record]);
   } catch {
     // ignore
   }
 }
 
 if (typeof window !== 'undefined') {
-  seedLocalDemoIfEmpty();
+  void seedLocalDemoIfEmpty();
 }
 
 export const authService = AuthService.getInstance();
