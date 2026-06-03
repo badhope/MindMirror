@@ -44,6 +44,16 @@ class Question(Base):
     assessment_id = Column(String(36), ForeignKey("assessments.id", ondelete="CASCADE"), nullable=False)
     question_text = Column(Text, nullable=False)
     question_type = Column(String(20), nullable=False, default="single")
+    # trait/dimension label (e.g. "O" / "C" / "perceivedStress"). Optional
+    # because not every question belongs to a named dimension; the
+    # frontend uses this for radar-chart bucketing and per-dimension
+    # score breakdown.
+    trait = Column(String(50), nullable=True)
+    # True for items that need to be reverse-scored (e.g. "I worry
+    # about everything" -> score = 6 - raw). Frontend scoring code
+    # flips these on the client; the backend stores the flag so future
+    # server-side scoring stays consistent with the UI.
+    is_reverse = Column(Boolean, nullable=False, default=False)
     sort_order = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), default=utcnow)
 

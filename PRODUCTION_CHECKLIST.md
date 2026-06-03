@@ -133,10 +133,18 @@ echo "SECRET_KEY=$(python3 -c 'import secrets;print(secrets.token_urlsafe(64))')
 把输出粘到 `.env` 里,Ctrl+O 保存,Ctrl+X 退出。
 
 ```bash
-# 3. 启动
+# B. 启动
 docker compose up -d --build
 
-# 4. 看启动日志
+# C. 第一次启动灌测评题库(Big Five / PSS-30 / GAD-7+,共 121 题)
+#    默认 init_db.py 会自动 seed 测评题库,但需要显式触发:
+docker compose exec backend python init_db.py
+# (这是幂等的,以后再跑也不会重复插入)
+
+# D. 灌演示用户(非 production 才有效,production 会被自动跳过)
+docker compose exec backend python init_db.py --seed
+
+# E. 看启动日志
 docker compose logs -f --tail=50
 # 应该看到:postgres "database system is ready to accept connections"
 #         backend  "Application startup complete"

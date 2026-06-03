@@ -35,7 +35,11 @@ class QuestionCreate(QuestionBase):
 
 class QuestionResponse(QuestionBase):
     id: UUID
-    assessment_id: UUID
+    # assessment_id is a string slug (e.g. "big-five") rather than a
+    # UUID — see app/api/assessments.py for the rationale.
+    assessment_id: str
+    trait: Optional[str] = None
+    is_reverse: bool = False
     sort_order: int
     options: List[OptionResponse] = []
 
@@ -54,7 +58,9 @@ class AssessmentCreate(AssessmentBase):
 
 
 class AssessmentResponse(AssessmentBase):
-    id: UUID
+    # `id` is a free-form string slug ("big-five", "stress-test",
+    # "anxiety-gad7") in the seeded catalog, not a UUID.
+    id: str
     version: str
     total_questions: int
     is_active: bool
