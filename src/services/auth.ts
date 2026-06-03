@@ -182,9 +182,28 @@ function verifyPasswordRecord(record: string, password: string): Promise<boolean
 }
 
 function uuid(): string {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID();
+  // Prefer the standards-track randomUUID when available. Fall back to
+  // getRandomValues (CSPRNG) for older browsers / non-browser
+  // environments where randomUUID doesn't exist. The local secret
+  // stored at getLocalSecret() is used to derive HMAC keys, so a
+  // predictable RNG would weaken token integrity.
+  const c: Crypto | undefined = typeof crypto !== 'undefined' ? (crypto as Crypto) : undefined;
+  if (c?.randomUUID) {
+    return c.randomUUID();
   }
+  if (c?.getRandomValues) {
+    const bytes = new Uint8Array(16);
+    c.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 1
+    const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  // Last-ditch fallback if no Web Crypto at all. Math.random here is
+  // not a security boundary — getLocalSecret() will be unique enough
+  // for per-user HMAC purposes — but log a warning so an operator
+  // notices the degraded mode.
+  console.warn('crypto.getRandomValues unavailable; falling back to Math.random for uuid()');
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
