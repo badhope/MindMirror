@@ -231,13 +231,25 @@ export const useAppStore = create<AppState>((set, get) => {
       try {
         await authService.logout();
       } catch {
-        localStorage.removeItem('mindmirror_user');
-        localStorage.removeItem('mindmirror_token');
+        // authService.logout() already clears localStorage on its own
+        // happy path, but if it threw, make sure the next render can't
+        // see a half-cleared session.
+        try {
+          localStorage.removeItem('mindmirror_user');
+          localStorage.removeItem('mindmirror_token');
+          localStorage.removeItem('mindmirror_local_users');
+          localStorage.removeItem('mindmirror_local_secret');
+          localStorage.removeItem('assessmentHistory');
+        } catch {
+          // ignore
+        }
       }
       set({
         user: null,
         isAuthenticated: false,
         authError: null,
+        // Wipe in-memory caches that the next login must not see.
+        assessmentHistory: [],
       });
     },
 

@@ -36,6 +36,27 @@ export function configureApi(opts: { getToken: () => string | null; onUnauthoriz
   onUnauthorized = opts.onUnauthorized;
 }
 
+// All keys the app writes to localStorage that should be wiped on logout
+// or a 401 from the backend.  Listing them in one place means the next
+// person who adds a key can't forget to add it here.
+export const SESSION_STORAGE_KEYS = [
+  'mindmirror_user',
+  'mindmirror_token',
+  'mindmirror_local_users',
+  'mindmirror_local_secret',
+  'assessmentHistory',
+] as const;
+
+export function clearLocalSession() {
+  for (const key of SESSION_STORAGE_KEYS) {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // ignore — storage might be disabled in private mode etc.
+    }
+  }
+}
+
 function buildUrl(path: string, query?: RequestOptions['query']): string {
   const base = API_BASE_URL.endsWith('/api/v1') || path.startsWith('http') ? '' : API_BASE_URL;
   const url = base + (path.startsWith('/') ? path : `/${path}`);

@@ -68,18 +68,16 @@ function escapeHtml(str: string): string {
 }
 
 async function sha256Hex(input: string): Promise<string> {
-  if (typeof crypto !== 'undefined' && crypto.subtle) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
-    return Array.from(new Uint8Array(buf))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+  // Fail closed if WebCrypto is unavailable. A non-cryptographic fallback
+  // here would let an attacker brute-force a 4-character share password
+  // in milliseconds, so we don't ship one.
+  if (typeof crypto === 'undefined' || !crypto.subtle) {
+    throw new Error('WebCrypto is not available; share password protection is disabled.');
   }
-  let h = 0;
-  for (let i = 0; i < input.length; i++) {
-    h = (h << 5) - h + input.charCodeAt(i);
-    h |= 0;
-  }
-  return 'sha256_' + Math.abs(h).toString(16).padStart(16, '0');
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 function buildReportHtml(result: any, lang: 'en' | 'zh' = 'zh'): string {
@@ -270,7 +268,20 @@ export class ExportService {
 
 export class ShareService {
   async createShareLink(result: any, options: ShareOptions = {}): Promise<string> {
-    const shareId = `share_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    // 128 bits of entropy from the platform CSPRNG. Share IDs only need
+    // to be unguessable to other browsers in offline mode, but using
+    // crypto.getRandomValues() also future-proofs us if these ever
+    // become server-issued.
+    const idBytes = new Uint8Array(16);
+    if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
+      throw new Error('WebCrypto is not available; share links are disabled.');
+    }
+    crypto.getRandomValues(idBytes);
+    const shareId =
+      'share_' +
+      Array.from(idBytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
 
     const data = this.prepareShareData(result, options);
     const hash = await sha256Hex(JSON.stringify(data));

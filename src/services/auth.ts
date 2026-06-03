@@ -5,7 +5,13 @@ import type {
   AuthResponse,
   ValidationError,
 } from '../types/auth';
-import { apiRequest, configureApi, ApiError, API_BASE_URL } from '../lib/apiClient';
+import {
+  apiRequest,
+  configureApi,
+  ApiError,
+  API_BASE_URL,
+  clearLocalSession,
+} from '../lib/apiClient';
 
 const STORAGE_KEY_USER = 'mindmirror_user';
 const STORAGE_KEY_TOKEN = 'mindmirror_token';
@@ -26,8 +32,10 @@ function ensureConfigured() {
   configureApi({
     getToken: () => localStorage.getItem(STORAGE_KEY_TOKEN),
     onUnauthorized: () => {
-      localStorage.removeItem(STORAGE_KEY_USER);
-      localStorage.removeItem(STORAGE_KEY_TOKEN);
+      // Backend told us the token is bad. Wipe everything session-related
+      // so the next login doesn't accidentally inherit stale state from
+      // this account (history, local users, etc.).
+      clearLocalSession();
     },
   });
 }
@@ -55,10 +63,19 @@ function mapApiUser(u: ApiUser): User {
     email: u.email,
     username: u.username,
     avatar: u.avatar_url || undefined,
-    createdAt: new Date(u.created_at),
-    lastLoginAt: new Date(u.updated_at),
+    // The backend is supposed to send ISO-8601 strings. If it doesn't,
+    // fall back to a sane default rather than letting `new Date(undefined)`
+    // throw "Invalid Date" and abort the whole login flow.
+    createdAt: parseDate(u.created_at) ?? new Date(0),
+    lastLoginAt: parseDate(u.updated_at) ?? new Date(0),
     provider: 'email',
   };
+}
+
+function parseDate(value: string | null | undefined): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isFinite(d.getTime()) ? d : null;
 }
 
 function mapLocalUser(u: LocalUserRecord): User {
@@ -109,9 +126,10 @@ function bytesToBase64(bytes: Uint8Array): string {
   return btoa(bin);
 }
 
-function base64ToBytes(b64: string): Uint8Array {
+function base64ToBytes(b64: string): Uint8Array<ArrayBuffer> {
   const bin = atob(b64);
-  const out = new Uint8Array(bin.length);
+  const buf = new ArrayBuffer(bin.length);
+  const out = new Uint8Array(buf);
   for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
 }
@@ -439,8 +457,7 @@ export class AuthService {
         // ignore
       }
     }
-    localStorage.removeItem(STORAGE_KEY_USER);
-    localStorage.removeItem(STORAGE_KEY_TOKEN);
+    clearLocalSession();
   }
 
   async resetPasswordForEmail(_email: string): Promise<AuthResponse> {
