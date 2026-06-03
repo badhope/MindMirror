@@ -234,16 +234,57 @@ export default {
     loading: '正在加载个人数据中心...',
   },
   history: {
-    title: '历史记录',
-    subtitle: '共 {count} 条记录',
-    empty: '暂无测评记录',
-    emptyDesc: '完成测评后，你的历史记录将会在这里显示，方便你查看和对比',
-    startFirst: '开始第一次测评',
-    viewDetails: '查看详情',
-    clearAll: '清除全部',
-    confirmClear: '确定要清除所有历史记录吗？此操作不可恢复。',
+    title: '测评历史',
+    subtitle: '你已记录了 {count} 次测评',
+    empty: '还没有测评记录',
+    emptyDesc: '完成一次测评后,你的历史会出现在这里,可以看到自己的变化轨迹。',
+    startFirst: '做一次测评',
+    viewDetails: '查看报告',
+    retake: '再做一次',
+    share: '分享',
+    delete: '删除',
+    clearAll: '清空全部',
+    confirmClear: '确定要清空所有历史记录吗?这个操作不能恢复哦。',
     today: '今天',
     yesterday: '昨天',
+    daysAgo: '{n} 天前',
+    thisWeek: '本周',
+    thisMonth: '本月',
+    earlier: '更早',
+    filter: {
+      all: '全部',
+      personality: '性格',
+      stress: '压力',
+      anxiety: '焦虑',
+    },
+    sort: {
+      label: '排序',
+      newest: '最新优先',
+      oldest: '最早优先',
+      highest: '得分从高到低',
+      lowest: '得分从低到高',
+    },
+    stats: {
+      title: '你的小档案',
+      total: '测评次数',
+      thisMonth: '本月测评',
+      streak: '连续天数',
+      favorite: '最常做的测评',
+      lastScore: '最近一次得分',
+      averageScore: '平均得分',
+      changeLabel: '较上次',
+    },
+    type: {
+      personality: '性格测评',
+      stress: '压力测评',
+      anxiety: '焦虑测评',
+    },
+    group: {
+      thisWeek: '本周',
+      thisMonth: '本月',
+      earlier: '更早',
+    },
+    trendPoints: '近 {n} 次得分',
   },
   settings: {
     title: '设置',
@@ -280,36 +321,95 @@ export default {
   },
   about: {
     title: '关于 MindMirror',
-    subtitle: '专业的心理测评平台，帮助你更好地了解自己',
-    mission: {
-      title: '我们的使命',
-      description:
-        'MindMirror 致力于为用户提供专业、科学的心理测评服务，通过一系列精心设计的测评问卷，帮助用户更好地了解自己的性格特点、情绪状态和行为模式。',
+    subtitle: '我们想帮你多懂自己一点',
+    intro: {
+      title: '这是一款什么样的工具?',
+      body: 'MindMirror 是一组在临床心理学里被反复验证过的量表 —— 性格、压力、焦虑 —— 装进了一个简单、安静的应用里。',
+      bullets: [
+        '基于国际通用量表(BFI, PSS-10, GAD-7)',
+        '十几分钟就能完成,不会被打扰',
+        '结果保存在你本地或你自己的服务器里',
+      ],
     },
-    features: {
-      title: '核心特性',
-      scientific: {
-        title: '科学分析',
-        desc: '基于心理学理论的专业测评',
-      },
-      precise: {
-        title: '精准定位',
-        desc: '发现你的个人特点和优势',
-      },
-      privacy: {
-        title: '隐私保护',
-        desc: '你的数据完全安全保密',
-      },
-      guidance: {
-        title: '成长指引',
-        desc: '提供个人化发展建议',
-      },
+    who: {
+      title: '适合谁?',
+      items: [
+        {
+          title: '想了解自己的人',
+          body: '想看到自己的性格侧写、压力来源、焦虑触发点。',
+        },
+        {
+          title: '心理从业者',
+          body: '需要一个能发给来访者做初筛、再带着报告来谈的工具。',
+        },
+        {
+          title: '团队 / HR',
+          body: '想做一个匿名的整体压力/氛围摸底。',
+        },
+      ],
+    },
+    how: {
+      title: '怎么用?',
+      steps: [
+        {
+          step: '01',
+          title: '选一个量表',
+          body: '在测评中心挑一个你想了解的方向。',
+        },
+        {
+          step: '02',
+          title: '凭第一反应回答',
+          body: '没有对错,真实就好。',
+        },
+        {
+          step: '03',
+          title: '看报告',
+          body: '系统会给你一份多维度的解读。',
+        },
+        {
+          step: '04',
+          title: '过段时间再来',
+          body: '记录在"历史"里,可以看自己的变化。',
+        },
+      ],
+    },
+    faq: {
+      title: '常见问题',
+      items: [
+        {
+          q: '这个是诊断吗?',
+          a: '不是。所有量表都只能起"提示"作用,不能替代专业评估。如果你有持续的困扰,请联系心理咨询师或医院。',
+        },
+        {
+          q: '我的数据存哪里?',
+          a: '在线模式:存在你自己的服务器数据库里;离线模式:只存在你这台浏览器的 localStorage 里。我们看不到。',
+        },
+        {
+          q: '可以匿名用吗?',
+          a: '可以。点"游客模式"即可,不收集邮箱,不清空也能随时开始。',
+        },
+        {
+          q: '我能在自己公司部署吗?',
+          a: '可以。MIT 协议,商用、自部署都行。Docker 一行命令,或者直接装在我们的 Cloud 版本上。',
+        },
+        {
+          q: '结果会一直准确吗?',
+          a: '性格是相对稳定的,但压力和焦虑会随生活状态变化。建议每 4-6 周复测一次,看趋势。',
+        },
+      ],
+    },
+    privacy: {
+      title: '关于隐私',
+      body: '我们不卖数据,不接广告,不接入第三方追踪。你可以选择完全离线使用(只存本机),也可以自部署到自己的服务器。',
     },
     contact: {
-      title: '联系我们',
-      description: '如有任何问题或建议，欢迎联系我们：',
-      email: 'support@xinceshoushu.com',
+      title: '有问题或建议?',
+      description: '写信给我们,通常 1-3 个工作日内回复。',
+      email: 'support#mindmirror.app',
+      emailNote: '把 # 换成 @ 发送邮件',
     },
+    readMore: '想看更详细的使用说明?',
+    guide: '用户指南',
   },
   auth: {
     login: '登录',
@@ -402,6 +502,10 @@ export default {
     return: '返回',
     close: '关闭',
     points: '{score} 分',
+    shareCopied: '链接已复制到剪贴板',
+    more: '更多',
+    less: '收起',
+    thisYear: '今年',
   },
   plugins: {
     title: '插件管理中心',

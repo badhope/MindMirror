@@ -235,18 +235,58 @@ export default {
     loading: 'Loading personal data center...',
   },
   history: {
-    title: 'Assessment History',
-    subtitle: '{count} records in total',
-    empty: 'No Assessment Records',
+    title: 'Your History',
+    subtitle: "You've kept {count} assessments on record",
+    empty: 'No assessments yet',
     emptyDesc:
-      'After completing assessments, your history will be displayed here for easy viewing and comparison',
-    startFirst: 'Start Your First Assessment',
-    viewDetails: 'View Details',
-    clearAll: 'Clear All',
-    confirmClear:
-      'Are you sure you want to clear all history records? This action cannot be undone.',
+      'After you finish an assessment, your history shows up here — a quiet log of how you change over time.',
+    startFirst: 'Take your first assessment',
+    viewDetails: 'View report',
+    retake: 'Retake',
+    share: 'Share',
+    delete: 'Delete',
+    clearAll: 'Clear all',
+    confirmClear: 'Clear every record? This can’t be undone.',
     today: 'Today',
     yesterday: 'Yesterday',
+    daysAgo: '{n} days ago',
+    thisWeek: 'This week',
+    thisMonth: 'This month',
+    earlier: 'Earlier',
+    filter: {
+      all: 'All',
+      personality: 'Personality',
+      stress: 'Stress',
+      anxiety: 'Anxiety',
+    },
+    sort: {
+      label: 'Sort',
+      newest: 'Newest first',
+      oldest: 'Oldest first',
+      highest: 'Highest score',
+      lowest: 'Lowest score',
+    },
+    stats: {
+      title: 'A snapshot of you',
+      total: 'Total assessments',
+      thisMonth: 'This month',
+      streak: 'Day streak',
+      favorite: 'Most-taken',
+      lastScore: 'Latest score',
+      averageScore: 'Average score',
+      changeLabel: 'vs last time',
+    },
+    type: {
+      personality: 'Personality',
+      stress: 'Stress',
+      anxiety: 'Anxiety',
+    },
+    group: {
+      thisWeek: 'This week',
+      thisMonth: 'This month',
+      earlier: 'Earlier',
+    },
+    trendPoints: 'Last {n} scores',
   },
   settings: {
     title: 'Settings',
@@ -283,37 +323,95 @@ export default {
   },
   about: {
     title: 'About MindMirror',
-    subtitle:
-      'Professional psychological assessment platform to help you better understand yourself',
-    mission: {
-      title: 'Our Mission',
-      description:
-        'MindMirror is committed to providing users with professional and scientific psychological assessment services. Through a series of carefully designed assessment questionnaires, we help users better understand their personality traits, emotional states, and behavioral patterns.',
+    subtitle: 'We just want to help you understand yourself a little better.',
+    intro: {
+      title: 'What is this?',
+      body: 'MindMirror is a small, quiet app that runs well-validated psychological scales — personality, stress, anxiety — so you can check in with yourself.',
+      bullets: [
+        'Built on internationally-used scales (BFI, PSS-10, GAD-7).',
+        'Most assessments take 10–15 minutes, with no ads or distractions.',
+        'Your data lives on your device or your own server — never on a third-party cloud.',
+      ],
     },
-    features: {
-      title: 'Core Features',
-      scientific: {
-        title: 'Scientific Analysis',
-        desc: 'Professional assessments based on psychological theories',
-      },
-      precise: {
-        title: 'Precise Positioning',
-        desc: 'Discover your personal characteristics and strengths',
-      },
-      privacy: {
-        title: 'Privacy Protection',
-        desc: 'Your data is completely safe and confidential',
-      },
-      guidance: {
-        title: 'Growth Guidance',
-        desc: 'Provide personalized development suggestions',
-      },
+    who: {
+      title: 'Who is it for?',
+      items: [
+        {
+          title: 'Curious individuals',
+          body: 'You want a real look at your personality profile, your stress sources, your anxiety triggers.',
+        },
+        {
+          title: 'Therapists & coaches',
+          body: 'You want a tool to send to a client for a quick baseline, so the next session is more focused.',
+        },
+        {
+          title: 'Teams & HR',
+          body: 'You want to take the temperature of a group — anonymously, GDPR-friendly.',
+        },
+      ],
+    },
+    how: {
+      title: 'How does it work?',
+      steps: [
+        {
+          step: '01',
+          title: 'Pick a scale',
+          body: 'Choose whatever feels most useful today.',
+        },
+        {
+          step: '02',
+          title: 'Answer honestly',
+          body: 'No right answers. First instinct is usually the truest.',
+        },
+        {
+          step: '03',
+          title: 'Read your report',
+          body: 'We show you a clear, multi-dimensional breakdown.',
+        },
+        {
+          step: '04',
+          title: 'Come back later',
+          body: 'Results save to your history, so you can watch yourself change.',
+        },
+      ],
+    },
+    faq: {
+      title: 'Frequently asked',
+      items: [
+        {
+          q: 'Is this a diagnosis?',
+          a: 'No. The scales here can flag patterns and give you a starting point, but they are not a clinical assessment. If something is bothering you persistently, please talk to a professional.',
+        },
+        {
+          q: 'Where is my data?',
+          a: 'Online mode: in your own Postgres database. Offline mode: in your browser’s localStorage. We never see it either way.',
+        },
+        {
+          q: 'Can I use it anonymously?',
+          a: 'Yes. Click "Continue as guest" — no email, no phone, no name required.',
+        },
+        {
+          q: 'Can I deploy it for my own company?',
+          a: 'Yes. MIT-licensed, free for commercial and self-hosted use. `docker compose up` and you’re running. A managed Cloud version is also available.',
+        },
+        {
+          q: 'How long are the results valid for?',
+          a: 'Personality is fairly stable, but stress and anxiety move with life. We suggest retaking every 4–6 weeks and watching the trend, not the snapshot.',
+        },
+      ],
+    },
+    privacy: {
+      title: 'A note on privacy',
+      body: 'We don’t sell data, don’t run ads, and don’t ship third-party trackers. You can use MindMirror completely offline, or self-host it on infrastructure you control.',
     },
     contact: {
-      title: 'Contact Us',
-      description: 'If you have any questions or suggestions, welcome to contact us:',
-      email: 'support@xinceshoushu.com',
+      title: 'Questions or feedback?',
+      description: 'Drop us a line — we usually reply within 1–3 working days.',
+      email: 'support#mindmirror.app',
+      emailNote: 'Replace # with @ to send',
     },
+    readMore: 'Want the full walkthrough?',
+    guide: 'Read the user guide',
   },
   auth: {
     login: 'Login',
@@ -406,6 +504,10 @@ export default {
     return: 'Return',
     close: 'Close',
     points: '{score} pts',
+    shareCopied: 'Link copied to clipboard',
+    more: 'More',
+    less: 'Show less',
+    thisYear: 'This year',
   },
   plugins: {
     title: 'Plugin Manager',
