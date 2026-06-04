@@ -176,16 +176,22 @@ function StatsBar({
         label={i18n.history.stats.total}
         value={String(total)}
         hint={i18n.history.stats.thisMonth.replace('{n}', String(thisMonth))}
+        gradient="from-blue-500 to-cyan-500"
+        icon="📋"
       />
       <StatTile
         label={i18n.history.stats.streak}
         value={String(streak)}
         suffix={i18n.common.thisYear}
+        gradient="from-orange-500 to-rose-500"
+        icon="🔥"
       />
       <StatTile
         label={i18n.history.stats.favorite}
         value={favorite ? favorite.split(/[（(]/)[0] : '—'}
         small
+        gradient="from-violet-500 to-fuchsia-500"
+        icon="⭐"
       />
       <StatTile
         label={i18n.history.stats.lastScore}
@@ -196,6 +202,8 @@ function StatsBar({
             : undefined
         }
         tone={delta !== null ? (delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat') : undefined}
+        gradient="from-emerald-500 to-teal-500"
+        icon="📊"
       />
     </section>
   );
@@ -208,6 +216,8 @@ function StatTile({
   suffix,
   small,
   tone,
+  gradient,
+  icon,
 }: {
   label: string;
   value: string;
@@ -215,19 +225,44 @@ function StatTile({
   suffix?: string;
   small?: boolean;
   tone?: 'up' | 'down' | 'flat';
+  gradient?: string;
+  icon?: string;
 }) {
   const toneColor =
-    tone === 'up' ? 'text-emerald-600' : tone === 'down' ? 'text-rose-600' : 'text-slate-500';
+    tone === 'up'
+      ? 'text-emerald-600'
+      : tone === 'down'
+        ? 'text-rose-600'
+        : 'text-slate-500';
   return (
-    <div className="rounded-2xl bg-white p-4 sm:p-5 border border-slate-100 shadow-sm">
-      <div className="text-xs sm:text-sm text-slate-500">{label}</div>
-      <div
-        className={`mt-1 font-semibold text-slate-800 ${small ? 'text-base sm:text-lg' : 'text-2xl sm:text-3xl'}`}
-      >
-        {value}
-        {suffix && <span className="ml-1 text-sm font-normal text-slate-500">{suffix}</span>}
+    <div className="relative overflow-hidden rounded-2xl bg-white p-4 sm:p-5 border border-slate-100 shadow-sm">
+      {gradient && (
+        <div
+          className={`absolute -top-4 -right-4 w-20 h-20 rounded-full bg-gradient-to-br ${gradient} opacity-15 blur-2xl pointer-events-none`}
+        />
+      )}
+      <div className="relative">
+        <div className="flex items-center justify-between mb-1">
+          <div className="text-xs sm:text-sm text-slate-500">{label}</div>
+          {icon && (
+            <div
+              className={`inline-flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br ${
+                gradient || 'from-slate-400 to-slate-500'
+              } text-sm text-white shadow-sm`}
+              aria-hidden="true"
+            >
+              {icon}
+            </div>
+          )}
+        </div>
+        <div
+          className={`mt-1 font-extrabold text-slate-800 ${small ? 'text-base sm:text-lg' : 'text-2xl sm:text-3xl'}`}
+        >
+          {value}
+          {suffix && <span className="ml-1 text-sm font-normal text-slate-500">{suffix}</span>}
+        </div>
+        {hint && <div className={`mt-1 text-xs ${toneColor}`}>{hint}</div>}
       </div>
-      {hint && <div className={`mt-1 text-xs ${toneColor}`}>{hint}</div>}
     </div>
   );
 }
@@ -484,22 +519,33 @@ export const History = () => {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      <header className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800">{i18n.history.title}</h1>
-          <p className="mt-1 text-base sm:text-lg text-slate-600">
-            {i18n.history.subtitle.replace('{count}', String(assessmentHistory.length))}
-          </p>
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white p-6 sm:p-10 shadow-2xl">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute -top-12 -right-12 w-72 h-72 rounded-full bg-blue-400 blur-3xl" />
+          <div className="absolute -bottom-12 -left-12 w-64 h-64 rounded-full bg-purple-400 blur-3xl" />
         </div>
-        {assessmentHistory.length > 0 && (
-          <button
-            onClick={handleClearAll}
-            className="px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 rounded-xl font-medium transition-colors"
-          >
-            {i18n.history.clearAll}
-          </button>
-        )}
-      </header>
+        <div className="relative flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1 text-xs sm:text-sm font-medium mb-3">
+              <span>📚</span> {i18n.history.title}
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              {i18n.history.title}
+            </h1>
+            <p className="mt-2 text-sm sm:text-base text-white/80">
+              {i18n.history.subtitle.replace('{count}', String(assessmentHistory.length))}
+            </p>
+          </div>
+          {assessmentHistory.length > 0 && (
+            <button
+              onClick={handleClearAll}
+              className="px-4 py-2 text-sm text-white/90 hover:bg-white/15 rounded-xl font-medium transition-colors border border-white/20"
+            >
+              {i18n.history.clearAll}
+            </button>
+          )}
+        </div>
+      </section>
 
       {assessmentHistory.length > 0 && <StatsBar history={assessmentHistory} i18n={i18n} />}
 

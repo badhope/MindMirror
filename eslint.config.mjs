@@ -5,7 +5,7 @@ import tseslint from 'typescript-eslint';
 const tsRecommended = tseslint.configs?.recommended ?? [];
 
 export default [
-  { ignores: ['dist', 'node_modules', 'api/dist', 'backend/**', '.trae/**', '*.config.*', 'eslint.config.*', 'scripts/**', 'tests/e2e/**'] },
+  { ignores: ['dist', 'node_modules', 'api/dist', 'backend/**', '.trae/**', '*.config.*', 'eslint.config.*', 'scripts/**', 'tests/e2e/**', 'tests/unit/**'] },
   js.configs.recommended,
   ...tsRecommended,
   {

@@ -1983,7 +1983,15 @@ export default function AssessmentDetail() {
       const questions = getQuestionsForAssessment(id);
       setQuestions(questions);
 
-      resetAssessment();
+      // Don't clobber a result that was just injected by the History page
+      // (or that the user already loaded from storage). Only reset when
+      // we're landing on the intro for a fresh quiz.
+      const state = useAppStore.getState();
+      const hasActiveResult =
+        state.result !== null && state.currentStep === 'result';
+      if (!hasActiveResult) {
+        resetAssessment();
+      }
     }
   }, [id, assessments.length, setAssessments, setCurrentAssessment, setQuestions, resetAssessment]);
 

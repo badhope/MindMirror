@@ -347,6 +347,22 @@ export const useAppStore = create<AppState>((set, get) => {
 
     addToHistory: result =>
       set(state => {
+        // De-dupe: same assessment within the same minute would just
+        // stack up duplicates when the user revisits the result page
+        // or re-runs the quiz by accident. Replace the existing entry
+        // so the user gets the latest score in place of the older one.
+        const dupeIdx = state.assessmentHistory.findIndex(h => {
+          if (h.assessmentId !== result.assessmentId) return false;
+          const tA = new Date(h.completedAt).getTime();
+          const tB = new Date(result.completedAt).getTime();
+          return Math.abs(tA - tB) < 60_000;
+        });
+        if (dupeIdx >= 0) {
+          const next = state.assessmentHistory.slice();
+          next[dupeIdx] = result;
+          storage.set(STORAGE_KEY_HISTORY, next);
+          return { assessmentHistory: next };
+        }
         const newHistory = [result, ...state.assessmentHistory];
         storage.set(STORAGE_KEY_HISTORY, newHistory);
         return { assessmentHistory: newHistory };
