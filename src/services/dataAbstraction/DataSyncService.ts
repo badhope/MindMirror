@@ -1,7 +1,107 @@
 import { storage } from '../../lib/utils';
-import { UnifiedAssessmentResult, DataSyncStatus, SyncConflict } from '../../types/dataAbstraction';
+import {
+  UnifiedAssessmentResult,
+  DataSyncStatus,
+  SyncConflict,
+} from '../../types/dataAbstraction';
+import { AssessmentResult } from '../../types';
 
 const PERSONAL_CENTER_KEY = 'personalDataCenter';
+
+/**
+ * Canonical mapper from the on-disk `AssessmentResult` (the shape
+ * stored in `assessmentHistory` by the zustand store) to the
+ * `UnifiedAssessmentResult` shape the dashboard / aggregation layer
+ * consumes.  This used to live as a private method on
+ * DataSyncService; pulling it out lets the store-derived dashboard
+ * path skip the `personalDataCenter` cache entirely.
+ */
+export function toUnifiedResult(
+  result: AssessmentResult | (Partial<UnifiedAssessmentResult> & { id: string })
+): UnifiedAssessmentResult | null {
+  if (!result || !(result as { id?: unknown }).id) return null;
+
+  const anyResult = result as AssessmentResult & {
+    timestamp?: number;
+    completedAt?: Date | string;
+    title?: string;
+    assessmentType?: UnifiedAssessmentResult['assessmentType'];
+    rawAnswers?: Record<string, number>;
+    processedScores?: Record<string, number>;
+    report?: UnifiedAssessmentResult['report'];
+    tags?: string[];
+    metadata?: Partial<UnifiedAssessmentResult['metadata']>;
+    duration?: number;
+    completed?: boolean;
+    version?: string;
+  };
+
+  const completedAt = anyResult.completedAt;
+  const timestamp =
+    typeof anyResult.timestamp === 'number'
+      ? anyResult.timestamp
+      : completedAt
+        ? new Date(completedAt).getTime()
+        : Date.now();
+
+  const assessmentId = anyResult.assessmentId || 'unknown';
+  const assessmentType: UnifiedAssessmentResult['assessmentType'] =
+    anyResult.assessmentType ?? detectAssessmentType(assessmentId);
+
+  const title = anyResult.assessmentTitle || anyResult.title || '心理测评';
+
+  return {
+    id: anyResult.id,
+    assessmentId,
+    assessmentType,
+    title,
+    timestamp,
+    totalScore: anyResult.totalScore || 0,
+    traits: normalizeTraits(anyResult.traits || []),
+    rawAnswers: anyResult.rawAnswers || {},
+    processedScores: anyResult.processedScores || {},
+    report: anyResult.report || { summary: { title, score: anyResult.totalScore || 0, description: '', color: '#6366f1' } },
+    tags: anyResult.tags || [],
+    metadata: {
+      duration: anyResult.metadata?.duration ?? anyResult.duration ?? 0,
+      completed: anyResult.metadata?.completed ?? anyResult.completed ?? true,
+      version: anyResult.metadata?.version ?? anyResult.version ?? '1.0.0',
+    },
+  };
+}
+
+export function detectAssessmentType(
+  assessmentId: string
+): UnifiedAssessmentResult['assessmentType'] {
+  const typeMap: Record<string, UnifiedAssessmentResult['assessmentType']> = {
+    'big-five': 'personality',
+    'bigfive': 'personality',
+    'stress-test': 'stress',
+    'anxiety-gad7': 'anxiety',
+  };
+  return typeMap[assessmentId] || 'other';
+}
+
+function normalizeTraits(traits: any[]): UnifiedAssessmentResult['traits'] {
+  return traits.map(trait => ({
+    name: trait.name || trait.traitName || 'Unknown',
+    score: trait.score || 0,
+    description: trait.description || '',
+    percentile: trait.percentile,
+    tScore: trait.tScore,
+    rawScore: trait.rawScore,
+    maxScore: trait.maxScore,
+    level: calculateTraitLevel(trait.score, trait.maxScore),
+  }));
+}
+
+function calculateTraitLevel(score: number, maxScore?: number): 'low' | 'medium' | 'high' {
+  if (!maxScore) return 'medium';
+  const percentage = score / maxScore;
+  if (percentage < 0.33) return 'low';
+  if (percentage > 0.66) return 'high';
+  return 'medium';
+}
 
 class DataSyncService {
   private syncStatus: DataSyncStatus = {
@@ -11,6 +111,13 @@ class DataSyncService {
     conflicts: [],
   };
 
+  /**
+   * One-shot migration from the on-disk `assessmentHistory` (new
+   * canonical store) into the derived `personalDataCenter` cache
+   * (legacy consumers).  Kept for back-compat with code paths that
+   * still read from the personalCenter; new code should call
+   * `toUnifiedResult` directly against the store.
+   */
   async syncAllAssessments(): Promise<void> {
     try {
       this.syncStatus.status = 'syncing';
@@ -20,12 +127,14 @@ class DataSyncService {
       const personalCenter = this.getPersonalDataCenter();
 
       const existingIds = new Set(personalCenter.results.map(r => r.id));
-      const newResults = assessments.filter(a => !existingIds.has(a.id));
+      const newResults = assessments
+        .filter(a => !existingIds.has(a.id))
+        .map(a => this.normalizeResult(a));
 
       this.syncStatus.progress = 50;
 
       for (const result of newResults) {
-        personalCenter.results.push(this.normalizeResult(result));
+        personalCenter.results.push(result);
       }
 
       personalCenter.results.sort((a, b) => b.timestamp - a.timestamp);
@@ -52,71 +161,19 @@ class DataSyncService {
 
       const history = Array.isArray(historyData) ? historyData : [historyData];
 
-      return history.map(item => this.convertToUnifiedFormat(item)).filter(Boolean);
+      return history
+        .map(item => toUnifiedResult(item as AssessmentResult))
+        .filter((r): r is UnifiedAssessmentResult => r !== null);
     } catch (error) {
       console.error('Failed to load assessments from history:', error);
       return [];
     }
   }
 
-  private convertToUnifiedFormat(result: any): UnifiedAssessmentResult | null {
-    if (!result || !result.id) return null;
-
-    return {
-      id: result.id,
-      assessmentId: result.assessmentId || result.assessment_id || 'unknown',
-      assessmentType: this.detectAssessmentType(result.assessmentId || result.assessment_id),
-      title: result.title || '心理测评',
-      timestamp: result.timestamp || Date.now(),
-      totalScore: result.totalScore || result.total_score || 0,
-      traits: this.normalizeTraits(result.traits || result.traitScores || []),
-      rawAnswers: result.rawAnswers || result.answers || {},
-      processedScores: result.processedScores || {},
-      report: result.report || {},
-      tags: result.tags || [],
-      metadata: {
-        duration: result.metadata?.duration || result.duration || 0,
-        completed: result.metadata?.completed ?? result.completed ?? true,
-        version: result.metadata?.version || '1.0.0',
-      },
-    };
-  }
-
-  private detectAssessmentType(assessmentId: string): UnifiedAssessmentResult['assessmentType'] {
-    const typeMap: Record<string, UnifiedAssessmentResult['assessmentType']> = {
-      'big-five': 'personality',
-      'stress-test': 'stress',
-      'anxiety-gad7': 'anxiety',
-    };
-
-    return typeMap[assessmentId] || 'other';
-  }
-
-  private normalizeTraits(traits: any[]): UnifiedAssessmentResult['traits'] {
-    return traits.map(trait => ({
-      name: trait.name || trait.traitName || 'Unknown',
-      score: trait.score || 0,
-      description: trait.description || '',
-      percentile: trait.percentile,
-      tScore: trait.tScore,
-      rawScore: trait.rawScore,
-      maxScore: trait.maxScore,
-      level: this.calculateTraitLevel(trait.score, trait.maxScore),
-    }));
-  }
-
-  private calculateTraitLevel(score: number, maxScore?: number): 'low' | 'medium' | 'high' {
-    if (!maxScore) return 'medium';
-    const percentage = score / maxScore;
-    if (percentage < 0.33) return 'low';
-    if (percentage > 0.66) return 'high';
-    return 'medium';
-  }
-
   private normalizeResult(result: UnifiedAssessmentResult): UnifiedAssessmentResult {
     return {
       ...result,
-      traits: this.normalizeTraits(result.traits),
+      traits: normalizeTraits(result.traits),
       metadata: {
         ...result.metadata,
         version: '1.0.0',
@@ -177,12 +234,14 @@ class DataSyncService {
 
   getResultsByType(type: UnifiedAssessmentResult['assessmentType']): UnifiedAssessmentResult[] {
     const personalCenter = this.getPersonalDataCenter();
-    return personalCenter.results.filter(r => r.assessmentType === type);
+    return personalCenter.results.filter((r: UnifiedAssessmentResult) => r.assessmentType === type);
   }
 
   getResultsByDateRange(startDate: number, endDate: number): UnifiedAssessmentResult[] {
     const personalCenter = this.getPersonalDataCenter();
-    return personalCenter.results.filter(r => r.timestamp >= startDate && r.timestamp <= endDate);
+    return personalCenter.results.filter(
+      (r: UnifiedAssessmentResult) => r.timestamp >= startDate && r.timestamp <= endDate
+    );
   }
 
   searchResults(query: string): UnifiedAssessmentResult[] {
@@ -190,7 +249,7 @@ class DataSyncService {
     const lowerQuery = query.toLowerCase();
 
     return personalCenter.results.filter(
-      r =>
+      (r: UnifiedAssessmentResult) =>
         r.title.toLowerCase().includes(lowerQuery) ||
         r.assessmentId.toLowerCase().includes(lowerQuery) ||
         r.tags.some(tag => tag.toLowerCase().includes(lowerQuery))

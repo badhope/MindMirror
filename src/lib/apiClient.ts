@@ -36,15 +36,46 @@ export function configureApi(opts: { getToken: () => string | null; onUnauthoriz
   onUnauthorized = opts.onUnauthorized;
 }
 
-// All keys the app writes to localStorage that should be wiped on logout
-// or a 401 from the backend.  Listing them in one place means the next
-// person who adds a key can't forget to add it here.
+// All keys the app writes to localStorage that belong to the **current
+// session** and must therefore be wiped on logout or a 401 from the
+// backend.  Listing them in one place means the next person who adds
+// a key can't forget to add it here.
+//
+// Note: user *preferences* (theme, locale, sidebar) deliberately stay
+// on this device across logins — they belong to the browser, not the
+// session.
 export const SESSION_STORAGE_KEYS = [
+  // auth
   'mindmirror_user',
   'mindmirror_token',
   'mindmirror_local_users',
   'mindmirror_local_secret',
+  // assessment history (store)
   'assessmentHistory',
+  // dashboard analysis cache
+  'mindmirror_analysis_history_hash',
+  'mindmirror_analysis_cache',
+  'mindmirror_analysis_meta',
+  // mood tracker
+  'moodTracker_entries',
+  // training
+  'training_history',
+  'training_progress',
+  'training_schedules',
+  // achievements
+  'achievements_unlocked',
+  // tags
+  'userTags',
+  // personal data center
+  'personalDataCenter',
+  // shareable result links
+  'shared_assessment_results',
+  // plugin state
+  'plugin_registry',
+  'plugin_states',
+  'plugin_cache',
+  // trace logs
+  'assessment_trace_logs',
 ] as const;
 
 export function clearLocalSession() {

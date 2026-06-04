@@ -2,10 +2,12 @@ import { create } from 'zustand';
 import { Assessment, Question, AssessmentResult } from '../types';
 import type { User, AuthCredentials, RegisterData } from '../types/auth';
 import { storage } from '../lib/utils';
+import { clearLocalSession } from '../lib/apiClient';
 import { calculateBigFiveScores, calculateOverallScore } from '../services/bigFiveScoring';
 import { calculateStressTestTraits } from '../services/stressTestScoring';
 import { calculateGAD7Traits } from '../services/anxietyGad7Scoring';
 import { authService } from '../services/auth';
+import { analysisCache } from '../services/dashboard/AnalysisCache';
 import { pluginLoader } from '../services/plugin/PluginLoader';
 import type { Locale } from '../i18n';
 
@@ -254,19 +256,14 @@ export const useAppStore = create<AppState>((set, get) => {
       try {
         await authService.logout();
       } catch {
-        // authService.logout() already clears localStorage on its own
-        // happy path, but if it threw, make sure the next render can't
-        // see a half-cleared session.
-        try {
-          localStorage.removeItem('mindmirror_user');
-          localStorage.removeItem('mindmirror_token');
-          localStorage.removeItem('mindmirror_local_users');
-          localStorage.removeItem('mindmirror_local_secret');
-          localStorage.removeItem('assessmentHistory');
-        } catch {
-          // ignore
-        }
+        // authService.logout() already calls clearLocalSession() on its
+        // happy path; only fall back to it here if the auth path threw.
+        clearLocalSession();
       }
+      // Belt-and-suspenders: always invalidate the analysis cache
+      // after the session ends so the next login can't see stale
+      // fingerprints that point at a history the new user won't have.
+      analysisCache.clear();
       set({
         user: null,
         isAuthenticated: false,
@@ -361,16 +358,23 @@ export const useAppStore = create<AppState>((set, get) => {
           const next = state.assessmentHistory.slice();
           next[dupeIdx] = result;
           storage.set(STORAGE_KEY_HISTORY, next);
+          // Always invalidate the dashboard cache on mutation — even
+          // an in-place score replace should rerun the analysis so
+          // insights/trends reflect the latest value.
+          analysisCache.invalidate();
           return { assessmentHistory: next };
         }
         const newHistory = [result, ...state.assessmentHistory];
         storage.set(STORAGE_KEY_HISTORY, newHistory);
+        analysisCache.invalidate();
         return { assessmentHistory: newHistory };
       }),
 
     clearHistory: () =>
       set(() => {
         storage.set(STORAGE_KEY_HISTORY, []);
+        // History is gone — there's nothing to cache an analysis of.
+        analysisCache.clear();
         return { assessmentHistory: [] };
       }),
 
@@ -378,6 +382,7 @@ export const useAppStore = create<AppState>((set, get) => {
       set(state => {
         const newHistory = state.assessmentHistory.filter(item => item.id !== id);
         storage.set(STORAGE_KEY_HISTORY, newHistory);
+        analysisCache.invalidate();
         return { assessmentHistory: newHistory };
       }),
 

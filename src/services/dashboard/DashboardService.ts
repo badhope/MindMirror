@@ -9,23 +9,35 @@ import { dataSyncService } from '../dataAbstraction/DataSyncService';
 import { tagService } from './TagService';
 
 class DashboardService {
-  async initializeDashboard(_userId: string): Promise<any> {
-    await dataSyncService.syncAllAssessments();
-
-    const personalCenter = dataSyncService.getPersonalDataCenter();
-    const results = personalCenter.results;
+  /**
+   * Compute the full dashboard payload from a snapshot of the user's
+   * assessment history.  The history is the **single source of truth**
+   * — callers must pass `useAppStore.getState().assessmentHistory`
+   * rather than relying on `dataSyncService.getPersonalDataCenter()`,
+   * which is a derived cache that can drift behind a freshly-added
+   * result if `syncAllAssessments()` hasn't been called yet.
+   */
+  async initializeDashboard(
+    _userId: string,
+    results: UnifiedAssessmentResult[]
+  ): Promise<{
+    statistics: DataStatistics;
+    recentResults: UnifiedAssessmentResult[];
+    trends: AssessmentTrend[];
+    summaries: PeriodicSummary[];
+    topTags: string[];
+    insights: string[];
+  }> {
+    // Apply the auto-tag rules so the dashboard sees the same tag set
+    // that History / Compare pages do.
+    tagService.applyTagsToResults();
 
     const statistics = dataAggregationService.calculateStatistics(results);
-
     const recentResults = this.getRecentResults(results, 10);
-
     const trends = this.calculateKeyTrends(results);
-
     const summaries = this.generateRecentSummaries();
-
     const topTags = tagService.getTopTags(10);
-
-    const insights = this.getInsights();
+    const insights = this.getInsights(results, trends);
 
     return {
       statistics,
@@ -165,7 +177,7 @@ class DashboardService {
     }
     if (summary.insights.length > 0) {
       lines.push('');
-      lines.push('## 关键洞察');
+      lines.push(`## 关键洞察`);
       for (const i of summary.insights) lines.push(`- ${i}`);
     }
     if (summary.recommendations.length > 0) {
@@ -176,10 +188,15 @@ class DashboardService {
     return lines.join('\n');
   }
 
-  getInsights(): string[] {
-    const personalCenter = dataSyncService.getPersonalDataCenter();
-    const results = personalCenter.results;
-
+  /**
+   * `results` and `trends` are now passed in by the caller so that the
+   * insights are derived from the *exact* data the dashboard just
+   * rendered — no more chance of reading from a stale personalCenter.
+   */
+  getInsights(
+    results: UnifiedAssessmentResult[] = dataSyncService.getPersonalDataCenter().results,
+    trends: AssessmentTrend[] = this.calculateKeyTrends(results)
+  ): string[] {
     if (results.length === 0) {
       return ['开始你的第一次测评，开启心理健康追踪之旅'];
     }
@@ -190,7 +207,6 @@ class DashboardService {
       insights.push('建议至少完成3次测评以获得更准确的趋势分析');
     }
 
-    const trends = this.calculateKeyTrends(results);
     const improvingTrends = trends.filter(t => t.trend === 'increasing');
     const decliningTrends = trends.filter(t => t.trend === 'decreasing');
 
@@ -217,17 +233,18 @@ class DashboardService {
     return insights;
   }
 
-  getQuickStats(): {
+  getQuickStats(
+    results?: UnifiedAssessmentResult[]
+  ): {
     totalAssessments: number;
     streakDays: number;
     averageScore: number;
     mostRecentType?: string;
   } {
-    const personalCenter = dataSyncService.getPersonalDataCenter();
-    const results = personalCenter.results;
-    const statistics = dataAggregationService.calculateStatistics(results);
+    const data = results ?? dataSyncService.getPersonalDataCenter().results;
+    const statistics = dataAggregationService.calculateStatistics(data);
 
-    const recent = this.getRecentResults(results, 1);
+    const recent = this.getRecentResults(data, 1);
 
     return {
       totalAssessments: statistics.totalAssessments,

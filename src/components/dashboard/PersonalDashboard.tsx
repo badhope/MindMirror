@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { dashboardService } from '../../services/dashboard/DashboardService';
 import { analysisCache } from '../../services/dashboard/AnalysisCache';
+import { toUnifiedResult } from '../../services/dataAbstraction/DataSyncService';
 import { UnifiedAssessmentResult, DataStatistics, AssessmentTrend } from '../../types/dataAbstraction';
 import { useAppStore } from '../../store';
 import { getTranslation } from '../../i18n';
@@ -21,25 +22,35 @@ export function PersonalDashboard() {
   const i18n = getTranslation(locale);
   const reduce = useReducedMotion();
 
+  // Build a UnifiedAssessmentResult[] view of the store's history.  This
+  // is the *single source of truth* for the dashboard — we never read
+  // from `dataSyncService.getPersonalDataCenter()` here because that
+  // cache can lag behind a freshly-added result.
+  const unifiedResults: UnifiedAssessmentResult[] = assessmentHistory
+    .map(r => toUnifiedResult(r))
+    .filter((r): r is UnifiedAssessmentResult => r !== null);
+
   useEffect(() => {
     loadDashboardData();
   }, []);
 
-  // When history changes elsewhere in the app, refresh on the next mount.
+  // Refresh when the history changes (e.g. user finishes a new
+  // assessment in another tab / comes back from the result page).
+  // Track the head of the history (most recent entry id) so we also
+  // catch in-place replaces from `addToHistory` de-dupe.
+  const headId = assessmentHistory[0]?.id ?? '';
   useEffect(() => {
     if (!loading) {
       loadDashboardData(true);
     }
-  }, [assessmentHistory.length]);
+  }, [assessmentHistory.length, headId]);
 
   const loadDashboardData = async (force = false) => {
     try {
       setLoading(true);
       if (!force) {
         // Try cache first (skip on force-refresh so the user gets fresh data).
-        const cached = analysisCache.getIfFresh(
-          useAppStore.getState().assessmentHistory
-        );
+        const cached = analysisCache.getIfFresh(unifiedResults);
         if (cached) {
           setStatistics(cached.statistics);
           setTrends(cached.trends);
@@ -54,12 +65,12 @@ export function PersonalDashboard() {
           return;
         }
       }
-      const data = await dashboardService.initializeDashboard('default');
+      const data = await dashboardService.initializeDashboard('default', unifiedResults);
       setStatistics(data.statistics);
       setRecentResults(data.recentResults);
       setTrends(data.trends ?? []);
       setInsights(data.insights);
-      const meta = analysisCache.set(useAppStore.getState().assessmentHistory, {
+      const meta = analysisCache.set(unifiedResults, {
         statistics: data.statistics,
         trends: data.trends ?? [],
         insights: data.insights,

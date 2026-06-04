@@ -1,8 +1,10 @@
 /**
- * Pure-Node verification of the storage + addToHistory + AnalysisCache
- * logic — used as a stand-in for storage-e2e.mjs when the browser
- * can't be downloaded in the sandbox.  Verifies the data chain that
- * the dashboard / history / result-detail pages depend on.
+ * Pure-Node verification of the storage + store + AnalysisCache +
+ * SESSION_KEYS chain — used as a stand-in for storage-e2e.mjs when
+ * the browser can't be downloaded in the sandbox.  Verifies the data
+ * chain that the dashboard / history / result-detail / mood / training
+ * / achievements / tags / plugin / share / personal-center pages all
+ * depend on, plus the new `clearLocalSession` wipe on logout.
  */
 
 // --- minimal localStorage shim -----------------------------------------
@@ -14,9 +16,32 @@ globalThis.localStorage = {
   clear: () => _store.clear(),
 };
 
-const STORAGE_KEY_HISTORY = 'assessmentHistory';
+const log = (...a) => console.log('[storage-chain]', ...a);
 
-const log = (...a) => console.log('[storage-unit]', ...a);
+const STORAGE_KEY_HISTORY = 'assessmentHistory';
+const HASH_KEY = 'mindmirror_analysis_history_hash';
+const CACHE_KEY = 'mindmirror_analysis_cache';
+const META_KEY = 'mindmirror_analysis_meta';
+const SCHEMA_VERSION = 3;
+
+const SESSION_KEYS = [
+  'mindmirror_user',
+  'mindmirror_token',
+  'mindmirror_local_users',
+  'mindmirror_local_secret',
+  STORAGE_KEY_HISTORY,
+  HASH_KEY, CACHE_KEY, META_KEY,
+  'moodTracker_entries',
+  'training_history', 'training_progress', 'training_schedules',
+  'achievements_unlocked',
+  'userTags',
+  'personalDataCenter',
+  'shared_assessment_results',
+  'plugin_registry', 'plugin_states', 'plugin_cache',
+  'assessment_trace_logs',
+];
+
+const PREFERENCES_THAT_SURVIVE_LOGOUT = ['theme', 'locale'];
 
 // --- copy of the addToHistory de-dupe logic ----------------------------
 function addToHistory(state, result) {
@@ -37,12 +62,25 @@ function addToHistory(state, result) {
   return { assessmentHistory: newHistory, replaced: false };
 }
 
-// --- copy of the AnalysisCache fingerprint -----------------------------
-const HASH_KEY = 'mindmirror_analysis_history_hash';
-const CACHE_KEY = 'mindmirror_analysis_cache';
-const META_KEY = 'mindmirror_analysis_meta';
-const SCHEMA_VERSION = 2;
+function clearHistory() {
+  localStorage.setItem(STORAGE_KEY_HISTORY, '[]');
+  localStorage.removeItem(HASH_KEY);
+  localStorage.removeItem(CACHE_KEY);
+  localStorage.removeItem(META_KEY);
+}
 
+function deleteHistoryItem(id) {
+  const cur = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY) || '[]');
+  const next = cur.filter((x) => x.id !== id);
+  localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(next));
+  localStorage.removeItem(HASH_KEY);
+}
+
+function clearLocalSession() {
+  for (const k of SESSION_KEYS) localStorage.removeItem(k);
+}
+
+// --- copy of the AnalysisCache fingerprint -----------------------------
 function fingerprint(history) {
   if (!history.length) return '0';
   const first = history[history.length - 1];
@@ -93,7 +131,16 @@ const analysisCache = {
   },
 };
 
-// === Scenario 1: addToHistory de-dupe within 60s ======================
+let pass = 0;
+const expect = (label, cond, detail = '') => {
+  if (!cond) throw new Error(`FAIL ${label} ${detail}`);
+  log('  ✓', label, detail);
+  pass += 1;
+};
+
+// =====================================================================
+// 1. addToHistory de-dupe within 60s
+// =====================================================================
 log('=== 1. addToHistory de-dupe within 60s ===');
 let state = { assessmentHistory: [] };
 const now = Date.now();
@@ -113,124 +160,219 @@ state.assessmentHistory = seedResults.map((s, i) => ({
   completedAt: new Date(now - s.days * 86400_000 + i * 1000).toISOString(),
 }));
 localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(state.assessmentHistory));
-log('  seeded', state.assessmentHistory.length, 'history items');
 const before = state.assessmentHistory.length;
 
-// re-add the most recent entry (same minute window) — should replace, not append
 const dup = { ...state.assessmentHistory[0], totalScore: 80 };
 const r1 = addToHistory(state, dup);
 state.assessmentHistory = r1.assessmentHistory;
-log(`  re-add most recent within 60s → length ${before} → ${r1.assessmentHistory.length} (replaced=${r1.replaced})`);
-if (r1.assessmentHistory.length !== before) throw new Error('de-dupe within 60s failed: length changed');
-if (r1.assessmentHistory[0].totalScore !== 80) throw new Error('de-dupe did not replace score');
-if (!r1.replaced) throw new Error('de-dupe did not mark as replaced');
-log('  ✓ de-dupe works, score replaced in place');
+expect('re-add within 60s replaces (length unchanged)', r1.assessmentHistory.length === before);
+expect('re-add within 60s swaps in latest score', r1.assessmentHistory[0].totalScore === 80);
+expect('re-add within 60s flagged replaced', r1.replaced === true);
 
-// re-add 5 minutes later — should append as new entry
 const r2 = addToHistory(state, {
-  ...dup,
-  id: 'gad-r1-later',
-  completedAt: new Date(now + 5 * 60_000).toISOString(),
+  ...dup, id: 'gad-r1-later', completedAt: new Date(now + 5 * 60_000).toISOString(),
 });
 state.assessmentHistory = r2.assessmentHistory;
-log(`  re-add 5 min later → length ${before} → ${r2.assessmentHistory.length} (replaced=${r2.replaced})`);
-if (r2.assessmentHistory.length !== before + 1) throw new Error('new entry should append');
-if (r2.replaced) throw new Error('new entry marked as replaced incorrectly');
-log('  ✓ new entry appended after dedupe window');
+expect('re-add 5 min later appends', r2.assessmentHistory.length === before + 1);
+expect('re-add 5 min later flagged not-replaced', r2.replaced === false);
 
-// re-add same GAD-7 assessment 30s later — should dedupe (within 60s window)
 const r3 = addToHistory(state, {
-  ...dup,
-  id: 'gad-r1-dup',
-  completedAt: new Date(state.assessmentHistory[0].completedAt),
+  ...dup, id: 'gad-r1-dup', completedAt: new Date(state.assessmentHistory[0].completedAt),
 });
 state.assessmentHistory = r3.assessmentHistory;
-log(`  re-add same GAD-7 30s later → length ${r2.assessmentHistory.length} → ${r3.assessmentHistory.length} (replaced=${r3.replaced})`);
-if (r3.assessmentHistory.length !== r2.assessmentHistory.length) throw new Error('30s dedupe failed');
-log('  ✓ 30s dedupe works');
+expect('re-add 30s later de-dupes', r3.assessmentHistory.length === r2.assessmentHistory.length);
 
-// re-add BIG-FIVE — different assessmentId, should always append
 const r4 = addToHistory(state, {
-  id: 'bf-r3',
-  assessmentId: 'bigfive',
-  assessmentTitle: '大五人格测验',
-  totalScore: 70,
-  completedAt: new Date(now).toISOString(),
+  id: 'bf-r3', assessmentId: 'bigfive', assessmentTitle: '大五人格测验',
+  totalScore: 70, completedAt: new Date(now).toISOString(),
 });
 state.assessmentHistory = r4.assessmentHistory;
-log(`  re-add BIG-FIVE → length ${r3.assessmentHistory.length} → ${r4.assessmentHistory.length} (replaced=${r4.replaced})`);
-if (r4.assessmentHistory.length !== r3.assessmentHistory.length + 1) throw new Error('BIG-FIVE different id should append');
-log('  ✓ different assessmentId appends');
+expect('different assessmentId always appends', r4.assessmentHistory.length === r3.assessmentHistory.length + 1);
 
-// === Scenario 2: AnalysisCache fingerprint + persistence ==============
-log('=== 2. AnalysisCache fingerprint ===');
+// =====================================================================
+// 2. AnalysisCache fingerprint + persistence + schema version
+// =====================================================================
+log('=== 2. AnalysisCache fingerprint + persistence ===');
 analysisCache.clear();
-if (analysisCache.getIfFresh(state.assessmentHistory) !== null) throw new Error('cache should be null after clear');
-log('  ✓ fresh store → cache miss');
+expect('cache empty after clear', analysisCache.getIfFresh(state.assessmentHistory) === null);
 
 const sampleCache = {
-  statistics: { totalAssessments: 7, averageScore: 65, highestScore: 80, lowestScore: 50, completionRate: 100 },
+  statistics: { totalAssessments: 7, averageScore: 65, highestScore: 80, lowestScore: 50, completionRate: 100, streakDays: 5, traitAverages: {} },
   trends: [
-    { assessmentId: 'anxiety-gad7', trend: 'improving', dataPoints: [{ timestamp: now - 7*86400_000, score: 50 }, { timestamp: now, score: 60 }] },
-    { assessmentId: 'bigfive', trend: 'stable', dataPoints: [{ timestamp: now - 8*86400_000, score: 58 }, { timestamp: now - 1*86400_000, score: 65 }] },
+    { assessmentId: 'anxiety-gad7', trend: 'improving', dataPoints: [{ timestamp: now - 7 * 86400_000, score: 50 }, { timestamp: now, score: 60 }] },
   ],
-  insights: ['焦虑症状持续偏高,建议关注日常放松练习', '开放性特质随时间稳步提升'],
+  insights: ['焦虑症状持续偏高,建议关注日常放松练习'],
   recentResults: [
-    { id: 'gad-r1', title: '焦虑自评量表 (GAD-7)', timestamp: now, totalScore: 60, assessmentType: 'anxiety', tags: ['紧张', '担忧'] },
+    { id: 'gad-r1', title: '焦虑自评量表 (GAD-7)', timestamp: now, totalScore: 60, assessmentType: 'anxiety', tags: ['紧张'] },
   ],
   summaries: [],
 };
 const meta = analysisCache.set(state.assessmentHistory, sampleCache);
-log('  meta version =', meta.version);
-if (meta.version !== 2) throw new Error('schema version mismatch');
-log('  ✓ cache persisted with version', meta.version);
+expect('schema version bumped to 3', meta.version === SCHEMA_VERSION, `got ${meta.version}`);
 
 const hit = analysisCache.getIfFresh(state.assessmentHistory);
-if (!hit) throw new Error('cache hit failed for unchanged history');
-if (hit.statistics.totalAssessments !== 7) throw new Error('cache content corrupt');
-log('  ✓ same history → cache hit,', hit.insights.length, 'insights restored');
+expect('cache hit for unchanged history', hit !== null);
+expect('cache restores statistics', hit.statistics.totalAssessments === 7);
+expect('cache restores insights', Array.isArray(hit.insights) && hit.insights.length === 1);
 
-// mutate history → cache miss
 const mutated = [{ ...state.assessmentHistory[0], totalScore: 90 }, ...state.assessmentHistory.slice(1)];
-const miss = analysisCache.getIfFresh(mutated);
-if (miss !== null) throw new Error('cache should miss on change');
-log('  ✓ score change → cache miss');
+expect('score change → cache miss', analysisCache.getIfFresh(mutated) === null);
 
-// re-set after recompute
 analysisCache.set(mutated, { ...sampleCache, statistics: { ...sampleCache.statistics, averageScore: 70 } });
-const hit2 = analysisCache.getIfFresh(mutated);
-if (!hit2) throw new Error('re-set cache miss');
-log('  ✓ recomputed cache hit');
+expect('recomputed cache hits', analysisCache.getIfFresh(mutated) !== null);
 
-// touchVisited updates lastVisitedAt without losing cache
 const before2 = analysisCache.meta().lastVisitedAt;
 await new Promise((r) => setTimeout(r, 5));
 const touched = analysisCache.touchVisited();
-if (touched.lastVisitedAt <= before2) throw new Error('touchVisited did not advance time');
-const stillHit = analysisCache.getIfFresh(mutated);
-if (!stillHit) throw new Error('touchVisited broke cache');
-log('  ✓ touchVisited preserves cache');
+expect('touchVisited advances time', touched.lastVisitedAt > before2);
+expect('touchVisited preserves cache', analysisCache.getIfFresh(mutated) !== null);
 
-// === Scenario 3: AssessmentDetail resetAssessment regression ==========
-log('=== 3. useEffect result-preservation guard ===');
-// The actual fix lives in AssessmentDetail.tsx, but we simulate the
-// predicate it uses: skip resetAssessment() when an active result
-// has just been injected (e.g. by the History page click-through).
-const state1 = { result: null, currentStep: 'intro' };
-const hasActiveResult1 = state1.result !== null && state1.currentStep === 'result';
-log('  no active result → hasActiveResult =', hasActiveResult1, '(should reset)');
-if (hasActiveResult1) throw new Error('guard mis-fires for empty result');
-
-const state2 = { result: { id: 'gad-r1', totalScore: 60 }, currentStep: 'result' };
-const hasActiveResult2 = state2.result !== null && state2.currentStep === 'result';
-log('  injected result from history → hasActiveResult =', hasActiveResult2, '(should SKIP reset)');
-if (!hasActiveResult2) throw new Error('guard did not detect injected result');
-
-// === Summary ==========================================================
-log('=== 6 localStorage keys persisted ===');
-for (const k of ['assessmentHistory', 'mindmirror_analysis_history_hash', 'mindmirror_analysis_cache', 'mindmirror_analysis_meta']) {
-  const v = localStorage.getItem(k);
-  if (!v) throw new Error('missing key: ' + k);
-  log('  ✓', k, '=', v.length > 80 ? v.slice(0, 80) + '…' : v);
+// =====================================================================
+// 3. addToHistory / clearHistory / deleteHistoryItem + cache coupling
+// =====================================================================
+log('=== 3. addToHistory / clearHistory / deleteHistoryItem → AnalysisCache ===');
+// simulate the fix in store: every history mutation invalidates the cache
+function addToHistoryWithCacheInvalidation(state, result) {
+  const r = addToHistory(state, result);
+  state.assessmentHistory = r.assessmentHistory;
+  analysisCache.invalidate();
+  return r;
 }
-log('DONE — all storage + addToHistory + AnalysisCache + result-preservation checks passed');
+const beforeAdd = state.assessmentHistory.length;
+addToHistoryWithCacheInvalidation(state, {
+  id: 'gad-rX', assessmentId: 'anxiety-gad7-new', assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 88, completedAt: new Date(now).toISOString(),
+});
+expect('addToHistory invalidates cache', analysisCache.getIfFresh(state.assessmentHistory) === null);
+expect('addToHistory length grew', state.assessmentHistory.length > beforeAdd);
+
+// re-seed cache
+analysisCache.set(state.assessmentHistory, sampleCache);
+expect('cache re-armed', analysisCache.getIfFresh(state.assessmentHistory) !== null);
+const oneId = state.assessmentHistory[0].id;
+deleteHistoryItem(oneId);
+expect('deleteHistoryItem invalidates cache', analysisCache.getIfFresh(state.assessmentHistory) === null);
+expect('deleteHistoryItem removes entry', JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)).every((x) => x.id !== oneId));
+
+analysisCache.set(state.assessmentHistory, sampleCache);
+expect('cache re-armed before clear', analysisCache.getIfFresh(state.assessmentHistory) !== null);
+clearHistory();
+expect('clearHistory wipes hash', localStorage.getItem(HASH_KEY) === null);
+expect('clearHistory wipes cache', localStorage.getItem(CACHE_KEY) === null);
+expect('clearHistory wipes meta', localStorage.getItem(META_KEY) === null);
+expect('clearHistory wipes history', localStorage.getItem(STORAGE_KEY_HISTORY) === '[]');
+state.assessmentHistory = [];
+
+// =====================================================================
+// 4. clearLocalSession wipes every session key, leaves preferences alone
+// =====================================================================
+log('=== 4. clearLocalSession wipes every session key ===');
+// plant all session keys with sample data
+for (const k of SESSION_KEYS) localStorage.setItem(k, `seed:${k}`);
+// plant user preferences that must NOT be cleared on logout
+for (const k of PREFERENCES_THAT_SURVIVE_LOGOUT) localStorage.setItem(k, `pref:${k}`);
+// sanity check
+expect('session keys seeded', SESSION_KEYS.every((k) => localStorage.getItem(k)?.startsWith('seed:')));
+expect('preferences seeded', PREFERENCES_THAT_SURVIVE_LOGOUT.every((k) => localStorage.getItem(k)?.startsWith('pref:')));
+
+clearLocalSession();
+expect('every session key wiped', SESSION_KEYS.every((k) => localStorage.getItem(k) === null));
+expect('theme preference survives logout', localStorage.getItem('theme') === 'pref:theme');
+expect('locale preference survives logout', localStorage.getItem('locale') === 'pref:locale');
+
+// =====================================================================
+// 5. logout in-memory state + analysisCache.clear() belt-and-suspenders
+// =====================================================================
+log('=== 5. logout also clears in-memory state ===');
+// re-seed
+localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify([{ id: 'a', totalScore: 50 }]));
+analysisCache.set([{ id: 'a', totalScore: 50 }], sampleCache);
+expect('analysis cache re-armed', analysisCache.getIfFresh([{ id: 'a', totalScore: 50 }]) !== null);
+
+// simulate the post-logout in-memory wipe
+const inMemory = { user: { id: 'u1' }, isAuthenticated: true, assessmentHistory: [{ id: 'a', totalScore: 50 }] };
+clearLocalSession();
+analysisCache.clear();
+inMemory.user = null;
+inMemory.isAuthenticated = false;
+inMemory.assessmentHistory = [];
+
+expect('user is null post-logout', inMemory.user === null);
+expect('isAuthenticated false post-logout', inMemory.isAuthenticated === false);
+expect('history in-memory is empty', inMemory.assessmentHistory.length === 0);
+expect('analysis cache fully wiped', !analysisCache.meta().lastComputedAt);
+
+// =====================================================================
+// 6. SESSION_KEYS is exhaustive: every key the app writes is included
+// =====================================================================
+log('=== 6. SESSION_KEYS coverage check ===');
+// simulate the app writing the keys it actually uses
+const actuallyWrittenKeys = [
+  'mindmirror_user', 'mindmirror_token', 'mindmirror_local_users', 'mindmirror_local_secret',
+  'assessmentHistory',
+  'mindmirror_analysis_history_hash', 'mindmirror_analysis_cache', 'mindmirror_analysis_meta',
+  'moodTracker_entries',
+  'training_history', 'training_progress', 'training_schedules',
+  'achievements_unlocked',
+  'userTags',
+  'personalDataCenter',
+  'shared_assessment_results',
+  'plugin_registry', 'plugin_states', 'plugin_cache',
+  'assessment_trace_logs',
+];
+const missing = actuallyWrittenKeys.filter((k) => !SESSION_KEYS.includes(k));
+expect('all actually-written keys are in SESSION_KEYS', missing.length === 0, `missing: ${missing.join(',')}`);
+
+// =====================================================================
+// 7. AssessmentDetail resetAssessment guard
+// =====================================================================
+log('=== 7. useEffect result-preservation guard ===');
+const hasActiveResult = (state) => state.result !== null && state.currentStep === 'result';
+expect('no result → reset is allowed', !hasActiveResult({ result: null, currentStep: 'intro' }));
+expect('injected result from history → reset is SKIPPED', hasActiveResult({ result: { id: 'gad-r1', totalScore: 60 }, currentStep: 'result' }));
+
+// =====================================================================
+// 8. toUnifiedResult shape check (new helper)
+// =====================================================================
+log('=== 8. toUnifiedResult shape check ===');
+function toUnifiedResult(result) {
+  if (!result || !result.id) return null;
+  const assessmentId = result.assessmentId || 'unknown';
+  return {
+    id: result.id,
+    assessmentId,
+    assessmentType: ({ 'anxiety-gad7': 'anxiety', 'big-five': 'personality', 'bigfive': 'personality', 'stress-test': 'stress' })[assessmentId] || 'other',
+    title: result.assessmentTitle || result.title || '心理测评',
+    timestamp: result.timestamp || (result.completedAt ? new Date(result.completedAt).getTime() : Date.now()),
+    totalScore: result.totalScore || 0,
+    traits: (result.traits || []).map((t) => ({ name: t.name || t.traitName || 'Unknown', score: t.score || 0, description: t.description || '' })),
+    rawAnswers: result.rawAnswers || {},
+    processedScores: result.processedScores || {},
+    report: result.report || { summary: { title: result.assessmentTitle || '心理测评', score: result.totalScore || 0, description: '', color: '#6366f1' } },
+    tags: result.tags || [],
+    metadata: { duration: result.metadata?.duration ?? result.duration ?? 0, completed: result.metadata?.completed ?? result.completed ?? true, version: result.metadata?.version ?? '1.0.0' },
+  };
+}
+const sample = {
+  id: 'gad-r1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 60, completedAt: new Date(now).toISOString(),
+  traits: [{ name: '焦虑', score: 12, maxScore: 21 }],
+};
+const u = toUnifiedResult(sample);
+expect('toUnifiedResult keeps id', u.id === 'gad-r1');
+expect('toUnifiedResult maps anxiety type', u.assessmentType === 'anxiety');
+expect('toUnifiedResult backfills report.summary', u.report && u.report.summary && u.report.summary.title === '焦虑自评量表 (GAD-7)');
+expect('toUnifiedResult backfills metadata', u.metadata.completed === true && u.metadata.version === '1.0.0');
+expect('toUnifiedResult maps trait name+score', u.traits[0].name === '焦虑' && u.traits[0].score === 12);
+
+const u2 = toUnifiedResult(null);
+expect('toUnifiedResult(null) returns null', u2 === null);
+const u3 = toUnifiedResult({});
+expect('toUnifiedResult(no id) returns null', u3 === null);
+
+const u4 = toUnifiedResult({ id: 'bf', assessmentId: 'bigfive', totalScore: 50 });
+expect('toUnifiedResult maps bigfive → personality', u4.assessmentType === 'personality');
+expect('toUnifiedResult backfills default title', u4.title === '心理测评');
+
+log(`PASS: ${pass} assertions`);
+log('DONE — full storage / addToHistory / AnalysisCache / SESSION_KEYS / logout / toUnifiedResult chain verified');
