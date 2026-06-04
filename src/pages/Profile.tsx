@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store';
 import { getTranslation } from '../i18n';
 import { authService } from '../services/auth';
+import { Skeleton } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 export const Profile = () => {
   const navigate = useNavigate();
@@ -137,6 +139,37 @@ export const Profile = () => {
 
   if (!isAuthenticated) {
     return null; // 会被导航重定向
+  }
+
+  const ready = useDelayedReveal(500);
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-8">
+        <div
+          className="max-w-3xl mx-auto px-4 space-y-6"
+          aria-busy="true"
+          aria-label={i18n.common.loading}
+        >
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-4">
+            <div className="flex items-center gap-4">
+              <Skeleton shape="circle" className="h-20 w-20" />
+              <div className="space-y-2 flex-1">
+                <Skeleton className="h-6 w-40" />
+                <Skeleton className="h-4 w-56" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-24" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-24" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -13,6 +13,8 @@ import {
 } from '../services/mood/MoodTrackerService';
 import { useToasts } from '../store/toastStore';
 import { cn } from '../lib/utils';
+import { Skeleton, SkeletonText } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 type MoodLevelType = 1 | 2 | 3 | 4 | 5;
 
@@ -60,6 +62,35 @@ export function MoodTracker() {
     setNote(entry.note);
     setTags(entry.tags);
   }, []);
+
+  const ready = useDelayedReveal(550);
+  if (!ready) {
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label={t.title}>
+        <div className="text-center space-y-2">
+          <Skeleton className="mx-auto h-9 w-48" />
+          <Skeleton className="mx-auto h-4 w-72" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="rounded-2xl border border-slate-200 bg-white p-4 space-y-2">
+              <Skeleton className="h-7 w-12" />
+              <Skeleton className="h-3 w-20" />
+            </div>
+          ))}
+        </div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4">
+          <Skeleton className="h-4 w-32" />
+          <div className="flex gap-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} shape="circle" className="h-12 w-12" />
+            ))}
+          </div>
+          <SkeletonText lines={3} />
+        </div>
+      </div>
+    );
+  }
 
   const handleSave = () => {
     if (!mood) return;

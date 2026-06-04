@@ -5,6 +5,8 @@ import { AssessmentResult, TraitResult } from '../types';
 import { mockAssessments, getQuestionsForAssessment } from '../data/mockData';
 import { getTranslation } from '../i18n';
 import { useToasts } from '../store/toastStore';
+import { Skeleton, SkeletonCard } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 type Filter = 'all' | 'personality' | 'stress' | 'anxiety';
 type Sort = 'newest' | 'oldest' | 'highest' | 'lowest';
@@ -441,6 +443,44 @@ export const History = () => {
       // User cancelled the share sheet — that's fine.
     }
   };
+
+  // Hold a layout-matching skeleton for ~650ms after mount so the
+  // page transition reads as a real loading beat (mobile app feel)
+  // instead of a synchronous paint that already has data on the way in.
+  const ready = useDelayedReveal(650);
+  if (!ready) {
+    return (
+      <div className="space-y-8 sm:space-y-10" aria-busy="true" aria-label={i18n.common.loading}>
+        <header className="flex flex-wrap items-end justify-between gap-3">
+          <div className="space-y-2">
+            <Skeleton className="h-9 w-48" />
+            <Skeleton className="h-4 w-64" />
+          </div>
+          <Skeleton className="h-9 w-24" />
+        </header>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-slate-100 bg-white p-4 sm:p-5 space-y-2"
+            >
+              <Skeleton className="h-8 w-16" />
+              <Skeleton className="h-3 w-24" />
+            </div>
+          ))}
+        </div>
+        <div className="rounded-2xl bg-white border border-slate-100 p-5 sm:p-6 space-y-4">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-16 w-full" />
+        </div>
+        <div className="space-y-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 sm:space-y-10">

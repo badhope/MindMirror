@@ -3,6 +3,7 @@ import { dashboardService } from '../../services/dashboard/DashboardService';
 import { UnifiedAssessmentResult, DataStatistics } from '../../types/dataAbstraction';
 import { useAppStore } from '../../store';
 import { getTranslation } from '../../i18n';
+import { Skeleton, SkeletonCard } from '../Loading';
 
 export function PersonalDashboard() {
   const [loading, setLoading] = useState(true);
@@ -36,10 +37,33 @@ export function PersonalDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-slate-600">{i18n.dashboard.loading}</p>
+      <div
+        className="max-w-7xl mx-auto p-6 space-y-6"
+        aria-busy="true"
+        aria-label={i18n.dashboard.loading}
+      >
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 space-y-3">
+          <Skeleton className="h-7 w-56 bg-white/20" />
+          <Skeleton className="h-4 w-80 bg-white/20" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full bg-white/20" />
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-3">
+            <Skeleton className="h-5 w-32" />
+            {Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-3">
+            <Skeleton className="h-5 w-32" />
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-12 w-full" />
+            ))}
+          </div>
         </div>
       </div>
     );

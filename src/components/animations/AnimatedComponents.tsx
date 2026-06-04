@@ -273,7 +273,7 @@ export function AnimatedCard({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
       className={className}
     >
@@ -322,7 +322,7 @@ export function AnimatedNumber({
       key={value}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4 }}
       className={className}
     >
       <CountUp target={value} duration={duration} decimals={decimals} />

@@ -8,6 +8,8 @@ import {
 } from '../services/achievement/AchievementService';
 import { moodTrackerService } from '../services/mood/MoodTrackerService';
 import { cn } from '../lib/utils';
+import { Skeleton, SkeletonCard } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 export function Achievements() {
   const { locale, assessmentHistory } = useAppStore();
@@ -69,6 +71,23 @@ export function Achievements() {
         return 'from-slate-400 to-slate-500';
     }
   };
+
+  const ready = useDelayedReveal(550);
+  if (!ready) {
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label={t.title}>
+        <div className="text-center space-y-2">
+          <Skeleton className="mx-auto h-9 w-48" />
+          <Skeleton className="mx-auto h-4 w-72" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

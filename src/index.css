@@ -80,7 +80,7 @@ body {
     rgba(255, 255, 255, 0.55) 60%,
     transparent 100%
   );
-  animation: skeleton-shimmer 1.6s linear infinite;
+  animation: skeleton-shimmer 2.2s linear infinite;
   will-change: transform;
 }
 

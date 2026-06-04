@@ -128,6 +128,9 @@ export function Spinner({
  * Full-page mobile-style loader: centred spinner with pulsing rings.
  * The two outer rings expand and fade out — same visual language as
  * the iOS network activity indicator and the WeChat pull-to-refresh.
+ * Pulse rate is intentionally slow (2.4s) so the loader reads as
+ * "calm waiting" instead of "urgent error" — the same pacing as the
+ * native iOS launch-screen and Material's empty state.
  */
 export function PageLoader({ label }: { label?: string }) {
   const reduce = useReducedMotion();
@@ -138,22 +141,22 @@ export function PageLoader({ label }: { label?: string }) {
       aria-live="polite"
       aria-label={label ?? 'Loading'}
     >
-      <div className="relative h-16 w-16">
+      <div className="relative h-20 w-20">
         {!reduce && (
           <>
             <span
               className="absolute inset-0 rounded-full bg-blue-400/30 animate-ping"
-              style={{ animationDuration: '1.8s' }}
+              style={{ animationDuration: '2.4s' }}
             />
             <span
-              className="absolute inset-2 rounded-full bg-blue-400/30 animate-ping"
-              style={{ animationDuration: '1.8s', animationDelay: '0.4s' }}
+              className="absolute inset-3 rounded-full bg-blue-400/30 animate-ping"
+              style={{ animationDuration: '2.4s', animationDelay: '0.6s' }}
             />
           </>
         )}
-        <span className="absolute inset-3 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30" />
+        <span className="absolute inset-4 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30" />
       </div>
-      {label && <p className="text-sm font-medium text-slate-500">{label}</p>}
+      {label && <p className="text-sm font-medium text-slate-500 animate-pulse">{label}</p>}
     </div>
   );
 }
@@ -164,10 +167,12 @@ export function PageLoader({ label }: { label?: string }) {
 
 /**
  * Pinned-to-top progress bar that mimics the YouTube / Medium behaviour:
- * the bar advances to 70% within 400ms, lingers, then snaps to 100% and
- * fades out. Call ``start()`` when a route change begins and ``done()``
- * once the new page has rendered. Safe to call repeatedly — overlapping
- * transitions cancel each other cleanly via a monotonic id.
+ * the bar advances to 60% within 600ms, lingers, then snaps to 100% and
+ * fades out. The deliberately slow first step (vs the previous 400ms /
+ * 70%) gives the bar a "still loading, give it a moment" feel instead
+ * of "almost done already". Call the window events ``mindmirror:route-start``
+ * and ``mindmirror:route-end`` from the router; this component subscribes
+ * to both.
  */
 export function TopProgressBar() {
   const [visible, setVisible] = useState(false);
@@ -181,13 +186,12 @@ export function TopProgressBar() {
       if (timerRef.current) clearTimeout(timerRef.current);
       if (tickRef.current) clearTimeout(tickRef.current);
       setVisible(true);
-      setProgress(reduce ? 100 : 12);
+      setProgress(reduce ? 100 : 8);
     }
     function onEnd() {
       setProgress(100);
-      timerRef.current = setTimeout(() => setVisible(false), 280);
+      timerRef.current = setTimeout(() => setVisible(false), 500);
     }
-    // Custom events fired by App.tsx on route change.
     window.addEventListener('mindmirror:route-start', onStart as EventListener);
     window.addEventListener('mindmirror:route-end', onEnd as EventListener);
     return () => {
@@ -198,16 +202,16 @@ export function TopProgressBar() {
     };
   }, [reduce]);
 
-  // Self-driving tick: after first paint, creep towards 70% so the bar
-  // looks alive even for slow networks. Snaps to 100% on route-end.
+  // Self-driving tick: after first paint, creep slowly towards 60% so
+  // the bar looks alive even for slow networks. Snaps to 100% on
+  // route-end.
   useEffect(() => {
     if (!visible || reduce) return;
     if (progress >= 100) return;
-    const _remaining = Math.max(70, 100 - progress);
-    const step = Math.random() * 4 + 2;
+    const step = Math.random() * 2 + 1;
     tickRef.current = setTimeout(() => {
-      setProgress(p => Math.min(70, p + step));
-    }, 200);
+      setProgress(p => Math.min(60, p + step));
+    }, 280);
     return () => {
       if (tickRef.current) clearTimeout(tickRef.current);
     };
@@ -221,15 +225,13 @@ export function TopProgressBar() {
           className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.25 } }}
+          exit={{ opacity: 0, transition: { duration: 0.4 } }}
         >
           <div
             className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"
             style={{
               width: `${progress}%`,
-              transition: reduce
-                ? 'width 0.05s linear'
-                : 'width 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+              transition: reduce ? 'width 0.05s linear' : 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           />
         </motion.div>

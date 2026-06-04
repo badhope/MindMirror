@@ -9,6 +9,8 @@ import {
   TRAINING_CATEGORIES,
   TrainingCategory,
 } from '../types/training';
+import { Skeleton, SkeletonCard } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 const DIFFICULTY_COLORS = {
   beginner: 'bg-green-100 text-green-700',
@@ -38,6 +40,34 @@ export function Training() {
   const recommendedTrainings = recommendations
     .map(rec => trainings.find(t => t.id === rec.trainingId))
     .filter(Boolean) as TrainingType[];
+
+  const ready = useDelayedReveal(600);
+  if (!ready) {
+    return (
+      <div className="space-y-8" aria-busy="true" aria-label={i18n.training.title}>
+        <div className="text-center space-y-2">
+          <Skeleton className="mx-auto h-10 w-56" />
+          <Skeleton className="mx-auto h-4 w-80" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-2"
+            >
+              <Skeleton className="h-8 w-16" />
+              <Skeleton className="h-3 w-24" />
+            </div>
+          ))}
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

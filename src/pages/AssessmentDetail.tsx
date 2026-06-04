@@ -14,6 +14,8 @@ import { exportService, shareService } from '../services/share/ExportShareServic
 import { TracePanel } from '../components/TracePanel';
 import { useToasts } from '../store/toastStore';
 import { cn } from '../lib/utils';
+import { Skeleton, SkeletonText } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 // 介绍页面组件
 function IntroPage({ onStart }: { onStart: () => void }) {
@@ -1505,6 +1507,33 @@ export default function AssessmentDetail() {
         return <IntroPage onStart={handleStart} />;
     }
   };
+
+  // Brief reveal pause so the user sees a skeleton flash on first
+  // mount — same trick as the other data pages. Without this, the
+  // store-backed data lands on screen before the route-change
+  // animation finishes, which reads as a glitch instead of a
+  // transition.
+  const ready = useDelayedReveal(500);
+  if (!ready) {
+    return (
+      <div className="space-y-8 text-center" aria-busy="true">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-lg border border-slate-100 space-y-4">
+          <Skeleton shape="circle" className="mx-auto h-16 w-16" />
+          <Skeleton className="mx-auto h-8 w-64" />
+          <SkeletonText className="mx-auto max-w-2xl" lines={2} />
+        </div>
+        <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-slate-50 rounded-xl p-4 space-y-2">
+              <Skeleton className="h-7 w-12 mx-auto" />
+              <Skeleton className="h-3 w-20 mx-auto" />
+            </div>
+          ))}
+        </div>
+        <Skeleton className="mx-auto h-12 w-40" />
+      </div>
+    );
+  }
 
   return renderStep();
 }

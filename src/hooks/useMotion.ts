@@ -11,6 +11,15 @@
  *                            ``FadeInOnView`` component to make long
  *                            pages feel alive without firing every
  *                            animation on mount.
+ *  - ``useDelayedReveal`` — returns ``false`` for the first
+ *                            ``delay`` ms after mount, then ``true``.
+ *                            Used to make data pages show a skeleton
+ *                            for a moment so the page transition
+ *                            reads as a real "loading" beat (mobile
+ *                            app feel) instead of a synchronous
+ *                            paint. Honours reduced motion — returns
+ *                            ``true`` immediately when the user
+ *                            prefers no motion.
  */
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion as useFramerReducedMotion } from 'framer-motion';
@@ -19,6 +28,20 @@ import { useReducedMotion as useFramerReducedMotion } from 'framer-motion';
 // the OS hasn't said otherwise).
 export function useReducedMotion(): boolean {
   return useFramerReducedMotion() ?? false;
+}
+
+export function useDelayedReveal(delay = 600): boolean {
+  const reduce = useReducedMotion();
+  const [ready, setReady] = useState(reduce);
+  useEffect(() => {
+    if (reduce) {
+      setReady(true);
+      return;
+    }
+    const id = setTimeout(() => setReady(true), delay);
+    return () => clearTimeout(id);
+  }, [reduce, delay]);
+  return ready;
 }
 
 export function useInView<T extends Element = HTMLDivElement>(
@@ -31,7 +54,6 @@ export function useInView<T extends Element = HTMLDivElement>(
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') {
-      // SSR / very old browser — assume visible so content paints.
       setInView(true);
       return;
     }

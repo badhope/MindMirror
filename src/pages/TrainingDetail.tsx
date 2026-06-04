@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { trainingService } from '../services/training';
-import { Training as TrainingType, TrainingSession, TRAINING_CATEGORIES } from '../types/training';
 import { useAppStore } from '../store';
 import { getTranslation, t } from '../i18n';
+import { trainingService } from '../services/training';
+import { Training as TrainingType, TrainingSession, TRAINING_CATEGORIES } from '../types/training';
+import { Skeleton, SkeletonText, SkeletonCard } from '../components/Loading';
+import { useDelayedReveal } from '../hooks/useMotion';
 
 const DIFFICULTY_COLORS = {
   beginner: 'bg-green-100 text-green-700',
@@ -99,6 +101,34 @@ export default function TrainingDetail() {
       navigate('/training');
     }
   };
+
+  // Hold a layout-matching skeleton for ~550ms after mount so the
+  // page transition reads as a real loading beat (mobile app feel)
+  // instead of a synchronous paint that already has data on the way in.
+  const ready = useDelayedReveal(550);
+  if (!ready) {
+    return (
+      <div className="space-y-6" aria-busy="true" aria-label={i18n.common.loading}>
+        <Skeleton className="h-5 w-32" />
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 space-y-4">
+          <div className="flex items-center gap-3">
+            <Skeleton shape="circle" className="h-12 w-12" />
+            <div className="space-y-2 flex-1">
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+          <SkeletonText lines={3} />
+          <div className="grid grid-cols-3 gap-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-16 w-full" />
+            ))}
+          </div>
+        </div>
+        <SkeletonCard />
+      </div>
+    );
+  }
 
   if (!training) return null;
 
