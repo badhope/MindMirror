@@ -56,6 +56,16 @@ if (!rootElement) {
     const boot = document.getElementById('__app_boot__');
     if (boot) boot.remove();
 
+    // Dev-only: expose the app store on window for E2E tests and
+    // DevTools. Stripped from production builds by Vite's dead-code
+    // elimination.
+    if (import.meta.env.DEV) {
+      import('./store').then(({ useAppStore }) => {
+        (window as unknown as { __mindmirrorStore: typeof useAppStore }).__mindmirrorStore =
+          useAppStore;
+      });
+    }
+
     createRoot(rootElement).render(
       <StrictMode>
         <App />
