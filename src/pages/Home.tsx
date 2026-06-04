@@ -12,6 +12,8 @@ import {
   StaggerItem,
   AnimatedCard,
 } from '../components/animations/AnimatedComponents';
+import { FadeInOnView } from '../components/animations/FadeInOnView';
+import { SkeletonCard } from '../components/Loading';
 
 const features = [
   { icon: '📊', key: 'scientific' },
@@ -130,20 +132,26 @@ export const Home = () => {
         </SlideUp>
 
         <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {assessments.slice(0, 3).map((assessment, idx) => (
-            <StaggerItem key={assessment.id}>
-              <AssessmentCard
-                assessment={assessment}
-                i18n={i18n}
-                locale={locale}
-                delay={idx * 0.1}
-              />
-            </StaggerItem>
-          ))}
+          {assessments.length === 0
+            ? // Skeleton placeholder while the catalog hydrates — matches
+              // the iOS / Material "we know roughly what's coming"
+              // loading pattern, so the user sees a stable layout
+              // instead of a flicker.
+              Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+            : assessments.slice(0, 3).map((assessment, idx) => (
+                <StaggerItem key={assessment.id}>
+                  <AssessmentCard
+                    assessment={assessment}
+                    i18n={i18n}
+                    locale={locale}
+                    delay={idx * 0.1}
+                  />
+                </StaggerItem>
+              ))}
         </StaggerContainer>
       </section>
 
-      <SlideUp>
+      <FadeInOnView y={36} duration={0.6}>
         <section className="bg-gradient-to-br from-white to-blue-50 rounded-2xl sm:rounded-3xl p-6 sm:p-10 shadow-lg border border-blue-100">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-xl sm:text-3xl font-bold text-slate-800 mb-4 sm:mb-6">
@@ -168,7 +176,7 @@ export const Home = () => {
             </div>
           </div>
         </section>
-      </SlideUp>
+      </FadeInOnView>
 
       <section>
         <DailyTips />

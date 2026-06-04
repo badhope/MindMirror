@@ -55,3 +55,87 @@ body {
 .animate-slide-in {
   animation: slide-in 0.3s ease-out;
 }
+
+/* Skeleton shimmer — a brighter band sweeps from left to right across
+   the gray placeholder. Mirrors the iOS / Material / WeChat loading
+   pattern. Linear infinite, so the motion never "snaps". */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 40%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.55) 60%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.6s linear infinite;
+  will-change: transform;
+}
+
+.dark .skeleton-shimmer::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.06) 60%,
+    transparent 100%
+  );
+}
+
+/* Touch / focus polish: make interactive surfaces feel a touch more
+   responsive on touch devices. */
+button,
+a {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Smooth scroll-margin so anchor jumps land below the sticky header. */
+:target {
+  scroll-margin-top: 80px;
+}
+
+/* Subtle background drift on the main app container — gives the page
+   a sense of life without being distracting. Honours reduced motion. */
+@keyframes bg-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-app-drift {
+    background-size: 200% 200%;
+    animation: bg-drift 30s ease-in-out infinite;
+  }
+}
+
+/* Mobile safe-area padding for the sticky nav (iOS notch / Android
+   gesture bar). */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}

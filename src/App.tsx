@@ -7,6 +7,7 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { ToastContainer } from './components/ToastContainer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { PageTransition } from './components/animations/AnimatedComponents';
+import { TopProgressBar, PageLoader as NewPageLoader } from './components/Loading';
 import { useAppStore } from './store';
 import { getTranslation } from './i18n';
 import './index.css';
@@ -50,14 +51,7 @@ const SharedView = lazy(() => import('./pages/SharedView').then(m => ({ default:
 function PageLoader() {
   const { locale } = useAppStore();
   const i18n = getTranslation(locale);
-  return (
-    <div className="flex items-center justify-center py-20" role="status" aria-live="polite">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-        <p className="text-sm text-slate-500">{i18n.common.loading}</p>
-      </div>
-    </div>
-  );
+  return <NewPageLoader label={i18n.common.loading} />;
 }
 
 const LazyRoute = ({ children }: { children: React.ReactNode }) => (
@@ -66,6 +60,22 @@ const LazyRoute = ({ children }: { children: React.ReactNode }) => (
 
 function AnimatedRoutes() {
   const location = useLocation();
+
+  // Fire custom events for TopProgressBar to advance / complete.
+  useEffect(() => {
+    window.dispatchEvent(new Event('mindmirror:route-start'));
+    // Use rAF so the new page has a chance to mount before we
+    // "complete" the transition — otherwise the bar fills too fast
+    // and the new content flashes in after the bar fades.
+    const id = requestAnimationFrame(() => {
+      // Two frames: the first paints the new page, the second
+      // confirms layout is stable.
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('mindmirror:route-end'));
+      });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -297,9 +307,10 @@ function AppContent() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 bg-app-drift">
+        <TopProgressBar />
         <ToastContainer />
-        <nav className="bg-white/80 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50">
+        <nav className="bg-white/80 backdrop-blur-lg border-b border-slate-200 sticky top-0 z-50 safe-top">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
             <div className="flex items-center justify-between">
               <Link
