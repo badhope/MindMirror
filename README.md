@@ -75,6 +75,39 @@ For a step-by-step dev setup (without Docker), see
 (VPS, HTTPS, backups, monitoring), see
 [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md).
 
+### Want GitHub login on your self-hosted instance?
+
+It's wired up, but the OAuth credentials are **not** shipped with
+this repo (they'd be a secret leak). To turn it on, register a
+GitHub OAuth App at <https://github.com/settings/developers> and
+set the following env vars on the backend:
+
+```bash
+GITHUB_CLIENT_ID=<your-oauth-app-id>
+GITHUB_CLIENT_SECRET=<your-oauth-app-secret>
+# The exact URL GitHub will call back to. Must match the OAuth
+# App's "Authorization callback URL" field byte-for-byte.
+GITHUB_REDIRECT_URI=https://your-domain.example.com/api/v1/auth/oauth/github/callback
+# Where the SPA lives — used to build the /auth/callback redirect
+# that hands the code back to the SPA.
+FRONTEND_URL=https://your-domain.example.com
+# CRITICAL: this must be unset OR "false" in production. The dev
+# shim is hard-disabled when ENVIRONMENT=production regardless of
+# this flag, but you should still set it explicitly.
+MINDMIRROR_DEV_OAUTH=false
+ENVIRONMENT=production
+```
+
+A "Register with GitHub" button will then bounce the browser to
+`github.com/login/oauth/authorize` and back to your `/auth/callback`.
+
+> **Heads up — you need to do this yourself.** Nothing in the
+> codebase will fetch credentials for you, and nobody is going to
+> email them. The OAuth App dashboard is the single source of
+> truth. If your backend is on a different host than your frontend,
+> set `CORS_ORIGIN` to the frontend origin or the preflight will
+> fail before OAuth even starts.
+
 ## How your data is handled
 
 - **Static demo (the GitHub Pages one):** everything stays in your
@@ -90,6 +123,59 @@ codebase. The only network calls the frontend makes are to its own
 backend.
 
 For a fuller report, see [SECURITY.md](SECURITY.md).
+
+## ⚠️ Security & privacy reminders (read me before deploying)
+
+This is the "stuff the codebase can't do for you" list. None of
+these are automated — if you skip them, you will eventually regret
+it.
+
+- **Never commit secrets.** `.env`, real database files, and
+  `__pycache__/` are in `.gitignore` for a reason. If you ever paste
+  a GitHub Personal Access Token, an OAuth client secret, a
+  `SECRET_KEY`, or a database URL into a commit, **rotate it
+  immediately** — git history is forever. The `git log -p` output
+  is enough to scrape a leaked token.
+- **Use a fine-grained GitHub PAT, not a classic one.** Classic
+  PATs (the `ghp_…` kind) get every scope your account has. When
+  you create a token just for pushing to your own repo, give it
+  exactly one permission: `Contents: Read and write` on that one
+  repository. No `repo`, no `workflow`, no `admin:org`.
+- **Never paste a real PAT into a chat with an AI assistant.**
+  Even if the assistant doesn't echo it back, the transcript may
+  be logged, indexed, or read by a human. Generate a throwaway
+  token with the minimum scope you need, use it once, and revoke
+  it. Rotate any token that has ever left your machine.
+- **Generate `SECRET_KEY` once, store it in a secret manager.**
+  Use `openssl rand -base64 64`. Losing it invalidates every JWT
+  in circulation; having it stolen lets an attacker mint valid
+  sessions for any user.
+- **`MINDMIRROR_DEV_OAUTH=true` is for your laptop only.** It
+  bypasses GitHub entirely and accepts any "login" you type. The
+  code hard-disables it when `ENVIRONMENT=production`, but you
+  should also make sure it's not set in your prod `.env` or
+  container config.
+- **`CORS_ORIGIN` must match the frontend origin exactly.** If
+  your backend is on `api.example.com` and your frontend is on
+  `app.example.com`, set `CORS_ORIGIN=https://app.example.com` —
+  not a wildcard, not a list, the exact origin. The OAuth flow
+  fails silently with a CORS error otherwise.
+- **HTTPS is not optional in production.** GitHub's OAuth flow
+  requires HTTPS redirect URIs (except for `localhost`); the JWT
+  cookie / `Authorization` header carries your session token in
+  the clear otherwise. Put Caddy / Traefik / nginx in front.
+- **GitHub Pages cache can be aggressive.** When you push a fix,
+  Pages may keep serving the old bundle for a few minutes. Append
+  `?v=2` to the URL or hard-reload (`Ctrl+Shift+R`) to bypass the
+  CDN cache during testing.
+- **The `MINDMIRROR_DEV_OAUTH` dev shim creates `*.example`
+  accounts.** They live forever in your DB; the password hash is
+  a random secret, not anything you can log in with from the SPA.
+  Don't `git push` a `dev_mindmirror.db` file with real-looking
+  data in it.
+- **Email-based login is still available** even if you turn
+  GitHub OAuth on. You don't have to choose; users can use
+  either method, and both end up in the same `users` table.
 
 ## Tech stack (for the curious)
 

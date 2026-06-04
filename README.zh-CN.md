@@ -55,6 +55,30 @@ docker compose up -d
 
 打开 `http://localhost` 就用上了。详细说明见 [CONTRIBUTING.md](CONTRIBUTING.md)。如果要部署到自己的服务器(VPS、HTTPS、备份、监控),请看 [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md)。
 
+### 想要 GitHub 登录?
+
+代码已经接好了,但 **OAuth 凭据没有打包进仓库**(会泄露)。想开,先去 <https://github.com/settings/developers> 注册一个 GitHub OAuth App,然后给后端配这几个环境变量:
+
+```bash
+GITHUB_CLIENT_ID=<你的 OAuth App ID>
+GITHUB_CLIENT_SECRET=<你的 OAuth App Secret>
+# 必须是 GitHub "Authorization callback URL" 字段里写的那个,一字不差
+GITHUB_REDIRECT_URI=https://你的域名.example.com/api/v1/auth/oauth/github/callback
+# SPA 部署地址,用来构造 /auth/callback 跳转
+FRONTEND_URL=https://你的域名.example.com
+# 关键:生产环境必须 unset 或 false。代码在 ENVIRONMENT=production 时
+# 会硬禁用 dev shim,但你还是应该显式设成 false
+MINDMIRROR_DEV_OAUTH=false
+ENVIRONMENT=production
+```
+
+配好之后,"使用 GitHub 继续" 按钮就会把浏览器弹到 `github.com/login/oauth/authorize`,然后回到你的 `/auth/callback`。
+
+> **这件事没人替你做。** 仓库不会自动取凭据,也没人会发邮件给你。
+> 唯一可信来源是 GitHub OAuth App 控制台。如果你的前端、后端在不同
+> 域名,记得 `CORS_ORIGIN` 要精确等于前端源,否则 OAuth 还没开始就
+> 在 preflight 阶段失败。
+
 ### 想参与贡献?
 
 Bug、翻译、UI 建议都欢迎。流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
@@ -160,6 +184,21 @@ MindMirror/
 ```
 
 ## 🔒 安全
+
+> 下面是"代码无法替你做"的事。**全部要自己处理**,漏一项迟早出事。
+
+- **永远不要把密钥 commit 进去。** `.env`、真实数据库文件、`__pycache__/` 都在 `.gitignore` 里 —— 这是有原因的。一旦把 GitHub Personal Access Token、OAuth client secret、`SECRET_KEY`、数据库 URL 之类的粘进了 commit,**立刻轮换**。git history 是删不掉的,`git log -p` 就能抓到。
+- **用 fine-grained PAT,不要用 classic。** Classic PAT(`ghp_…` 开头)会拿到你账号所有 scope。你只是为了推自己仓库的话,创建 token 时只勾 `Contents: Read and write` 一个权限、只授给这一个 repo。不要 `repo`、不要 `workflow`、不要 `admin:org`。
+- **永远不要把真实 PAT 贴进 AI 助手的对话框。** 即使助手不会回显,对话记录也可能被日志、被索引、被真人读到。生成一个一次性、用完即弃、scope 最小的 token,用一次就 revoke。任何离开过你电脑的 token 都建议轮换。
+- **`SECRET_KEY` 一次性生成,放进 secret manager。** 用 `openssl rand -base64 64`。丢了 = 所有 JWT 失效;被偷 = 攻击者可以给任意用户签发 session。
+- **`MINDMIRROR_DEV_OAUTH=true` 只在本机用。** 它完全绕过 GitHub,你输什么 login 就接受什么。代码在 `ENVIRONMENT=production` 时会硬禁用,但你也得保证生产 `.env` 或容器 config 里别误开。
+- **`CORS_ORIGIN` 必须精确等于前端源。** 后端在 `api.example.com`、前端在 `app.example.com` 的话,设 `CORS_ORIGIN=https://app.example.com` —— 不要通配符,不要列表,要原样。OAuth 失败时往往就是这个错,而且错误信息是"silently fail"。
+- **HTTPS 在生产环境不是可选项。** GitHub OAuth 强制 redirect URI 用 HTTPS(只有 `localhost` 例外);`Authorization` 头里的 JWT 否则就是明文传输。前面放 Caddy / Traefik / nginx。
+- **GitHub Pages 缓存很凶。** 你推了修复,Pages 还会发旧 bundle 几分钟。测试时 URL 后面加 `?v=2` 或者 `Ctrl+Shift+R` 强刷绕 CDN。
+- **Dev shim 会在数据库里建 `*.example` 账号。** 这些账号永久存在;密码哈希是随机串,不能从 SPA 登录。别把 `dev_mindmirror.db` 之类带真实数据的 db 文件 `git push` 出去。
+- **邮箱登录和 GitHub 登录可以同时开。** 不是二选一,用户用哪个都行,最终都进同一张 `users` 表。
+
+---
 
 - 生产部署**必须**设置强随机 `SECRET_KEY`:`openssl rand -base64 64`
 - 不要把后端或 PostgreSQL 端口暴露公网
