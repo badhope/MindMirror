@@ -81,6 +81,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 type="button"
                 onClick={this.handleHardReset}
                 className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition-colors"
+                title="Removes everything in localStorage: history, mood, training, achievements, theme and language preference."
               >
                 Clear cache &amp; reload
               </button>

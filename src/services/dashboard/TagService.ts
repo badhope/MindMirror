@@ -282,6 +282,24 @@ class TagService {
     this.saveUserTags(userTags);
   }
 
+  /**
+   * Persist a pre-computed tag → result count map.  Used by the
+   * store's history-mutation path which doesn't go through the
+   * `personalDataCenter` cache (it operates directly on the
+   * on-disk `AssessmentResult[]` history) but still wants the
+   * TagCloud / Dashboard counts to stay accurate.
+   */
+  rewriteCounts(counts: Record<string, number>): void {
+    this.autoTags.forEach(tag => {
+      tag.resultCount = counts[tag.name] || 0;
+    });
+    const userTags = this.getUserTags();
+    userTags.forEach(tag => {
+      tag.resultCount = counts[tag.name] || 0;
+    });
+    this.saveUserTags(userTags);
+  }
+
   getTopTags(limit: number): string[] {
     const allTags = this.getAllTags();
 

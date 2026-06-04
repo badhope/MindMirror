@@ -31,6 +31,10 @@ export class PluginRegistryManager {
           ...saved,
           plugins: new Map(Object.entries(saved.plugins || {})),
           activePlugins: new Set(saved.activePlugins || []),
+          // `pluginStates` lives in its own key (PLUGIN_STATES_KEY) so
+          // we don't have to re-serialize the whole registry on every
+          // state change.  Restore it from that key on boot.
+          pluginStates: new Map(Object.entries(storage.get(PLUGIN_STATES_KEY, {}) || {})),
         };
       }
     } catch (_e) {
