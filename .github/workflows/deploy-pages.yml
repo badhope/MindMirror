@@ -1,13 +1,18 @@
-name: Build & Deploy to GitHub Pages (gh-pages branch)
+name: Build & Deploy to GitHub Pages (official workflow runner)
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+# Required for the official `actions/deploy-pages` runner.
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
+# Prevent two deployments racing each other; the second one will
+# cancel the first (saves runner minutes).
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -17,10 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Checkout (full history so we can push back)
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -42,7 +45,7 @@ jobs:
         env:
           VITE_BASE_PATH: /MindMirror/
 
-      - name: Add .nojekyll (skip Jekyll processing)
+      - name: Add .nojekyll (skip Jekyll processing on Pages)
         run: touch dist/.nojekyll
 
       - name: Verify build output
@@ -51,24 +54,30 @@ jobs:
           echo "--- dist/ contents ---"
           ls -la dist/
           echo "--- dist/assets/ contents ---"
-          ls -la dist/assets/
+          ls -la dist/assets/ | head -20
           echo "--- File counts ---"
           echo "Total files in dist:        $(find dist -type f | wc -l)"
-          echo "Lazy chunks (Page-*.js):    $(find dist/assets -type f -name '*-*.js' | grep -v 'index-' | grep -v 'vendor-' | wc -l)"
-          echo "Vendor chunks:              $(find dist/assets -type f -name 'vendor-*.js' | wc -l)"
           echo "Has 404.html:               $(test -f dist/404.html && echo YES || echo NO)"
           echo "Has .nojekyll:              $(test -f dist/.nojekyll && echo YES || echo NO)"
           echo "Has index.html:             $(test -f dist/index.html && echo YES || echo NO)"
 
-      - name: Deploy dist/ -> gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          force_orphan: true
-          keep_files: false
-          user_name: github-actions[bot]
-          user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_message: "deploy: GitHub Pages build ${{ github.run_number }} (commit ${{ github.sha }})"
-          full_commit_message: "Deploy from GitHub Actions\n\nTriggered by ${{ github.event_name }}\nCommit: ${{ github.sha }}\nRun: ${{ github.run_id }}"
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
