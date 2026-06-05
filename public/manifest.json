@@ -1,7 +1,7 @@
 {
   "name": "MindMirror - Open-Source Psychological Assessment",
   "short_name": "MindMirror",
-  "description": "Free, open-source psychological assessment platform: Big Five, PSS-10 stress, GAD-7 anxiety, mood tracker, mental training. EN / 中文.",
+  "description": "Free, open-source psychological assessment platform: Big Five, PSS-10 stress, GAD-7 anxiety, SSRS social support, MBI-GS burnout, SWLS life satisfaction, CD-RISC-10 resilience, mood tracker, mental training. EN / 中文.",
   "start_url": "/MindMirror/",
   "scope": "/MindMirror/",
   "display": "standalone",

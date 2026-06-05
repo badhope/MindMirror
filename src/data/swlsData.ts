@@ -31,12 +31,12 @@ export const SWLS_ASSESSMENT: Assessment = {
   id: 'life-satisfaction',
   title: '生活满意度量表 (SWLS)',
   description:
-    '基于 Diener 等人 1985 年编制的《生活满意度量表》(SWLS) 的完整 5 题版本,作为主观幸福感的认知核心指标,衡量你对自己整个生活质量的整体判断。',
+    '基于 Diener 等人 1985 年编制的《生活满意度量表》(SWLS) 的完整 5 题版本,作为主观幸福感的认知核心指标,衡量你对自己整个生活质量的整体判断。题库扩展至 40 题,涵盖关系/健康/成就/成长/意义/日常六大主题,提升测量信度并降低同质化偏差。',
   category: '生活',
-  totalQuestions: 5,
+  totalQuestions: 40, // 5 道原量表 + 2 道行为延伸 + 33 道题库扩展
   icon: '🌅',
   difficulty: '简单',
-  estimatedTime: '2 分钟',
+  estimatedTime: '11 分钟',
 };
 
 export const SWLS_RESPONSE_OPTIONS = [
@@ -83,12 +83,298 @@ export const SWLS_QUESTIONS: Question[] = [
   },
 ];
 
-// 严重度 (按 Diener 1985 + Pavot & Diener 1993)
+// =====================================================================
+// 行为情景分歧题 (2 道) — 延伸项
+// 设计目的: SWLS 5 题都是抽象自评, 互信息极高
+//   用反事实 + 时间对比, 突破"自评天花板"
+// 注: 不计入原量表分, 生成「行为分歧画像」附加报告
+// =====================================================================
+
+export const SWLS_EXTENSION_QUESTIONS: Question[] = [
+  {
+    id: 'swls6',
+    text: '和您 5 年前的预期相比, 您现在的生活:',
+    trait: 'extension',
+    // 0: 比预期好很多 (超越)
+    // 1: 比预期好一点 (略超)
+    // 2: 和预期差不多 (符合)
+    // 3: 比预期差一些 (略低)
+    // 4: 比预期差很多 (大失所望)
+    reverse: false,
+  },
+  {
+    id: 'swls7',
+    text: '如果现在您可以选择, 您最希望:',
+    trait: 'extension',
+    // 0: 保持现状不变 (满足型)
+    // 1: 微调一些事情 (优化型)
+    // 2: 大幅改变工作 (方向重置)
+    // 3: 大幅改变关系 (关系重置)
+    // 4: 几乎全部重来 (重来型)
+    reverse: false,
+  },
+];
+
+// =====================================================================
+// 题库扩展题 (33 道) — 多主题覆盖,提升测量信度并降低同质化
+// 设计原则:
+//   - 6 个子主题 (关系 / 健康 / 成就 / 成长 / 意义 / 日常)
+//   - 包含反向题 (检测顺从偏差 / 默认正向回答)
+//   - 行为锚定 (具体场景,而非抽象自评)
+//   - 高区分度, 让真正满足者与假装满足者拉开差距
+// 注: 与原 5 题使用同一 1-7 量表,统一 trait='satisfaction' 累加
+// =====================================================================
+
+// 关系满意度题库 (8 道, swls8-swls15)
+export const SWLS_RELATIONSHIPS_BANK: Question[] = [
+  {
+    id: 'swls8',
+    text: '我对目前和家人的关系感到满意',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls9',
+    text: '我有一位可以真正说心里话的朋友',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls10',
+    text: '我的伴侣 / 最重要的亲密关系让我感到被理解',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls11',
+    text: '我和同事 / 同学的关系是真诚的, 不是表面的客套',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls12',
+    text: '我经常感到被身边的人忽视 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+  {
+    id: 'swls13',
+    text: '当我和别人比较时, 我对自己的人际关系感到自信',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls14',
+    text: '过去 1 年, 我和至少一位重要的人有过真正深入的交流',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls15',
+    text: '即使在最亲近的人面前, 我也需要"演"一个更好的自己 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+];
+
+// 健康与身体满意度题库 (6 道, swls16-swls21)
+export const SWLS_HEALTH_BANK: Question[] = [
+  {
+    id: 'swls16',
+    text: '我对目前的身体健康状况感到满意',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls17',
+    text: '我每天的精力足够支撑我想做的事',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls18',
+    text: '我的睡眠质量让我能以良好的状态开始每一天',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls19',
+    text: '我的饮食习惯让我感觉身体在变好而不是变差',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls20',
+    text: '我经常因为身体的小问题 (头疼 / 疲惫 / 胃不舒服) 影响状态 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+  {
+    id: 'swls21',
+    text: '我和自己的身体是和谐相处, 不是总在"消耗"它',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+];
+
+// 成就满意度题库 (6 道, swls22-swls27)
+export const SWLS_ACHIEVEMENT_BANK: Question[] = [
+  {
+    id: 'swls22',
+    text: '我对目前的工作 / 学业表现感到满意',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls23',
+    text: '我做的事情能让我看到自己的进步',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls24',
+    text: '我的收入能支撑我想过的生活方式',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls25',
+    text: '我经常觉得工作 / 学业只是应付, 没什么成就感 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+  {
+    id: 'swls26',
+    text: '我能在自己的领域里做出有辨识度的成果',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls27',
+    text: '我对自己未来 1 年的发展有清晰的期待',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+];
+
+// 成长满意度题库 (5 道, swls28-swls32)
+export const SWLS_GROWTH_BANK: Question[] = [
+  {
+    id: 'swls28',
+    text: '过去 1 年, 我在认知 / 能力 / 视野上有明显的成长',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls29',
+    text: '我经常会主动学习新东西, 不是被逼的',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls30',
+    text: '我对自己的好奇心与探索欲感到满意',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls31',
+    text: '我经常觉得自己被困在原地, 没有变化 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+  {
+    id: 'swls32',
+    text: '我敢于走出舒适区, 尝试新的可能性',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+];
+
+// 意义满意度题库 (4 道, swls33-swls36)
+export const SWLS_MEANING_BANK: Question[] = [
+  {
+    id: 'swls33',
+    text: '我做的事情里, 至少有一部分让我觉得"有更大的意义"',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls34',
+    text: '我清楚自己为什么每天做这些事',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls35',
+    text: '我经常觉得生活就是日复一日, 没人在乎我做什么 (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+  {
+    id: 'swls36',
+    text: '我能感受到自己属于某个比个人更大的东西 (家庭/事业/价值观)',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+];
+
+// 日常满意度题库 (4 道, swls37-swls40)
+export const SWLS_DAILY_BANK: Question[] = [
+  {
+    id: 'swls37',
+    text: '我对每天的居住环境 (家/房间/工作位) 感到舒适',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls38',
+    text: '我每天都有一些让自己真正放松或愉悦的时间',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls39',
+    text: '我对所在的城市 / 社区感到归属感',
+    trait: 'satisfaction',
+    reverse: false,
+  },
+  {
+    id: 'swls40',
+    text: '我经常觉得日子过得很机械, 没什么"自己的时间" (反向)',
+    trait: 'satisfaction',
+    reverse: true,
+  },
+];
+
+// 题库题号集合
+export const SWLS_BANK_ITEMS: string[] = [
+  ...SWLS_RELATIONSHIPS_BANK,
+  ...SWLS_HEALTH_BANK,
+  ...SWLS_ACHIEVEMENT_BANK,
+  ...SWLS_GROWTH_BANK,
+  ...SWLS_MEANING_BANK,
+  ...SWLS_DAILY_BANK,
+].map(q => q.id);
+
+// =====================================================================
+// 维度题号集合 (供 scoring service 使用)
+export const SWLS_DIMENSION_ITEMS: Record<string, string[]> = {
+  satisfaction: SWLS_QUESTIONS.map(q => q.id),
+  relationships: SWLS_RELATIONSHIPS_BANK.map(q => q.id),
+  health: SWLS_HEALTH_BANK.map(q => q.id),
+  achievement: SWLS_ACHIEVEMENT_BANK.map(q => q.id),
+  growth: SWLS_GROWTH_BANK.map(q => q.id),
+  meaning: SWLS_MEANING_BANK.map(q => q.id),
+  daily: SWLS_DAILY_BANK.map(q => q.id),
+};
+// 严重度 (按 Diener 1985 + Pavot & Diener 1993, 比例缩放至 40 题版 max=266)
+// 原始 5-9/10-14/15-19/20-24/25-29/30-35 缩放为 38-72/73-108/109-144/145-184/185-220/221-266
 export const SWLS_SEVERITY = {
   veryLow: {
     level: 'veryLow',
     label: '极不满意',
-    range: [5, 9] as [number, number],
+    range: [38, 72] as [number, number],
     color: 'red',
     description:
       '你对自己的整体生活现状感到强烈的不满意。这种状态可能伴随较低的主观幸福感,值得认真对待,必要时寻求专业支持。',
@@ -102,7 +388,7 @@ export const SWLS_SEVERITY = {
   low: {
     level: 'low',
     label: '不满意',
-    range: [10, 14] as [number, number],
+    range: [73, 108] as [number, number],
     color: 'orange',
     description:
       '你对自己的生活在多个方面并不满意,但尚未到完全绝望的程度。识别最关键的几个领域 (健康、关系、意义等) 并开始调整会带来明显改善。',
@@ -115,7 +401,7 @@ export const SWLS_SEVERITY = {
   slightlyLow: {
     level: 'slightlyLow',
     label: '略低于平均',
-    range: [15, 19] as [number, number],
+    range: [109, 144] as [number, number],
     color: 'yellow',
     description:
       '你对自己的生活略有不满但整体尚可,可能存在某些未被满足的期待。识别是"路径问题"还是"目标问题",能帮助你更有效地行动。',
@@ -128,7 +414,7 @@ export const SWLS_SEVERITY = {
   average: {
     level: 'average',
     label: '中等',
-    range: [20, 24] as [number, number],
+    range: [145, 184] as [number, number],
     color: 'emerald',
     description:
       '你对自己的生活持中性偏正的评价,基本符合多数人对生活的中等满意度。这是较稳定的认知状态,适合在保持的基础上追求成长。',
@@ -141,7 +427,7 @@ export const SWLS_SEVERITY = {
   high: {
     level: 'high',
     label: '较满意',
-    range: [25, 29] as [number, number],
+    range: [185, 220] as [number, number],
     color: 'green',
     description:
       '你对生活的整体满意度较高,说明你目前的现实与内在期望基本匹配。继续保持并关注那些让你满足的核心领域。',
@@ -154,7 +440,7 @@ export const SWLS_SEVERITY = {
   veryHigh: {
     level: 'veryHigh',
     label: '高度满意',
-    range: [30, 35] as [number, number],
+    range: [221, 266] as [number, number],
     color: 'green',
     description:
       '你对自己的生活非常满意。这种状态与较高的心理韧性、较低的心理症状风险相关。请保持这来之不易的稳定感,也不要忘记在状态好时为可能的下行积累支持。',

@@ -70,6 +70,93 @@ function Section({
   );
 }
 
+// 行为分歧画像展示组件 (适用于 4 个新量表)
+// 数据结构:
+//   {
+//     title, subtitle, archetype, archetypeDesc, items: [{id, question, choice, label}]
+//   }
+function BehavioralProfileSection({
+  profile,
+}: {
+  profile: {
+    title: string;
+    subtitle: string;
+    archetype: string;
+    archetypeDesc: string;
+    items: { id: string; question: string; choice: number; label: string }[];
+  } | null;
+}) {
+  if (!profile) return null;
+
+  // 根据 archetype 选择配色
+  const archetypeColorMap: Record<string, { bg: string; text: string; ring: string }> = {
+    高投入成长型: { bg: 'bg-rose-50', text: 'text-rose-700', ring: 'ring-rose-200' },
+    弹性务实型: { bg: 'bg-emerald-50', text: 'text-emerald-700', ring: 'ring-emerald-200' },
+    压抑消耗型: { bg: 'bg-amber-50', text: 'text-amber-700', ring: 'ring-amber-200' },
+    犬儒耗竭型: { bg: 'bg-red-50', text: 'text-red-700', ring: 'ring-red-200' },
+    独立内敛型: { bg: 'bg-slate-50', text: 'text-slate-700', ring: 'ring-slate-200' },
+    弹性平衡型: { bg: 'bg-cyan-50', text: 'text-cyan-700', ring: 'ring-cyan-200' },
+    主动连接型: { bg: 'bg-violet-50', text: 'text-violet-700', ring: 'ring-violet-200' },
+    深度依赖型: { bg: 'bg-fuchsia-50', text: 'text-fuchsia-700', ring: 'ring-fuchsia-200' },
+    超越满足型: { bg: 'bg-emerald-50', text: 'text-emerald-700', ring: 'ring-emerald-200' },
+    稳定满足型: { bg: 'bg-cyan-50', text: 'text-cyan-700', ring: 'ring-cyan-200' },
+    不满修正型: { bg: 'bg-amber-50', text: 'text-amber-700', ring: 'ring-amber-200' },
+    大失所望型: { bg: 'bg-rose-50', text: 'text-rose-700', ring: 'ring-rose-200' },
+    高韧性行动型: { bg: 'bg-emerald-50', text: 'text-emerald-700', ring: 'ring-emerald-200' },
+    反思恢复型: { bg: 'bg-cyan-50', text: 'text-cyan-700', ring: 'ring-cyan-200' },
+    逃避转移型: { bg: 'bg-amber-50', text: 'text-amber-700', ring: 'ring-amber-200' },
+    迷茫崩溃型: { bg: 'bg-rose-50', text: 'text-rose-700', ring: 'ring-rose-200' },
+  };
+  const color = archetypeColorMap[profile.archetype] || {
+    bg: 'bg-indigo-50',
+    text: 'text-indigo-700',
+    ring: 'ring-indigo-200',
+  };
+
+  return (
+    <Section title={profile.title} subtitle={profile.subtitle}>
+      <div className={`rounded-2xl ${color.bg} ring-1 ${color.ring} p-5 sm:p-6`}>
+        <div className="flex items-start gap-3">
+          <div className="text-3xl shrink-0">🎭</div>
+          <div className="flex-1">
+            <div className={`text-sm font-medium ${color.text} mb-1`}>你的行为画像</div>
+            <div className={`text-xl sm:text-2xl font-extrabold ${color.text} mb-2`}>
+              {profile.archetype}
+            </div>
+            <p className={`text-sm sm:text-base ${color.text} leading-relaxed opacity-90`}>
+              {profile.archetypeDesc}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 space-y-2">
+        <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+          你的具体选择 ({profile.items.length} 题)
+        </div>
+        {profile.items.map(item => (
+          <div
+            key={item.id}
+            className="rounded-xl bg-white border border-slate-200 p-3 sm:p-4"
+          >
+            <div className="text-xs text-slate-500 mb-1.5 flex items-center gap-2">
+              <span className="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">
+                {item.id}
+              </span>
+              行为分歧题 · 选项 {item.choice}
+            </div>
+            <div className="text-sm text-slate-700 mb-2 leading-relaxed">{item.question}</div>
+            <div className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              {item.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 function AnxietyGauge({
   score,
   max,
@@ -1898,7 +1985,10 @@ function SSRSResultDetail({
               className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5"
             >
               <div className="text-sm text-slate-500 mb-1">{d.name}</div>
-              <div className="text-3xl font-extrabold text-cyan-700">{d.score}</div>
+              <div className="text-3xl font-extrabold text-cyan-700">
+                {d.score}
+                <span className="text-base font-medium text-cyan-500 ml-0.5">%</span>
+              </div>
               <div className="mt-1 h-2 rounded-full bg-cyan-100 overflow-hidden">
                 <div
                   className="h-full bg-cyan-500"
@@ -1916,7 +2006,8 @@ function SSRSResultDetail({
           <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 sm:p-5">
             <div className="text-xs font-medium text-emerald-700 mb-1">💪 你的强项</div>
             <div className="text-lg font-bold text-emerald-800 mb-1">
-              {report.strongest.name} · {report.strongest.score} 分
+              {report.strongest.name} · {report.strongest.score}
+              <span className="text-sm font-medium text-emerald-600 ml-1">%</span>
             </div>
             <p className="text-sm text-emerald-700">
               {SSRS_DIMENSIONS[
@@ -1931,7 +2022,8 @@ function SSRSResultDetail({
           <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 sm:p-5">
             <div className="text-xs font-medium text-amber-700 mb-1">🔍 提升空间</div>
             <div className="text-lg font-bold text-amber-800 mb-1">
-              {report.weakest.name} · {report.weakest.score} 分
+              {report.weakest.name} · {report.weakest.score}
+              <span className="text-sm font-medium text-amber-600 ml-1">%</span>
             </div>
             <p className="text-sm text-amber-700">
               {SSRS_DIMENSIONS[
@@ -1985,6 +2077,8 @@ function SSRSResultDetail({
           </div>
         </div>
       </Section>
+
+      <BehavioralProfileSection profile={report.behavioralProfile} />
     </div>
   );
 }
@@ -2165,6 +2259,8 @@ function MBIResultDetail({
           ))}
         </div>
       </Section>
+
+      <BehavioralProfileSection profile={report.behavioralProfile} />
     </div>
   );
 }
@@ -2309,6 +2405,8 @@ function SWLSResultDetail({
           ))}
         </div>
       </Section>
+
+      <BehavioralProfileSection profile={report.behavioralProfile} />
     </div>
   );
 }
@@ -2381,7 +2479,10 @@ function ResilienceResultDetail({
               className="rounded-2xl bg-white border border-slate-200 p-3 sm:p-4"
             >
               <div className="text-xs text-slate-500 mb-1">{d.name}</div>
-              <div className="text-2xl font-extrabold text-lime-700">{d.score}</div>
+              <div className="text-2xl font-extrabold text-lime-700">
+                {d.score}
+                <span className="text-sm font-medium text-lime-500 ml-0.5">%</span>
+              </div>
               <div className="mt-1 h-1.5 rounded-full bg-lime-100 overflow-hidden">
                 <div
                   className="h-full bg-lime-500"
@@ -2398,7 +2499,8 @@ function ResilienceResultDetail({
           <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 sm:p-5">
             <div className="text-xs font-medium text-emerald-700 mb-1">💪 你的强项</div>
             <div className="text-lg font-bold text-emerald-800 mb-1">
-              {report.strongest.name} · {report.strongest.score} 分
+              {report.strongest.name} · {report.strongest.score}
+              <span className="text-sm font-medium text-emerald-600 ml-1">%</span>
             </div>
             <p className="text-sm text-emerald-700">
               {report.dimensions.find(d => d.name === report.strongest.name)?.highTip}
@@ -2407,7 +2509,8 @@ function ResilienceResultDetail({
           <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 sm:p-5">
             <div className="text-xs font-medium text-amber-700 mb-1">🔍 提升空间</div>
             <div className="text-lg font-bold text-amber-800 mb-1">
-              {report.weakest.name} · {report.weakest.score} 分
+              {report.weakest.name} · {report.weakest.score}
+              <span className="text-sm font-medium text-amber-600 ml-1">%</span>
             </div>
             <p className="text-sm text-amber-700">
               {report.dimensions.find(d => d.name === report.weakest.name)?.lowTip}
@@ -2444,6 +2547,8 @@ function ResilienceResultDetail({
           ))}
         </div>
       </Section>
+
+      <BehavioralProfileSection profile={report.behavioralProfile} />
     </div>
   );
 }

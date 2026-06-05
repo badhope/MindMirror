@@ -10,14 +10,18 @@ back here if anything is unclear.
 
 ## 1. What you can do here
 
-| Feature                    | What it gives you                                                       |
-| -------------------------- | ----------------------------------------------------------------------- |
-| **Personality** (Big Five) | A 50-item snapshot of where you sit on five big trait dimensions.       |
-| **Stress** (PSS-10)        | A quick read on how much "load" you've been carrying lately.            |
-| **Anxiety** (GAD-7)        | A standard anxiety screen, the same one a GP would use.                 |
-| **Mood log**               | A daily 1-line check-in. After a couple of weeks, you get a trend line. |
-| **Training plans**         | A short CBT-style plan you can do in your own time.                     |
-| **History**                | Every assessment you've ever done, side by side.                        |
+| Feature                          | What it gives you                                                       |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| **Personality** (Big Five)       | A 60-item snapshot of where you sit on five big trait dimensions.       |
+| **Stress** (PSS-10)              | A quick read on how much "load" you've been carrying lately.            |
+| **Anxiety** (GAD-7)              | A standard anxiety screen, the same one a GP would use.                 |
+| **Social support** (SSRS, 43)    | How strong your support network is — subjectively, objectively, and how well you use it. |
+| **Burnout** (MBI-GS, 40)         | Emotional exhaustion, cynicism and professional efficacy at work.       |
+| **Life satisfaction** (SWLS, 40) | How satisfied you are across relationships, health, achievement, growth, meaning and daily life. |
+| **Resilience** (CD-RISC-10, 40)  | How well you adapt, recover, and grow through difficulty.              |
+| **Mood log**                     | A daily 1-line check-in. After a couple of weeks, you get a trend line. |
+| **Training plans**               | A short CBT-style plan you can do in your own time.                     |
+| **History**                      | Every assessment you've ever done, side by side.                        |
 
 ## 2. The four-step flow
 

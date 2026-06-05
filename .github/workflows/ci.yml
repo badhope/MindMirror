@@ -1,4 +1,4 @@
-name: CI - Type-check & Lint
+name: CI - Type-check, Lint & Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  quality:
+  frontend-quality:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -22,3 +22,24 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_PATH: /
+      # 前端单元测试 (涵盖 7 个量表 × 887 个断言)
+      - run: for f in tests/unit/*.mjs; do echo "=== $(basename $f) ==="; node --import tsx "$f" || exit 1; done
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          pip install -q -r requirements.txt
+          pip install -q httpx email-validator
+      # 后端 pytest (84 个测试,涵盖 7 个 seed 量表)
+      - run: python -m pytest -v

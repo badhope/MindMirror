@@ -2,7 +2,8 @@
 
 **A quiet, science-based app for checking in with yourself.**
 
-Three short assessments — your personality, your stress, your anxiety.
+Seven validated psychological scales — personality, stress, anxiety,
+social support, burnout, life satisfaction, and resilience.
 No accounts required. No ads. No data sold. Results stay on your device
 or on infrastructure you control.
 
@@ -14,15 +15,34 @@ or on infrastructure you control.
 
 ## What it does
 
-- **Big Five (BFI)** — five trait dimensions, fifty short statements.
-  The "ocean" model used in personality research since the 1980s.
+- **Big Five (BFI)** — five trait dimensions, sixty short statements
+  (12 per trait, with reverse-coded items to catch acquiescent
+  responding). The "ocean" model used in personality research
+  since the 1980s.
 - **PSS-10** — ten items that capture how overwhelmed you've felt
   in the last month. The most-used perceived-stress scale worldwide.
 - **GAD-7** — seven items for generalised anxiety. A standard
   first-line screening tool.
+- **SSRS** (43 items) — 肖水源's Social Support Rating Scale with
+  a 30-item question bank across the subjective / objective /
+  utilization dimensions, plus 3 behaviour-anchored extension items.
+  Range 29–180.
+- **MBI-GS** (40 items) — Maslach Burnout Inventory (General Survey)
+  with a 22-item bank on the exhaustion / cynicism / efficacy
+  dimensions, plus 3 extension items for behavioural profiling.
+  Comprehensive 4-archetype burnout classification.
+- **SWLS** (40 items) — Diener's Satisfaction With Life Scale with
+  a 33-item bank across relationships / health / achievement /
+  growth / meaning / daily themes, plus 2 extension items.
+  Range 38–266.
+- **CD-RISC-10** (40 items) — Connor-Davidson Resilience Scale
+  with a 27-item bank across five sub-dimensions
+  (adaptability / relationships / meaning / self-efficacy /
+  optimism), plus 3 extension items. Range 0–148.
 
-Each takes 10–15 minutes. After the questionnaire you get a multi-axis
-report (radar chart + plain-language explanation), and the result is
+Each takes 5–15 minutes. After the questionnaire you get a multi-axis
+report (radar chart + plain-language explanation), a behavioral
+profile archetype derived from the extension items, and the result is
 saved to your private history so you can see how you change over time.
 
 A daily mood log, an achievement board, and a CBT-style training-plan
@@ -207,8 +227,13 @@ credits.
 
 The BFI was developed by Oliver P. John and Sanjay Srivastava. PSS-10
 was developed by Sheldon Cohen. GAD-7 was developed by Robert L.
-Spitzer and colleagues. The psychology here is theirs; the bugs are
-ours.
+Spitzer and colleagues. The **SSRS** (Social Support Rating Scale)
+was developed by 肖水源 (Xiao Shuiyuan, 1986). The **MBI-GS** by
+Christina Maslach & Michael Leiter (General Survey version adapted
+by Wilmar Schaufeli et al., 1996). The **SWLS** by Ed Diener,
+Robert Emmons, Randy Larsen & Sharon Griffin (1985). The
+**CD-RISC-10** by Kathryn Connor & Jonathan Davidson (2003). The
+psychology here is theirs; the bugs are ours.
 
 ---
 

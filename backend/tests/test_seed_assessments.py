@@ -7,7 +7,15 @@ from app.seed_data import ASSESSMENT_CATALOG, get_assessment_count_by_id
 
 def test_catalog_contains_expected_assessments():
     ids = {a["id"] for a in ASSESSMENT_CATALOG}
-    assert ids == {"big-five", "stress-test", "anxiety-gad7"}
+    assert ids == {
+        "big-five",
+        "stress-test",
+        "anxiety-gad7",
+        "social-support",
+        "mbi-burnout",
+        "life-satisfaction",
+        "resilience-cdrisc",
+    }
 
 
 def test_catalog_matches_frontend_question_counts():
@@ -18,6 +26,64 @@ def test_catalog_matches_frontend_question_counts():
     assert counts["big-five"] == 60  # 12 items × 5 traits
     assert counts["stress-test"] == 33  # 6 + 6 + 5 + 4 + 3 + 3 + 3 + 3
     assert counts["anxiety-gad7"] == 28  # 7 dimensions × 4 items each
+    # 4 个 40 题扩展量表 (frontend 同步):
+    assert counts["social-support"] == 43  # 10 主 + 30 题库 (3×10) + 3 延伸
+    assert counts["mbi-burnout"] == 40  # 15 主 + 22 题库 (7+6+9) + 3 延伸
+    assert counts["life-satisfaction"] == 40  # 5 主 + 33 题库 + 2 延伸
+    assert counts["resilience-cdrisc"] == 40  # 10 主 + 27 题库 (6+5+6+5+5) + 3 延伸
+
+
+def test_new_scales_trait_distribution():
+    """SSRS / MBI / SWLS / Resilience 题库扩展后, 维度题量与主量表方向一致."""
+    # SSRS: 30 题题库应分布在 subjective / objective / utilization 三维度
+    ssrs_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "social-support")
+    ssrs_traits = [q["trait"] for q in ssrs_spec["questions"]]
+    assert ssrs_traits.count("subjective") >= 13  # 4 + 10 - 1 obj stray
+    assert ssrs_traits.count("objective") >= 13   # 3 + 10
+    assert ssrs_traits.count("utilization") >= 12  # 3 + 10
+    assert ssrs_traits.count("extension") == 3
+
+    # MBI: 22 题题库应分布在 exhaustion / cynicism / efficacy
+    mbi_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "mbi-burnout")
+    mbi_traits = [q["trait"] for q in mbi_spec["questions"]]
+    assert mbi_traits.count("exhaustion") == 12  # 5 + 7
+    assert mbi_traits.count("cynicism") == 10     # 4 + 6
+    assert mbi_traits.count("efficacy") == 15     # 6 + 9
+    assert mbi_traits.count("extension") == 3
+
+    # SWLS: 33 题题库应全部为 satisfaction (单维度)
+    swls_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "life-satisfaction")
+    swls_traits = [q["trait"] for q in swls_spec["questions"]]
+    assert swls_traits.count("satisfaction") == 38  # 5 + 33
+    assert swls_traits.count("extension") == 2
+
+    # CD-RISC: 27 题题库应分布在 5 个子维度
+    res_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "resilience-cdrisc")
+    res_traits = [q["trait"] for q in res_spec["questions"]]
+    assert res_traits.count("adaptability") == 8   # 2 + 6
+    assert res_traits.count("relationships") == 6  # 1 + 5
+    assert res_traits.count("meaning") == 8         # 2 + 6
+    assert res_traits.count("selfEfficacy") == 7    # 2 + 5
+    assert res_traits.count("optimism") == 8        # 3 + 5
+    assert res_traits.count("extension") == 3
+
+
+def test_new_scales_reverse_items_present():
+    """题库扩展必须包含反向题 (降低社会赞许性偏差)."""
+    # SWLS 题库应至少有 5 道反向题
+    swls_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "life-satisfaction")
+    swls_reverse = sum(1 for q in swls_spec["questions"] if q["reverse"])
+    assert swls_reverse >= 5, f"SWLS only has {swls_reverse} reverse items"
+
+    # CD-RISC 题库应至少有 3 道反向题
+    res_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "resilience-cdrisc")
+    res_reverse = sum(1 for q in res_spec["questions"] if q["reverse"])
+    assert res_reverse >= 3, f"CD-RISC only has {res_reverse} reverse items"
+
+    # MBI 题库应至少有 1 道反向题 (PE 是反向, 题库继续)
+    mbi_spec = next(a for a in ASSESSMENT_CATALOG if a["id"] == "mbi-burnout")
+    mbi_reverse = sum(1 for q in mbi_spec["questions"] if q["reverse"])
+    assert mbi_reverse >= 6, f"MBI only has {mbi_reverse} reverse items (PE原6题)"
 
 
 def test_big_five_has_all_five_traits_balanced():
@@ -38,16 +104,25 @@ def test_big_five_has_all_five_traits_balanced():
         )
 
 
-def test_seed_creates_three_assessments(db_session):
+def test_seed_creates_seven_assessments(db_session):
     """End-to-end through the actual init_db.seed_assessments path."""
     from init_db import seed_assessments
 
     n = seed_assessments(db_session)
-    assert n == 3
+    assert n == 7
     db_session.expire_all()
 
     rows = db_session.query(Assessment).order_by(Assessment.id).all()
-    assert [r.id for r in rows] == ["anxiety-gad7", "big-five", "stress-test"]
+    expected_ids = [
+        "anxiety-gad7",
+        "big-five",
+        "life-satisfaction",
+        "mbi-burnout",
+        "resilience-cdrisc",
+        "social-support",
+        "stress-test",
+    ]
+    assert [r.id for r in rows] == expected_ids
     for row in rows:
         assert row.is_active is True
         assert row.total_questions == len(row.questions)
@@ -56,13 +131,19 @@ def test_seed_creates_three_assessments(db_session):
 def test_seed_is_idempotent(db_session):
     from init_db import seed_assessments
 
-    assert seed_assessments(db_session) == 3
+    assert seed_assessments(db_session) == 7
     # Re-running must not insert duplicates and must not raise.
     assert seed_assessments(db_session) == 0
-    assert db_session.query(Assessment).count() == 3
+    assert db_session.query(Assessment).count() == 7
     # big-five should still have its 60 questions, not 120.
     bf = db_session.query(Assessment).filter_by(id="big-five").one()
     assert len(bf.questions) == 60
+    # SSRS 应该有 43 题 (10 主 + 30 题库 + 3 延伸)
+    ssrs = db_session.query(Assessment).filter_by(id="social-support").one()
+    assert len(ssrs.questions) == 43
+    # MBI 应该有 40 题
+    mbi = db_session.query(Assessment).filter_by(id="mbi-burnout").one()
+    assert len(mbi.questions) == 40
 
 
 def test_seed_question_carry_trait_and_reverse_flags(db_session):
@@ -116,7 +197,15 @@ def test_list_assessments_returns_seeded_catalog(db_session, client):
     r = client.get("/api/v1/assessments/")
     assert r.status_code == 200
     ids = {a["id"] for a in r.json()["assessments"]}
-    assert ids == {"big-five", "stress-test", "anxiety-gad7"}
+    assert ids == {
+        "big-five",
+        "stress-test",
+        "anxiety-gad7",
+        "social-support",
+        "mbi-burnout",
+        "life-satisfaction",
+        "resilience-cdrisc",
+    }
 
 
 def test_get_assessment_uses_slug_not_uuid(db_session, client):

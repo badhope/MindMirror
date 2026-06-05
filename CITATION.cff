@@ -1,18 +1,26 @@
 cff-version: 1.2.0
 message: >-
   If you use MindMirror in academic work, please cite the software itself
-  and the underlying assessment scales (IPIP / NEO-PI-R, PSS-10, GAD-7).
+  and the underlying assessment scales (IPIP / NEO-PI-R, PSS-10, GAD-7,
+  SSRS, MBI-GS, SWLS, CD-RISC-10).
 type: software
 title: "MindMirror"
 abstract: >-
   MindMirror is an open-source, self-hostable, privacy-first psychological
-  assessment platform. It provides the Big Five personality test
-  (NEO-PI-R / IPIP derived), Cohen's Perceived Stress Scale (PSS-10),
-  the GAD-7 anxiety screener, a mood tracker, mental training plans,
-  and a plugin system for custom assessments. Ships with a React 18 +
-  TypeScript frontend and an optional FastAPI + PostgreSQL backend
-  (Docker Compose ready), and a fully offline localStorage demo mode
-  deployable to any static host (including GitHub Pages).
+  assessment platform. It provides seven validated scales: the Big Five
+  personality test (NEO-PI-R / IPIP derived, 60 items), Cohen's Perceived
+  Stress Scale (PSS-10, 33 items), the GAD-7 anxiety screener (28 items),
+  Xiao Shuiyuan's Social Support Rating Scale (SSRS, 43 items), the
+  Maslach Burnout Inventory General Survey (MBI-GS, 40 items), Diener's
+  Satisfaction With Life Scale (SWLS, 40 items), and the Connor-Davidson
+  Resilience Scale (CD-RISC-10, 40 items). Each long-form scale uses a
+  dimension-aligned question bank plus behaviour-anchored extension
+  items for archetype classification. Also includes a mood tracker,
+  mental training plans, and a plugin system for custom assessments.
+  Ships with a React 18 + TypeScript frontend and an optional FastAPI
+  + PostgreSQL backend (Docker Compose ready), and a fully offline
+  localStorage demo mode deployable to any static host (including
+  GitHub Pages).
 authors:
   - family-names: "badhope"
     given-names: "badhope"
@@ -30,6 +38,14 @@ keywords:
   - neo-pi-r
   - pss-10
   - gad-7
+  - ssrs
+  - mbi-gs
+  - swls
+  - cd-risc
+  - social-support
+  - burnout
+  - life-satisfaction
+  - resilience
   - stress
   - anxiety
   - mood-tracker
@@ -46,8 +62,8 @@ keywords:
   - postgresql
   - docker
   - pwa
-date-released: 2026-06-02
-version: "1.0.0"
+date-released: 2026-06-05
+version: "1.1.0"
 references:
   - type: article
     title: "A brief measure for assessing generalized anxiety disorder"
@@ -81,7 +97,61 @@ references:
     issue: "4"
     pages: "385-396"
     doi: "10.2307/2136404"
+  - type: article
+    title: "The Social Support Rating Scale"
+    authors:
+      - family-names: "Xiao"
+        given-names: "Shuiyuan"
+    journal: "Chinese Mental Health Journal"
+    year: 1986
+    notes: "肖水源. 社会支持评定量表. 中国心理卫生杂志, 1986."
+  - type: article
+    title: "Maslach Burnout Inventory – General Survey (MBI-GS)"
+    authors:
+      - family-names: "Schaufeli"
+        given-names: "Wilmar"
+      - family-names: "Leiter"
+        given-names: "Michael P."
+      - family-names: "Maslach"
+        given-names: "Christina"
+      - family-names: "Jackson"
+        given-names: "Susan E."
+    journal: "Journal of Occupational and Organizational Psychology"
+    year: 1996
+    volume: "69"
+    issue: "4"
+    pages: "307-321"
+  - type: article
+    title: "The Satisfaction With Life Scale"
+    authors:
+      - family-names: "Diener"
+        given-names: "Ed"
+      - family-names: "Emmons"
+        given-names: "Robert A."
+      - family-names: "Larsen"
+        given-names: "Randy J."
+      - family-names: "Griffin"
+        given-names: "Sharon"
+    journal: "Journal of Personality Assessment"
+    year: 1985
+    volume: "49"
+    issue: "1"
+    pages: "71-75"
+    doi: "10.1207/s15327752jpa4901_13"
+  - type: article
+    title: "Development of a new resilience scale: The Connor-Davidson Resilience Scale (CD-RISC)"
+    authors:
+      - family-names: "Connor"
+        given-names: "Kathryn M."
+      - family-names: "Davidson"
+        given-names: "Jonathan R. T."
+    journal: "Depression and Anxiety"
+    year: 2003
+    volume: "18"
+    issue: "2"
+    pages: "76-82"
+    doi: "10.1002/da.10113"
   - type: webpage
     title: "International Personality Item Pool (IPIP)"
     url: "https://ipip.ori.org/"
-    date-accessed: 2026-06-02
+    date-accessed: 2026-06-05

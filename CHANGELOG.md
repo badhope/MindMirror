@@ -5,6 +5,59 @@ and the format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- **Four new psychological scales** with 40+ items each, expanded from
+  the original short forms via dimension-aligned question banks:
+  - **SSRS** 肖水源社会支持量表 — 43 items (10 core + 30 bank × 3
+    dimensions: subjective / objective / utilization + 3 extension)
+  - **MBI-GS** Maslach Burnout Inventory — 40 items (15 core + 22
+    bank × 3 dimensions: exhaustion / cynicism / efficacy + 3 ext)
+  - **SWLS** Diener Satisfaction With Life Scale — 40 items (5 core
+    + 33 bank × 6 themes: relationships / health / achievement /
+    growth / meaning / daily + 2 extension)
+  - **CD-RISC-10** Connor-Davidson Resilience Scale — 40 items
+    (10 core + 27 bank × 5 sub-dimensions + 3 extension)
+- **Bank questions are reverse-coded** to detect acquiescent responding
+  and **behaviour-anchored** to discriminate people who would give
+  similar abstract-self-evaluation answers but actually differ in
+  lived experience.
+- **Behavioral profile archetypes** — 16 new archetypes (4 per scale)
+  derived from the extension items, complementing the score bands.
+- **Backend catalog expanded** to 7 assessments, with all 4 new
+  scales' questions + options + traits + reverse flags synced from
+  the frontend `src/data/` so the API and the SPA can't drift.
+- **New test suite** `tests/unit/40q-bank-test.mjs` (77 assertions)
+  covering question counts, ID uniqueness, trait distribution, score
+  dynamics, level boundaries, and edge-case empty input across the
+  four expanded scales.
+
+### Changed
+
+- **Scoring services use dynamic max calculation.** All four services
+  (`ssrsScoring`, `mbiScoring`, `swlsScoring`, `resilienceScoring`)
+  now compute their dimension maxima from the actual question set
+  passed in. Adding/removing questions no longer requires touching
+  the scoring code.
+- **Severity thresholds use percentages** (not absolute scores) for
+  `getMBITotalLevel`, `getSWLSLevel`, `getResilienceLevel`, and the
+  per-dimension level helpers. The original Schaufeli / Pavot /
+  Connor-Davidson cut-points are preserved when running on the
+  original short forms (e.g. 15-item MBI still maps to 30-point
+  max), so historical results stay comparable.
+- **Severity ranges scaled proportionally** to new total maxima:
+  SSRS 50→180, MBI 30→74, SWLS 35→266, CD-RISC 40→148.
+- `getQuestionsForAssessment` (`src/data/mockData.ts`) now returns
+  the full 40+ question list (main + bank + extension) for the four
+  expanded scales.
+- Assessment metadata in the four data files:
+  - `totalQuestions` reflects the new totals (43 / 40 / 40 / 40)
+  - `estimatedTime` updated to 11-12 minutes
+  - descriptions mention the bank-expansion design intent
+- `init_db.py` seed now creates 7 assessments (was 3) and is
+  idempotent across re-runs. Catalog version bumped to `1.1` for
+  the four expanded scales.
+
 ### Security
 
 - Hard-coded `SECRET_KEY` fallback removed. Production now refuses to

@@ -221,6 +221,300 @@ GAD7_RESPONSE_OPTIONS: List[_OptionSpec] = [
 ]
 
 # ---------------------------------------------------------------------------
+# SSRS 肖水源社会支持量表 (43 题 = 10 原 + 30 题库 + 3 延伸)
+# ---------------------------------------------------------------------------
+
+SSRS_QUESTIONS: List[_QuestionSpec] = [
+    # 主观支持 (4 题)
+    {"text": "您有多少关系密切、可以得到支持和帮助的朋友?", "trait": "subjective", "reverse": False},
+    {"text": "近一年来您:(单选,指家庭/同住情况)", "trait": "objective", "reverse": False},
+    {"text": "您与邻居:", "trait": "subjective", "reverse": False},
+    {"text": "您与同事:", "trait": "subjective", "reverse": False},
+    {"text": "您从家庭成员得到的支持和照顾:", "trait": "subjective", "reverse": False},
+    {"text": "过去在您遇到急难情况时,曾经得到经济支持或解决实际问题的帮助来源有:", "trait": "objective", "reverse": False},
+    {"text": "过去在您遇到急难情况时,曾经得到的安慰和关心的来源有:", "trait": "objective", "reverse": False},
+    # 利用度 (3 题)
+    {"text": "您遇到烦恼时的倾诉方式:", "trait": "utilization", "reverse": False},
+    {"text": "您遇到烦恼时的求助方式:", "trait": "utilization", "reverse": False},
+    {"text": "对于团体(如党组织、宗教组织、工会、学生会等)组织活动,您:", "trait": "utilization", "reverse": False},
+]
+
+SSRS_SUBJECTIVE_BANK: List[_QuestionSpec] = [
+    {"text": "您觉得身边有多少人真正了解您的真实想法和感受?", "trait": "subjective", "reverse": False},
+    {"text": "当您分享个人烦恼时, 身边的人会认真倾听吗?", "trait": "subjective", "reverse": False},
+    {"text": "您感到被关心和被尊重的频率?", "trait": "subjective", "reverse": False},
+    {"text": "在您遇到困难时, 身边会有人主动提供帮助吗?", "trait": "subjective", "reverse": False},
+    {"text": "您对现有的人际关系整体感到满意吗?", "trait": "subjective", "reverse": False},
+    {"text": "您身边有多少人是您可以放心展示脆弱面的?", "trait": "subjective", "reverse": False},
+    {"text": "您和亲近的人之间有深度的情感交流吗?", "trait": "subjective", "reverse": False},
+    {"text": "当您取得成就时, 身边有人会真心为您高兴吗?", "trait": "subjective", "reverse": False},
+    {"text": "如果您生病或情绪低落, 有人会主动来探望或问候吗?", "trait": "subjective", "reverse": False},
+    {"text": "您觉得您的家人/朋友真的在乎您的幸福吗?", "trait": "subjective", "reverse": False},
+]
+
+SSRS_OBJECTIVE_BANK: List[_QuestionSpec] = [
+    {"text": "您和家人 (父母/配偶/子女) 见面的频率?", "trait": "objective", "reverse": False},
+    {"text": "您身边有多少可以借到大额资金 (>=1万) 的亲友?", "trait": "objective", "reverse": False},
+    {"text": "过去一年, 您在生活中获得实际帮助的来源数 (0-9)", "trait": "objective", "reverse": False},
+    {"text": "过去一年, 您在情绪上获得支持的来源数 (0-9)", "trait": "objective", "reverse": False},
+    {"text": "您所在的社区/邻里能为您提供生活上的帮助吗?", "trait": "objective", "reverse": False},
+    {"text": "您的工作单位/学校有关心您生活困难的同事/同学吗?", "trait": "objective", "reverse": False},
+    {"text": "如果您临时需要住宿一晚, 您有多少亲友可以投靠?", "trait": "objective", "reverse": False},
+    {"text": "您是否加入了至少一个社团/兴趣小组/线上社区?", "trait": "objective", "reverse": False},
+    {"text": "您的家庭成员中是否有人可以长期照顾您的生活?", "trait": "objective", "reverse": False},
+    {"text": "过去一年, 您和家人/朋友一起参加活动 (聚餐/出游) 的次数?", "trait": "objective", "reverse": False},
+]
+
+SSRS_UTILIZATION_BANK: List[_QuestionSpec] = [
+    {"text": "遇到烦恼时, 您会主动找人倾诉吗?", "trait": "utilization", "reverse": False},
+    {"text": "您愿意接受他人主动提供的帮助吗?", "trait": "utilization", "reverse": False},
+    {"text": "您会参加社区/单位的集体活动吗?", "trait": "utilization", "reverse": False},
+    {"text": "当朋友有困难时, 您会主动提供帮助吗?", "trait": "utilization", "reverse": False},
+    {"text": "如果遇到心理困扰, 您愿意使用心理咨询服务吗?", "trait": "utilization", "reverse": False},
+    {"text": "您会主动维护重要的亲友关系 (节日问候/定期联系)?", "trait": "utilization", "reverse": False},
+    {"text": "您会在社交媒体上主动联系久未联系的朋友吗?", "trait": "utilization", "reverse": False},
+    {"text": "如果您生病住院, 您会让亲友知道吗?", "trait": "utilization", "reverse": False},
+    {"text": "您会主动向家人/朋友表达感激之情吗?", "trait": "utilization", "reverse": False},
+    {"text": "当您需要做重要决定时, 您会主动寻求他人意见吗?", "trait": "utilization", "reverse": False},
+]
+
+SSRS_EXTENSION_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "过去一个月, 当您在朋友圈/微博看到朋友分享的好消息 (升职/旅行/表白/获奖) 时, 您最贴近的反应是:", "trait": "extension", "reverse": False},
+    {"text": "假设您明天需要搬家 (大量家具/重物), 您的第一反应是:", "trait": "extension", "reverse": False},
+    {"text": "如果您和一位关系不错的朋友, 因为价值观差异 (政治/宗教/生活方式) 产生分歧, 您的第一反应是:", "trait": "extension", "reverse": False},
+]
+
+SSRS_RESPONSE_OPTIONS: List[_OptionSpec] = [
+    {"value": 1, "label": "没有 / 完全不符"},
+    {"value": 2, "label": "较少 / 较不符"},
+    {"value": 3, "label": "一般"},
+    {"value": 4, "label": "全力支持 / 符合"},
+]
+
+# ---------------------------------------------------------------------------
+# MBI-GS 职业倦怠量表 (40 题 = 15 原 + 22 题库 + 3 延伸)
+# ---------------------------------------------------------------------------
+
+MBI_QUESTIONS: List[_QuestionSpec] = [
+    # 情感耗竭 EX (5)
+    {"text": "工作让我感到身心俱疲 (Emotional exhaustion)", "trait": "exhaustion", "reverse": False},
+    {"text": "一天工作结束后我感觉精疲力竭", "trait": "exhaustion", "reverse": False},
+    {"text": "早上起床时想到要面对一天的工作就感到疲惫", "trait": "exhaustion", "reverse": False},
+    {"text": "整天工作对我来说确实压力很大", "trait": "exhaustion", "reverse": False},
+    {"text": "工作让我感觉快要崩溃了", "trait": "exhaustion", "reverse": False},
+    # 犬儒主义 CY (4)
+    {"text": "我对工作越来越不感兴趣", "trait": "cynicism", "reverse": False},
+    {"text": "我对工作不再像以前那样投入了", "trait": "cynicism", "reverse": False},
+    {"text": "我开始质疑自己的工作是否真的有意义", "trait": "cynicism", "reverse": False},
+    {"text": "我对自己工作的价值感到怀疑", "trait": "cynicism", "reverse": False},
+    # 职业效能 PE (6) — 反向
+    {"text": "我能有效地解决工作中出现的问题", "trait": "efficacy", "reverse": True},
+    {"text": "我觉得我在为单位做出有用的贡献", "trait": "efficacy", "reverse": True},
+    {"text": "在我看来,我擅长于自己的工作", "trait": "efficacy", "reverse": True},
+    {"text": "我完成了很多有价值的工作", "trait": "efficacy", "reverse": True},
+    {"text": "我自信自己能有效地完成各项工作", "trait": "efficacy", "reverse": True},
+    {"text": "我能够创造一个轻松、开放的工作氛围", "trait": "efficacy", "reverse": True},
+]
+
+MBI_EXHAUSTION_BANK: List[_QuestionSpec] = [
+    {"text": "下班回家后, 我经常累到什么都不想干, 甚至连饭都不想吃", "trait": "exhaustion", "reverse": False},
+    {"text": "工作日我常常感到身体被\u201c掏空\u201d, 只想一个人待着", "trait": "exhaustion", "reverse": False},
+    {"text": "最近我经常半夜醒来, 脑子还在转白天工作的事", "trait": "exhaustion", "reverse": False},
+    {"text": "我需要靠咖啡 / 烟 / 提神饮料才能熬过每个工作日", "trait": "exhaustion", "reverse": False},
+    {"text": "工作日我几乎没有任何\u201c留给自己\u201d的精力", "trait": "exhaustion", "reverse": False},
+    {"text": "我经常感到自己像一个被榨干的电池, 充不进去电", "trait": "exhaustion", "reverse": False},
+    {"text": "一提到\u201c上班\u201d这两个字, 我身体就本能地紧张 / 抗拒", "trait": "exhaustion", "reverse": False},
+]
+
+MBI_CYNICISM_BANK: List[_QuestionSpec] = [
+    {"text": "我经常觉得自己做的事没什么真正的影响", "trait": "cynicism", "reverse": False},
+    {"text": "开会 / 团建时, 我经常在演\u201c积极\u201d, 内心其实很疏离", "trait": "cynicism", "reverse": False},
+    {"text": "如果同事不配合, 我会冷处理, 不再尝试沟通", "trait": "cynicism", "reverse": False},
+    {"text": "我上班更多是\u201c按部就班\u201d, 不再期待什么突破", "trait": "cynicism", "reverse": False},
+    {"text": "我经常对单位的\u201c价值观宣传\u201d感到讽刺或反感", "trait": "cynicism", "reverse": False},
+    {"text": "当同事离职, 我第一反应不是惋惜, 而是\u201c他怎么不早点走\u201d", "trait": "cynicism", "reverse": False},
+]
+
+MBI_EFFICACY_BANK: List[_QuestionSpec] = [
+    {"text": "面对突发任务, 我能冷静地拆解并开始执行", "trait": "efficacy", "reverse": True},
+    {"text": "即使在最忙的一天, 我也能保证工作质量不出大问题", "trait": "efficacy", "reverse": True},
+    {"text": "我有信心在三个月内解决一个长期困扰我的工作难题", "trait": "efficacy", "reverse": True},
+    {"text": "在团队中, 我的专业判断经常被同事采纳", "trait": "efficacy", "reverse": True},
+    {"text": "面对不确定的反馈 (领导没回 / 客户没动静), 我能稳得住", "trait": "efficacy", "reverse": True},
+    {"text": "我能从一次失败里快速恢复, 不让它影响下一件事", "trait": "efficacy", "reverse": True},
+    {"text": "即使别人质疑, 我依然相信自己的专业判断", "trait": "efficacy", "reverse": True},
+    {"text": "我能主动识别工作流程中可改进的点并提出方案", "trait": "efficacy", "reverse": True},
+    {"text": "过去 1 年, 我至少有一项自己明显成长的工作成果", "trait": "efficacy", "reverse": True},
+]
+
+MBI_EXTENSION_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "上周五晚上 8 点, 领导临时通知您周末加班处理紧急项目, 您的第一反应是:", "trait": "extension", "reverse": False},
+    {"text": "当您发现一位入职时间比您短的同事获得了您一直想要的晋升机会, 您的第一反应是:", "trait": "extension", "reverse": False},
+    {"text": "在您参加的 2 小时冗长会议中, 您通常会:", "trait": "extension", "reverse": False},
+]
+
+MBI_RESPONSE_OPTIONS: List[_OptionSpec] = [
+    {"value": 0, "label": "从未"},
+    {"value": 1, "label": "每年几次"},
+    {"value": 2, "label": "每月一次或更少"},
+    {"value": 3, "label": "每月几次"},
+    {"value": 4, "label": "每周一次"},
+    {"value": 5, "label": "每周几次"},
+    {"value": 6, "label": "每天"},
+]
+
+# ---------------------------------------------------------------------------
+# SWLS 生活满意度量表 (40 题 = 5 原 + 33 题库 + 2 延伸)
+# ---------------------------------------------------------------------------
+
+SWLS_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "在大多数方面,我的人生都接近我的理想 (In most ways my life is close to my ideal)", "trait": "satisfaction", "reverse": False},
+    {"text": "我的生活条件非常好 (The conditions of my life are excellent)", "trait": "satisfaction", "reverse": False},
+    {"text": "我对自己的生活感到满意 (I am satisfied with my life)", "trait": "satisfaction", "reverse": False},
+    {"text": "到目前为止,我已经得到了我在生活中想要得到的重要东西 (So far I have gotten the important things I want in life)", "trait": "satisfaction", "reverse": False},
+    {"text": "如果我能重新活一次,我几乎不想改变任何事 (If I could live my life over, I would change almost nothing)", "trait": "satisfaction", "reverse": False},
+]
+
+SWLS_RELATIONSHIPS_BANK: List[_QuestionSpec] = [
+    {"text": "我对目前和家人的关系感到满意", "trait": "satisfaction", "reverse": False},
+    {"text": "我有一位可以真正说心里话的朋友", "trait": "satisfaction", "reverse": False},
+    {"text": "我的伴侣 / 最重要的亲密关系让我感到被理解", "trait": "satisfaction", "reverse": False},
+    {"text": "我和同事 / 同学的关系是真诚的, 不是表面的客套", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常感到被身边的人忽视 (反向)", "trait": "satisfaction", "reverse": True},
+    {"text": "当我和别人比较时, 我对自己的人际关系感到自信", "trait": "satisfaction", "reverse": False},
+    {"text": "过去 1 年, 我和至少一位重要的人有过真正深入的交流", "trait": "satisfaction", "reverse": False},
+    {"text": "即使在最亲近的人面前, 我也需要\u201c演\u201d一个更好的自己 (反向)", "trait": "satisfaction", "reverse": True},
+]
+
+SWLS_HEALTH_BANK: List[_QuestionSpec] = [
+    {"text": "我对目前的身体健康状况感到满意", "trait": "satisfaction", "reverse": False},
+    {"text": "我每天的精力足够支撑我想做的事", "trait": "satisfaction", "reverse": False},
+    {"text": "我的睡眠质量让我能以良好的状态开始每一天", "trait": "satisfaction", "reverse": False},
+    {"text": "我的饮食习惯让我感觉身体在变好而不是变差", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常因为身体的小问题 (头疼 / 疲惫 / 胃不舒服) 影响状态 (反向)", "trait": "satisfaction", "reverse": True},
+    {"text": "我和自己的身体是和谐相处, 不是总在\u201c消耗\u201d它", "trait": "satisfaction", "reverse": False},
+]
+
+SWLS_ACHIEVEMENT_BANK: List[_QuestionSpec] = [
+    {"text": "我对目前的工作 / 学业表现感到满意", "trait": "satisfaction", "reverse": False},
+    {"text": "我做的事情能让我看到自己的进步", "trait": "satisfaction", "reverse": False},
+    {"text": "我的收入能支撑我想过的生活方式", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常觉得工作 / 学业只是应付, 没什么成就感 (反向)", "trait": "satisfaction", "reverse": True},
+    {"text": "我能在自己的领域里做出有辨识度的成果", "trait": "satisfaction", "reverse": False},
+    {"text": "我对自己未来 1 年的发展有清晰的期待", "trait": "satisfaction", "reverse": False},
+]
+
+SWLS_GROWTH_BANK: List[_QuestionSpec] = [
+    {"text": "过去 1 年, 我在认知 / 能力 / 视野上有明显的成长", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常会主动学习新东西, 不是被逼的", "trait": "satisfaction", "reverse": False},
+    {"text": "我对自己的好奇心与探索欲感到满意", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常觉得自己被困在原地, 没有变化 (反向)", "trait": "satisfaction", "reverse": True},
+    {"text": "我敢于走出舒适区, 尝试新的可能性", "trait": "satisfaction", "reverse": False},
+]
+
+SWLS_MEANING_BANK: List[_QuestionSpec] = [
+    {"text": "我做的事情里, 至少有一部分让我觉得\u201c有更大的意义\u201d", "trait": "satisfaction", "reverse": False},
+    {"text": "我清楚自己为什么每天做这些事", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常觉得生活就是日复一日, 没人在乎我做什么 (反向)", "trait": "satisfaction", "reverse": True},
+    {"text": "我能感受到自己属于某个比个人更大的东西 (家庭/事业/价值观)", "trait": "satisfaction", "reverse": False},
+]
+
+SWLS_DAILY_BANK: List[_QuestionSpec] = [
+    {"text": "我对每天的居住环境 (家/房间/工作位) 感到舒适", "trait": "satisfaction", "reverse": False},
+    {"text": "我每天都有一些让自己真正放松或愉悦的时间", "trait": "satisfaction", "reverse": False},
+    {"text": "我对所在的城市 / 社区感到归属感", "trait": "satisfaction", "reverse": False},
+    {"text": "我经常觉得日子过得很机械, 没什么\u201c自己的时间\u201d (反向)", "trait": "satisfaction", "reverse": True},
+]
+
+SWLS_EXTENSION_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "和您 5 年前的预期相比, 您现在的生活:", "trait": "extension", "reverse": False},
+    {"text": "如果现在您可以选择, 您最希望:", "trait": "extension", "reverse": False},
+]
+
+SWLS_RESPONSE_OPTIONS: List[_OptionSpec] = [
+    {"value": 1, "label": "完全不同意"},
+    {"value": 2, "label": "不同意"},
+    {"value": 3, "label": "有点不同意"},
+    {"value": 4, "label": "中立"},
+    {"value": 5, "label": "有点同意"},
+    {"value": 6, "label": "同意"},
+    {"value": 7, "label": "完全同意"},
+]
+
+# ---------------------------------------------------------------------------
+# CD-RISC-10 心理韧性量表 (40 题 = 10 原 + 27 题库 + 3 延伸)
+# ---------------------------------------------------------------------------
+
+RESILIENCE_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "我能适应变化 (I am able to adapt when changes occur)", "trait": "adaptability", "reverse": False},
+    {"text": "我有亲密、安全的关系 (I have at least one close and secure relationship)", "trait": "relationships", "reverse": False},
+    {"text": "有时我求助于命运或上帝 (Sometimes fate or God can help me)", "trait": "optimism", "reverse": False},
+    {"text": "无论发生什么,我都能应付 (I can deal with whatever comes my way)", "trait": "adaptability", "reverse": False},
+    {"text": "过去的成功给了我面对新挑战的信心 (Past successes give me confidence to handle new challenges)", "trait": "selfEfficacy", "reverse": False},
+    {"text": "我能看到事情幽默的一面 (I try to see the humorous side of things)", "trait": "optimism", "reverse": False},
+    {"text": "应对压力使我变得更强 (Coping with stress strengthens me)", "trait": "optimism", "reverse": False},
+    {"text": "经历艰难之后,我会很快恢复 (I tend to bounce back after illness or hardship)", "trait": "selfEfficacy", "reverse": False},
+    {"text": "我觉得我能实现自己的目标 (I believe I can achieve my goals)", "trait": "meaning", "reverse": False},
+    {"text": "即使看起来没有希望,我也不会放弃 (Even when things look hopeless, I don't give up)", "trait": "meaning", "reverse": False},
+]
+
+RESILIENCE_ADAPTABILITY_BANK: List[_QuestionSpec] = [
+    {"text": "当计划被打乱时, 我能快速调整并找到新的方向", "trait": "adaptability", "reverse": False},
+    {"text": "面对陌生环境, 我能较快进入状态", "trait": "adaptability", "reverse": False},
+    {"text": "当规则改变时, 我能快速学习并适应新规则", "trait": "adaptability", "reverse": False},
+    {"text": "我经常因为一点小变化就手足无措 (反向)", "trait": "adaptability", "reverse": True},
+    {"text": "我能同时处理多个变化或任务, 不至于崩溃", "trait": "adaptability", "reverse": False},
+    {"text": "面对突发的坏消息, 我能较快地稳住情绪", "trait": "adaptability", "reverse": False},
+]
+
+RESILIENCE_RELATIONSHIPS_BANK: List[_QuestionSpec] = [
+    {"text": "我有可以依靠的朋友 / 家人, 在我困难时会真的伸出援手", "trait": "relationships", "reverse": False},
+    {"text": "我愿意在脆弱时向亲近的人表达真实感受", "trait": "relationships", "reverse": False},
+    {"text": "我身边的人在成功后, 会真心地为我高兴", "trait": "relationships", "reverse": False},
+    {"text": "我经常觉得自己是孤身一人, 没人真正懂我 (反向)", "trait": "relationships", "reverse": True},
+    {"text": "我能从一段破裂的关系中走出来, 并开始相信新的关系", "trait": "relationships", "reverse": False},
+]
+
+RESILIENCE_MEANING_BANK: List[_QuestionSpec] = [
+    {"text": "我清楚自己未来 3-5 年想成为什么样的人", "trait": "meaning", "reverse": False},
+    {"text": "即使在最难的时候, 我也相信困境里有我可以学到的东西", "trait": "meaning", "reverse": False},
+    {"text": "我做的事里, 至少有一件和\u201c比我自己更大\u201d的东西有关", "trait": "meaning", "reverse": False},
+    {"text": "我经常觉得日复一日, 不知道到底为什么而活 (反向)", "trait": "meaning", "reverse": True},
+    {"text": "我相信自己的坚持最终会带来意义", "trait": "meaning", "reverse": False},
+    {"text": "面对长期困境, 我能找到让自己继续下去的理由", "trait": "meaning", "reverse": False},
+]
+
+RESILIENCE_SELF_EFFICACY_BANK: List[_QuestionSpec] = [
+    {"text": "面对没做过的事, 我相信自己能学会", "trait": "selfEfficacy", "reverse": False},
+    {"text": "当事情进展不顺时, 我通常能找到至少一种新的尝试", "trait": "selfEfficacy", "reverse": False},
+    {"text": "我经常怀疑自己是否能处理真正的难题 (反向)", "trait": "selfEfficacy", "reverse": True},
+    {"text": "我能在压力下保持清晰的判断", "trait": "selfEfficacy", "reverse": False},
+    {"text": "过去 1 年, 我至少一次独立解决了原本以为做不到的难题", "trait": "selfEfficacy", "reverse": False},
+]
+
+RESILIENCE_OPTIMISM_BANK: List[_QuestionSpec] = [
+    {"text": "我能在压力里看到积极的一面, 不被负面吞没", "trait": "optimism", "reverse": False},
+    {"text": "我相信大多数事情会向好的方向发展", "trait": "optimism", "reverse": False},
+    {"text": "失败后, 我能较快地把这次经历转化为学习", "trait": "optimism", "reverse": False},
+    {"text": "我经常预想最坏的结果, 让自己很难放松 (反向)", "trait": "optimism", "reverse": True},
+    {"text": "我相信\u201c痛苦是暂时的, 我会走出来\u201d", "trait": "optimism", "reverse": False},
+]
+
+RESILIENCE_EXTENSION_QUESTIONS: List[_QuestionSpec] = [
+    {"text": "过去 6 个月, 当您经历重大挫折 (失业/分手/重病/重大失败) 时, 您最贴近的反应是:", "trait": "extension", "reverse": False},
+    {"text": "假设您的核心项目 (工作/学业/创业) 彻底失败, 您:", "trait": "extension", "reverse": False},
+    {"text": "面对未来 1 年的重大不确定性 (健康/经济/关系), 您最贴近的反应是:", "trait": "extension", "reverse": False},
+]
+
+RESILIENCE_RESPONSE_OPTIONS: List[_OptionSpec] = [
+    {"value": 0, "label": "完全不是这样"},
+    {"value": 1, "label": "很少这样"},
+    {"value": 2, "label": "有时这样"},
+    {"value": 3, "label": "经常这样"},
+    {"value": 4, "label": "几乎总是这样"},
+]
+
+# ---------------------------------------------------------------------------
 # Catalog metadata
 # ---------------------------------------------------------------------------
 
@@ -262,6 +556,71 @@ ASSESSMENT_CATALOG: List[_AssessmentSpec] = [
         "questions": GAD7_QUESTIONS,
         "options": GAD7_RESPONSE_OPTIONS,
         "version": "1.0",
+    },
+    {
+        "id": "social-support",
+        "title": "社会支持评定量表 (SSRS)",
+        "description": "基于肖水源 1986 年编制的《社会支持评定量表》(SSRS) 的完整 10 题核心 + 30 题扩展题库 (主观/客观/利用度各 10 题) + 3 道行为情景分歧题, 全面评估你的客观支持、主观支持与支持利用度, 理解你身边的关系网如何成为心理健康的资源。",
+        "category": "社交",
+        "questions": (
+            SSRS_QUESTIONS
+            + SSRS_SUBJECTIVE_BANK
+            + SSRS_OBJECTIVE_BANK
+            + SSRS_UTILIZATION_BANK
+            + SSRS_EXTENSION_QUESTIONS
+        ),
+        "options": SSRS_RESPONSE_OPTIONS,
+        "version": "1.1",  # 主+题库+延伸 (43 题)
+    },
+    {
+        "id": "mbi-burnout",
+        "title": "职业倦怠量表 (MBI-GS)",
+        "description": "基于 Maslach Burnout Inventory - General Survey (MBI-GS) 的 15 题专业版本,评估你当前在工作中的情感耗竭、犬儒主义(去人格化)与职业效能感,识别职业倦怠的早期信号。题库扩充至 40 题,覆盖更细颗粒度的症状维度,降低单题天花板效应。",
+        "category": "职业",
+        "questions": (
+            MBI_QUESTIONS
+            + MBI_EXHAUSTION_BANK
+            + MBI_CYNICISM_BANK
+            + MBI_EFFICACY_BANK
+            + MBI_EXTENSION_QUESTIONS
+        ),
+        "options": MBI_RESPONSE_OPTIONS,
+        "version": "1.1",  # 主+题库+延伸 (40 题)
+    },
+    {
+        "id": "life-satisfaction",
+        "title": "生活满意度量表 (SWLS)",
+        "description": "基于 Diener 等人 1985 年编制的《生活满意度量表》(SWLS) 的完整 5 题版本,作为主观幸福感的认知核心指标,衡量你对自己整个生活质量的整体判断。题库扩展至 40 题,涵盖关系/健康/成就/成长/意义/日常六大主题,提升测量信度并降低同质化偏差。",
+        "category": "生活",
+        "questions": (
+            SWLS_QUESTIONS
+            + SWLS_RELATIONSHIPS_BANK
+            + SWLS_HEALTH_BANK
+            + SWLS_ACHIEVEMENT_BANK
+            + SWLS_GROWTH_BANK
+            + SWLS_MEANING_BANK
+            + SWLS_DAILY_BANK
+            + SWLS_EXTENSION_QUESTIONS
+        ),
+        "options": SWLS_RESPONSE_OPTIONS,
+        "version": "1.1",  # 主+题库+延伸 (40 题)
+    },
+    {
+        "id": "resilience-cdrisc",
+        "title": "心理韧性量表 (CD-RISC-10)",
+        "description": "基于 Connor & Davidson 2003 年编制的《心理韧性量表》简化版 (CD-RISC-10) 的完整 10 题,评估你在面对压力、变化和逆境时的心理复原力。题库扩展至 40 题,覆盖适应性/关系/意义/自我效能/乐观五大子维度,提供更细颗粒度的韧性画像。",
+        "category": "生活",
+        "questions": (
+            RESILIENCE_QUESTIONS
+            + RESILIENCE_ADAPTABILITY_BANK
+            + RESILIENCE_RELATIONSHIPS_BANK
+            + RESILIENCE_MEANING_BANK
+            + RESILIENCE_SELF_EFFICACY_BANK
+            + RESILIENCE_OPTIMISM_BANK
+            + RESILIENCE_EXTENSION_QUESTIONS
+        ),
+        "options": RESILIENCE_RESPONSE_OPTIONS,
+        "version": "1.1",  # 主+题库+延伸 (40 题)
     },
 ]
 

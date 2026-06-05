@@ -18,8 +18,8 @@ test: test-backend test-frontend  ## Run everything.
 test-backend:  ## Run pytest in the backend.
 	cd backend && $(PYTHON) -m pytest
 
-test-frontend:  ## Run the React typecheck + lint + build (proxy for "no broken UI").
-	npm run typecheck && npm run lint && npm run build
+test-frontend:  ## Run the React unit tests (887 assertions across 7 files).
+	for f in tests/unit/*.mjs; do node --import tsx "$$f" || exit 1; done
 
 lint:  ## ESLint the frontend.
 	npm run lint

@@ -187,15 +187,37 @@ cd dist && python3 -m http.server 4173
 
 ### Automated Tests
 
-Currently the project relies on TypeScript type checking and ESLint for
-quality assurance. Unit tests with [Vitest](https://vitest.dev/) are on
-the roadmap — see [open issues](https://github.com/badhope/MindMirror/issues?q=is%3Aissue+is%3Aopen+label%3Atesting).
+The project ships with a custom Node + tsx test runner (no test-framework
+overhead, runs the actual TypeScript modules). 887 assertions across
+7 files cover scoring math, behavioral archetypes, severity levels,
+ID uniqueness, trait distribution, and end-to-end user flows.
+
+```bash
+# Frontend (all unit tests)
+for f in tests/unit/*.mjs; do node --import tsx "$f"; done
+# or run them individually
+node --import tsx tests/unit/40q-bank-test.mjs
+node --import tsx tests/unit/deep-validation-test.mjs
+# … see tests/unit/ for the full list
+
+# Backend (pytest, 84 tests)
+cd backend && python -m pytest -v
+```
+
+The CI workflow (`.github/workflows/ci.yml`) runs all of the above
+on every push and PR. Both jobs must pass before a PR can be merged.
 
 When writing a new assessment scoring algorithm, please:
 
 1. Cross-check your formula against a published source.
 2. Add at least one golden test (hand-calculated expected output).
 3. Document the source in the file header.
+4. Use **dynamic max calculation** (see `ssrsScoring` /
+   `mbiScoring` / `swlsScoring` / `resilienceScoring`) so adding
+   question-bank items later doesn't require touching the scoring
+   code. Use **percentage-based severity thresholds** so the original
+   short-form and a future long-form can share the same level
+   function.
 
 ---
 

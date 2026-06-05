@@ -43,12 +43,12 @@ export const MBI_ASSESSMENT: Assessment = {
   id: 'mbi-burnout',
   title: '职业倦怠量表 (MBI-GS)',
   description:
-    '基于 Maslach Burnout Inventory - General Survey (MBI-GS) 的 15 题专业版本,评估你当前在工作中的情感耗竭、犬儒主义(去人格化)与职业效能感,识别职业倦怠的早期信号。',
+    '基于 Maslach Burnout Inventory - General Survey (MBI-GS) 的 15 题专业版本,评估你当前在工作中的情感耗竭、犬儒主义(去人格化)与职业效能感,识别职业倦怠的早期信号。题库扩充至 40 题,覆盖更细颗粒度的症状维度,降低单题天花板效应。',
   category: '职业',
-  totalQuestions: 15,
+  totalQuestions: 40, // 15 道原量表 + 3 道行为延伸 + 22 道题库扩展
   icon: '🔥',
   difficulty: '中等',
-  estimatedTime: '5 分钟',
+  estimatedTime: '12 分钟',
 };
 
 export const MBI_RESPONSE_OPTIONS = [
@@ -161,6 +161,50 @@ export const MBI_QUESTIONS: Question[] = [
   },
 ];
 
+// =====================================================================
+// 行为情景分歧题 (3 道) — 延伸项
+// 设计目的: 解决 MBI 原量表的"耗竭同质化"和"效能社会赞许性"问题,
+//   用具体工作场景迫选, 反映真实倦怠程度
+// 注: 不计入原量表分, 生成「行为分歧画像」附加报告
+// =====================================================================
+
+export const MBI_EXTENSION_QUESTIONS: Question[] = [
+  {
+    id: 'mbi16',
+    text: '上周五晚上 8 点, 领导临时通知您周末加班处理紧急项目, 您的第一反应是:',
+    trait: 'extension',
+    // 0: 没问题配合 (奉献型/可能已麻木)
+    // 1: 接受但讨价还价 (边界型)
+    // 2: 直接拒绝或要求调休 (强硬型)
+    // 3: 接受但心里非常抗拒 (压抑型, 倦怠前兆)
+    // 4: 已对工作心灰意冷 (重度倦怠)
+    reverse: false,
+  },
+  {
+    id: 'mbi17',
+    text: '当您发现一位入职时间比您短的同事获得了您一直想要的晋升机会, 您的第一反应是:',
+    trait: 'extension',
+    // 0: 真心祝贺并学习对方 (成长型)
+    // 1: 失落但很快接受 (韧性型)
+    // 2: 质疑晋升的公平性 (犬儒触发)
+    // 3: 怀疑自己的价值 (低效能触发)
+    // 4: 失去对工作的信任 (深度犬儒)
+    reverse: false,
+  },
+  {
+    id: 'mbi18',
+    text: '在您参加的 2 小时冗长会议中, 您通常会:',
+    trait: 'extension',
+    // 0: 保持专注并贡献想法 (高投入)
+    // 1: 听讲但偶尔走神 (常规)
+    // 2: 同时处理其他工作 (多任务)
+    // 3: 觉得在浪费时间但忍耐 (犬儒)
+    // 4: 主动提"是否需要缩短" (质疑者)
+    reverse: false,
+  },
+];
+
+// =====================================================================
 // 维度题号集合
 export const MBI_DIMENSION_ITEMS: Record<'exhaustion' | 'cynicism' | 'efficacy', string[]> = {
   exhaustion: ['mbi1', 'mbi2', 'mbi3', 'mbi4', 'mbi5'],
@@ -168,12 +212,175 @@ export const MBI_DIMENSION_ITEMS: Record<'exhaustion' | 'cynicism' | 'efficacy',
   efficacy: ['mbi10', 'mbi11', 'mbi12', 'mbi13', 'mbi14', 'mbi15'],
 };
 
+// =====================================================================
+// 题库扩展题 (22 道) — 同维度追加,提升测量信度并降低天花板/地板效应
+// 设计原则:
+//   - 同维度追加 (不破坏三因子结构)
+//   - 内容覆盖症状"细颗粒度" (生理疲惫 / 睡眠 / 情绪反应 / 行为动机)
+//   - 题目措辞差异化,避免与原量表同质
+//   - 高区分度, 让真实耗竭者与无耗竭者分数拉开
+// 注: 与原 15 题使用同一 0-6 频率量表,同维度累加进入总分
+// =====================================================================
+
+// 情感耗竭题库 (7 道, mbi19-mbi25)
+export const MBI_EXHAUSTION_BANK: Question[] = [
+  {
+    id: 'mbi19',
+    text: '下班回家后, 我经常累到什么都不想干, 甚至连饭都不想吃',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi20',
+    text: '工作日我常常感到身体被"掏空", 只想一个人待着',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi21',
+    text: '最近我经常半夜醒来, 脑子还在转白天工作的事',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi22',
+    text: '我需要靠咖啡 / 烟 / 提神饮料才能熬过每个工作日',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi23',
+    text: '工作日我几乎没有任何"留给自己"的精力',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi24',
+    text: '我经常感到自己像一个被榨干的电池, 充不进去电',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+  {
+    id: 'mbi25',
+    text: '一提到"上班"这两个字, 我身体就本能地紧张 / 抗拒',
+    trait: 'exhaustion',
+    reverse: false,
+  },
+];
+
+// 犬儒主义题库 (6 道, mbi26-mbi31)
+export const MBI_CYNICISM_BANK: Question[] = [
+  {
+    id: 'mbi26',
+    text: '我经常觉得自己做的事没什么真正的影响',
+    trait: 'cynicism',
+    reverse: false,
+  },
+  {
+    id: 'mbi27',
+    text: '开会 / 团建时, 我经常在演"积极", 内心其实很疏离',
+    trait: 'cynicism',
+    reverse: false,
+  },
+  {
+    id: 'mbi28',
+    text: '如果同事不配合, 我会冷处理, 不再尝试沟通',
+    trait: 'cynicism',
+    reverse: false,
+  },
+  {
+    id: 'mbi29',
+    text: '我上班更多是"按部就班", 不再期待什么突破',
+    trait: 'cynicism',
+    reverse: false,
+  },
+  {
+    id: 'mbi30',
+    text: '我经常对单位的"价值观宣传"感到讽刺或反感',
+    trait: 'cynicism',
+    reverse: false,
+  },
+  {
+    id: 'mbi31',
+    text: '当同事离职, 我第一反应不是惋惜, 而是"他怎么不早点走"',
+    trait: 'cynicism',
+    reverse: false,
+  },
+];
+
+// 职业效能题库 (9 道, mbi32-mbi40)
+export const MBI_EFFICACY_BANK: Question[] = [
+  {
+    id: 'mbi32',
+    text: '面对突发任务, 我能冷静地拆解并开始执行',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi33',
+    text: '即使在最忙的一天, 我也能保证工作质量不出大问题',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi34',
+    text: '我有信心在三个月内解决一个长期困扰我的工作难题',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi35',
+    text: '在团队中, 我的专业判断经常被同事采纳',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi36',
+    text: '面对不确定的反馈 (领导没回 / 客户没动静), 我能稳得住',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi37',
+    text: '我能从一次失败里快速恢复, 不让它影响下一件事',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi38',
+    text: '即使别人质疑, 我依然相信自己的专业判断',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi39',
+    text: '我能主动识别工作流程中可改进的点并提出方案',
+    trait: 'efficacy',
+    reverse: true,
+  },
+  {
+    id: 'mbi40',
+    text: '过去 1 年, 我至少有一项自己明显成长的工作成果',
+    trait: 'efficacy',
+    reverse: true,
+  },
+];
+
+// 题库题号集合(供 scoring service 使用)
+export const MBI_BANK_ITEMS: Record<'exhaustion' | 'cynicism' | 'efficacy', string[]> = {
+  exhaustion: MBI_EXHAUSTION_BANK.map(q => q.id),
+  cynicism: MBI_CYNICISM_BANK.map(q => q.id),
+  efficacy: MBI_EFFICACY_BANK.map(q => q.id),
+};
+
 // 严重度 (按维度分别,综合采用 EX+CY 的 MBI 倦怠指数)
+// 切分点基于 Schaufeli 1996 + 比例缩放到 40 题 (max=74)
+// 原始 0-11/12-17/18-22/23-30 缩放为 0-27/28-42/43-54/55-74
 export const MBI_SEVERITY = {
   low: {
     level: 'low',
     label: '轻度倦怠',
-    range: [0, 11] as [number, number],
+    range: [0, 27] as [number, number],
     color: 'green',
     description:
       '你目前没有明显的职业倦怠信号,工作热情和自我效能都处于良好状态。继续保持健康的边界与意义感。',
@@ -181,7 +388,7 @@ export const MBI_SEVERITY = {
   moderate: {
     level: 'moderate',
     label: '中度倦怠',
-    range: [12, 17] as [number, number],
+    range: [28, 42] as [number, number],
     color: 'yellow',
     description:
       '你开始出现一些倦怠的早期信号,如精力下降或工作意义感减弱,值得在近期进行主动调整。',
@@ -189,7 +396,7 @@ export const MBI_SEVERITY = {
   high: {
     level: 'high',
     label: '高度倦怠',
-    range: [18, 22] as [number, number],
+    range: [43, 54] as [number, number],
     color: 'orange',
     description:
       '你已处于明显的职业倦怠状态,情绪、认知与效能都受到不同程度的影响,需要认真做出调整。',
@@ -197,7 +404,7 @@ export const MBI_SEVERITY = {
   severe: {
     level: 'severe',
     label: '重度倦怠',
-    range: [23, 30] as [number, number],
+    range: [55, 74] as [number, number],
     color: 'red',
     description:
       '你目前处于严重职业倦怠,可能伴随身心健康风险,强烈建议尽快采取系统性干预,必要时寻求专业帮助。',
@@ -213,25 +420,26 @@ export const MBI_LEVELS = {
 };
 
 // 单维度严重度 (per-dimension)
+// 切分点比例缩放至新 max: EX=72, CY=60, PE=90
 export const MBI_DIMENSION_LEVELS = {
   exhaustion: {
-    low: { range: [0, 5] as [number, number], label: '低', color: 'green' },
-    moderate: { range: [6, 10] as [number, number], label: '中', color: 'yellow' },
-    high: { range: [11, 14] as [number, number], label: '高', color: 'orange' },
-    severe: { range: [15, 30] as [number, number], label: '极高', color: 'red' },
+    low: { range: [0, 12] as [number, number], label: '低', color: 'green' },
+    moderate: { range: [13, 24] as [number, number], label: '中', color: 'yellow' },
+    high: { range: [25, 33] as [number, number], label: '高', color: 'orange' },
+    severe: { range: [34, 72] as [number, number], label: '极高', color: 'red' },
   },
   cynicism: {
-    low: { range: [0, 2] as [number, number], label: '低', color: 'green' },
-    moderate: { range: [3, 4] as [number, number], label: '中', color: 'yellow' },
-    high: { range: [5, 7] as [number, number], label: '高', color: 'orange' },
-    severe: { range: [8, 24] as [number, number], label: '极高', color: 'red' },
+    low: { range: [0, 5] as [number, number], label: '低', color: 'green' },
+    moderate: { range: [6, 10] as [number, number], label: '中', color: 'yellow' },
+    high: { range: [11, 17] as [number, number], label: '高', color: 'orange' },
+    severe: { range: [18, 60] as [number, number], label: '极高', color: 'red' },
   },
   // efficacy 是反向 — 高分 = 健康
   efficacy: {
-    high: { range: [30, 36] as [number, number], label: '高', color: 'green' },
-    moderate: { range: [25, 29] as [number, number], label: '中', color: 'yellow' },
-    low: { range: [20, 24] as [number, number], label: '低', color: 'orange' },
-    veryLow: { range: [0, 19] as [number, number], label: '极低', color: 'red' },
+    high: { range: [75, 90] as [number, number], label: '高', color: 'green' },
+    moderate: { range: [63, 74] as [number, number], label: '中', color: 'yellow' },
+    low: { range: [50, 62] as [number, number], label: '低', color: 'orange' },
+    veryLow: { range: [0, 49] as [number, number], label: '极低', color: 'red' },
   },
 };
 
