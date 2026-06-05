@@ -55,6 +55,9 @@ export type AssessmentType =
   | 'emotional' // 情绪类
   | 'cognitive' // 认知类
   | 'social' // 社交类
+  | 'burnout' // 职业倦怠
+  | 'life' // 生活满意度
+  | 'resilience' // 心理韧性
   | 'other'; // 其他
 
 export interface PersonalDataCenter {

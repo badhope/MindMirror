@@ -48,6 +48,14 @@ export function CompareResults() {
       '2': { zh: '压力测试', en: 'Stress Test' },
       'anxiety-gad7': { zh: '焦虑测评', en: 'Anxiety (GAD-7)' },
       '3': { zh: '焦虑测评', en: 'Anxiety (GAD-7)' },
+      'social-support': { zh: '社会支持', en: 'Social Support (SSRS)' },
+      '4': { zh: '社会支持', en: 'Social Support (SSRS)' },
+      'mbi-burnout': { zh: '职业倦怠', en: 'Burnout (MBI-GS)' },
+      '5': { zh: '职业倦怠', en: 'Burnout (MBI-GS)' },
+      'life-satisfaction': { zh: '生活满意度', en: 'Life Satisfaction (SWLS)' },
+      '6': { zh: '生活满意度', en: 'Life Satisfaction (SWLS)' },
+      'resilience-cdrisc': { zh: '心理韧性', en: 'Resilience (CD-RISC-10)' },
+      '7': { zh: '心理韧性', en: 'Resilience (CD-RISC-10)' },
     };
     const entry = map[id] || { zh: id, en: id };
     return locale === 'zh' ? entry.zh : entry.en;
@@ -64,6 +72,18 @@ export function CompareResults() {
       case 'anxiety-gad7':
       case '3':
         return 'from-purple-500 to-pink-500';
+      case 'social-support':
+      case '4':
+        return 'from-cyan-500 to-teal-500';
+      case 'mbi-burnout':
+      case '5':
+        return 'from-red-500 to-orange-500';
+      case 'life-satisfaction':
+      case '6':
+        return 'from-emerald-500 to-green-500';
+      case 'resilience-cdrisc':
+      case '7':
+        return 'from-lime-500 to-yellow-500';
       default:
         return 'from-slate-400 to-slate-500';
     }

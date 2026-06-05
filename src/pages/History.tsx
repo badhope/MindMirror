@@ -8,7 +8,15 @@ import { useToasts } from '../store/toastStore';
 import { Skeleton, SkeletonCard } from '../components/Loading';
 import { useDelayedReveal } from '../hooks/useMotion';
 
-type Filter = 'all' | 'personality' | 'stress' | 'anxiety';
+type Filter =
+  | 'all'
+  | 'personality'
+  | 'stress'
+  | 'anxiety'
+  | 'social'
+  | 'burnout'
+  | 'life'
+  | 'resilience';
 type Sort = 'newest' | 'oldest' | 'highest' | 'lowest';
 
 const TYPE_BY_ID: Record<string, Filter> = {
@@ -18,6 +26,14 @@ const TYPE_BY_ID: Record<string, Filter> = {
   'stress-test': 'stress',
   '3': 'anxiety',
   'anxiety-gad7': 'anxiety',
+  '4': 'social',
+  'social-support': 'social',
+  '5': 'burnout',
+  'mbi-burnout': 'burnout',
+  '6': 'life',
+  'life-satisfaction': 'life',
+  '7': 'resilience',
+  'resilience-cdrisc': 'resilience',
 };
 
 function assessmentType(id: string): Filter {

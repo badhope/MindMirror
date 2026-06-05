@@ -30,6 +30,10 @@ export interface AchievementCheckState {
   bigFiveCount: number;
   stressCount: number;
   anxietyCount: number;
+  socialSupportCount: number;
+  mbiCount: number;
+  swlsCount: number;
+  resilienceCount: number;
   trainingCompleted: number;
   streakDays: number;
   moodEntries: number;
@@ -117,6 +121,58 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     requirement: 3,
     condition: s => s.anxietyCount >= 3,
     progressFn: s => Math.min(s.anxietyCount, 3),
+  },
+  {
+    id: 'social_anchor',
+    key: 'socialAnchor',
+    icon: '🤝',
+    category: 'assessment',
+    nameZh: '社交基石',
+    nameEn: 'Social Anchor',
+    descriptionZh: '完成社会支持测评3次',
+    descriptionEn: 'Complete social support assessment 3 times',
+    requirement: 3,
+    condition: s => s.socialSupportCount >= 3,
+    progressFn: s => Math.min(s.socialSupportCount, 3),
+  },
+  {
+    id: 'burnout_warrior',
+    key: 'burnoutWarrior',
+    icon: '🛡️',
+    category: 'assessment',
+    nameZh: '倦怠觉察者',
+    nameEn: 'Burnout Warrior',
+    descriptionZh: '完成职业倦怠测评3次',
+    descriptionEn: 'Complete burnout assessment 3 times',
+    requirement: 3,
+    condition: s => s.mbiCount >= 3,
+    progressFn: s => Math.min(s.mbiCount, 3),
+  },
+  {
+    id: 'life_philosopher',
+    key: 'lifePhilosopher',
+    icon: '🌅',
+    category: 'assessment',
+    nameZh: '生活哲人',
+    nameEn: 'Life Philosopher',
+    descriptionZh: '完成生活满意度测评3次',
+    descriptionEn: 'Complete life satisfaction assessment 3 times',
+    requirement: 3,
+    condition: s => s.swlsCount >= 3,
+    progressFn: s => Math.min(s.swlsCount, 3),
+  },
+  {
+    id: 'resilience_champion',
+    key: 'resilienceChampion',
+    icon: '🌱',
+    category: 'assessment',
+    nameZh: '韧性达人',
+    nameEn: 'Resilience Champion',
+    descriptionZh: '完成心理韧性测评3次',
+    descriptionEn: 'Complete resilience assessment 3 times',
+    requirement: 3,
+    condition: s => s.resilienceCount >= 3,
+    progressFn: s => Math.min(s.resilienceCount, 3),
   },
   {
     id: 'first_training',
@@ -231,13 +287,24 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     nameEn: 'All-Rounder',
     descriptionZh: '完成所有类型的测评各至少1次',
     descriptionEn: 'Complete each type of assessment at least once',
-    requirement: 3,
-    condition: s => s.bigFiveCount >= 1 && s.stressCount >= 1 && s.anxietyCount >= 1,
+    requirement: 7,
+    condition: s =>
+      s.bigFiveCount >= 1 &&
+      s.stressCount >= 1 &&
+      s.anxietyCount >= 1 &&
+      s.socialSupportCount >= 1 &&
+      s.mbiCount >= 1 &&
+      s.swlsCount >= 1 &&
+      s.resilienceCount >= 1,
     progressFn: s => {
       const types = [
         s.bigFiveCount >= 1 ? 1 : 0,
         s.stressCount >= 1 ? 1 : 0,
         s.anxietyCount >= 1 ? 1 : 0,
+        s.socialSupportCount >= 1 ? 1 : 0,
+        s.mbiCount >= 1 ? 1 : 0,
+        s.swlsCount >= 1 ? 1 : 0,
+        s.resilienceCount >= 1 ? 1 : 0,
       ];
       return types.reduce((a, b) => a + b, 0);
     },

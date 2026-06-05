@@ -7,6 +7,10 @@ import {
 } from './bigFiveData';
 import { STRESS_TEST_ASSESSMENT, STRESS_TEST_QUESTIONS } from './stressTestData';
 import { GAD7_ASSESSMENT, GAD7_QUESTIONS } from './anxietyGad7Data';
+import { SSRS_ASSESSMENT, SSRS_QUESTIONS } from './ssrsData';
+import { MBI_ASSESSMENT, MBI_QUESTIONS } from './mbiData';
+import { SWLS_ASSESSMENT, SWLS_QUESTIONS } from './swlsData';
+import { RESILIENCE_ASSESSMENT, RESILIENCE_QUESTIONS } from './resilienceData';
 
 const otherAssessments: Assessment[] = [
   {
@@ -25,6 +29,10 @@ export const mockAssessments: Assessment[] = [
   BIG_FIVE_ASSESSMENT,
   STRESS_TEST_ASSESSMENT,
   GAD7_ASSESSMENT,
+  SSRS_ASSESSMENT,
+  MBI_ASSESSMENT,
+  SWLS_ASSESSMENT,
+  RESILIENCE_ASSESSMENT,
   ...otherAssessments,
 ];
 
@@ -62,6 +70,18 @@ export function getQuestionsForAssessment(assessmentId: string): Question[] {
   }
   if (assessmentId === 'anxiety-gad7' || assessmentId === '3') {
     return GAD7_QUESTIONS;
+  }
+  if (assessmentId === 'social-support' || assessmentId === '4') {
+    return SSRS_QUESTIONS;
+  }
+  if (assessmentId === 'mbi-burnout' || assessmentId === '5') {
+    return MBI_QUESTIONS;
+  }
+  if (assessmentId === 'life-satisfaction' || assessmentId === '6') {
+    return SWLS_QUESTIONS;
+  }
+  if (assessmentId === 'resilience-cdrisc' || assessmentId === '7') {
+    return RESILIENCE_QUESTIONS;
   }
   if (assessmentId === 'emotion-management') {
     return generateMockQuestions(10);

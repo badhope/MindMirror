@@ -144,6 +144,10 @@ class DashboardService {
       personality: 'big-five',
       stress: 'stress-test',
       anxiety: 'anxiety-gad7',
+      social: 'social-support',
+      burnout: 'mbi-burnout',
+      life: 'life-satisfaction',
+      resilience: 'resilience-cdrisc',
     };
     return typeMap[type] || 'unknown';
   }

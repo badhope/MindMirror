@@ -70,14 +70,16 @@ export function toUnifiedResult(
   };
 }
 
-export function detectAssessmentType(
-  assessmentId: string
-): UnifiedAssessmentResult['assessmentType'] {
+export function detectAssessmentType(assessmentId: string): UnifiedAssessmentResult['assessmentType'] {
   const typeMap: Record<string, UnifiedAssessmentResult['assessmentType']> = {
     'big-five': 'personality',
     'bigfive': 'personality',
     'stress-test': 'stress',
     'anxiety-gad7': 'anxiety',
+    'social-support': 'social',
+    'mbi-burnout': 'burnout',
+    'life-satisfaction': 'life',
+    'resilience-cdrisc': 'resilience',
   };
   return typeMap[assessmentId] || 'other';
 }

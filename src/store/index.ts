@@ -6,6 +6,10 @@ import { clearLocalSession } from '../lib/apiClient';
 import { calculateBigFiveScores, calculateOverallScore } from '../services/bigFiveScoring';
 import { calculateStressTestTraits } from '../services/stressTestScoring';
 import { calculateGAD7Traits } from '../services/anxietyGad7Scoring';
+import { calculateSSRSTraits } from '../services/ssrsScoring';
+import { calculateMBITraits } from '../services/mbiScoring';
+import { calculateSWLSTraits } from '../services/swlsScoring';
+import { calculateResilienceTraits } from '../services/resilienceScoring';
 import { authService } from '../services/auth';
 import { analysisCache } from '../services/dashboard/AnalysisCache';
 import { achievementService } from '../services/achievement/AchievementService';
@@ -38,11 +42,19 @@ function runAchievementRefresh(history: AssessmentResult[]): void {
     ).length;
     const stressCount = history.filter(h => h.assessmentId === 'stress-test').length;
     const anxietyCount = history.filter(h => h.assessmentId === 'anxiety-gad7').length;
+    const socialSupportCount = history.filter(h => h.assessmentId === 'social-support').length;
+    const mbiCount = history.filter(h => h.assessmentId === 'mbi-burnout').length;
+    const swlsCount = history.filter(h => h.assessmentId === 'life-satisfaction').length;
+    const resilienceCount = history.filter(h => h.assessmentId === 'resilience-cdrisc').length;
     const checkState = {
       totalAssessments: history.length,
       bigFiveCount,
       stressCount,
       anxietyCount,
+      socialSupportCount,
+      mbiCount,
+      swlsCount,
+      resilienceCount,
       trainingCompleted,
       streakDays: moodStreak,
       moodEntries,
@@ -424,6 +436,18 @@ export const useAppStore = create<AppState>((set, get) => {
         totalScore = traits[0]?.score || 0;
       } else if (assessmentId === 'anxiety-gad7' || assessmentId === '3') {
         traits = calculateGAD7Traits(answers, questions);
+        totalScore = traits[0]?.score || 0;
+      } else if (assessmentId === 'social-support' || assessmentId === '4') {
+        traits = calculateSSRSTraits(answers, questions);
+        totalScore = traits[0]?.score || 0;
+      } else if (assessmentId === 'mbi-burnout' || assessmentId === '5') {
+        traits = calculateMBITraits(answers, questions);
+        totalScore = traits[0]?.score || 0;
+      } else if (assessmentId === 'life-satisfaction' || assessmentId === '6') {
+        traits = calculateSWLSTraits(answers, questions);
+        totalScore = traits[0]?.score || 0;
+      } else if (assessmentId === 'resilience-cdrisc' || assessmentId === '7') {
+        traits = calculateResilienceTraits(answers, questions);
         totalScore = traits[0]?.score || 0;
       } else {
         traits = calculateBigFiveScores(answers, questions);

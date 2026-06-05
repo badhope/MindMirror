@@ -69,7 +69,15 @@ class DataValidationService {
       });
     }
 
-    const validAssessmentIds = ['big-five', 'stress-test', 'anxiety-gad7'];
+    const validAssessmentIds = [
+      'big-five',
+      'stress-test',
+      'anxiety-gad7',
+      'social-support',
+      'mbi-burnout',
+      'life-satisfaction',
+      'resilience-cdrisc',
+    ];
     if (result.assessmentId && !validAssessmentIds.includes(result.assessmentId)) {
       warnings.push({
         field: 'assessmentId',
@@ -273,6 +281,10 @@ class DataValidationService {
       'big-five': 300,
       'stress-test': 120,
       'anxiety-gad7': 84,
+      'social-support': 50,
+      'mbi-burnout': 30,
+      'life-satisfaction': 35,
+      'resilience-cdrisc': 40,
     };
     return maxScores[assessmentId] || 0;
   }
@@ -282,6 +294,10 @@ class DataValidationService {
       'big-five': 60,
       'stress-test': 30,
       'anxiety-gad7': 28,
+      'social-support': 10,
+      'mbi-burnout': 15,
+      'life-satisfaction': 5,
+      'resilience-cdrisc': 10,
     };
     return questionCounts[assessmentId] || 0;
   }

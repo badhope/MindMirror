@@ -37,7 +37,18 @@ export interface AnalysisCache {
     title: string;
     timestamp: number;
     totalScore: number;
-    assessmentType: 'personality' | 'stress' | 'anxiety' | 'depression' | 'emotional' | 'cognitive' | 'social' | 'other';
+    assessmentType:
+      | 'personality'
+      | 'stress'
+      | 'anxiety'
+      | 'depression'
+      | 'emotional'
+      | 'cognitive'
+      | 'social'
+      | 'burnout'
+      | 'life'
+      | 'resilience'
+      | 'other';
     tags: string[];
   }>;
   summaries: PeriodicSummary[];

@@ -188,6 +188,14 @@ class DailyTipService {
         '2': 'stress',
         'anxiety-gad7': 'anxiety',
         '3': 'anxiety',
+        'social-support': 'social',
+        '4': 'social',
+        'mbi-burnout': 'burnout',
+        '5': 'burnout',
+        'life-satisfaction': 'life',
+        '6': 'life',
+        'resilience-cdrisc': 'resilience',
+        '7': 'resilience',
       };
 
       tips = tips.map(tip => {

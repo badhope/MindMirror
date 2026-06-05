@@ -153,6 +153,18 @@ export default {
       'The Stress Level Test is based on PSS (Perceived Stress Scale), a widely used stress assessment tool in psychology. This assessment will comprehensively evaluate your current stress level from aspects such as stress perception, coping ability, and emotional state.',
     anxietyIntro:
       'GAD-7 is an internationally recognized screening scale for generalized anxiety disorder with good reliability and validity. This assessment will evaluate your anxiety symptoms, worry levels, and physical reactions over the past two weeks.',
+    ssrsIntro:
+      'The Social Support Rating Scale (SSRS), developed by Chinese psychologist Xiao Shuiyuan in 1986, is the standard localized tool for assessing an individual’s social support. It measures your interpersonal resources across three dimensions: objective support, subjective support, and support utilization.',
+    mbiIntro:
+      'The Maslach Burnout Inventory — General Survey (MBI-GS, 1996) is the gold standard for measuring work burnout, applicable to all occupations. It captures your work state across emotional exhaustion, cynicism, and professional efficacy.',
+    swlsIntro:
+      'The Satisfaction With Life Scale (SWLS, Diener et al., 1985) is the standard cognitive measure of subjective well-being. Only 5 items, it measures your overall judgment of life quality.',
+    resilienceIntro:
+      'The Connor-Davidson Resilience Scale (CD-RISC-10, 2003) is the standard short-form measure of psychological resilience, capturing your ability to recover and grow in the face of stress, change, and adversity.',
+    yourSSRS: 'Your Social Support Report',
+    yourMBI: 'Your Burnout Report',
+    yourSWLS: 'Your Life Satisfaction Report',
+    yourResilience: 'Your Resilience Report',
     topTraitHighlight: 'Your most prominent trait is [{name}], {description}',
     strengthsDisplay: 'Strengths Display',
     attentionNeeded: 'Attention Needed',

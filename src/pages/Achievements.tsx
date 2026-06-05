@@ -27,6 +27,18 @@ export function Achievements() {
     const anxietyCount = assessmentHistory.filter(
       a => a.assessmentId === 'anxiety-gad7' || a.assessmentId === '3'
     ).length;
+    const socialSupportCount = assessmentHistory.filter(
+      a => a.assessmentId === 'social-support' || a.assessmentId === '4'
+    ).length;
+    const mbiCount = assessmentHistory.filter(
+      a => a.assessmentId === 'mbi-burnout' || a.assessmentId === '5'
+    ).length;
+    const swlsCount = assessmentHistory.filter(
+      a => a.assessmentId === 'life-satisfaction' || a.assessmentId === '6'
+    ).length;
+    const resilienceCount = assessmentHistory.filter(
+      a => a.assessmentId === 'resilience-cdrisc' || a.assessmentId === '7'
+    ).length;
     const moodEntries = moodTrackerService.getAll().length;
     const streakDays = moodTrackerService.getStats().streakDays;
 
@@ -35,6 +47,10 @@ export function Achievements() {
       bigFiveCount,
       stressCount,
       anxietyCount,
+      socialSupportCount,
+      mbiCount,
+      swlsCount,
+      resilienceCount,
       trainingCompleted: 0,
       streakDays,
       moodEntries,

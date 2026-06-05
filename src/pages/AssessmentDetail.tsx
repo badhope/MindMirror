@@ -8,9 +8,23 @@ import { RESPONSE_OPTIONS, BIG_FIVE_TRAITS } from '../data/bigFiveData';
 import { Question } from '../types';
 import { STRESS_RESPONSE_OPTIONS, STRESS_LEVELS } from '../data/stressTestData';
 import { GAD7_RESPONSE_OPTIONS, ANXIETY_LEVELS } from '../data/anxietyGad7Data';
+import { SSRS_RESPONSE_OPTIONS, SSRS_SEVERITY } from '../data/ssrsData';
+import { MBI_RESPONSE_OPTIONS, MBI_SEVERITY } from '../data/mbiData';
+import { SWLS_RESPONSE_OPTIONS, SWLS_SEVERITY } from '../data/swlsData';
+import {
+  RESILIENCE_RESPONSE_OPTIONS,
+  RESILIENCE_SEVERITY,
+} from '../data/resilienceData';
 import { calculateProgress, generateBigFiveReport } from '../services/bigFiveScoring';
 import { getStressLevelInfo, generateDetailedStressReport } from '../services/stressTestScoring';
 import { getAnxietyLevelInfo, generateDetailedGAD7Report } from '../services/anxietyGad7Scoring';
+import { getSSRSLevelInfo, generateDetailedSSRSReport } from '../services/ssrsScoring';
+import { getMBITotalLevel, generateDetailedMBIReport } from '../services/mbiScoring';
+import { getSWLSLevelInfo, generateDetailedSWLSReport } from '../services/swlsScoring';
+import {
+  getResilienceLevelInfo,
+  generateDetailedResilienceReport,
+} from '../services/resilienceScoring';
 import { exportService, shareService } from '../services/share/ExportShareService';
 import { TracePanel } from '../components/TracePanel';
 import { useToasts } from '../store/toastStore';
@@ -312,6 +326,76 @@ function IntroPage({ onStart }: { onStart: () => void }) {
           </div>
         )}
 
+        {(currentAssessment.id === 'social-support' || currentAssessment.id === '4') && (
+          <div className="bg-cyan-50 rounded-xl p-6 text-left mb-8">
+            <h3 className="font-semibold text-cyan-800 mb-3">{i18n.assessments.title}</h3>
+            <p className="text-cyan-700 text-sm leading-relaxed">
+              {i18n.results.ssrsIntro}
+            </p>
+            <div className="mt-4 grid sm:grid-cols-3 gap-2">
+              {Object.values(SSRS_SEVERITY)
+                .filter(v => v && v.label)
+                .map(level => (
+                  <div key={level.label} className="bg-white rounded-lg p-2 text-center">
+                    <div className="font-medium text-cyan-700 text-sm">{level.label}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {(currentAssessment.id === 'mbi-burnout' || currentAssessment.id === '5') && (
+          <div className="bg-orange-50 rounded-xl p-6 text-left mb-8">
+            <h3 className="font-semibold text-orange-800 mb-3">{i18n.assessments.title}</h3>
+            <p className="text-orange-700 text-sm leading-relaxed">{i18n.results.mbiIntro}</p>
+            <div className="mt-4 grid sm:grid-cols-4 gap-2">
+              {Object.values(MBI_SEVERITY)
+                .filter(v => v && v.label)
+                .map(level => (
+                  <div key={level.label} className="bg-white rounded-lg p-2 text-center">
+                    <div className="font-medium text-orange-700 text-sm">{level.label}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {(currentAssessment.id === 'life-satisfaction' || currentAssessment.id === '6') && (
+          <div className="bg-emerald-50 rounded-xl p-6 text-left mb-8">
+            <h3 className="font-semibold text-emerald-800 mb-3">{i18n.assessments.title}</h3>
+            <p className="text-emerald-700 text-sm leading-relaxed">
+              {i18n.results.swlsIntro}
+            </p>
+            <div className="mt-4 grid sm:grid-cols-3 gap-2">
+              {Object.values(SWLS_SEVERITY)
+                .filter(v => v && v.label)
+                .map(level => (
+                  <div key={level.label} className="bg-white rounded-lg p-2 text-center">
+                    <div className="font-medium text-emerald-700 text-sm">{level.label}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {(currentAssessment.id === 'resilience-cdrisc' || currentAssessment.id === '7') && (
+          <div className="bg-lime-50 rounded-xl p-6 text-left mb-8">
+            <h3 className="font-semibold text-lime-800 mb-3">{i18n.assessments.title}</h3>
+            <p className="text-lime-700 text-sm leading-relaxed">
+              {i18n.results.resilienceIntro}
+            </p>
+            <div className="mt-4 grid sm:grid-cols-3 gap-2">
+              {Object.values(RESILIENCE_SEVERITY)
+                .filter(v => v && v.label)
+                .map(level => (
+                  <div key={level.label} className="bg-white rounded-lg p-2 text-center">
+                    <div className="font-medium text-lime-700 text-sm">{level.label}</div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
         <div className="bg-amber-50 rounded-xl p-6 text-left mb-8">
           <h3 className="font-semibold text-amber-800 mb-2">💡 {i18n.quiz.intro.tips.title}</h3>
           <ul className="text-amber-700 text-sm space-y-1">
@@ -359,7 +443,15 @@ function QuizPage() {
       ? STRESS_RESPONSE_OPTIONS
       : currentAssessment?.id === 'anxiety-gad7' || currentAssessment?.id === '3'
         ? GAD7_RESPONSE_OPTIONS
-        : RESPONSE_OPTIONS;
+        : currentAssessment?.id === 'social-support' || currentAssessment?.id === '4'
+          ? SSRS_RESPONSE_OPTIONS
+          : currentAssessment?.id === 'mbi-burnout' || currentAssessment?.id === '5'
+            ? MBI_RESPONSE_OPTIONS
+            : currentAssessment?.id === 'life-satisfaction' || currentAssessment?.id === '6'
+              ? SWLS_RESPONSE_OPTIONS
+              : currentAssessment?.id === 'resilience-cdrisc' || currentAssessment?.id === '7'
+                ? RESILIENCE_RESPONSE_OPTIONS
+                : RESPONSE_OPTIONS;
 
   const handleAnswer = (value: number) => {
     setAnswer(currentQuestion.id, value);
@@ -399,7 +491,15 @@ function QuizPage() {
       ? 'bg-purple-100 text-purple-700'
       : currentAssessment?.id === 'anxiety-gad7' || currentAssessment?.id === '3'
         ? 'bg-teal-100 text-teal-700'
-        : 'bg-blue-100 text-blue-700';
+        : currentAssessment?.id === 'social-support' || currentAssessment?.id === '4'
+          ? 'bg-cyan-100 text-cyan-700'
+          : currentAssessment?.id === 'mbi-burnout' || currentAssessment?.id === '5'
+            ? 'bg-orange-100 text-orange-700'
+            : currentAssessment?.id === 'life-satisfaction' || currentAssessment?.id === '6'
+              ? 'bg-emerald-100 text-emerald-700'
+              : currentAssessment?.id === 'resilience-cdrisc' || currentAssessment?.id === '7'
+                ? 'bg-lime-100 text-lime-700'
+                : 'bg-blue-100 text-blue-700';
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -1723,6 +1823,418 @@ function GAD7ResultDetail({
   );
 }
 
+// ====================== SSRS 社会支持 ======================
+function SSRSResultDetail({
+  result,
+  questions,
+  answers,
+}: {
+  result: {
+    totalScore: number;
+    traits: Array<{ name: string; score: number; description: string }>;
+  };
+  questions: Question[];
+  answers: Record<string, number>;
+}) {
+  const { locale } = useAppStore();
+  const i18n = getTranslation(locale);
+  const reduce = useReducedMotion();
+  const report = useMemo(
+    () => generateDetailedSSRSReport(answers, questions),
+    [answers, questions]
+  );
+  const level = getSSRSLevelInfo(result.totalScore);
+
+  const gradientMap: Record<string, string> = {
+    red: 'from-rose-500 to-red-600',
+    orange: 'from-orange-500 to-amber-500',
+    emerald: 'from-emerald-500 to-cyan-500',
+    green: 'from-green-500 to-emerald-600',
+  };
+  const gradient = gradientMap[level.color] || gradientMap.emerald;
+
+  return (
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 space-y-10 sm:space-y-14">
+      <motion.section
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} text-white p-6 sm:p-12 shadow-2xl`}
+      >
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-white blur-3xl" />
+        </div>
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-5 text-sm font-medium">
+            <span>🤝</span> {i18n.results.completed}
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
+            {i18n.results.yourSSRS}
+          </h1>
+          <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
+            {i18n.results.basedOnAnswers}
+          </p>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">
+            {result.totalScore}
+          </div>
+          <div className="text-base sm:text-lg text-white/80">/ 50 分</div>
+          <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
+          <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
+            {level.description}
+          </p>
+        </div>
+      </motion.section>
+
+      <Section title="各维度得分" subtitle="客观支持、主观支持与利用度三方面">
+        <div className="grid sm:grid-cols-3 gap-4">
+          {report.dimensions.map(d => (
+            <div
+              key={d.name}
+              className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5"
+            >
+              <div className="text-sm text-slate-500 mb-1">{d.name}</div>
+              <div className="text-3xl font-extrabold text-cyan-700">{d.score}</div>
+              <div className="mt-1 h-2 rounded-full bg-cyan-100 overflow-hidden">
+                <div
+                  className="h-full bg-cyan-500"
+                  style={{ width: `${Math.min(100, d.score)}%` }}
+                />
+              </div>
+              <p className="mt-2 text-sm text-slate-600">{d.description}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="建议与提示" subtitle="基于你的结果,以下是几点可行的方向">
+        <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <ul className="space-y-2.5">
+            {level.advice.map((a, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-slate-700">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0" />
+                <span>{a}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+// ====================== MBI 职业倦怠 ======================
+function MBIResultDetail({
+  result,
+  questions,
+  answers,
+}: {
+  result: {
+    totalScore: number;
+    traits: Array<{ name: string; score: number; description: string }>;
+  };
+  questions: Question[];
+  answers: Record<string, number>;
+}) {
+  const { locale } = useAppStore();
+  const i18n = getTranslation(locale);
+  const reduce = useReducedMotion();
+  const report = useMemo(
+    () => generateDetailedMBIReport(answers, questions),
+    [answers, questions]
+  );
+  const level = getMBITotalLevel(result.totalScore);
+
+  const gradientMap: Record<string, string> = {
+    green: 'from-green-500 to-emerald-600',
+    yellow: 'from-amber-500 to-yellow-500',
+    orange: 'from-orange-500 to-red-400',
+    red: 'from-rose-600 to-red-600',
+  };
+  const gradient = gradientMap[level.color] || gradientMap.green;
+
+  return (
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 space-y-10 sm:space-y-14">
+      <motion.section
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} text-white p-6 sm:p-12 shadow-2xl`}
+      >
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-5 text-sm font-medium">
+            <span>🔥</span> {i18n.results.completed}
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
+            {i18n.results.yourMBI}
+          </h1>
+          <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
+            {i18n.results.basedOnAnswers}
+          </p>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">
+            {result.totalScore.toFixed(1)}
+          </div>
+          <div className="text-base sm:text-lg text-white/80">/ 30 分</div>
+          <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
+          <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
+            {level.description}
+          </p>
+        </div>
+      </motion.section>
+
+      <Section title="三维倦怠分" subtitle="情感耗竭、犬儒主义、职业效能 (反向)">
+        <div className="grid sm:grid-cols-3 gap-4">
+          {report.dimensions.map(d => (
+            <div
+              key={d.name}
+              className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5"
+            >
+              <div className="text-sm text-slate-500 mb-1">{d.name}</div>
+              <div className="text-2xl font-extrabold text-orange-700">{d.raw}</div>
+              <div className="mt-1 inline-block text-xs px-2 py-0.5 rounded-full bg-orange-50 text-orange-700">
+                {d.level.label}
+              </div>
+              <p className="mt-2 text-sm text-slate-600">{d.description}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="应对策略" subtitle="从立即行动到长期调整">
+        <div className="grid sm:grid-cols-2 gap-4">
+          {[
+            { title: '立即行动', items: report.advice.immediate, icon: '⏱️' },
+            { title: '工作层面', items: report.advice.work, icon: '🧰' },
+            { title: '认知调整', items: report.advice.cognitive, icon: '🧠' },
+            { title: '专业支持', items: report.advice.professional, icon: '🩺' },
+          ].map(card => (
+            <div
+              key={card.title}
+              className="rounded-2xl bg-white border border-slate-200 p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">{card.icon}</span>
+                <h4 className="font-semibold text-slate-800">{card.title}</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {card.items.map((it, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+// ====================== SWLS 生活满意度 ======================
+function SWLSResultDetail({
+  result,
+  questions,
+  answers,
+}: {
+  result: {
+    totalScore: number;
+    traits: Array<{ name: string; score: number; description: string }>;
+  };
+  questions: Question[];
+  answers: Record<string, number>;
+}) {
+  const { locale } = useAppStore();
+  const i18n = getTranslation(locale);
+  const reduce = useReducedMotion();
+  const report = useMemo(
+    () => generateDetailedSWLSReport(answers, questions),
+    [answers, questions]
+  );
+  const level = getSWLSLevelInfo(result.totalScore);
+
+  const gradientMap: Record<string, string> = {
+    red: 'from-rose-500 to-red-600',
+    orange: 'from-orange-500 to-amber-500',
+    yellow: 'from-amber-500 to-yellow-500',
+    emerald: 'from-emerald-500 to-cyan-500',
+    green: 'from-green-500 to-emerald-600',
+  };
+  const gradient = gradientMap[level.color] || gradientMap.emerald;
+
+  return (
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 space-y-10 sm:space-y-14">
+      <motion.section
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} text-white p-6 sm:p-12 shadow-2xl`}
+      >
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-5 text-sm font-medium">
+            <span>🌅</span> {i18n.results.completed}
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
+            {i18n.results.yourSWLS}
+          </h1>
+          <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
+            {i18n.results.basedOnAnswers}
+          </p>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">
+            {result.totalScore}
+          </div>
+          <div className="text-base sm:text-lg text-white/80">/ 35 分</div>
+          <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
+          <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
+            {level.description}
+          </p>
+        </div>
+      </motion.section>
+
+      <Section title="提升策略" subtitle="关系、心流、意义、健康四个方向">
+        <div className="grid sm:grid-cols-2 gap-4">
+          {[
+            { title: '关系', items: report.boost.relationships, icon: '🤝' },
+            { title: '心流', items: report.boost.flow, icon: '🌊' },
+            { title: '意义', items: report.boost.meaning, icon: '🧭' },
+            { title: '健康', items: report.boost.health, icon: '🌿' },
+          ].map(card => (
+            <div
+              key={card.title}
+              className="rounded-2xl bg-white border border-slate-200 p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">{card.icon}</span>
+                <h4 className="font-semibold text-slate-800">{card.title}</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {card.items.map((it, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+// ====================== CD-RISC-10 心理韧性 ======================
+function ResilienceResultDetail({
+  result,
+  questions,
+  answers,
+}: {
+  result: {
+    totalScore: number;
+    traits: Array<{ name: string; score: number; description: string }>;
+  };
+  questions: Question[];
+  answers: Record<string, number>;
+}) {
+  const { locale } = useAppStore();
+  const i18n = getTranslation(locale);
+  const reduce = useReducedMotion();
+  const report = useMemo(
+    () => generateDetailedResilienceReport(answers, questions),
+    [answers, questions]
+  );
+  const level = getResilienceLevelInfo(result.totalScore);
+
+  const gradientMap: Record<string, string> = {
+    red: 'from-rose-500 to-red-600',
+    orange: 'from-orange-500 to-amber-500',
+    yellow: 'from-amber-500 to-yellow-500',
+    emerald: 'from-emerald-500 to-cyan-500',
+    green: 'from-green-500 to-emerald-600',
+  };
+  const gradient = gradientMap[level.color] || gradientMap.emerald;
+
+  return (
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 space-y-10 sm:space-y-14">
+      <motion.section
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} text-white p-6 sm:p-12 shadow-2xl`}
+      >
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-5 text-sm font-medium">
+            <span>🌱</span> {i18n.results.completed}
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3">
+            {i18n.results.yourResilience}
+          </h1>
+          <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
+            {i18n.results.basedOnAnswers}
+          </p>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">
+            {result.totalScore}
+          </div>
+          <div className="text-base sm:text-lg text-white/80">/ 40 分</div>
+          <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
+          <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
+            {level.description}
+          </p>
+        </div>
+      </motion.section>
+
+      <Section title="各维度得分" subtitle="适应性、关系、意义、自我效能、乐观五维">
+        <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {report.dimensions.map(d => (
+            <div
+              key={d.name}
+              className="rounded-2xl bg-white border border-slate-200 p-3 sm:p-4"
+            >
+              <div className="text-xs text-slate-500 mb-1">{d.name}</div>
+              <div className="text-2xl font-extrabold text-lime-700">{d.score}</div>
+              <div className="mt-1 h-1.5 rounded-full bg-lime-100 overflow-hidden">
+                <div
+                  className="h-full bg-lime-500"
+                  style={{ width: `${Math.min(100, d.score)}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="韧性提升路径" subtitle="从今天 / 本周 / 本月 / 长期分层推进">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { title: '今天', items: report.boost.immediate, icon: '☀️' },
+            { title: '本周', items: report.boost.weekly, icon: '🗓️' },
+            { title: '本月', items: report.boost.monthly, icon: '📆' },
+            { title: '长期', items: report.boost.longTerm, icon: '🏔️' },
+          ].map(card => (
+            <div
+              key={card.title}
+              className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">{card.icon}</span>
+                <h4 className="font-semibold text-slate-800">{card.title}</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-700">
+                {card.items.map((it, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-lime-500 shrink-0" />
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+
 // 结果页面主组件
 function ResultPage() {
   const { result, resetAssessment, currentAssessment, questions, answers } = useAppStore();
@@ -1739,6 +2251,11 @@ function ResultPage() {
 
   const isStressTest = currentAssessment?.id === 'stress-test' || currentAssessment?.id === '2';
   const isGAD7 = currentAssessment?.id === 'anxiety-gad7' || currentAssessment?.id === '3';
+  const isSSRS = currentAssessment?.id === 'social-support' || currentAssessment?.id === '4';
+  const isMBI = currentAssessment?.id === 'mbi-burnout' || currentAssessment?.id === '5';
+  const isSWLS = currentAssessment?.id === 'life-satisfaction' || currentAssessment?.id === '6';
+  const isResilience =
+    currentAssessment?.id === 'resilience-cdrisc' || currentAssessment?.id === '7';
 
   // 类型断言
   const displayResult = result as {
@@ -1800,6 +2317,18 @@ function ResultPage() {
         <GAD7ResultDetail result={displayResult} questions={displayQuestions} answers={answers} />
       ) : isStressTest ? (
         <StressTestResultDetail
+          result={displayResult}
+          questions={displayQuestions}
+          answers={answers}
+        />
+      ) : isSSRS ? (
+        <SSRSResultDetail result={displayResult} questions={displayQuestions} answers={answers} />
+      ) : isMBI ? (
+        <MBIResultDetail result={displayResult} questions={displayQuestions} answers={answers} />
+      ) : isSWLS ? (
+        <SWLSResultDetail result={displayResult} questions={displayQuestions} answers={answers} />
+      ) : isResilience ? (
+        <ResilienceResultDetail
           result={displayResult}
           questions={displayQuestions}
           answers={answers}
