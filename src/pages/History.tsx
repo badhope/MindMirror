@@ -583,7 +583,7 @@ export const History = () => {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
-          {(['all', 'personality', 'stress', 'anxiety'] as Filter[]).map(f => (
+          {(['all', 'personality', 'stress', 'anxiety', 'social', 'burnout', 'life', 'resilience'] as Filter[]).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}

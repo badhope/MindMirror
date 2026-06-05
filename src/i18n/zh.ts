@@ -243,6 +243,10 @@ export default {
     personality: '人格测评',
     stress: '压力测评',
     anxiety: '焦虑测评',
+    social: '社会支持',
+    burnout: '职业倦怠',
+    life: '生活满意度',
+    resilience: '心理韧性',
     loading: '正在加载个人数据中心...',
   },
   history: {
@@ -290,6 +294,10 @@ export default {
       personality: '性格测评',
       stress: '压力测评',
       anxiety: '焦虑测评',
+      social: '社会支持',
+      burnout: '职业倦怠',
+      life: '生活满意度',
+      resilience: '心理韧性',
     },
     group: {
       thisWeek: '本周',

@@ -244,6 +244,10 @@ export default {
     personality: 'Personality Assessment',
     stress: 'Stress Assessment',
     anxiety: 'Anxiety Assessment',
+    social: 'Social Support',
+    burnout: 'Burnout',
+    life: 'Life Satisfaction',
+    resilience: 'Resilience',
     loading: 'Loading personal data center...',
   },
   history: {
@@ -292,6 +296,10 @@ export default {
       personality: 'Personality',
       stress: 'Stress',
       anxiety: 'Anxiety',
+      social: 'Social Support',
+      burnout: 'Burnout',
+      life: 'Life Satisfaction',
+      resilience: 'Resilience',
     },
     group: {
       thisWeek: 'This week',

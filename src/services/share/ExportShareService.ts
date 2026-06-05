@@ -105,10 +105,11 @@ async function sha256Hex(input: string): Promise<string> {
 
 function buildReportHtml(result: any, lang: 'en' | 'zh' = 'zh'): string {
   const t = LABELS[lang];
-  const title = result.title || t.title;
+  // 兼容多种字段名: 优先 result.title, 否则 assessmentTitle, 最后默认
+  const title = result.title || result.assessmentTitle || t.title;
   const assessmentId = result.assessmentId || t.unknown;
   const assessmentLabel = ASSESSMENT_LABELS[lang][assessmentId] || assessmentId;
-  const time = new Date(result.timestamp || Date.now()).toLocaleString(
+  const time = new Date(result.timestamp || result.completedAt || Date.now()).toLocaleString(
     lang === 'zh' ? 'zh-CN' : 'en-US'
   );
   const totalScore = result.totalScore ?? 0;
@@ -171,10 +172,10 @@ export class ExportService {
     const lang = options.language || 'zh';
     const t = LABELS[lang];
     const lines = [
-      `# ${result.title || t.title}`,
+      `# ${result.title || result.assessmentTitle || t.title}`,
       '',
       `${t.type}: ${result.assessmentId || t.unknown}`,
-      `${t.time}: ${new Date(result.timestamp || Date.now()).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US')}`,
+      `${t.time}: ${new Date(result.timestamp || result.completedAt || Date.now()).toLocaleString(lang === 'zh' ? 'zh-CN' : 'en-US')}`,
       `${t.totalScore}: ${result.totalScore || 0}`,
       '',
       '---',
@@ -216,9 +217,9 @@ export class ExportService {
   async exportToJSON(result: any, options: ExportOptions = {}): Promise<string> {
     const data: any = {
       id: result.id,
-      title: result.title,
+      title: result.title || result.assessmentTitle,
       assessmentId: result.assessmentId,
-      timestamp: result.timestamp,
+      timestamp: result.timestamp || (result.completedAt ? new Date(result.completedAt).getTime() : undefined),
       totalScore: result.totalScore,
       traits: result.traits,
       generatedAt: new Date().toISOString(),
@@ -405,7 +406,7 @@ export class ShareService {
   private prepareShareData(result: any, _options: ShareOptions): any {
     return {
       id: result.id,
-      title: result.title,
+      title: result.title || result.assessmentTitle,
       assessmentId: result.assessmentId,
       totalScore: result.totalScore,
       traits: result.traits,

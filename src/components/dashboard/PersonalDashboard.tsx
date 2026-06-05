@@ -353,12 +353,20 @@ function ResultCard({ result, locale }: { result: UnifiedAssessmentResult; local
     personality: i18n.dashboard.personality,
     stress: i18n.dashboard.stress,
     anxiety: i18n.dashboard.anxiety,
+    social: i18n.dashboard.social,
+    burnout: i18n.dashboard.burnout,
+    life: i18n.dashboard.life,
+    resilience: i18n.dashboard.resilience,
   };
 
   const typeGradients: Record<string, string> = {
     personality: 'from-violet-500 to-fuchsia-500',
     stress: 'from-emerald-500 to-teal-500',
     anxiety: 'from-blue-500 to-indigo-500',
+    social: 'from-cyan-500 to-teal-500',
+    burnout: 'from-red-500 to-orange-500',
+    life: 'from-emerald-500 to-green-500',
+    resilience: 'from-lime-500 to-yellow-500',
   };
 
   return (

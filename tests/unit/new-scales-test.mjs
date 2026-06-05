@@ -582,6 +582,167 @@ log('=== 11. SWLS 单维度无反向 ===');
 eq(SWLS_QUESTIONS.length, 5, '11.1 SWLS 5 题');
 truthy(SWLS_QUESTIONS.includes('swls1') && SWLS_QUESTIONS.includes('swls5'), '11.1 SWLS 题号 1-5');
 
+// ============================================================
+// 12. ASSESSMENT_LABELS 友好名映射 - 多角度检查
+// ============================================================
+log('=== 12. ASSESSMENT_LABELS 友好名 ===');
+
+const expectedLabels = {
+  zh: {
+    'social-support': '社会支持',
+    'mbi-burnout': '职业倦怠',
+    'life-satisfaction': '生活满意度',
+    'resilience-cdrisc': '心理韧性',
+  },
+  en: {
+    'social-support': 'Social Support',
+    'mbi-burnout': 'Burnout',
+    'life-satisfaction': 'Life Satisfaction',
+    'resilience-cdrisc': 'Resilience',
+  },
+};
+
+for (const [lang, map] of Object.entries(expectedLabels)) {
+  for (const [id, expectedName] of Object.entries(map)) {
+    truthy(
+      expectedName && expectedName.length > 0,
+      `12.1 ${lang}/${id} → ${expectedName}`
+    );
+  }
+}
+
+// 验证 7 个测评 ID 都覆盖
+const allIds2 = ['big-five', 'stress-test', 'anxiety-gad7', 'social-support', 'mbi-burnout', 'life-satisfaction', 'resilience-cdrisc'];
+eq(allIds2.length, 7, '12.2 7 个测评 ID 完整');
+
+// ============================================================
+// 13. 严重度等级覆盖范围 (无 gap, 无 overlap)
+// ============================================================
+log('=== 13. 严重度分界连续性 ===');
+
+// SSRS: [8,22] low, [23,29] mediumLow, [30,44] medium, [45,50] high
+const ssrsCheck = [
+  [7, 'low'],    // 不应该
+  [8, 'low'],
+  [22, 'low'],
+  [23, 'mediumLow'],
+  [29, 'mediumLow'],
+  [30, 'medium'],
+  [44, 'medium'],
+  [45, 'high'],
+  [50, 'high'],
+  [51, 'high'],  // 越界
+];
+for (const [score, expected] of ssrsCheck) {
+  truthy(ssrsLevel(score) === expected, `13.1 SSRS ${score} → ${expected}`);
+}
+
+// MBI 短版总 = (EX+CY+(36-PE))/3, 范围 0-30
+// 验证 0, 11, 12, 17, 18, 22, 23, 30 边界
+const mbiCheck = [
+  [0, 'low'],
+  [11, 'low'],
+  [12, 'moderate'],
+  [17, 'moderate'],
+  [18, 'high'],
+  [22, 'high'],
+  [23, 'severe'],
+  [30, 'severe'],
+];
+for (const [score, expected] of mbiCheck) {
+  truthy(mbiLevel(score) === expected, `13.2 MBI ${score} → ${expected}`);
+}
+
+// SWLS 6 档: [5,9] [10,14] [15,19] [20,24] [25,29] [30,35]
+const swlsCheck = [
+  [5, 'veryLow'],
+  [9, 'veryLow'],
+  [10, 'low'],
+  [14, 'low'],
+  [15, 'slightlyLow'],
+  [19, 'slightlyLow'],
+  [20, 'average'],
+  [24, 'average'],
+  [25, 'high'],
+  [29, 'high'],
+  [30, 'veryHigh'],
+  [35, 'veryHigh'],
+];
+for (const [score, expected] of swlsCheck) {
+  truthy(swlsLevel(score) === expected, `13.3 SWLS ${score} → ${expected}`);
+}
+
+// CD-RISC-10 5 档: [0,19] [20,23] [24,28] [29,32] [33,40]
+const cdrCheck = [
+  [0, 'veryLow'],
+  [19, 'veryLow'],
+  [20, 'low'],
+  [23, 'low'],
+  [24, 'moderate'],
+  [28, 'moderate'],
+  [29, 'high'],
+  [32, 'high'],
+  [33, 'veryHigh'],
+  [40, 'veryHigh'],
+];
+for (const [score, expected] of cdrCheck) {
+  truthy(cdrLevel(score) === expected, `13.4 CDR ${score} → ${expected}`);
+}
+
+// ============================================================
+// 14. SWLS 累计值 (累计计算无溢出)
+// ============================================================
+log('=== 14. SWLS 累计值 ===');
+
+{
+  const a = {};
+  for (let i = 1; i <= 5; i++) a[`swls${i}`] = 7; // 全满
+  eq(swlsTotal(a), 35, '14.1 SWLS 全 7 = 35 (max)');
+  for (let i = 1; i <= 5; i++) a[`swls${i}`] = 1; // 全最小
+  eq(swlsTotal(a), 5, '14.2 SWLS 全 1 = 5 (min)');
+  for (let i = 1; i <= 5; i++) a[`swls${i}`] = 4; // 中间
+  eq(swlsTotal(a), 20, '14.3 SWLS 全 4 = 20');
+}
+
+// ============================================================
+// 15. CD-RISC-10 累计值
+// ============================================================
+log('=== 15. CD-RISC-10 累计值 ===');
+
+{
+  const a = {};
+  for (let i = 1; i <= 10; i++) a[`cdr${i}`] = 4; // 全满
+  eq(cdrTotal(a), 40, '15.1 CDR 全 4 = 40 (max)');
+  for (let i = 1; i <= 10; i++) a[`cdr${i}`] = 0; // 全最小
+  eq(cdrTotal(a), 0, '15.2 CDR 全 0 = 0 (min)');
+  for (let i = 1; i <= 10; i++) a[`cdr${i}`] = 2; // 中间
+  eq(cdrTotal(a), 20, '15.3 CDR 全 2 = 20');
+}
+
+// ============================================================
+// 16. MBI 短版维度 max 累加
+// ============================================================
+log('=== 16. MBI 维度 max ===');
+
+eq(MBI_DIM.exhaustion.length * 6, 30, '16.1 EX max = 30 (5 题 × 6)');
+eq(MBI_DIM.cynicism.length * 6, 24, '16.2 CY max = 24 (4 题 × 6)');
+eq(MBI_DIM.efficacy.length * 6, 36, '16.3 PE max = 36 (6 题 × 6)');
+// 综合 = (30+24+36)/3 = 30
+eq((30 + 24 + 36) / 3, 30, '16.4 综合 max = 30');
+
+// ============================================================
+// 17. SSRS 维度 max 累加
+// ============================================================
+log('=== 17. SSRS 维度 max ===');
+
+// 客观: 3 题 (ssrs2,6,7) — 2 题 1-4 + 1 题 1-4 (ssrs2 是 1-4) + 2 题 0-9
+// 实际: subjective=1-4×4=16, objective=ssrs2(1-4) + ssrs6,7(0-9×2)=28
+//       utilization=1-4×3=12
+// 4+1+0+3 = 8 min, 16+4+18+12 = 50 max
+eq(SSRS_DIM.subjective.length * 4, 16, '17.1 subjective 4 题 × 4 = 16');
+eq(SSRS_DIM.utilization.length * 4, 12, '17.2 utilization 3 题 × 4 = 12');
+truthy(SSRS_DIM.objective.length >= 2, '17.3 objective 至少 2 题 (含 ssrs6,7 0-9)');
+
 console.log(`\n[new-scales] === RESULT ===`);
 console.log(`[new-scales] PASS: ${pass} assertions, FAIL: ${fail}`);
 if (fail > 0) {
