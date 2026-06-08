@@ -31,34 +31,32 @@ We welcome feature requests! Please:
 
 ## 🔧 Development Setup
 
+This is the `main` branch — the static, no-backend edition. If you
+intend to work on the FastAPI + Postgres self-hosted stack, switch
+to the `server` branch; that branch has its own CONTRIBUTING
+section.
+
 ### Prerequisites
 
 - **Node.js** ≥ 18.0.0 (LTS recommended)
 - **npm** ≥ 9.0.0
-- **Python** 3.12 (only if you touch the backend)
-- **Docker** + **Docker Compose** (only for the full-stack integration test)
 
 ### Local Development
 
 ```bash
 # 1) Clone the repository
-git clone https://github.com/badhope/MindMirror.git
-cd MindMirror
+git clone https://github.com/badhope/mindmirror.git
+cd mindmirror
 
 # 2) Install dependencies
 npm install
 
-# 3) Start the dev server (with /api proxy)
+# 3) Start the dev server
 npm run dev
-
-# 4) (Optional) start the backend in another terminal
-cd backend
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-python3 init_db.py --seed
-python3 run.py
 ```
+
+Open <http://localhost:5173/>. There is no backend, no `.env` to
+fill in, no Docker. Data lives in your browser's `localStorage`.
 
 ### Useful Scripts
 
@@ -69,14 +67,14 @@ python3 run.py
 | `npm run lint`         | Run ESLint                                   |
 | `npm run format`       | Auto-format with Prettier                    |
 | `npm run format:check` | Verify formatting without writing            |
-| `npm run build`        | Production build (custom backend deployment) |
+| `npm run build`        | Production build (served from `/`)           |
 | `npm run build:pages`  | Build with `--base=/MindMirror/` (for Pages) |
 | `npm run preview`      | Preview the production build locally         |
 
 ### Project Structure
 
 ```
-MindMirror/
+mindmirror/
 ├── src/                          # React + TypeScript frontend
 │   ├── components/              # Reusable UI components
 │   │   ├── animations/          # Framer Motion animation primitives
@@ -85,27 +83,13 @@ MindMirror/
 │   ├── data/                    # Built-in assessment question banks
 │   ├── hooks/                   # Custom React hooks
 │   ├── i18n/                    # en.ts, zh.ts translation tables
-│   ├── lib/                     # apiClient + utility helpers
+│   ├── lib/                     # session storage + utility helpers
 │   ├── pages/                   # Route-level pages
-│   ├── services/                # Scoring, auth, mood, training, plugins
+│   ├── services/                # Scoring, auth (local), mood, training, plugins
 │   ├── store/                   # Zustand global state
 │   ├── types/                   # TypeScript type definitions
 │   ├── App.tsx                  # Root component (Router, layout)
 │   └── main.tsx                 # Entry: createRoot, error boundary
-├── backend/                     # FastAPI backend (Python 3.12)
-│   ├── app/
-│   │   ├── api/                 # Route handlers
-│   │   ├── core/                # Security helpers
-│   │   ├── models/              # SQLAlchemy 2 ORM models
-│   │   ├── schemas/             # Pydantic v2 schemas
-│   │   ├── config.py            # pydantic-settings
-│   │   ├── database.py          # SQLAlchemy engine + session
-│   │   ├── dependencies.py      # Reusable FastAPI dependencies
-│   │   └── main.py              # FastAPI app entrypoint
-│   ├── .env.example
-│   ├── init_db.py               # Create tables + optional demo seed
-│   ├── requirements.txt
-│   └── run.py                   # Dev runner (auto-detects docker vs sqlite)
 ├── scripts/                     # Build helpers (postbuild.mjs, …)
 ├── public/                      # Static assets (favicons, og-image, docs/)
 ├── .github/
@@ -114,10 +98,7 @@ MindMirror/
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   ├── CODEOWNERS
 │   └── dependabot.yml
-├── Dockerfile                   # Backend image
-├── Dockerfile.frontend          # Frontend image (multi-stage: node build → nginx)
-├── docker-compose.yml           # postgres + backend + frontend
-└── nginx.conf                   # Reverse proxy + SPA fallback
+└── package.json
 ```
 
 ---

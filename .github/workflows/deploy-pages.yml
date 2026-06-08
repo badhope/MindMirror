@@ -1,4 +1,4 @@
-name: Build & Deploy to GitHub Pages (official workflow runner)
+name: Build & Deploy to GitHub Pages
 
 on:
   push:
@@ -11,8 +11,7 @@ permissions:
   pages: write
   id-token: write
 
-# Prevent two deployments racing each other; the second one will
-# cancel the first (saves runner minutes).
+# Cancel a previous in-flight deployment when a new push lands.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -22,49 +21,31 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
-
-      - name: Type-check
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Build (base=/MindMirror/)
-        run: npm run build:pages
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      # Pages is served from a subpath, so the Vite build needs to know
+      # the base path. Bump VITE_BASE_PATH if the repo is renamed.
+      - run: npm run build:pages
         env:
           VITE_BASE_PATH: /MindMirror/
-
       - name: Add .nojekyll (skip Jekyll processing on Pages)
         run: touch dist/.nojekyll
-
       - name: Verify build output
         run: |
           set -e
-          echo "--- dist/ contents ---"
           ls -la dist/
-          echo "--- dist/assets/ contents ---"
-          ls -la dist/assets/ | head -20
-          echo "--- File counts ---"
-          echo "Total files in dist:        $(find dist -type f | wc -l)"
-          echo "Has 404.html:               $(test -f dist/404.html && echo YES || echo NO)"
-          echo "Has .nojekyll:              $(test -f dist/.nojekyll && echo YES || echo NO)"
-          echo "Has index.html:             $(test -f dist/index.html && echo YES || echo NO)"
-
+          test -f dist/404.html
+          test -f dist/.nojekyll
+          test -f dist/index.html
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
@@ -78,6 +59,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v5

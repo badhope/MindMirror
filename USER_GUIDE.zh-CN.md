@@ -33,7 +33,7 @@
 
 ### 3a. 在线 demo(零门槛)
 
-打开 **[mindmirror.app](https://mindmirror.app)**,所有数据存在你浏览器的
+打开 **[badhope.github.io/MindMirror](https://badhope.github.io/MindMirror/)**,所有数据存在你浏览器的
 `localStorage` 里。我们看不到。换电脑、换浏览器就从零开始。
 
 好处:不用注册,不用安装。
@@ -41,9 +41,9 @@
 
 ### 3b. 自部署(你或你公司自己的服务器)
 
-如果你想把数据放在自己控制的基础设施上 —— 比如心理咨询机构、学校、小团队 —— MindMirror 是一个小型的 FastAPI + PostgreSQL 服务。一行 `docker compose up` 就跑起来了,所有配置都在一个 `.env` 文件里。
-
-快速开始见 [README → "怎么开始"](README.zh-CN.md#-怎么开始),完整开发文档见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+这份文档对应 `main` 分支的纯静态版,没有后端。
+如果你想要多人自托管版本(FastAPI + Postgres、OAuth、自己挂反向代理),
+请在同一个仓库切到 `server` 分支,按那边的 README 走。
 
 ## 4. 隐私,用大白话讲
 

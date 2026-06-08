@@ -2,88 +2,105 @@
 
 # 🧠 MindMirror
 
-**安静、科学、属于你自己的心理测评工具**
+**你在看的是 `main` 分支 —— 静态版。** 这是一个纯前端 React 应用,
+所有回答、心情、结果都只存在你自己的浏览器 `localStorage` 里,
+没有后端、没有账号、没有服务器。打开页面做完就走,数据是你的。
 
-七个国际通用量表(性格 / 压力 / 焦虑 / 社会支持 / 职业倦怠 / 生活满意度 / 心理韧性),十到四十分钟一次。
-不用注册、没广告、你的数据你做主。
+如果你想要多人自托管版本(FastAPI + Postgres、OAuth、可以挂在
+反向代理后面),请切到 `server` 分支。两个分支共用量表内容,
+**不会合并** —— 选一个最符合你用法的。
 
-[**🌐 在线试用**](https://mindmirror.app) · [**📖 用户指南**](USER_GUIDE.zh-CN.md) · [**English**](README.md)
+[**🌐 在线试用**](https://badhope.github.io/MindMirror/) · [**📖 用户指南**](USER_GUIDE.zh-CN.md) · [**English**](README.md)
 
 </div>
 
 ---
 
+> **协议:** PolyForm Noncommercial 1.0.0。个人、学术、非营利使用免费。
+> 如果你要做付费咨询、企业内筛、托管 SaaS 等任何带营收的事情,
+> 需要单独签协议。详见 [LICENSE](LICENSE)。
+
 ## 👋 这是什么
 
-MindMirror 是一组在心理学里被反复验证过的国际通用量表 —— 大五人格 (BFI)、PSS-10 压力、GAD-7 焦虑、肖水源 SSRS 社会支持、MBI-GS 职业倦怠、Diener SWLS 生活满意度、Connor-Davidson CD-RISC-10 心理韧性 —— 装进了一个简单、安静的应用里。
+七个国际通用量表 —— 大五人格 (BFI)、PSS-10 压力、GAD-7 焦虑、
+肖水源 SSRS 社会支持、MBI-GS 职业倦怠、Diener SWLS 生活满意度、
+Connor-Davidson CD-RISC-10 心理韧性 —— 装在一个简单、安静的应用里。
 
-每个量表 5-15 分钟,完成后会给你一份多维度的解读(雷达图 + 通俗解释 + 行为档案原型),结果会自动保存到你的私人"历史"里,可以看到自己这段时间的变化。
+每个量表 5-15 分钟,完成后会给你一份多维度的解读(雷达图 + 通俗解释 + 行为档案原型),
+结果会自动保存到你的私人"历史"里,可以看到自己这段时间的变化。
 
-另外还有每日心情、成就系统、CBT 风格的训练计划生成器 —— 一个人日常自我观察需要的东西,基本都在这里了。
-
-## 👥 适合谁
-
-- **想了解自己的人** — 想看到自己的性格侧写、压力来源、焦虑触发点
-- **心理咨询师 / 教练** — 想让来访者先做一个基线测评,带着报告来谈
-- **公司 HR / 团队管理者** — 想做一次匿名的整体氛围摸底(默认 GDPR 友好)
-
-## 🌟 为什么选 MindMirror
-
-- **🔒 隐私第一** — 数据存在你自己的浏览器 / 你的服务器上,没有第三方
-- **🧪 真量表** — 临床心理学的标准问卷,不是"性格小测试"
-- **🌐 完整双语** — 中英文一键切换,新增语言只需要写两个翻译表
-- **📦 双模式** — 在线版用 FastAPI + PostgreSQL;离线版只存 `localStorage`,可以部署到任何静态托管
-- **🐳 一行启动** — `docker compose up` 就跑起来
-- **🧩 插件系统** — 用 JSON 加载自定义测评
-- **💯 MIT 协议** — 商用、自部署、改品牌都行
+另外还有每日心情、成就系统、CBT 风格的训练计划生成器。
 
 ## 🚀 怎么开始
 
-### 只想用用看?
-
-直接打开 **[mindmirror.app](https://mindmirror.app)**,所有数据存在你浏览器的 `localStorage` 里 —— 关闭浏览器、换电脑都不会上传到任何地方。
-
-### 想自己部署?
-
-你需要 Docker,大概 5 分钟:
-
 ```bash
-git clone https://github.com/badhope/MindMirror.git
-cd MindMirror
-docker compose up -d
+git clone https://github.com/badhope/mindmirror.git
+cd mindmirror
+npm install
+npm run dev
 ```
 
-打开 `http://localhost` 就用上了。详细说明见 [CONTRIBUTING.md](CONTRIBUTING.md)。如果要部署到自己的服务器(VPS、HTTPS、备份、监控),请看 [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md)。
+打开 <http://localhost:5173/> 就行。**没有 Docker、没有 `.env`、没有 Postgres**。
+数据只在你浏览器的 `localStorage` 里。
 
-### 想要 GitHub 登录?
+## 📦 部署
 
-代码已经接好了,但 **OAuth 凭据没有打包进仓库**(会泄露)。想开,先去 <https://github.com/settings/developers> 注册一个 GitHub OAuth App,然后给后端配这几个环境变量:
+最省事是 GitHub Pages:推 `main` 分支,`deploy-pages` workflow 会
+自动构建静态 bundle 并发布到 <https://badhope.github.io/MindMirror/>。
 
-```bash
-GITHUB_CLIENT_ID=<你的 OAuth App ID>
-GITHUB_CLIENT_SECRET=<你的 OAuth App Secret>
-# 必须是 GitHub "Authorization callback URL" 字段里写的那个,一字不差
-GITHUB_REDIRECT_URI=https://你的域名.example.com/api/v1/auth/oauth/github/callback
-# SPA 部署地址,用来构造 /auth/callback 跳转
-FRONTEND_URL=https://你的域名.example.com
-# 关键:生产环境必须 unset 或 false。代码在 ENVIRONMENT=production 时
-# 会硬禁用 dev shim,但你还是应该显式设成 false
-MINDMIRROR_DEV_OAUTH=false
-ENVIRONMENT=production
+任何静态托管都行(Netlify、Cloudflare Pages、S3 + CloudFront、
+你自己的 nginx)。子路径部署用 `npm run build:pages`,根路径用 `npm run build`。
+
+## 🛡️ 你的数据怎么用
+
+| 模式                          | 数据存在哪                | 我们看得到吗 |
+| ----------------------------- | ------------------------- | ------------ |
+| **GitHub Pages 在线版**       | 你浏览器的 `localStorage` | 看不到       |
+| **自托管**(`server` 分支)     | 你的 PostgreSQL           | 看不到       |
+
+代码里**没有任何**第三方追踪、广告、统计。运行时**没有任何**对外网络请求 —— 它就是一个静态 bundle。
+要看具体威胁模型,见 [SECURITY.md](SECURITY.md)。
+
+## ⚠️ 这个分支**不包含**什么
+
+`main` 分支故意**不**带:
+
+- FastAPI 后端(在 `server` 分支)
+- OAuth、邮箱多用户认证、连服务器版的游客模式(本地游客模式保留,因为就是一条 localStorage 记录)
+- Docker / docker-compose / nginx 配置
+- 数据库
+
+需要这些的话,切到 `server` 分支。
+
+## 🛠️ 技术栈
+
+| 层级   | 选型                                              |
+| ------ | ------------------------------------------------- |
+| 前端   | React 18 · TypeScript 5 · Vite 6 · Tailwind 3     |
+| 存储   | `window.localStorage`(不依赖 IndexedDB / cookies) |
+| 认证   | 无(单设备、本地)                                 |
+| CI     | GitHub Actions: typecheck + lint + build + 单测   |
+
+## 📁 项目结构
+
 ```
-
-配好之后,"使用 GitHub 继续" 按钮就会把浏览器弹到 `github.com/login/oauth/authorize`,然后回到你的 `/auth/callback`。
-
-> **这件事没人替你做。** 仓库不会自动取凭据,也没人会发邮件给你。
-> 唯一可信来源是 GitHub OAuth App 控制台。如果你的前端、后端在不同
-> 域名,记得 `CORS_ORIGIN` 要精确等于前端源,否则 OAuth 还没开始就
-> 在 preflight 阶段失败。
-
-### 想参与贡献?
-
-Bug、翻译、UI 建议都欢迎。流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-
-如果你是临床心理学从业者想推荐新量表,**请先开一个 issue 讨论** —— 我们想先聊聊授权、施测常模、文化适配,再决定是否加入。
+mindmirror/
+├── src/                  # React + TypeScript 前端
+│   ├── components/       # UI 组件(Sidebar, ErrorBoundary…)
+│   ├── data/             # 内置测评题库
+│   ├── hooks/
+│   ├── i18n/             # en.ts / zh.ts 翻译表
+│   ├── lib/              # 会话存储、工具
+│   ├── pages/            # 路由级页面
+│   ├── services/         # 评分、本地认证、心情、训练、插件
+│   ├── store/            # Zustand 全局状态
+│   ├── types/
+│   ├── App.tsx / main.tsx
+├── public/               # 静态资源
+├── .github/              # CI + Pages 部署
+├── scripts/              # 构建辅助
+└── README / CHANGELOG / CONTRIBUTING / SECURITY / LICENSE
+```
 
 ## 🧪 七个量表简介
 
@@ -91,13 +108,13 @@ Bug、翻译、UI 建议都欢迎。流程见 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 OCEAN 五维 + 子维度,使用最广泛的人格模型。
 
-| 维度                     | 含义                     |
-| ------------------------ | ------------------------ |
-| 开放性 Openness          | 想象力、好奇心、审美     |
-| 尽责性 Conscientiousness | 条理性、责任感、自律     |
-| 外向性 Extraversion      | 社交性、主动性、积极情绪 |
-| 宜人性 Agreeableness     | 合作性、信任感、同理心   |
-| 神经质 Neuroticism       | 情绪稳定性、焦虑倾向     |
+| 维度                       | 含义                       |
+| -------------------------- | -------------------------- |
+| 开放性 Openness            | 想象力、好奇心、审美       |
+| 尽责性 Conscientiousness   | 条理性、责任感、自律       |
+| 外向性 Extraversion        | 社交性、主动性、积极情绪   |
+| 宜人性 Agreeableness       | 合作性、信任感、同理心     |
+| 神经质 Neuroticism         | 情绪稳定性、焦虑倾向       |
 
 ### PSS-10 感知压力量表
 
@@ -105,126 +122,34 @@ OCEAN 五维 + 子维度,使用最广泛的人格模型。
 
 ### GAD-7 广泛性焦虑量表
 
-7 题,0–21 分,使用标准临床切点(轻 / 轻中 / 中重 / 重)。心理咨询师常用的初筛工具。
+7 题,0–21 分,使用标准临床切点。心理咨询师常用的初筛工具。
 
 ### SSRS 社会支持评定量表 (43 题)
 
-肖水源 1986 编制的《社会支持评定量表》,10 题核心 + 30 题题库(主观支持 / 客观支持 / 利用度三维度各 10 题)+ 3 道行为情景分歧题。完整范围 29-180 分。
+肖水源 1986 编制的《社会支持评定量表》,10 题核心 + 30 题题库 + 3 道行为情景分歧题。完整范围 29-180 分。
 
 ### MBI-GS 职业倦怠量表 (40 题)
 
-Maslach & Leiter 通用版,15 题核心 + 22 题题库(情感耗竭 7 / 犬儒主义 6 / 职业效能 9)+ 3 道行为分歧题。综合倦怠分范围 0-74(按比例缩放自原 15 题 0-30)。4 种倦怠原型:高投入成长型 / 弹性务实型 / 压抑消耗型 / 犬儒耗竭型。
+Maslach & Leiter 通用版,15 题核心 + 22 题题库 + 3 道行为分歧题。4 种倦怠原型。
 
 ### SWLS 生活满意度量表 (40 题)
 
-Diener 1985 编制,5 题核心 + 33 题题库(关系 / 健康 / 成就 / 成长 / 意义 / 日常六主题)+ 2 道行为分歧题。范围 38-266 分,6 档严重度(极不满意 → 高度满意)。包含反向题检测顺从偏差。
+Diener 1985 编制,5 题核心 + 33 题题库 + 2 道行为分歧题。
 
 ### CD-RISC-10 心理韧性量表 (40 题)
 
-Connor & Davidson 2003 编制,10 题核心 + 27 题题库(适应性 6 / 关系支持 5 / 意义与目标 6 / 自我效能 5 / 乐观 5)+ 3 道行为分歧题。范围 0-148 分,5 档韧性(较低 → 很强)。
+Connor & Davidson 2003 编制,10 题核心 + 27 题题库 + 3 道行为分歧题。
 
-## 🛡️ 你的数据怎么用
+## 🤝 参与贡献
 
-| 模式                         | 数据存在哪                | 我们看得到吗          |
-| ---------------------------- | ------------------------- | --------------------- |
-| **在线 demo** (GitHub Pages) | 你浏览器的 `localStorage` | ❌ 看不到             |
-| **自部署** (你的服务器)      | 你的 PostgreSQL           | ❌ 看不到             |
-| **Cloud 版** (未来)          | 我们控制的服务器          | ❌ 看不到(同自部署栈) |
+Bug、翻译、UI 建议都欢迎。流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-代码库里**没有任何**第三方追踪、广告、统计。详情见 [SECURITY.md](SECURITY.md)。
-
-## 🛠️ 技术栈(给好奇的人)
-
-| 层级   | 选型                                                          |
-| ------ | ------------------------------------------------------------- |
-| 前端   | React 18 · TypeScript 5 · Vite 6 · Tailwind 3 · Framer Motion |
-| 后端   | Python 3.12 · FastAPI 0.115 · SQLAlchemy 2 · Pydantic v2      |
-| 认证   | JWT (HS256) · bcrypt · IP 限流 20 次/分钟                     |
-| 数据库 | PostgreSQL 15 (Docker) · SQLite (开发兜底)                    |
-| 部署   | 静态站 → GitHub Pages;后端 → 任意容器                         |
-| CI     | GitHub Actions: typecheck + lint + build + pytest             |
-
-## 🔌 API 速查
-
-所有接口前缀 `/api/v1`,交互式文档在 `/api/v1/docs`。`✅` 表示需 `Authorization: Bearer <jwt>`。
-
-| 方法                                | 路径             | 鉴权 | 说明                 |
-| ----------------------------------- | ---------------- | ---- | -------------------- |
-| `GET`                               | `/health`        | —    | 健康探针             |
-| `POST`                              | `/auth/register` | —    | 注册                 |
-| `POST`                              | `/auth/login`    | —    | 登录 → JWT           |
-| `POST`                              | `/auth/guest`    | —    | 游客模式             |
-| `GET` / `PATCH`                     | `/auth/me`       | ✅   | 当前用户 / 修改资料  |
-| `DELETE`                            | `/auth/account`  | ✅   | 删除账号(需密码确认) |
-| `GET`                               | `/assessments/`  | —    | 列出所有测评         |
-| `GET` / `POST`                      | `/results/`      | ✅   | 测评结果列表 / 提交  |
-| `GET` / `POST` / `PATCH` / `DELETE` | `/mood/`         | ✅   | 心情记录             |
-| `GET` / `POST` / `DELETE`           | `/achievements/` | ✅   | 成就系统             |
-| `GET`                               | `/training/`     | ✅   | 训练计划             |
-
-## 📁 项目结构
-
-```
-MindMirror/
-├── src/                  # React + TypeScript 前端
-│   ├── components/       # UI 组件(Sidebar, ErrorBoundary…)
-│   ├── data/             # 内置测评题库
-│   ├── hooks/
-│   ├── i18n/             # en.ts / zh.ts 翻译表
-│   ├── lib/              # apiClient, utils
-│   ├── pages/            # 路由级页面
-│   ├── services/         # 评分, 认证, 心情, 训练, 插件
-│   ├── store/            # Zustand 全局状态
-│   ├── types/
-│   ├── App.tsx / main.tsx
-├── backend/              # FastAPI + SQLAlchemy
-│   ├── app/
-│   │   ├── api/          # 路由处理
-│   │   ├── core/         # 安全、日志、限流
-│   │   ├── models/       # ORM 模型
-│   │   ├── schemas/      # Pydantic schemas
-│   │   ├── config.py
-│   │   ├── database.py
-│   │   ├── dependencies.py
-│   │   └── main.py
-│   ├── tests/            # pytest 套件
-│   ├── .env.example
-│   ├── init_db.py
-│   ├── requirements.txt
-│   └── run.py
-├── public/               # 静态资源
-├── .github/              # CI + Pages 部署
-├── Dockerfile / docker-compose.yml
-├── Makefile
-└── README / CHANGELOG / CONTRIBUTING / SECURITY / LICENSE
-```
-
-## 🔒 安全
-
-> 下面是"代码无法替你做"的事。**全部要自己处理**,漏一项迟早出事。
-
-- **永远不要把密钥 commit 进去。** `.env`、真实数据库文件、`__pycache__/` 都在 `.gitignore` 里 —— 这是有原因的。一旦把 GitHub Personal Access Token、OAuth client secret、`SECRET_KEY`、数据库 URL 之类的粘进了 commit,**立刻轮换**。git history 是删不掉的,`git log -p` 就能抓到。
-- **用 fine-grained PAT,不要用 classic。** Classic PAT(`ghp_…` 开头)会拿到你账号所有 scope。你只是为了推自己仓库的话,创建 token 时只勾 `Contents: Read and write` 一个权限、只授给这一个 repo。不要 `repo`、不要 `workflow`、不要 `admin:org`。
-- **永远不要把真实 PAT 贴进 AI 助手的对话框。** 即使助手不会回显,对话记录也可能被日志、被索引、被真人读到。生成一个一次性、用完即弃、scope 最小的 token,用一次就 revoke。任何离开过你电脑的 token 都建议轮换。
-- **`SECRET_KEY` 一次性生成,放进 secret manager。** 用 `openssl rand -base64 64`。丢了 = 所有 JWT 失效;被偷 = 攻击者可以给任意用户签发 session。
-- **`MINDMIRROR_DEV_OAUTH=true` 只在本机用。** 它完全绕过 GitHub,你输什么 login 就接受什么。代码在 `ENVIRONMENT=production` 时会硬禁用,但你也得保证生产 `.env` 或容器 config 里别误开。
-- **`CORS_ORIGIN` 必须精确等于前端源。** 后端在 `api.example.com`、前端在 `app.example.com` 的话,设 `CORS_ORIGIN=https://app.example.com` —— 不要通配符,不要列表,要原样。OAuth 失败时往往就是这个错,而且错误信息是"silently fail"。
-- **HTTPS 在生产环境不是可选项。** GitHub OAuth 强制 redirect URI 用 HTTPS(只有 `localhost` 例外);`Authorization` 头里的 JWT 否则就是明文传输。前面放 Caddy / Traefik / nginx。
-- **GitHub Pages 缓存很凶。** 你推了修复,Pages 还会发旧 bundle 几分钟。测试时 URL 后面加 `?v=2` 或者 `Ctrl+Shift+R` 强刷绕 CDN。
-- **Dev shim 会在数据库里建 `*.example` 账号。** 这些账号永久存在;密码哈希是随机串,不能从 SPA 登录。别把 `dev_mindmirror.db` 之类带真实数据的 db 文件 `git push` 出去。
-- **邮箱登录和 GitHub 登录可以同时开。** 不是二选一,用户用哪个都行,最终都进同一张 `users` 表。
-
----
-
-- 生产部署**必须**设置强随机 `SECRET_KEY`:`openssl rand -base64 64`
-- 不要把后端或 PostgreSQL 端口暴露公网
-- 生产环境请把 nginx 放在 HTTPS 后面(Caddy / Traefik / Cloudflare)
-- 怀疑 `SECRET_KEY` 泄露请立即轮换 —— 这会让所有现有会话失效
-- 漏洞私下上报 → [SECURITY.md](SECURITY.md)
+如果你是临床心理学从业者想推荐新量表,**请先开一个 issue 讨论** —— 我们想先聊聊授权、施测常模、文化适配,再决定是否加入。
 
 ## 📄 协议与引用
 
-本项目采用 [MIT 协议](LICENSE) © 2024–2026 badhope。
+本项目采用 [PolyForm Noncommercial 1.0.0](LICENSE) © 2024–2026 badhope。
+商用前请先联系作者。
 
 如果用在学术工作中,请引用底层量表([CITATION.cff](CITATION.cff)):
 
@@ -234,7 +159,7 @@ MindMirror/
 
 ## 🙏 致谢
 
-- 测评方法论基于 [IPIP](https://ipip.ori.org/) (国际人格题库)
+- 测评方法论基于 [IPIP](https://ipip.ori.org/)(国际人格题库)
 - 灵感来自 [MindGarden](https://www.mindgarden.com/) 和 [16Personalities](https://www.16personalities.com/)
 - 用 ❤️ 和开源软件构建
 

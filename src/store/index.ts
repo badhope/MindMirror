@@ -160,8 +160,6 @@ interface AppState {
   login: (credentials: AuthCredentials) => Promise<boolean>;
   register: (data: RegisterData) => Promise<boolean>;
   loginAsGuest: () => Promise<boolean>;
-  loginWithOAuth: (provider: 'google' | 'github') => Promise<void>;
-  completeOAuthSession: (user: User, token: string) => void;
   logout: () => Promise<void>;
   clearAuthError: () => void;
 
@@ -215,7 +213,9 @@ export const useAppStore = create<AppState>((set, get) => {
     initializeAuth: async () => {
       set({ authLoading: true });
       try {
-        const user = await authService.restoreSession();
+        // No server to round-trip to in the static build — just read
+        // whatever is in localStorage and trust the user record.
+        const user = authService.getCurrentUser();
         set({
           user,
           isAuthenticated: !!user,
@@ -326,48 +326,6 @@ export const useAppStore = create<AppState>((set, get) => {
         });
         return false;
       }
-    },
-
-    loginWithOAuth: async provider => {
-      set({ authLoading: true, authError: null });
-      try {
-        const response = await authService.loginWithOAuth(provider);
-        if (!response.success && response.error) {
-          set({
-            authLoading: false,
-            authError: response.error,
-          });
-        } else {
-          set({ authLoading: false });
-        }
-      } catch {
-        set({
-          authLoading: false,
-          authError: 'OAuth login failed. Please try again.',
-        });
-      }
-    },
-
-    /**
-     * Called by the /auth/callback page after a successful OAuth
-     * round-trip. We've already persisted token + user to localStorage
-     * inside `authService.handleOAuthCallback`; here we just need to
-     * mirror them into the zustand store so the protected-route
-     * guards re-evaluate.
-     */
-    completeOAuthSession: (user, token) => {
-      try {
-        localStorage.setItem('mindmirror_token', token);
-        localStorage.setItem('mindmirror_user', JSON.stringify(user));
-      } catch {
-        // ignore — non-secure contexts (private mode) may reject writes
-      }
-      set({
-        user,
-        isAuthenticated: true,
-        authLoading: false,
-        authError: null,
-      });
     },
 
     logout: async () => {

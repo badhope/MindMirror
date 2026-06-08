@@ -2,8 +2,8 @@
   "name": "mindmirror",
   "version": "1.1.0",
   "private": false,
-  "description": "MindMirror is an open-source, self-hostable, privacy-first psychological assessment platform: Big Five personality (60), PSS-10 stress, GAD-7 anxiety, SSRS social support (43), MBI-GS burnout (40), SWLS life satisfaction (40), CD-RISC-10 resilience (40), mood tracking and mental training programs.",
-  "description_zh": "MindMirror 是一个开源、可自托管、隐私优先的心理测评平台：大五人格 (60 题)、PSS-10 压力、GAD-7 焦虑、SSRS 社会支持 (43 题)、MBI-GS 职业倦怠 (40 题)、SWLS 生活满意度 (40 题)、CD-RISC-10 心理韧性 (40 题)、心情追踪与心理训练。",
+  "description": "MindMirror is a static, GitHub-Pages-deployable, privacy-first psychological assessment tool: Big Five personality (60), PSS-10 stress, GAD-7 anxiety, SSRS social support (43), MBI-GS burnout (40), SWLS life satisfaction (40), CD-RISC-10 resilience (40), mood tracking and mental training programs. All data stays in the browser's localStorage — no backend, no account, no server.",
+  "description_zh": "MindMirror 是一个静态、可部署到 GitHub Pages、隐私优先的心理测评工具：大五人格 (60 题)、PSS-10 压力、GAD-7 焦虑、SSRS 社会支持 (43 题)、MBI-GS 职业倦怠 (40 题)、SWLS 生活满意度 (40 题)、CD-RISC-10 心理韧性 (40 题)、心情追踪与心理训练。所有数据都存在浏览器的 localStorage 里，没有后端、没有账号、没有服务器。",
   "type": "module",
   "engines": {
     "node": ">=18.0.0",
@@ -33,8 +33,10 @@
     "ipip",
     "mental-health",
     "self-discovery",
-    "self-hosted",
+    "static-site",
+    "github-pages",
     "privacy",
+    "localstorage",
     "stress-test",
     "pss-10",
     "anxiety-assessment",
@@ -58,11 +60,8 @@
     "vite",
     "tailwindcss",
     "framer-motion",
-    "fastapi",
-    "postgresql",
-    "docker",
     "pwa",
-    "open-source"
+    "offline-first"
   ],
   "author": {
     "name": "badhope",

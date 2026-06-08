@@ -39,7 +39,8 @@ back here if anything is unclear.
 
 ### 3a. The online demo (no setup)
 
-Point your browser at **[mindmirror.app](https://mindmirror.app)**.
+Point your browser at
+**[badhope.github.io/MindMirror](https://badhope.github.io/MindMirror/)**.
 Everything you do lives in `localStorage` on your device. We don't
 see it, and you can wipe it any time with `localStorage.clear()` in
 the DevTools console.
@@ -49,14 +50,10 @@ Cons: tied to one device/browser, no sync.
 
 ### 3b. Self-hosting (your own server)
 
-If you want your data on infrastructure you control — for a clinic, a
-school, a small team — MindMirror runs as a small FastAPI + Postgres
-service. One `docker compose up` and you're live; everything
-configurable is in a single `.env` file.
-
-See the [README → "Run the full version"](README.md#run-the-full-version-local--your-own-database)
-for the quickstart, and [CONTRIBUTING.md](CONTRIBUTING.md) for the
-full dev setup.
+This page is for the static, no-backend build on the `main` branch.
+If you want a multi-user self-hosted install (FastAPI + Postgres,
+OAuth, your own reverse proxy), switch to the `server` branch in
+the same repo and follow the README there.
 
 ## 4. Privacy in plain English
 

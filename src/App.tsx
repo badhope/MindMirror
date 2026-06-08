@@ -42,9 +42,6 @@ const PersonalDashboard = lazy(() =>
 const PluginManager = lazy(() =>
   import('./components/plugin/PluginManager').then(m => ({ default: m.PluginManager }))
 );
-const AuthCallback = lazy(() =>
-  import('./pages/AuthCallback').then(m => ({ default: m.AuthCallback }))
-);
 const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 const SharedView = lazy(() => import('./pages/SharedView').then(m => ({ default: m.SharedView })));
 
@@ -244,16 +241,6 @@ function AnimatedRoutes() {
             <PageTransition direction="up">
               <LazyRoute>
                 <About />
-              </LazyRoute>
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/auth/callback"
-          element={
-            <PageTransition direction="fade">
-              <LazyRoute>
-                <AuthCallback />
               </LazyRoute>
             </PageTransition>
           }

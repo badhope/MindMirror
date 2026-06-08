@@ -1,49 +1,8 @@
-const DEFAULT_BASE_URL = '/api/v1';
-
-const envBase = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
-
-export const API_BASE_URL =
-  envBase && envBase.length > 0 ? envBase.replace(/\/$/, '') : DEFAULT_BASE_URL;
-
-export const API_TIMEOUT_MS = 15_000;
-
-export class ApiError extends Error {
-  status: number;
-  detail: unknown;
-  constructor(message: string, status: number, detail?: unknown) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-    this.detail = detail;
-  }
-}
-
-type RequestOptions = {
-  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-  body?: unknown;
-  query?: Record<string, string | number | boolean | undefined | null>;
-  headers?: Record<string, string>;
-  signal?: AbortSignal;
-  formData?: FormData;
-  skipAuth?: boolean;
-};
-
-let tokenGetter: () => string | null = () => null;
-let onUnauthorized: () => void = () => undefined;
-
-export function configureApi(opts: { getToken: () => string | null; onUnauthorized: () => void }) {
-  tokenGetter = opts.getToken;
-  onUnauthorized = opts.onUnauthorized;
-}
-
-// All keys the app writes to localStorage that belong to the **current
-// session** and must therefore be wiped on logout or a 401 from the
-// backend.  Listing them in one place means the next person who adds
-// a key can't forget to add it here.
-//
-// Note: user *preferences* (theme, locale, sidebar) deliberately stay
-// on this device across logins — they belong to the browser, not the
-// session.
+// Session-scoped localStorage keys that must be wiped on logout or
+// "switch user". User preferences (theme, locale, sidebar) deliberately
+// stay on this device across logins — they belong to the browser, not
+// the session. Centralizing the list here means the next person who
+// adds a key can't forget to add it here.
 export const SESSION_STORAGE_KEYS = [
   // auth
   'mindmirror_user',
@@ -78,107 +37,12 @@ export const SESSION_STORAGE_KEYS = [
   'assessment_trace_logs',
 ] as const;
 
-export function clearLocalSession() {
+export function clearLocalSession(): void {
   for (const key of SESSION_STORAGE_KEYS) {
     try {
       localStorage.removeItem(key);
     } catch {
-      // ignore — storage might be disabled in private mode etc.
+      // storage may be disabled in private mode
     }
-  }
-}
-
-function buildUrl(path: string, query?: RequestOptions['query']): string {
-  // If `path` is an absolute URL (http://... or https://...) we leave it
-  // alone — useful for hitting an external CDN, OAuth provider, etc.
-  // Otherwise we prefix it with API_BASE_URL. We previously had a
-  // `endsWith('/api/v1')` short-circuit that dropped the base entirely,
-  // which silently turned /auth/oauth/github/authorize into a
-  // relative-path request to the Vite dev server and got 404'd. The
-  // short-circuit was only there to support a hand-written `base`
-  // like `https://api.example.com/api/v1` in older test setups, and
-  // removing it doesn't regress that: a full URL still goes through
-  // the `path.startsWith('http')` branch above.
-  const base =
-    path.startsWith('http://') || path.startsWith('https://') ? '' : API_BASE_URL;
-  const url = base + (path.startsWith('/') ? path : `/${path}`);
-  if (!query) return url;
-  const params = new URLSearchParams();
-  for (const [k, v] of Object.entries(query)) {
-    if (v === undefined || v === null) continue;
-    params.append(k, String(v));
-  }
-  const qs = params.toString();
-  return qs ? `${url}?${qs}` : url;
-}
-
-export async function apiRequest<T = unknown>(
-  path: string,
-  options: RequestOptions = {}
-): Promise<T> {
-  const { method = 'GET', body, query, headers = {}, signal, formData, skipAuth = false } = options;
-
-  const url = buildUrl(path, query);
-  const finalHeaders: Record<string, string> = { Accept: 'application/json', ...headers };
-
-  let payload: BodyInit | undefined;
-  if (formData) {
-    payload = formData;
-  } else if (body !== undefined) {
-    finalHeaders['Content-Type'] = 'application/json';
-    payload = JSON.stringify(body);
-  }
-
-  if (!skipAuth) {
-    const token = tokenGetter();
-    if (token) finalHeaders['Authorization'] = `Bearer ${token}`;
-  }
-
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), API_TIMEOUT_MS);
-  if (signal) {
-    signal.addEventListener('abort', () => controller.abort());
-  }
-
-  try {
-    const res = await fetch(url, {
-      method,
-      headers: finalHeaders,
-      body: payload,
-      signal: controller.signal,
-    });
-    window.clearTimeout(timeoutId);
-
-    if (res.status === 204) {
-      return undefined as T;
-    }
-
-    const text = await res.text();
-    const data = text ? safeJsonParse(text) : null;
-
-    if (!res.ok) {
-      if (res.status === 401) onUnauthorized();
-      const detail = (data && (data as { detail?: unknown }).detail) ?? data ?? res.statusText;
-      const message = typeof detail === 'string' ? detail : res.statusText || 'Request failed';
-      throw new ApiError(message, res.status, detail);
-    }
-
-    return data as T;
-  } catch (err) {
-    window.clearTimeout(timeoutId);
-    if (err instanceof ApiError) throw err;
-    if (err instanceof DOMException && err.name === 'AbortError') {
-      throw new ApiError('Request timeout', 0);
-    }
-    const message = err instanceof Error ? err.message : 'Network error';
-    throw new ApiError(message, 0);
-  }
-}
-
-function safeJsonParse(text: string): unknown {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return text;
   }
 }

@@ -15,7 +15,6 @@ export const Register = () => {
     isAuthenticated,
     clearAuthError,
     locale,
-    loginWithOAuth,
   } = useAppStore();
   const i18n = getTranslation(locale);
 
@@ -399,40 +398,6 @@ export const Register = () => {
                   i18n.auth.register
                 )}
               </motion.button>
-
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-slate-500">{i18n.auth.orContinueWith}</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <motion.button
-                  type="button"
-                  onClick={() => loginWithOAuth('google')}
-                  disabled={authLoading}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.02, borderColor: '#93c5fd' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span className="text-xl">🔵</span>
-                  <span className="text-sm font-medium text-slate-700">Google</span>
-                </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={() => loginWithOAuth('github')}
-                  disabled={authLoading}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: 1.02, borderColor: '#1f2937' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span className="text-xl">⚫</span>
-                  <span className="text-sm font-medium text-slate-700">GitHub</span>
-                </motion.button>
-              </div>
             </form>
           </ShakeOnError>
 
