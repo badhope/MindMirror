@@ -161,7 +161,7 @@ function buildReportHtml(result: any, lang: 'en' | 'zh' = 'zh'): string {
       : ''
   }
   ${summary ? `<div class="summary">${escapeHtml(summary)}</div>` : ''}
-  <div class="footer">MindMirror · mindmirror.app</div>
+  <div class="footer">MindMirror · github.com/badhope/mindmirror</div>
 </body>
 </html>`;
   return html;

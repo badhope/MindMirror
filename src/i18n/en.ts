@@ -427,7 +427,7 @@ export default {
     contact: {
       title: 'Questions or feedback?',
       description: 'Drop us a line — we usually reply within 1–3 working days.',
-      email: 'support#mindmirror.app',
+      email: 'open an issue on github.com/badhope/mindmirror/issues',
       emailNote: 'Replace # with @ to send',
     },
     readMore: 'Want the full walkthrough?',

@@ -348,7 +348,7 @@ export default {
       bullets: [
         '基于国际通用量表(BFI, PSS-10, GAD-7)',
         '十几分钟就能完成,不会被打扰',
-        '结果保存在你本地或你自己的服务器里',
+        '结果只存在你本地,绝不外传',
       ],
     },
     who: {
@@ -425,7 +425,7 @@ export default {
     contact: {
       title: '有问题或建议?',
       description: '写信给我们,通常 1-3 个工作日内回复。',
-      email: 'support#mindmirror.app',
+      email: '在 github.com/badhope/mindmirror/issues 提 issue',
       emailNote: '把 # 换成 @ 发送邮件',
     },
     readMore: '想看更详细的使用说明?',

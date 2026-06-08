@@ -1,173 +1,204 @@
-<div align="center">
+# MindMirror(心镜)
 
-# 🧠 MindMirror
+> 一个安静的自测小工具,整个跑在你浏览器里。
+> 没账号、没埋点、没服务器。就是一张网页加一个 `localStorage`。
 
-**你在看的是 `main` 分支 —— 静态版。** 这是一个纯前端 React 应用,
-所有回答、心情、结果都只存在你自己的浏览器 `localStorage` 里,
-没有后端、没有账号、没有服务器。打开页面做完就走,数据是你的。
-
-如果你想要多人自托管版本(FastAPI + Postgres、OAuth、可以挂在
-反向代理后面),请切到 `server` 分支。两个分支共用量表内容,
-**不会合并** —— 选一个最符合你用法的。
-
-[**🌐 在线试用**](https://badhope.github.io/MindMirror/) · [**📖 用户指南**](USER_GUIDE.zh-CN.md) · [**English**](README.md)
-
-</div>
+🌐 **在线试用:** <https://badhope.github.io/MindMirror/>
+📖 **[用户指南](USER_GUIDE.zh-CN.md)** (English: [USER_GUIDE.md](USER_GUIDE.md))
+🪟 **想自托管带后端的版本?** 去 [`server` 分支](https://github.com/badhope/mindmirror/tree/server)
+看 FastAPI + PostgreSQL 的那个。两个分支并列存在、**不合并** —— 选一个适合你用法的。
 
 ---
 
-> **协议:** PolyForm Noncommercial 1.0.0。个人、学术、非营利使用免费。
-> 如果你要做付费咨询、企业内筛、托管 SaaS 等任何带营收的事情,
-> 需要单独签协议。详见 [LICENSE](LICENSE)。
+## 一段话讲清楚这是什么
 
-## 👋 这是什么
+单页 React 应用。打开它,答完题,看到报告。整个东西就是一个
+静态 bundle;你的答案**唯一**会存在的地方,是你自己浏览器的
+`localStorage`。你关掉标签、换台设备、清掉站点数据,**全部
+归零** —— 这是 feature,不是 bug。我们没有数据库。没有服务器。
+没有那种写 4000 字"我们如何珍视你的隐私"、最后还是坦白在收
+47 类埋点的页面。没什么可收集的。
 
-七个国际通用量表 —— 大五人格 (BFI)、PSS-10 压力、GAD-7 焦虑、
-肖水源 SSRS 社会支持、MBI-GS 职业倦怠、Diener SWLS 生活满意度、
-Connor-Davidson CD-RISC-10 心理韧性 —— 装在一个简单、安静的应用里。
+开箱 7 个**正经做过信效度**的心理量表:
 
-每个量表 5-15 分钟,完成后会给你一份多维度的解读(雷达图 + 通俗解释 + 行为档案原型),
-结果会自动保存到你的私人"历史"里,可以看到自己这段时间的变化。
+| 量表 | 测什么 | 题数 |
+|---|---|---|
+| **BFI** (大五 / OCEAN) | 现代心理研究用得最多的人格五因素 | 60 |
+| **PSS-10** | 上个月里你被事情压住的频率 | 33 |
+| **GAD-7** | 广泛性焦虑,带标准临床切点 | 28 |
+| **SSRS** (肖水源 1986) | 主观 / 客观 / 利用度三维度社会支持 | 43 |
+| **MBI-GS** (Maslach) | 职业倦怠:情绪耗竭 / 去人格化 / 成就感降低 | 40 |
+| **SWLS** (Diener) | 生活满意度,带子主题分 | 40 |
+| **CD-RISC-10** (Connor-Davidson) | 心理韧性,带子维度 | 40 |
 
-另外还有每日心情、成就系统、CBT 风格的训练计划生成器。
+长版本量表用的是**维度对齐的题库** + **行为锚定的扩展题**,
+把那些"在抽象自评上很像、但实际生活不一样"的人区分开。
+做完题你会拿到一份多轴报告(雷达图 + 通俗解释 + 行为锚定
+原型),结果存进你的私人历史里,几周几个月后能看到自己在变。
 
-## 🚀 怎么开始
+量表之外,还有一个每日心情日志、CBT 风格的训练计划生成器、
+成就系统。**没有一项是必用的** —— 你只想做个量表,其它都关掉就行。
+
+## 这东西**不是**什么
+
+边边角角说清楚比较重要:
+
+- **不是临床诊断工具。** GAD-7 拿到 17 分,是筛查提示,不是
+  诊断。哪个量表说的事让你担心,带着结果去找一个认识你的临床
+  工作者。
+- **不是研究工具。** 长版本量表没有按原始样本重新做信效度;
+  它们存在的目的是让你看到自己更丰富的画像,不是让你发论文。
+  原始作者和引用在 [CITATION.cff](CITATION.cff) —— 引用他们,
+  不是我们。
+- **不是同步服务。** 没云、没账号。换个浏览器,从零开始。这是
+  隐私保证的代价。
+- **不是付费产品。** 协议是 [PolyForm Noncommercial 1.0.0](LICENSE):
+  个人、学术、非营利免费。把它包成付费咨询产品、卖给企业做员工
+  筛查、收订阅费 —— 这些都需要单独签协议(在仓库里提 issue)。
+- **不是 [16Personalities](https://www.16personalities.com/)、[MindGarden](https://www.mindgarden.com/)
+  或任何具体测评厂商的克隆。** 我们跟他们都没关系。
+
+## 怎么用
+
+### 当一个普通用户
+
+1. 打开 <https://badhope.github.io/MindMirror/>
+2. 选一个量表,大部分 5-15 分钟。每题不限时,但页面会在你答得太
+   快的时候提醒(因为"全都同意"那种 acquiescent responding 会毁掉
+   结果)。
+3. 看报告:数字分数 + 切点、雷达图、行为锚定原型,三部分。
+4. **可选:** 注册一个本地账号(PBKDF2 20 万轮,完全在浏览器里,
+   不发往任何地方)。这样可以跨量表保留历史,看自己几个月的变化。
+   想清掉就 DevTools 里跑 `localStorage.clear()`。
+
+也可以完全匿名用游客模式。本地账号只是为了把你自己的历史组织起来。
+
+### 当一个想自己部署的人
+
+不需要我们,build 出来就是纯静态文件。
 
 ```bash
 git clone https://github.com/badhope/mindmirror.git
 cd mindmirror
 npm install
-npm run dev
+npm run build           # 部署在根路径
+# 或者
+npm run build:pages     # 部署在 /MindMirror/ 子路径(GitHub Pages)
 ```
 
-打开 <http://localhost:5173/> 就行。**没有 Docker、没有 `.env`、没有 Postgres**。
-数据只在你浏览器的 `localStorage` 里。
+`dist/` 目录就是完整应用。扔到任何能托管静态文件的地方。不需要写
+`nginx.conf`、不需要设 `DATABASE_URL`、不需要 `docker compose up`
+去盯着。页面加载、页面工作、页面不打电话回家。
 
-## 📦 部署
+CI workflow (`.github/workflows/deploy-pages.yml`) 会在每次 push 到
+`main` 的时候自动发到 GitHub Pages。如果你 fork 了,把 workflow 里
+的 `VITE_BASE_PATH` 改成你的仓库名,Pages 源对应改一下就行。
 
-最省事是 GitHub Pages:推 `main` 分支,`deploy-pages` workflow 会
-自动构建静态 bundle 并发布到 <https://badhope.github.io/MindMirror/>。
+### 当一个临床工作者或研究者
 
-任何静态托管都行(Netlify、Cloudflare Pages、S3 + CloudFront、
-你自己的 nginx)。子路径部署用 `npm run build:pages`,根路径用 `npm run build`。
+量表题目和评分算法在 `src/data/` 和 `src/services/`。每个量表
+是一个独立模块,从头读到尾不用学应用其它部分:
 
-## 🛡️ 你的数据怎么用
+- `src/data/bfiData.ts`、`pss10Data.ts`、…、`resilienceData.ts` —
+  原题库,含反向量标记
+- `src/services/{量表名}Scoring.ts` — 每个量表的评分服务,有原始
+  作者切点的都保留了
+- `src/types/index.ts` — `UnifiedAssessmentResult` 类型,dashboard
+  / history / share 都消费这个
 
-| 模式                          | 数据存在哪                | 我们看得到吗 |
-| ----------------------------- | ------------------------- | ------------ |
-| **GitHub Pages 在线版**       | 你浏览器的 `localStorage` | 看不到       |
-| **自托管**(`server` 分支)     | 你的 PostgreSQL           | 看不到       |
+整个代码库就是文档。没有 API 可以对接,但如果你想要某个人的历史
+CSV,`Personal Data Center` 页面有一个按钮,跑在客户端。
 
-代码里**没有任何**第三方追踪、广告、统计。运行时**没有任何**对外网络请求 —— 它就是一个静态 bundle。
-要看具体威胁模型,见 [SECURITY.md](SECURITY.md)。
+## 怎么扩展
 
-## ⚠️ 这个分支**不包含**什么
+三层,按从轻到重排。
 
-`main` 分支故意**不**带:
+### 1. 加翻译
 
-- FastAPI 后端(在 `server` 分支)
-- OAuth、邮箱多用户认证、连服务器版的游客模式(本地游客模式保留,因为就是一条 localStorage 记录)
-- Docker / docker-compose / nginx 配置
-- 数据库
+`src/i18n/en.ts` 和 `src/i18n/zh.ts` 是平铺的 key-value 表。找
+个缺失的 key,填上翻译,跑 `npm run typecheck`。不需要改其它文件,
+应用运行时读它。
 
-需要这些的话,切到 `server` 分支。
+### 2. 加新量表("长路")
 
-## 🛠️ 技术栈
+大约一天的工作,大部分时间在敲题目。看 `src/data/resilienceData.ts`
+当模板 —— 这是仓库里结构最干净的一份。需要做的事:
 
-| 层级   | 选型                                              |
-| ------ | ------------------------------------------------- |
-| 前端   | React 18 · TypeScript 5 · Vite 6 · Tailwind 3     |
-| 存储   | `window.localStorage`(不依赖 IndexedDB / cookies) |
-| 认证   | 无(单设备、本地)                                 |
-| CI     | GitHub Actions: typecheck + lint + build + 单测   |
+1. 新建 `src/data/<你的量表>Data.ts`,导出题库、维度元数据、
+   严重程度分档、原型定义。反向题在题目层标记,不要在评分时打补丁。
+2. 新建 `src/services/<你的量表>Scoring.ts`,导出一个函数,接收
+   原始答案,返回 `UnifiedAssessmentResult`。
+3. 在 `src/App.tsx` 加一个新页面路由,在
+   `src/components/AssessmentList.tsx` 加一个入口。
+4. i18n 字符串(中英)给出量表名、描述、维度标签。
+5. `tests/unit/` 至少加一个单测,覆盖反向、分数范围、级别边界。
 
-## 📁 项目结构
+如果你是移植一份已发表的量表,**先开 issue** 带上量表的引用和你对
+授权的理解。我们不收自己没有权利的量表。
+
+### 3. 加插件("短路")
+
+插件系统在 `src/services/plugin/`。插件是一个普通的 TypeScript 对象,
+符合 `PluginManifest` 形态(见 `src/types/dataAbstraction.ts`),
+以 JS 文件形式由用户在运行时加载。这是给不想 fork 仓库又想加自
+己量表的重度用户的。功能有,易用性一般 —— 你大概率得读源码。
+插件文档(TODO,还没写)会和系统放在一起。
+
+## 架构,一张图
 
 ```
-mindmirror/
-├── src/                  # React + TypeScript 前端
-│   ├── components/       # UI 组件(Sidebar, ErrorBoundary…)
-│   ├── data/             # 内置测评题库
-│   ├── hooks/
-│   ├── i18n/             # en.ts / zh.ts 翻译表
-│   ├── lib/              # 会话存储、工具
-│   ├── pages/            # 路由级页面
-│   ├── services/         # 评分、本地认证、心情、训练、插件
-│   ├── store/            # Zustand 全局状态
-│   ├── types/
-│   ├── App.tsx / main.tsx
-├── public/               # 静态资源
-├── .github/              # CI + Pages 部署
-├── scripts/              # 构建辅助
-└── README / CHANGELOG / CONTRIBUTING / SECURITY / LICENSE
+                       ┌─────────────────────────────────────┐
+                       │  React 18 + TypeScript + Vite 6     │
+                       │  (一个 bundle,无 SSR,无 hydration)  │
+                       └────────────────┬────────────────────┘
+                                        │
+            ┌───────────────────────────┼───────────────────────────┐
+            │                           │                           │
+   ┌────────▼─────────┐       ┌─────────▼─────────┐       ┌─────────▼─────────┐
+   │   量表模块       │       │  心情 / 训练 / 成就 │       │     插件          │
+   │  data + scoring  │       │                   │       │ (运行时加载)       │
+   └────────┬─────────┘       └─────────┬─────────┘       └─────────┬─────────┘
+            │                           │                           │
+            └───────────────────────────┼───────────────────────────┘
+                                        │
+                            ┌───────────▼───────────┐
+                            │  localStorage         │
+                            │  (而且只有这个)        │
+                            └───────────────────────┘
 ```
 
-## 🧪 七个量表简介
+没有箭头指向外面。这就是重点。
 
-### 大五人格 (BFI, 60 题)
+## 跑测试
 
-OCEAN 五维 + 子维度,使用最广泛的人格模型。
+```bash
+npm run typecheck    # TypeScript
+npm run lint         # ESLint
+npm run format:check # Prettier
+npm run build        # Vite build
+for f in tests/unit/*.mjs; do node --import tsx "$f"; done
+```
 
-| 维度                       | 含义                       |
-| -------------------------- | -------------------------- |
-| 开放性 Openness            | 想象力、好奇心、审美       |
-| 尽责性 Conscientiousness   | 条理性、责任感、自律       |
-| 外向性 Extraversion        | 社交性、主动性、积极情绪   |
-| 宜人性 Agreeableness       | 合作性、信任感、同理心     |
-| 神经质 Neuroticism         | 情绪稳定性、焦虑倾向       |
+`tests/unit/` 里的 887 个断言是纯 Node 脚本,直接 import 应用用的同
+一份评分模块。不需要浏览器,不需要数据库。重构要是把哪个量表的
+评分改崩了,10 秒之内你就知道。
 
-### PSS-10 感知压力量表
+## 协议 & 联系方式
 
-10 题,衡量你"过去一个月里觉得事情压过来"的频率。低 / 中 / 高三档,附循证建议。
+PolyForm Noncommercial 1.0.0 —— 见 [LICENSE](LICENSE)。商用需
+单独签协议。
 
-### GAD-7 广泛性焦虑量表
+Bug、翻译、UI 建议:提 issue。
+安全:见 [SECURITY.md](SECURITY.md),先走私下通道再公开披露。
 
-7 题,0–21 分,使用标准临床切点。心理咨询师常用的初筛工具。
+## 致谢
 
-### SSRS 社会支持评定量表 (43 题)
-
-肖水源 1986 编制的《社会支持评定量表》,10 题核心 + 30 题题库 + 3 道行为情景分歧题。完整范围 29-180 分。
-
-### MBI-GS 职业倦怠量表 (40 题)
-
-Maslach & Leiter 通用版,15 题核心 + 22 题题库 + 3 道行为分歧题。4 种倦怠原型。
-
-### SWLS 生活满意度量表 (40 题)
-
-Diener 1985 编制,5 题核心 + 33 题题库 + 2 道行为分歧题。
-
-### CD-RISC-10 心理韧性量表 (40 题)
-
-Connor & Davidson 2003 编制,10 题核心 + 27 题题库 + 3 道行为分歧题。
-
-## 🤝 参与贡献
-
-Bug、翻译、UI 建议都欢迎。流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-
-如果你是临床心理学从业者想推荐新量表,**请先开一个 issue 讨论** —— 我们想先聊聊授权、施测常模、文化适配,再决定是否加入。
-
-## 📄 协议与引用
-
-本项目采用 [PolyForm Noncommercial 1.0.0](LICENSE) © 2024–2026 badhope。
-商用前请先联系作者。
-
-如果用在学术工作中,请引用底层量表([CITATION.cff](CITATION.cff)):
-
-- **GAD-7**: Spitzer, Kroenke, Williams, Löwe (2006). _A brief measure for assessing generalized anxiety disorder._ [doi:10.1001/archinte.166.10.1092](https://doi.org/10.1001/archinte.166.10.1092)
-- **PSS-10**: Cohen, Kamarck & Mermelstein (1983). _A global measure of perceived stress._ [doi:10.2307/2136404](https://doi.org/10.2307/2136404)
-- **IPIP / 大五人格**: [ipip.ori.org](https://ipip.ori.org/)
-
-## 🙏 致谢
-
-- 测评方法论基于 [IPIP](https://ipip.ori.org/)(国际人格题库)
-- 灵感来自 [MindGarden](https://www.mindgarden.com/) 和 [16Personalities](https://www.16personalities.com/)
-- 用 ❤️ 和开源软件构建
-
----
-
-<div align="center">
-
-_如果 MindMirror 对你有帮助,我们很想听你的故事。_
-_如果哪里坏了,请开一个 issue。_
-
-</div>
+量表不是我们做的。大五的题目来自 IPIP-NEO 项目([Oliver P. John &
+Sanjay Srivastava](https://ipip.ori.org/));PSS-10 是
+[Sheldon Cohen 等 (1983)](https://doi.org/10.2307/2136404);
+GAD-7 是 [Spitzer, Kroenke, Williams & Löwe (2006)](https://doi.org/10.1001/archinte.166.10.1092);
+SSRS 是 [肖水源 (1986)](https://doi.org/10.1002/da.10113);
+MBI-GS 是 [Schaufeli, Leiter, Maslach & Jackson (1996)](https://doi.org/10.1111/j.2044-8325.1996.tb00625.x);
+SWLS 是 [Diener, Emmons, Larsen & Griffin (1985)](https://doi.org/10.1207/s15327752jpa4901_13);
+CD-RISC-10 是 [Connor & Davidson (2003)](https://doi.org/10.1002/da.10113)。
+bug 是我们自己的。

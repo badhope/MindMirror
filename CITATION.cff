@@ -6,29 +6,32 @@ message: >-
 type: software
 title: "MindMirror"
 abstract: >-
-  MindMirror is an open-source, self-hostable, privacy-first psychological
-  assessment platform. It provides seven validated scales: the Big Five
-  personality test (NEO-PI-R / IPIP derived, 60 items), Cohen's Perceived
-  Stress Scale (PSS-10, 33 items), the GAD-7 anxiety screener (28 items),
-  Xiao Shuiyuan's Social Support Rating Scale (SSRS, 43 items), the
-  Maslach Burnout Inventory General Survey (MBI-GS, 40 items), Diener's
-  Satisfaction With Life Scale (SWLS, 40 items), and the Connor-Davidson
-  Resilience Scale (CD-RISC-10, 40 items). Each long-form scale uses a
+  MindMirror is a static, browser-only psychological self-assessment
+  tool. There is no server, no account, no telemetry — the page you
+  open is the entire application, and your answers live in your own
+  browser localStorage. Seven validated scales ship in the box: the
+  Big Five personality test (NEO-PI-R / IPIP derived, 60 items),
+  Cohen's Perceived Stress Scale (PSS-10, 33 items), the GAD-7
+  anxiety screener (28 items), Xiao Shuiyuan's Social Support Rating
+  Scale (SSRS, 43 items), the Maslach Burnout Inventory General
+  Survey (MBI-GS, 40 items), Diener's Satisfaction With Life Scale
+  (SWLS, 40 items), and the Connor-Davidson Resilience Scale
+  (CD-RISC-10, 40 items). The long-form scales use a
   dimension-aligned question bank plus behaviour-anchored extension
   items for archetype classification. Also includes a mood tracker,
-  mental training plans, and a plugin system for custom assessments.
-  Ships with a React 18 + TypeScript frontend and an optional FastAPI
-  + PostgreSQL backend (Docker Compose ready), and a fully offline
-  localStorage demo mode deployable to any static host (including
-  GitHub Pages).
+  a CBT-style mental-training plan generator, and a plugin system
+  for adding custom scales without forking the repo. Ships as a
+  single static bundle deployable to any static host (including
+  GitHub Pages). For a multi-user self-hosted build with a
+  FastAPI + PostgreSQL backend, see the `server` branch.
 authors:
   - family-names: "badhope"
     given-names: "badhope"
     alias: "badhope"
     orcid: null
-license: MIT
-license-url: https://github.com/badhope/MindMirror/blob/master/LICENSE
-repository-code: "https://github.com/badhope/MindMirror"
+license: PolyForm-Noncommercial-1.0.0
+license-url: https://github.com/badhope/mindmirror/blob/main/LICENSE
+repository-code: "https://github.com/badhope/mindmirror"
 url: "https://badhope.github.io/MindMirror/"
 keywords:
   - psychology
@@ -51,18 +54,18 @@ keywords:
   - mood-tracker
   - mental-health
   - mental-training
-  - self-host
+  - self-assessment
   - privacy
-  - open-source
+  - localstorage
+  - offline-first
+  - static-site
+  - github-pages
   - react
   - typescript
   - vite
   - tailwindcss
-  - fastapi
-  - postgresql
-  - docker
   - pwa
-date-released: 2026-06-05
+date-released: 2026-06-08
 version: "1.1.0"
 references:
   - type: article
@@ -154,4 +157,4 @@ references:
   - type: webpage
     title: "International Personality Item Pool (IPIP)"
     url: "https://ipip.ori.org/"
-    date-accessed: 2026-06-05
+    date-accessed: 2026-06-08

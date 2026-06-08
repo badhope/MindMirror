@@ -5,6 +5,41 @@ and the format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed (2026-06-08)
+
+- **Repo split into two parallel branches.** `main` is the static,
+  no-backend edition (everything in `localStorage`, deployable to
+  GitHub Pages); `server` is the full FastAPI + PostgreSQL self-host
+  edition. The two are **not merged** — pick the one that fits how
+  you want to use it. Same assessment content on both.
+- **License switched from MIT to PolyForm Noncommercial 1.0.0.**
+  Personal, academic, and non-profit use is still free; commercial
+  deployments now need a written agreement. The LICENSE file,
+  `package.json` `license` field, `CITATION.cff`, every i18n string,
+  and the public-facing user guide all reflect the change. Stale
+  MIT mentions in `README.zh-CN.md` and the original Cloud-marketing
+  copy are gone.
+- **Dependabot disabled.** `.github/dependabot.yml` is removed from
+  both branches and the three leftover `dependabot/*` remote
+  branches (`playwright-1.60.0`, `react-stack-8395414482`,
+  `types/node-22.19.20`) have been folded into a single
+  `deps(frontend): bump playwright, @types/node, react-router-dom`
+  commit on each branch. The repo no longer opens dependency PRs
+  automatically.
+- **Frontend dependency bumps folded in:** `playwright ^1.57.0` →
+  `^1.60.0`, `@types/node ^22.19.19` → `^22.19.20`,
+  `react-router-dom ^7.3.0` → `^7.17.0`. `package-lock.json`
+  regenerated; typecheck, lint, build, and 887 unit-test assertions
+  all pass.
+- **Dead public assets removed.** `public/docs/hero-banner.jpg`
+  (unreferenced) and 34 unused `tests/e2e/screenshots/*.png` files
+  (no e2e script imports any of them) are gone.
+- **About / contact info corrected.** All references to
+  `mindmirror.app` (a domain we don't own) and
+  `an issue on github.com/badhope/mindmirror/issues` are replaced with the GitHub repo and
+  issue tracker. The on-page shareable-result HTML footer now links
+  to the repo, not the dead domain.
+
 ### Added
 
 - **Four new psychological scales** with 40+ items each, expanded from

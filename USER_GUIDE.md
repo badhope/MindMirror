@@ -3,7 +3,7 @@
 > 📖 Other languages: [简体中文](USER_GUIDE.zh-CN.md)
 
 A short, no-jargon walkthrough of how to use MindMirror. If you just
-want to try it: **[open the demo](https://mindmirror.app)** and come
+want to try it: **[open the demo](https://badhope.github.io/MindMirror/)** and come
 back here if anything is unclear.
 
 ---
@@ -68,7 +68,7 @@ the same repo and follow the README there.
   it to begin with.
 
 If you have a specific concern that this page doesn't answer,
-email **support#mindmirror.app** (replace `#` with `@`).
+email **an issue on github.com/badhope/mindmirror/issues** (replace `#` with `@`).
 
 ## 5. FAQ
 
@@ -113,6 +113,8 @@ view:
   [GitHub](https://github.com/badhope/MindMirror/issues).
 - **Privacy or security question?** See [SECURITY.md](SECURITY.md).
 - **Want to suggest a feature?** Open an issue and tag it "feature".
-- **Email?** **support#mindmirror.app** (replace `#` with `@`).
+- **Email?** Open an issue on
+  [github.com/badhope/mindmirror/issues](https://github.com/badhope/mindmirror/issues)
+  and mark it as private if you don't want the question public.
 
 We usually reply within 1–3 working days.
