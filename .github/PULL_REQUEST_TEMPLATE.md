@@ -1,49 +1,27 @@
-## 📥 Pull Request
+## What
 
-**Please fill out the sections below to help reviewers understand your changes.**
+<!-- One line: what this PR does -->
 
----
+## Why
 
-## ✅ Checklist
+<!-- The reason. What problem does this fix / what value does it add? -->
 
-- [ ] I have read the [Contributing Guide](CONTRIBUTING.md)
-- [ ] My code follows the project's code style (run `npm run lint` and `npm run typecheck`)
-- [ ] My changes are covered by tests (if applicable)
-- [ ] All user-facing text has been added to both EN and ZH translation files
-- [ ] I have tested my changes locally
+## How
 
----
+<!-- Approach, breaking changes, anything weird you did -->
 
-## 🛠️ Changes Made
+## Tested
 
-Please describe the changes you made in this PR:
+<!-- How you tested. If you didn't, say so and tell me why -->
 
--
+## Checklist
 
----
+- [ ] I have read [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+- [ ] Tests pass locally (and CI is green)
+- [ ] I didn't add any new linter / typecheck warnings
+- [ ] I didn't commit any secrets, build output, or large binaries
+- [ ] I added a `CHANGELOG.md` entry under "Unreleased" if it matters
 
-## 🔗 Related Issue
+## Screenshots / Logs
 
-Closes # (leave blank if no issue)
-
----
-
-## 📸 Screenshots (if applicable)
-
-<!-- Add screenshots or screen recordings of your changes -->
-
----
-
-## 📝 Additional Notes
-
-Any other context about this PR?
-
----
-
-## 🌍 Internationalization
-
-- [ ] Added new user-facing text → Updated `src/i18n/en.ts`
-- [ ] Added new user-facing text → Updated `src/i18n/zh.ts`
-- [ ] No new text added
-
----
+<!-- Drag in images for UI changes. Paste (redacted) logs for runtime changes. -->

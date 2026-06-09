@@ -1,40 +1,35 @@
 # Security
 
-## Reporting a vulnerability
+Found a hole? **Don't file a public issue.** Open a private security
+advisory or email me (the address is in `CITATION.cff` if there's one;
+otherwise it's on my profile page). I prefer the advisory form because
+GitHub handles the disclosure timeline.
 
-Open a **private** issue or contact the maintainer via the email
-linked in [README.md](README.md). Please don't post vulnerabilities
-in a public issue. Include a reproducer, the impact, and the
-commit/tag. We'll acknowledge within three business days and aim
-to ship a fix within 30 days.
+What I'll do:
 
-## Supported versions
+- Reply within 3 business days.
+- Triage and try to reproduce within 10 business days.
+- Ship a fix, or at least a documented mitigation, as soon as I can.
+- Credit you in the advisory if you want it. Say "anonymous" if you don't.
 
-| Branch / version | Status               |
-| ---------------- | -------------------- |
-| `main`           | Active static build  |
-| `server`         | Active self-hosted   |
-| older            | End of life          |
+I follow responsible disclosure: please keep the report private until I
+publish a fix and (if needed) a CVE / advisory. I won't sue you for
+security research done in good faith, and I won't go after security
+researchers for things that are obviously bugs.
 
-## Threat model (in scope)
+## What I patch
 
-- The static build keeps all user data in `localStorage` on the
-  device. There is no server-side trust boundary in the
-  `localStorage`-only mode.
-- The local "auth" uses PBKDF2-HMAC-SHA-256 (200,000 iterations)
-  with a per-browser random salt. Password hashes are never sent
-  off the device. The HMAC-signed local token is a forgery
-  deterrent, not a real credential — anyone with DevTools can
-  read or write `localStorage`.
-- No third-party scripts, no analytics, no fingerprinting, no
-  remote network calls at runtime.
+Only the latest commit on `main`. I don't backport. If you're on an
+older version, the right fix is to upgrade.
 
-## Out of scope (for now)
+## In scope
 
-- Server-side rate limiting, 2FA / WebAuthn, password complexity
-  rules beyond a 6-char minimum, and forensic audit logging. The
-  static build has no server, so these are only relevant on the
-  `server` branch.
+- Code in this repository.
+- Official container images and release artifacts that came from this
+  repo (when they exist).
 
-See [CHANGELOG.md](CHANGELOG.md) for the recent security-relevant
-changes.
+## Out of scope
+
+- Third-party dependencies. Report upstream unless I pinned and shipped
+  a vulnerable version myself.
+- Scanners, social engineering, DoS, or "you used a default port".

@@ -1,85 +1,89 @@
-name: 🐛 Bug Report
-description: Report a bug or unexpected behavior
-title: "[Bug] "
-labels: ["bug"]
+name: Bug Report
+description: Something is broken or behaving wrong.
+title: "[bug]: "
+labels: ["bug", "triage"]
 assignees: []
+
 body:
   - type: markdown
     attributes:
       value: |
-        ## 🐛 Bug Report
-
-        Thank you for reporting a bug! Please fill out the sections below to help us understand and fix the issue.
-
-        **Before submitting**: Search existing issues to avoid duplicates.
+        Thanks for taking the time. The more detail, the faster I can
+        reproduce and fix this.
 
   - type: textarea
-    id: description
+    id: what
     attributes:
-      label: 📝 Bug Description
-      description: A clear and concise description of what the bug is.
-      placeholder: Describe the bug in detail...
+      label: What happened?
+      description: Clear, short description of the bug.
+      placeholder: "When I run `...`, I get `...` instead of `...`."
     validations:
       required: true
 
   - type: textarea
-    id: steps
+    id: repro
     attributes:
-      label: 🔄 Steps to Reproduce
-      description: How to reproduce this bug step by step.
+      label: Steps to reproduce
+      description: Numbered. Smallest example you can manage.
       placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. See error...
+        1. Install with `...`
+        2. Run `...`
+        3. Open `...`
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: ✅ Expected Behavior
-      description: What should happen instead?
-      placeholder: Expected behavior...
+      label: Expected
+    validations:
+      required: true
 
   - type: textarea
     id: actual
     attributes:
-      label: ❌ Actual Behavior
-      description: What actually happens?
-      placeholder: Actual behavior...
+      label: Actual (include logs / stack traces)
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      placeholder: "v1.2.3 or abcdef0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did you run it?
+      options:
+        - Local (macOS)
+        - Local (Linux)
+        - Local (Windows)
+        - Docker / container
+        - CI
+        - Cloud / VM
+        - Other
+    validations:
+      required: false
 
   - type: dropdown
     id: severity
     attributes:
-      label: 🔥 Severity
+      label: How bad?
       options:
-        - Low (minor UI issue)
-        - Medium (feature not working)
-        - High (data loss or security concern)
-        - Critical (app crash)
-
-  - type: input
-    id: browser
-    attributes:
-      label: 🌐 Browser & Version
-      description: e.g., Chrome 120.0, Firefox 121.0, Safari 17.2
-      placeholder: Chrome 120.0
-
-  - type: input
-    id: os
-    attributes:
-      label: 💻 Operating System
-      description: e.g., macOS 14.2, Windows 11, Ubuntu 22.04
-      placeholder: macOS 14.2
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: 📷 Screenshots / Screenshare
-      description: Attach screenshots or screen recordings if applicable.
+        - Low (cosmetic / minor inconvenience)
+        - Medium (broken feature, workaround exists)
+        - High (broken feature, no workaround)
+        - Critical (data loss, security, outage)
+    validations:
+      required: false
 
   - type: textarea
     id: context
     attributes:
-      label: 💡 Additional Context
-      description: Any other context about the problem.
+      label: Anything else
+    validations:
+      required: false
