@@ -19,6 +19,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run lint
+      - run: npx prettier --check "src/**/*.{ts,tsx,css}" "*.{json,js,mjs,md}" "tests/**/*.mjs"
       - run: npm run build
         env:
           VITE_BASE_PATH: /

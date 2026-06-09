@@ -30,6 +30,16 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://badhope.github.io/MindMirror/history</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://badhope.github.io/MindMirror/compare</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://badhope.github.io/MindMirror/achievements</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

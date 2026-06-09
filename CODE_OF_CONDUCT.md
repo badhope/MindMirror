@@ -59,8 +59,11 @@ appointed representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-[GitHub Issues](https://github.com/badhope/MindMirror/issues).
+reported to the community leaders responsible for enforcement by
+opening a **confidential** issue at
+[GitHub Issues](https://github.com/badhope/MindMirror/issues)
+and selecting the "🔒 private contact" template.
+Do **not** use public comments to report conduct violations.
 
 All complaints will be reviewed and investigated promptly and fairly.
 
