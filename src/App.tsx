@@ -21,9 +21,6 @@ const Settings = lazy(() => import('./pages/Settings').then(m => ({ default: m.S
 const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
 const Training = lazy(() => import('./pages/Training').then(m => ({ default: m.Training })));
 const TrainingDetail = lazy(() => import('./pages/TrainingDetail'));
-const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login })));
-const Register = lazy(() => import('./pages/Register').then(m => ({ default: m.Register })));
-const Profile = lazy(() => import('./pages/Profile').then(m => ({ default: m.Profile })));
 const MoodTracker = lazy(() =>
   import('./pages/MoodTracker').then(m => ({ default: m.MoodTracker }))
 );
@@ -79,36 +76,6 @@ function AnimatedRoutes() {
           element={
             <PageTransition direction="up">
               <Home />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PageTransition direction="fade">
-              <LazyRoute>
-                <Login />
-              </LazyRoute>
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PageTransition direction="fade">
-              <LazyRoute>
-                <Register />
-              </LazyRoute>
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <PageTransition direction="up">
-              <LazyRoute>
-                <Profile />
-              </LazyRoute>
             </PageTransition>
           }
         />
@@ -266,13 +233,9 @@ export default function App() {
 }
 
 function AppContent() {
-  const { locale, initializeAuth } = useAppStore();
+  const { locale } = useAppStore();
   const i18n = getTranslation(locale);
   const location = useLocation();
-
-  useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
 
   useEffect(() => {
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';

@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { Assessment, Question, AssessmentResult } from '../types';
-import type { User, AuthCredentials, RegisterData } from '../types/auth';
 import { storage } from '../lib/utils';
-import { clearLocalSession } from '../lib/apiClient';
 import { calculateBigFiveScores, calculateOverallScore } from '../services/bigFiveScoring';
 import { calculateStressTestTraits } from '../services/stressTestScoring';
 import { calculateGAD7Traits } from '../services/anxietyGad7Scoring';
@@ -10,7 +8,6 @@ import { calculateSSRSTraits } from '../services/ssrsScoring';
 import { calculateMBITraits } from '../services/mbiScoring';
 import { calculateSWLSTraits } from '../services/swlsScoring';
 import { calculateResilienceTraits } from '../services/resilienceScoring';
-import { authService } from '../services/auth';
 import { analysisCache } from '../services/dashboard/AnalysisCache';
 import { achievementService } from '../services/achievement/AchievementService';
 import { tagService } from '../services/dashboard/TagService';
@@ -132,11 +129,6 @@ const STORAGE_KEY_HISTORY = 'assessmentHistory';
 const STORAGE_KEY_LOCALE = 'locale';
 
 interface AppState {
-  user: User | null;
-  isAuthenticated: boolean;
-  authLoading: boolean;
-  authError: string | null;
-
   assessments: Assessment[];
   currentAssessment: Assessment | null;
   questions: Question[];
@@ -152,13 +144,6 @@ interface AppState {
   locale: Locale;
 
   assessmentHistory: AssessmentResult[];
-
-  initializeAuth: () => Promise<void>;
-  login: (credentials: AuthCredentials) => Promise<boolean>;
-  register: (data: RegisterData) => Promise<boolean>;
-  loginAsGuest: () => Promise<boolean>;
-  logout: () => Promise<void>;
-  clearAuthError: () => void;
 
   setAssessments: (assessments: Assessment[]) => void;
   setCurrentAssessment: (assessment: Assessment | null) => void;
@@ -184,14 +169,8 @@ interface AppState {
 export const useAppStore = create<AppState>((set, get) => {
   const initialHistory = storage.get<AssessmentResult[]>(STORAGE_KEY_HISTORY, []);
   const initialLocale = storage.get<Locale>(STORAGE_KEY_LOCALE, 'zh');
-  const initialUser = authService.getCurrentUser();
 
   return {
-    user: initialUser,
-    isAuthenticated: !!initialUser,
-    authLoading: false,
-    authError: null,
-
     assessments: [],
     currentAssessment: null,
     questions: [],
@@ -203,138 +182,6 @@ export const useAppStore = create<AppState>((set, get) => {
     isSidebarOpen: false,
     locale: initialLocale,
     assessmentHistory: initialHistory,
-
-  initializeAuth: async () => {
-      set({ authLoading: true });
-      try {
-        // No server to round-trip to in the static build — just read
-        // whatever is in localStorage and trust the user record.
-        const user = authService.getCurrentUser();
-        set({
-          user,
-          isAuthenticated: !!user,
-          authLoading: false,
-          authError: null,
-        });
-      } catch {
-        const user = authService.getCurrentUser();
-        set({
-          user,
-          isAuthenticated: !!user,
-          authLoading: false,
-        });
-      }
-    },
-
-    login: async (credentials: AuthCredentials) => {
-      set({ authLoading: true, authError: null });
-
-      try {
-        const response = await authService.login(credentials);
-
-        if (response.success && response.user) {
-          set({
-            user: response.user,
-            isAuthenticated: true,
-            authLoading: false,
-            authError: null,
-          });
-          return true;
-        }
-        set({
-          authLoading: false,
-          authError: response.error || 'Login failed',
-        });
-        return false;
-      } catch {
-        set({
-          authLoading: false,
-          authError: 'An unexpected error occurred',
-        });
-        return false;
-      }
-    },
-
-    register: async (data: RegisterData) => {
-      set({ authLoading: true, authError: null });
-
-      try {
-        const response = await authService.register(data);
-
-        if (response.success && response.user) {
-          set({
-            user: response.user,
-            isAuthenticated: true,
-            authLoading: false,
-            authError: null,
-          });
-          return true;
-        }
-        set({
-          authLoading: false,
-          authError: response.error || 'Registration failed',
-        });
-        return false;
-      } catch {
-        set({
-          authLoading: false,
-          authError: 'An unexpected error occurred',
-        });
-        return false;
-      }
-    },
-
-    loginAsGuest: async () => {
-      set({ authLoading: true, authError: null });
-      try {
-        const response = await authService.loginAsGuest();
-        if (response.success && response.user) {
-          set({
-            user: response.user,
-            isAuthenticated: true,
-            authLoading: false,
-            authError: null,
-          });
-          return true;
-        }
-        set({
-          authLoading: false,
-          authError: response.error || 'Guest login failed',
-        });
-        return false;
-      } catch {
-        set({
-          authLoading: false,
-          authError: 'An unexpected error occurred',
-        });
-        return false;
-      }
-    },
-
-    logout: async () => {
-      try {
-        await authService.logout();
-      } catch {
-        // authService.logout() already calls clearLocalSession() on its
-        // happy path; only fall back to it here if the auth path threw.
-        clearLocalSession();
-      }
-      // Belt-and-suspenders: always invalidate the analysis cache
-      // after the session ends so the next login can't see stale
-      // fingerprints that point at a history the new user won't have.
-      analysisCache.clear();
-      set({
-        user: null,
-        isAuthenticated: false,
-        authError: null,
-        // Wipe in-memory caches that the next login must not see.
-        assessmentHistory: [],
-      });
-    },
-
-    clearAuthError: () => {
-      set({ authError: null });
-    },
 
     setAssessments: assessments => set({ assessments }),
 

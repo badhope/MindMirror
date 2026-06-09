@@ -4,11 +4,6 @@
 // the session. Centralizing the list here means the next person who
 // adds a key can't forget to add it here.
 export const SESSION_STORAGE_KEYS = [
-  // auth
-  'mindmirror_user',
-  'mindmirror_token',
-  'mindmirror_local_users',
-  'mindmirror_local_secret',
   // assessment history (store)
   'assessmentHistory',
   // dashboard analysis cache
@@ -29,12 +24,6 @@ export const SESSION_STORAGE_KEYS = [
   'personalDataCenter',
   // shareable result links
   'shared_assessment_results',
-  // plugin state
-  'plugin_registry',
-  'plugin_states',
-  'plugin_cache',
-  // trace logs
-  'assessment_trace_logs',
 ] as const;
 
 export function clearLocalSession(): void {

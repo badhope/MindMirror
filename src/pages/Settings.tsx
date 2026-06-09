@@ -25,7 +25,7 @@ export const Settings = () => {
 
   const handleResetApp = () => {
     if (window.confirm(i18n.settings.data.resetAppDesc)) {
-      const keysToKeep = ['locale', 'mindmirror_token', 'mindmirror_user', 'moodTracker_entries'];
+      const keysToKeep = ['locale', 'moodTracker_entries'];
       const preserved: Record<string, string | null> = {};
       keysToKeep.forEach(key => {
         const val = localStorage.getItem(key);

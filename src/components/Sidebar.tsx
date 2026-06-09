@@ -8,13 +8,8 @@ import { cn } from '../lib/utils';
 
 export function Sidebar() {
   const location = useLocation();
-  const { isSidebarOpen, setSidebarOpen, locale, user, isAuthenticated, logout } = useAppStore();
+  const { isSidebarOpen, setSidebarOpen, locale } = useAppStore();
   const i18n = getTranslation(locale);
-
-  const handleLogout = async () => {
-    await logout();
-    setSidebarOpen(false);
-  };
 
   // 动态导航项配置
   const navItems = [
@@ -107,78 +102,17 @@ export function Sidebar() {
               </div>
 
               <div className="p-6 border-b border-slate-100">
-                {isAuthenticated && user ? (
-                  <motion.div
-                    className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={
-                          user.avatar ||
-                          `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=4F46E5&color=fff&size=128`
-                        }
-                        alt={user.username}
-                        className="w-12 h-12 rounded-full"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-800 truncate">
-                          {user.username}
-                        </p>
-                        <p className="text-xs text-slate-500 truncate">{user.email}</p>
-                      </div>
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-2xl text-white">
+                      🧠
                     </div>
-                    <div className="mt-3 space-y-2">
-                      <Link
-                        to="/profile"
-                        className="w-full px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-center block"
-                      >
-                        {i18n.nav.profile}
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full px-4 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
-                      >
-                        {i18n.auth.logout}
-                      </button>
+                    <div>
+                      <p className="text-sm font-medium text-slate-800">{i18n.app.name}</p>
+                      <p className="text-xs text-slate-500">{i18n.app.tagline}</p>
                     </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center text-2xl">
-                        👤
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-slate-700">
-                          {i18n.settings.guestMode}
-                        </p>
-                        <p className="text-xs text-slate-500">{i18n.settings.loginForMore}</p>
-                      </div>
-                    </div>
-                    <div className="mt-3 space-y-2">
-                      <Link
-                        to="/login"
-                        className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-colors text-sm font-medium text-center block"
-                      >
-                        {i18n.auth.login}
-                      </Link>
-                      <Link
-                        to="/register"
-                        className="w-full px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors text-sm font-medium text-center block"
-                      >
-                        {i18n.auth.register}
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
+                  </div>
+                </div>
               </div>
 
               <div className="px-6 pt-4">
