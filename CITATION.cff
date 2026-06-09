@@ -1,160 +1,29 @@
 cff-version: 1.2.0
 message: >-
-  If you use MindMirror in academic work, please cite the software itself
-  and the underlying assessment scales (IPIP / NEO-PI-R, PSS-10, GAD-7,
-  SSRS, MBI-GS, SWLS, CD-RISC-10).
-type: software
-title: "MindMirror"
-abstract: >-
-  MindMirror is a static, browser-only psychological self-assessment
-  tool. There is no server, no account, no telemetry — the page you
-  open is the entire application, and your answers live in your own
-  browser localStorage. Seven validated scales ship in the box: the
-  Big Five personality test (NEO-PI-R / IPIP derived, 60 items),
-  Cohen's Perceived Stress Scale (PSS-10, 33 items), the GAD-7
-  anxiety screener (28 items), Xiao Shuiyuan's Social Support Rating
-  Scale (SSRS, 43 items), the Maslach Burnout Inventory General
-  Survey (MBI-GS, 40 items), Diener's Satisfaction With Life Scale
-  (SWLS, 40 items), and the Connor-Davidson Resilience Scale
-  (CD-RISC-10, 40 items). The long-form scales use a
-  dimension-aligned question bank plus behaviour-anchored extension
-  items for archetype classification. Also includes a mood tracker,
-  a CBT-style mental-training plan generator, and a plugin system
-  for adding custom scales without forking the repo. Ships as a
-  single static bundle deployable to any static host (including
-  GitHub Pages). For a multi-user self-hosted build with a
-  FastAPI + PostgreSQL backend, see the `server` branch.
+  If you use this software in academic work, please cite it using the
+  metadata below.
+title: MindMirror
 authors:
-  - family-names: "badhope"
-    given-names: "badhope"
-    alias: "badhope"
-    orcid: null
-license: PolyForm-Noncommercial-1.0.0
-license-url: https://github.com/badhope/mindmirror/blob/main/LICENSE
-repository-code: "https://github.com/badhope/mindmirror"
-url: "https://badhope.github.io/MindMirror/"
+  - family-names: badhope
+    given-names: badhope
+    alias: badhope
+identifiers:
+  - type: url
+    value: https://github.com/badhope/MindMirror
+license: MIT
+type: software
+url: https://github.com/badhope/MindMirror
+repository-code: https://github.com/badhope/MindMirror
 keywords:
   - psychology
-  - psychological-assessment
-  - big-five
-  - personality
-  - neo-pi-r
-  - pss-10
-  - gad-7
-  - ssrs
-  - mbi-gs
-  - swls
-  - cd-risc
-  - social-support
-  - burnout
-  - life-satisfaction
-  - resilience
-  - stress
-  - anxiety
-  - mood-tracker
   - mental-health
-  - mental-training
-  - self-assessment
-  - privacy
-  - localstorage
-  - offline-first
-  - static-site
-  - github-pages
   - react
   - typescript
-  - vite
-  - tailwindcss
-  - pwa
-date-released: 2026-06-08
-version: "1.1.0"
-references:
-  - type: article
-    title: "A brief measure for assessing generalized anxiety disorder"
-    authors:
-      - family-names: "Spitzer"
-        given-names: "Robert L."
-      - family-names: "Kroenke"
-        given-names: "Kurt"
-      - family-names: "Williams"
-        given-names: "Janet B. W."
-      - family-names: "Löwe"
-        given-names: "Bernd"
-    journal: "Archives of Internal Medicine"
-    year: 2006
-    volume: "166"
-    issue: "10"
-    pages: "1092-1097"
-    doi: "10.1001/archinte.166.10.1092"
-  - type: article
-    title: "A global measure of perceived stress"
-    authors:
-      - family-names: "Cohen"
-        given-names: "Sheldon"
-      - family-names: "Kamarck"
-        given-names: "Tom"
-      - family-names: "Mermelstein"
-        given-names: "Robin"
-    journal: "Journal of Health and Social Behavior"
-    year: 1983
-    volume: "24"
-    issue: "4"
-    pages: "385-396"
-    doi: "10.2307/2136404"
-  - type: article
-    title: "The Social Support Rating Scale"
-    authors:
-      - family-names: "Xiao"
-        given-names: "Shuiyuan"
-    journal: "Chinese Mental Health Journal"
-    year: 1986
-    notes: "肖水源. 社会支持评定量表. 中国心理卫生杂志, 1986."
-  - type: article
-    title: "Maslach Burnout Inventory – General Survey (MBI-GS)"
-    authors:
-      - family-names: "Schaufeli"
-        given-names: "Wilmar"
-      - family-names: "Leiter"
-        given-names: "Michael P."
-      - family-names: "Maslach"
-        given-names: "Christina"
-      - family-names: "Jackson"
-        given-names: "Susan E."
-    journal: "Journal of Occupational and Organizational Psychology"
-    year: 1996
-    volume: "69"
-    issue: "4"
-    pages: "307-321"
-  - type: article
-    title: "The Satisfaction With Life Scale"
-    authors:
-      - family-names: "Diener"
-        given-names: "Ed"
-      - family-names: "Emmons"
-        given-names: "Robert A."
-      - family-names: "Larsen"
-        given-names: "Randy J."
-      - family-names: "Griffin"
-        given-names: "Sharon"
-    journal: "Journal of Personality Assessment"
-    year: 1985
-    volume: "49"
-    issue: "1"
-    pages: "71-75"
-    doi: "10.1207/s15327752jpa4901_13"
-  - type: article
-    title: "Development of a new resilience scale: The Connor-Davidson Resilience Scale (CD-RISC)"
-    authors:
-      - family-names: "Connor"
-        given-names: "Kathryn M."
-      - family-names: "Davidson"
-        given-names: "Jonathan R. T."
-    journal: "Depression and Anxiety"
-    year: 2003
-    volume: "18"
-    issue: "2"
-    pages: "76-82"
-    doi: "10.1002/da.10113"
-  - type: webpage
-    title: "International Personality Item Pool (IPIP)"
-    url: "https://ipip.ori.org/"
-    date-accessed: 2026-06-08
+  - anxiety-assessment
+  - big-five
+  - mental-training
+  - mood-tracker
+  - personality-assessment
+  - self-discovery
+abstract: >-
+  Self-check scales (Big Five, PSS-10, GAD-7, SSRS, MBI-GS, SWLS, CD-RISC-10) plus a mood log and CBT-style training. Runs entirely in your browser, answers live in localStorage. EN / 中文. PolyForm Noncommercial.
