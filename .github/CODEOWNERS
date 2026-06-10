@@ -1,30 +1,22 @@
-# Code owners for MindMirror.
-# Each line is a file pattern followed by one or more owners.
-# Order matters — the last matching pattern wins.
+# CODEOWNERS — default review ownership
+# badhope is the sole owner; replace with team handles in a
+# multi-maintainer setup.
 
-# Default owners for everything in the repo.
-*                               @badhope
+# Default: everything
+*       @badhope
 
-# Frontend (TypeScript / React / Vite / Tailwind)
-/src/                           @badhope
-/public/                        @badhope
-/index.html                     @badhope
-/vite.config.ts                 @badhope
-/tailwind.config.js             @badhope
-/postcss.config.js              @badhope
-/eslint.config.mjs              @badhope
-/tsconfig*.json                 @badhope
-/.prettierrc                    @badhope
+# GitHub configuration
+/.github/        @badhope
 
-# CI / CD
-/.github/                       @badhope
+# Documentation
+/docs/           @badhope
+/README.md       @badhope
+/CHANGELOG.md    @badhope
 
-# Docs
-/README.md                      @badhope
-/README.zh-CN.md                @badhope
-/CHANGELOG.md                   @badhope
-/CONTRIBUTING.md                @badhope
-/CODE_OF_CONDUCT.md             @badhope
-/SECURITY.md                    @badhope
-/LICENSE                        @badhope
-/CITATION.cff                   @badhope
+# Build / release config
+/package.json    @badhope
+/uv.lock         @badhope
+/package-lock.json @badhope
+/pnpm-lock.yaml  @badhope
+/Cargo.toml      @badhope
+/Cargo.lock      @badhope
