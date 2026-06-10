@@ -467,17 +467,10 @@ export const SWLS_LEVELS = {
 // strengths/challenges 列表,避免与 SWLS_SEVERITY 中 6 档 label 冲突
 export const SWLS_INTERPRETATION = {
   high: {
-    strengths: [
-      '内在标准与现实高度匹配',
-      '对生活有清晰的目标感和意义感',
-      '具备较强的心理调节能力',
-    ],
+    strengths: ['内在标准与现实高度匹配', '对生活有清晰的目标感和意义感', '具备较强的心理调节能力'],
   },
   low: {
-    strengths: [
-      '对自己诚实的态度本身就是改变的开始',
-      '认知觉察能力较好,识别出问题',
-    ],
+    strengths: ['对自己诚实的态度本身就是改变的开始', '认知觉察能力较好,识别出问题'],
     challenges: [
       '期望与现实可能存在较大差距',
       '可能存在未表达的需求',

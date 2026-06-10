@@ -245,11 +245,7 @@ function StatTile({
   icon?: string;
 }) {
   const toneColor =
-    tone === 'up'
-      ? 'text-emerald-600'
-      : tone === 'down'
-        ? 'text-rose-600'
-        : 'text-slate-500';
+    tone === 'up' ? 'text-emerald-600' : tone === 'down' ? 'text-rose-600' : 'text-slate-500';
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white p-4 sm:p-5 border border-slate-100 shadow-sm">
       {gradient && (
@@ -583,7 +579,18 @@ export const History = () => {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
-          {(['all', 'personality', 'stress', 'anxiety', 'social', 'burnout', 'life', 'resilience'] as Filter[]).map(f => (
+          {(
+            [
+              'all',
+              'personality',
+              'stress',
+              'anxiety',
+              'social',
+              'burnout',
+              'life',
+              'resilience',
+            ] as Filter[]
+          ).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}

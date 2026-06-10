@@ -16,29 +16,131 @@
  * 运行: node tests/unit/deep-validation-test.mjs
  */
 
-import { SSRS_QUESTIONS, SSRS_RESPONSE_OPTIONS, SSRS_SOURCES_OPTIONS, SSRS_DIMENSIONS, SSRS_SEVERITY, SSRS_RESOURCES, SSRS_LEVELS, SSRS_DIMENSION_ITEMS } from '../../src/data/ssrsData.ts';
-import { MBI_QUESTIONS, MBI_RESPONSE_OPTIONS, MBI_DIMENSIONS, MBI_LEVELS, MBI_COPING_STRATEGIES, MBI_SEVERITY, MBI_DIMENSION_ITEMS, MBI_DIMENSION_LEVELS } from '../../src/data/mbiData.ts';
-import { SWLS_QUESTIONS, SWLS_RESPONSE_OPTIONS, SWLS_LEVELS, SWLS_INTERPRETATION, SWLS_BOOST_STRATEGIES, SWLS_SEVERITY, SWLS_DIMENSIONS } from '../../src/data/swlsData.ts';
-import { RESILIENCE_QUESTIONS, RESILIENCE_RESPONSE_OPTIONS, RESILIENCE_DIMENSIONS, RESILIENCE_SEVERITY, RESILIENCE_BOOST_STRATEGIES, RESILIENCE_DIMENSION_ITEMS, RESILIENCE_LEVELS } from '../../src/data/resilienceData.ts';
+import {
+  SSRS_QUESTIONS,
+  SSRS_RESPONSE_OPTIONS,
+  SSRS_SOURCES_OPTIONS,
+  SSRS_DIMENSIONS,
+  SSRS_SEVERITY,
+  SSRS_RESOURCES,
+  SSRS_LEVELS,
+  SSRS_DIMENSION_ITEMS,
+} from '../../src/data/ssrsData.ts';
+import {
+  MBI_QUESTIONS,
+  MBI_RESPONSE_OPTIONS,
+  MBI_DIMENSIONS,
+  MBI_LEVELS,
+  MBI_COPING_STRATEGIES,
+  MBI_SEVERITY,
+  MBI_DIMENSION_ITEMS,
+  MBI_DIMENSION_LEVELS,
+} from '../../src/data/mbiData.ts';
+import {
+  SWLS_QUESTIONS,
+  SWLS_RESPONSE_OPTIONS,
+  SWLS_LEVELS,
+  SWLS_INTERPRETATION,
+  SWLS_BOOST_STRATEGIES,
+  SWLS_SEVERITY,
+  SWLS_DIMENSIONS,
+} from '../../src/data/swlsData.ts';
+import {
+  RESILIENCE_QUESTIONS,
+  RESILIENCE_RESPONSE_OPTIONS,
+  RESILIENCE_DIMENSIONS,
+  RESILIENCE_SEVERITY,
+  RESILIENCE_BOOST_STRATEGIES,
+  RESILIENCE_DIMENSION_ITEMS,
+  RESILIENCE_LEVELS,
+} from '../../src/data/resilienceData.ts';
 
-import { calculateSSRSTraits, getSSRSLevel, getSSRSLevelInfo, generateDetailedSSRSReport } from '../../src/services/ssrsScoring.ts';
-import { calculateMBITraits, getMBITotalLevel, getMBILevelInfo, getMBIExLevel, getMBICyLevel, getMBIPeLevel, generateDetailedMBIReport } from '../../src/services/mbiScoring.ts';
-import { calculateSWLSTraits, getSWLSLevel, getSWLSLevelInfo, generateDetailedSWLSReport } from '../../src/services/swlsScoring.ts';
-import { calculateResilienceTraits, getResilienceLevel, getResilienceLevelInfo, generateDetailedResilienceReport } from '../../src/services/resilienceScoring.ts';
+import {
+  calculateSSRSTraits,
+  getSSRSLevel,
+  getSSRSLevelInfo,
+  generateDetailedSSRSReport,
+} from '../../src/services/ssrsScoring.ts';
+import {
+  calculateMBITraits,
+  getMBITotalLevel,
+  getMBILevelInfo,
+  getMBIExLevel,
+  getMBICyLevel,
+  getMBIPeLevel,
+  generateDetailedMBIReport,
+} from '../../src/services/mbiScoring.ts';
+import {
+  calculateSWLSTraits,
+  getSWLSLevel,
+  getSWLSLevelInfo,
+  generateDetailedSWLSReport,
+} from '../../src/services/swlsScoring.ts';
+import {
+  calculateResilienceTraits,
+  getResilienceLevel,
+  getResilienceLevelInfo,
+  generateDetailedResilienceReport,
+} from '../../src/services/resilienceScoring.ts';
 
 const log = (...a) => console.log('[deep-validation]', ...a);
-let pass = 0, fail = 0;
+let pass = 0,
+  fail = 0;
 const issues = [];
 
 function eq(actual, expected, label) {
   const ok = JSON.stringify(actual) === JSON.stringify(expected);
-  if (ok) { pass++; log(`  ✓ ${label}`); }
-  else { fail++; log(`  ✗ ${label}`); log(`    expected: ${JSON.stringify(expected)}`); log(`    actual:   ${JSON.stringify(actual)}`); issues.push(label); }
+  if (ok) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label}`);
+    log(`    expected: ${JSON.stringify(expected)}`);
+    log(`    actual:   ${JSON.stringify(actual)}`);
+    issues.push(label);
+  }
 }
-function truthy(v, label) { if (v) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — falsy`); issues.push(label); } }
-function falsy(v, label) { if (!v) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — truthy: ${JSON.stringify(v)}`); issues.push(label); } }
-function gte(actual, expected, label) { if (actual >= expected) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — ${actual} < ${expected}`); issues.push(label); } }
-function lte(actual, expected, label) { if (actual <= expected) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — ${actual} > ${expected}`); issues.push(label); } }
+function truthy(v, label) {
+  if (v) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — falsy`);
+    issues.push(label);
+  }
+}
+function falsy(v, label) {
+  if (!v) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — truthy: ${JSON.stringify(v)}`);
+    issues.push(label);
+  }
+}
+function gte(actual, expected, label) {
+  if (actual >= expected) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — ${actual} < ${expected}`);
+    issues.push(label);
+  }
+}
+function lte(actual, expected, label) {
+  if (actual <= expected) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — ${actual} > ${expected}`);
+    issues.push(label);
+  }
+}
 
 // ============================================================
 // 1. SSRS 数据完整性
@@ -68,8 +170,14 @@ eq(SSRS_QUESTIONS.length, 10, '1.2 SSRS 题目数 = 10');
   const ssrs7 = SSRS_QUESTIONS.find(q => q.id === 'ssrs7');
   truthy(ssrs6, '1.4 ssrs6 存在');
   truthy(ssrs7, '1.4 ssrs7 存在');
-  truthy(ssrs6.text.includes('经济支持') || ssrs6.text.includes('实际帮助'), '1.4 ssrs6 涉及经济支持');
-  truthy(ssrs7.text.includes('安慰') || ssrs7.text.includes('关心') || ssrs7.text.includes('精神'), '1.4 ssrs7 涉及精神支持');
+  truthy(
+    ssrs6.text.includes('经济支持') || ssrs6.text.includes('实际帮助'),
+    '1.4 ssrs6 涉及经济支持'
+  );
+  truthy(
+    ssrs7.text.includes('安慰') || ssrs7.text.includes('关心') || ssrs7.text.includes('精神'),
+    '1.4 ssrs7 涉及精神支持'
+  );
 }
 
 // 1.5 严重度范围无空隙 (SSRS 最低总分 = 1+1+1+4×1+1+9+9+1+1+1 = 29 in 40 题扩展版)
@@ -79,10 +187,18 @@ eq(SSRS_QUESTIONS.length, 10, '1.2 SSRS 题目数 = 10');
   for (let i = 0; i < sorted.length - 1; i++) {
     const cur = sorted[i].range[1];
     const next = sorted[i + 1].range[0];
-    eq(cur + 1, next, `1.5 SSRS 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i+1].label} 始=${next}`);
+    eq(
+      cur + 1,
+      next,
+      `1.5 SSRS 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i + 1].label} 始=${next}`
+    );
   }
   eq(sorted[0].range[0], 29, '1.5 SSRS 最低范围从 29 开始 (40 题扩展版各维度最小值之和)');
-  gte(sorted[sorted.length-1].range[1], 50, '1.5 SSRS 最高范围 ≥ 50 (40 题扩展版理论总分上限 180)');
+  gte(
+    sorted[sorted.length - 1].range[1],
+    50,
+    '1.5 SSRS 最高范围 ≥ 50 (40 题扩展版理论总分上限 180)'
+  );
 }
 
 // 1.6 严重度覆盖
@@ -122,8 +238,10 @@ eq(SSRS_QUESTIONS.length, 10, '1.2 SSRS 题目数 = 10');
 //   利用度:   原始分 3-12,百分比 = round(raw/12*100)
 {
   const answers = {};
-  for (const id of ['ssrs1','ssrs2','ssrs3','ssrs4','ssrs5','ssrs8','ssrs9','ssrs10']) answers[id] = 2;
-  answers.ssrs6 = 5; answers.ssrs7 = 5;
+  for (const id of ['ssrs1', 'ssrs2', 'ssrs3', 'ssrs4', 'ssrs5', 'ssrs8', 'ssrs9', 'ssrs10'])
+    answers[id] = 2;
+  answers.ssrs6 = 5;
+  answers.ssrs7 = 5;
   const report = generateDetailedSSRSReport(answers, SSRS_QUESTIONS);
   truthy(report.summary, '1.9 SSRS 报告含 summary');
   truthy(report.dimensions?.length === 3, '1.9 SSRS 报告 3 维度');
@@ -208,7 +326,11 @@ eq(MBI_QUESTIONS.length, 15, '2.1 MBI 题目数 = 15');
   for (let i = 0; i < sorted.length - 1; i++) {
     const cur = sorted[i].range[1];
     const next = sorted[i + 1].range[0];
-    eq(cur + 1, next, `2.6 MBI 严重度无空隙: ${sorted[i].name} 末=${cur} → ${sorted[i+1].name} 始=${next}`);
+    eq(
+      cur + 1,
+      next,
+      `2.6 MBI 严重度无空隙: ${sorted[i].name} 末=${cur} → ${sorted[i + 1].name} 始=${next}`
+    );
   }
   eq(sorted[0].range[0], 0, '2.6 MBI 最低范围从 0 开始');
 }
@@ -222,7 +344,7 @@ eq(MBI_QUESTIONS.length, 15, '2.1 MBI 题目数 = 15');
   for (let i = 0; i < sorted.length - 1; i++) {
     const idxCur = colorOrder.indexOf(sorted[i].color);
     const idxNext = colorOrder.indexOf(sorted[i + 1].color);
-    gte(idxNext, idxCur, `2.7 MBI 严重度颜色递增: ${sorted[i].name}→${sorted[i+1].name}`);
+    gte(idxNext, idxCur, `2.7 MBI 严重度颜色递增: ${sorted[i].name}→${sorted[i + 1].name}`);
   }
 }
 
@@ -255,14 +377,19 @@ eq(MBI_QUESTIONS.length, 15, '2.1 MBI 题目数 = 15');
 {
   const answers = {};
   for (const q of MBI_QUESTIONS) {
-    if (q.trait === 'exhaustion') answers[q.id] = 0; // 无耗竭
-    else if (q.trait === 'cynicism') answers[q.id] = 0; // 无犬儒
+    if (q.trait === 'exhaustion')
+      answers[q.id] = 0; // 无耗竭
+    else if (q.trait === 'cynicism')
+      answers[q.id] = 0; // 无犬儒
     else if (q.trait === 'efficacy') answers[q.id] = 6; // 最高 efficacy → 原始 36
   }
   const report = generateDetailedMBIReport(answers, MBI_QUESTIONS);
   // EX=0, CY=0, efficacy 原始=36 → getMBIPeLevel(36) → high (green)
   for (const d of report.dimensions) {
-    truthy(d.level.color === 'green' || d.level.color === 'yellow', `2.9 MBI 最低倦怠 ${d.name} 应是 green/yellow, 实际 ${d.level.color}`);
+    truthy(
+      d.level.color === 'green' || d.level.color === 'yellow',
+      `2.9 MBI 最低倦怠 ${d.name} 应是 green/yellow, 实际 ${d.level.color}`
+    );
   }
   // 综合倦怠: (0 + 0 + (36-36))/3 = 0 → low (green)
   eq(report.summary.color, 'green', '2.9 MBI 综合倦怠分 0 → green');
@@ -295,10 +422,18 @@ eq(SWLS_QUESTIONS.length, 5, '3.1 SWLS 题目数 = 5');
   for (let i = 0; i < sorted.length - 1; i++) {
     const cur = sorted[i].range[1];
     const next = sorted[i + 1].range[0];
-    eq(cur + 1, next, `3.4 SWLS 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i+1].label} 始=${next}`);
+    eq(
+      cur + 1,
+      next,
+      `3.4 SWLS 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i + 1].label} 始=${next}`
+    );
   }
   eq(sorted[0].range[0], 38, '3.4 SWLS 最低范围从 38 开始 (40 题扩展版 38 道主量表 × 1)');
-  eq(sorted[sorted.length-1].range[1], 266, '3.4 SWLS 最高范围 = 266 (40 题扩展版 38 道主量表 × 7)');
+  eq(
+    sorted[sorted.length - 1].range[1],
+    266,
+    '3.4 SWLS 最高范围 = 266 (40 题扩展版 38 道主量表 × 7)'
+  );
 }
 
 // 3.5 严重度覆盖 (6 个 level, 30 分级跨度)
@@ -315,13 +450,19 @@ eq(SWLS_QUESTIONS.length, 5, '3.1 SWLS 题目数 = 5');
   // high 和 low 应该各有 strengths
   for (const key of ['high', 'low']) {
     truthy(SWLS_INTERPRETATION[key], `3.6 SWLS_INTERPRETATION.${key} 存在`);
-    truthy(SWLS_INTERPRETATION[key].strengths?.length > 0, `3.6 SWLS_INTERPRETATION.${key}.strengths 非空`);
+    truthy(
+      SWLS_INTERPRETATION[key].strengths?.length > 0,
+      `3.6 SWLS_INTERPRETATION.${key}.strengths 非空`
+    );
   }
 }
 
 // 3.7 SWLS_BOOST_STRATEGIES 完整性
 {
-  truthy(SWLS_BOOST_STRATEGIES.relationships?.length > 0, '3.7 SWLS_BOOST_STRATEGIES.relationships 非空');
+  truthy(
+    SWLS_BOOST_STRATEGIES.relationships?.length > 0,
+    '3.7 SWLS_BOOST_STRATEGIES.relationships 非空'
+  );
   truthy(SWLS_BOOST_STRATEGIES.flow?.length > 0, '3.7 SWLS_BOOST_STRATEGIES.flow 非空');
   truthy(SWLS_BOOST_STRATEGIES.meaning?.length > 0, '3.7 SWLS_BOOST_STRATEGIES.meaning 非空');
   truthy(SWLS_BOOST_STRATEGIES.health?.length > 0, '3.7 SWLS_BOOST_STRATEGIES.health 非空');
@@ -347,7 +488,10 @@ eq(SWLS_QUESTIONS.length, 5, '3.1 SWLS 题目数 = 5');
   const min = { swls1: 1, swls2: 1, swls3: 1, swls4: 1, swls5: 1 };
   const reportMin = generateDetailedSWLSReport(min, SWLS_QUESTIONS);
   eq(reportMin.summary.score, 5, '3.9 SWLS 最低 → 5');
-  truthy(reportMin.summary.level.color === 'red' || reportMin.summary.level.label.includes('不满意'), '3.9 SWLS 最低 → 不满意');
+  truthy(
+    reportMin.summary.level.color === 'red' || reportMin.summary.level.label.includes('不满意'),
+    '3.9 SWLS 最低 → 不满意'
+  );
 
   const max = { swls1: 7, swls2: 7, swls3: 7, swls4: 7, swls5: 7 };
   const reportMax = generateDetailedSWLSReport(max, SWLS_QUESTIONS);
@@ -406,10 +550,18 @@ eq(RESILIENCE_QUESTIONS.length, 10, '4.1 CD-RISC 题目数 = 10');
   for (let i = 0; i < sorted.length - 1; i++) {
     const cur = sorted[i].range[1];
     const next = sorted[i + 1].range[0];
-    eq(cur + 1, next, `4.6 CD-RISC 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i+1].label} 始=${next}`);
+    eq(
+      cur + 1,
+      next,
+      `4.6 CD-RISC 严重度无空隙: ${sorted[i].label} 末=${cur} → ${sorted[i + 1].label} 始=${next}`
+    );
   }
   eq(sorted[0].range[0], 0, '4.6 CD-RISC 最低范围从 0 开始');
-  eq(sorted[sorted.length-1].range[1], 148, '4.6 CD-RISC 最高范围 = 148 (40 题扩展版 37 道主量表 × 4)');
+  eq(
+    sorted[sorted.length - 1].range[1],
+    148,
+    '4.6 CD-RISC 最高范围 = 148 (40 题扩展版 37 道主量表 × 4)'
+  );
 }
 
 // 4.7 严重度覆盖
@@ -500,7 +652,18 @@ log('\n=== 5. 跨文件一致性 ===');
 
 // 5.4 所有报告都有完整结构
 {
-  const a = { ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2, ssrs6: 5, ssrs7: 5, ssrs8: 2, ssrs9: 2, ssrs10: 2 };
+  const a = {
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
+  };
   const m = {};
   for (const q of MBI_QUESTIONS) m[q.id] = 3;
   const s = { swls1: 4, swls2: 4, swls3: 4, swls4: 4, swls5: 4 };
@@ -545,14 +708,24 @@ log('\n=== 6. 视觉/UX 关键属性 ===');
 //   注: SSRS 第 3, 4 题 ("您与邻居:" / "您与同事:") 在原量表中是题干+选项组合,
 //       题干较短但 4 级选项会补全语义,故这里放宽下限到 3 字
 {
-  for (const q of [...SSRS_QUESTIONS, ...MBI_QUESTIONS, ...SWLS_QUESTIONS, ...RESILIENCE_QUESTIONS]) {
+  for (const q of [
+    ...SSRS_QUESTIONS,
+    ...MBI_QUESTIONS,
+    ...SWLS_QUESTIONS,
+    ...RESILIENCE_QUESTIONS,
+  ]) {
     truthy(q.text && q.text.length >= 3, `6.1 题 ${q.id} 文本有效 (${q.text?.length} 字)`);
   }
 }
 
 // 6.2 所有 label 字符串有效
 {
-  for (const opt of [...SSRS_RESPONSE_OPTIONS, ...MBI_RESPONSE_OPTIONS, ...SWLS_RESPONSE_OPTIONS, ...RESILIENCE_RESPONSE_OPTIONS]) {
+  for (const opt of [
+    ...SSRS_RESPONSE_OPTIONS,
+    ...MBI_RESPONSE_OPTIONS,
+    ...SWLS_RESPONSE_OPTIONS,
+    ...RESILIENCE_RESPONSE_OPTIONS,
+  ]) {
     truthy(opt.label && opt.label.length > 0, `6.2 选项 label "${opt.label}" 非空`);
   }
 }
@@ -561,7 +734,10 @@ log('\n=== 6. 视觉/UX 关键属性 ===');
 {
   for (const sev of [SSRS_SEVERITY, MBI_LEVELS, SWLS_LEVELS, RESILIENCE_SEVERITY]) {
     for (const [key, level] of Object.entries(sev)) {
-      truthy(level.description && level.description.length >= 10, `6.3 严重度 ${key} 描述 ≥ 10 字符 (${level.description?.length})`);
+      truthy(
+        level.description && level.description.length >= 10,
+        `6.3 严重度 ${key} 描述 ≥ 10 字符 (${level.description?.length})`
+      );
     }
   }
 }
@@ -571,7 +747,10 @@ log('\n=== 6. 视觉/UX 关键属性 ===');
   for (const sev of [SSRS_SEVERITY, MBI_LEVELS, SWLS_LEVELS, RESILIENCE_SEVERITY]) {
     for (const [key, level] of Object.entries(sev)) {
       if (level.advice) {
-        truthy(level.advice.length >= 2, `6.4 ${key} advice 至少 2 条 (实际 ${level.advice?.length})`);
+        truthy(
+          level.advice.length >= 2,
+          `6.4 ${key} advice 至少 2 条 (实际 ${level.advice?.length})`
+        );
       }
     }
   }
@@ -619,12 +798,39 @@ log('\n=== 7. 用户操作边界 ===');
 // 7.2 答案越界
 {
   // 7.2.1 SSRS 来源题越界
-  const invalid = { ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2, ssrs6: 999, ssrs7: -10, ssrs8: 2, ssrs9: 2, ssrs10: 2 };
+  const invalid = {
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 999,
+    ssrs7: -10,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
+  };
   const r = generateDetailedSSRSReport(invalid, SSRS_QUESTIONS);
   truthy(r.summary, '7.2.1 SSRS 越界不崩溃');
 
   // 7.2.2 MBI 负值
-  const negM = { mbi1: -1, mbi2: 4, mbi3: 2, mbi4: 1, mbi5: 0, mbi6: 3, mbi7: 5, mbi8: 2, mbi9: 1, mbi10: 4, mbi11: 3, mbi12: 2, mbi13: 1, mbi14: 5, mbi15: 4 };
+  const negM = {
+    mbi1: -1,
+    mbi2: 4,
+    mbi3: 2,
+    mbi4: 1,
+    mbi5: 0,
+    mbi6: 3,
+    mbi7: 5,
+    mbi8: 2,
+    mbi9: 1,
+    mbi10: 4,
+    mbi11: 3,
+    mbi12: 2,
+    mbi13: 1,
+    mbi14: 5,
+    mbi15: 4,
+  };
   const rm = generateDetailedMBIReport(negM, MBI_QUESTIONS);
   truthy(rm.summary, '7.2.2 MBI 负值不崩溃');
 }

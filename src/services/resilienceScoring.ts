@@ -92,8 +92,8 @@ export function getResilienceLevel(score: number, maxScore: number = 40) {
   const pct = score / range;
   if (pct >= 0.82) return RESILIENCE_SEVERITY.veryHigh;
   if (pct >= 0.72) return RESILIENCE_SEVERITY.high;
-  if (pct >= 0.60) return RESILIENCE_SEVERITY.moderate;
-  if (pct >= 0.50) return RESILIENCE_SEVERITY.low;
+  if (pct >= 0.6) return RESILIENCE_SEVERITY.moderate;
+  if (pct >= 0.5) return RESILIENCE_SEVERITY.low;
   return RESILIENCE_SEVERITY.veryLow;
 }
 
@@ -131,7 +131,7 @@ export function generateDetailedResilienceReport(
   const dimNameToKey: Record<string, keyof typeof RESILIENCE_DIMENSIONS> = {
     适应性: 'adaptability',
     关系支持: 'relationships',
-    '意义与目标': 'meaning',
+    意义与目标: 'meaning',
     自我效能: 'selfEfficacy',
     '乐观 / 接纳': 'optimism',
   };
@@ -168,8 +168,20 @@ export function generateDetailedResilienceReport(
 
 const RESILIENCE_BEHAVIOR_LABELS: Record<string, string[]> = {
   cdr11: ['主动寻求专业帮助', '向家人朋友倾诉', '独自消化慢慢调整', '转移注意力', '不知道该怎么办'],
-  cdr12: ['很快开始新尝试', '休息一段时间再重启', '怀疑能力但坚持', '重新评估人生方向', '不知道该怎么办'],
-  cdr13: ['制定详细计划执行', '准备多个备选方案', '顺其自然不强求', '寻求他人建议', '焦虑但不知道怎么办'],
+  cdr12: [
+    '很快开始新尝试',
+    '休息一段时间再重启',
+    '怀疑能力但坚持',
+    '重新评估人生方向',
+    '不知道该怎么办',
+  ],
+  cdr13: [
+    '制定详细计划执行',
+    '准备多个备选方案',
+    '顺其自然不强求',
+    '寻求他人建议',
+    '焦虑但不知道怎么办',
+  ],
 };
 
 function generateResilienceBehavioralProfile(answers: Record<string, number>) {
@@ -179,7 +191,7 @@ function generateResilienceBehavioralProfile(answers: Record<string, number>) {
       id: q.id,
       question: q.text,
       choice: choice ?? null,
-      label: choice != null ? RESILIENCE_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填' : '未填',
+      label: choice != null ? (RESILIENCE_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填') : '未填',
     };
   }).filter(a => a.choice !== null);
 
@@ -195,16 +207,20 @@ function generateResilienceBehavioralProfile(answers: Record<string, number>) {
   let archetypeDesc: string;
   if (avg < 1) {
     archetype = '高韧性行动型';
-    archetypeDesc = '面对挫折你会主动寻求支持、调整后再出发, 面对不确定你会制定计划或灵活应对。你不需要"假装坚强", 但你有真实的复原力。';
+    archetypeDesc =
+      '面对挫折你会主动寻求支持、调整后再出发, 面对不确定你会制定计划或灵活应对。你不需要"假装坚强", 但你有真实的复原力。';
   } else if (avg < 2) {
     archetype = '反思恢复型';
-    archetypeDesc = '你会独自消化挫折、重新评估方向, 这是较成熟的应对方式。注意: "独自消化"长期累积可能耗竭, 适当分享反而能加速恢复。';
+    archetypeDesc =
+      '你会独自消化挫折、重新评估方向, 这是较成熟的应对方式。注意: "独自消化"长期累积可能耗竭, 适当分享反而能加速恢复。';
   } else if (avg < 3) {
     archetype = '逃避转移型';
-    archetypeDesc = '面对挫折你倾向于转移注意力 (运动/工作/娱乐), 这能在短期内缓解痛苦, 但长期可能回避核心问题。建议偶尔停下来"直视"自己的状态。';
+    archetypeDesc =
+      '面对挫折你倾向于转移注意力 (运动/工作/娱乐), 这能在短期内缓解痛苦, 但长期可能回避核心问题。建议偶尔停下来"直视"自己的状态。';
   } else {
     archetype = '迷茫崩溃型';
-    archetypeDesc = '面对重大挫折或不确定, 你感到不知道该怎么办。这是真实的脆弱, 不是失败。建议: 1) 找一个值得信任的人聊聊; 2) 寻求专业支持; 3) 给自己时间, 不要强迫自己"立刻想通"。';
+    archetypeDesc =
+      '面对重大挫折或不确定, 你感到不知道该怎么办。这是真实的脆弱, 不是失败。建议: 1) 找一个值得信任的人聊聊; 2) 寻求专业支持; 3) 给自己时间, 不要强迫自己"立刻想通"。';
   }
 
   return {

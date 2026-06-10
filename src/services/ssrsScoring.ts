@@ -108,10 +108,7 @@ export function getSSRSTotalDescription(score: number): string {
   return `${level.label} (${score} 分)`;
 }
 
-export function generateDetailedSSRSReport(
-  answers: Record<string, number>,
-  questions: Question[]
-) {
+export function generateDetailedSSRSReport(answers: Record<string, number>, questions: Question[]) {
   const traits = calculateSSRSTraits(answers, questions);
   const total = traits[0].score;
   const totalMax = traits[0].maxScore;
@@ -174,8 +171,20 @@ export function generateDetailedSSRSReport(
 
 const SSRS_BEHAVIOR_LABELS: Record<string, string[]> = {
   ssrs11: ['内心祝贺但不互动', '默默点赞', '主动评论+点赞', '评论+私聊深入', '主动私信深度交流'],
-  ssrs12: ['完全自己搞定', '在群里发求帮忙信息', '私下联系 1-2 个好友', '请家人/亲戚帮忙', '召集好友组团'],
-  ssrs13: ['直接表达不同看法', '主动寻找共同点', '表面同意但保留意见', '避免讨论该话题', '暂时不联系等冷静'],
+  ssrs12: [
+    '完全自己搞定',
+    '在群里发求帮忙信息',
+    '私下联系 1-2 个好友',
+    '请家人/亲戚帮忙',
+    '召集好友组团',
+  ],
+  ssrs13: [
+    '直接表达不同看法',
+    '主动寻找共同点',
+    '表面同意但保留意见',
+    '避免讨论该话题',
+    '暂时不联系等冷静',
+  ],
 };
 
 function generateSSRSBehavioralProfile(answers: Record<string, number>) {
@@ -186,7 +195,7 @@ function generateSSRSBehavioralProfile(answers: Record<string, number>) {
       id: q.id,
       question: q.text,
       choice: choice ?? null,
-      label: choice != null ? SSRS_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填' : '未填',
+      label: choice != null ? (SSRS_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填') : '未填',
     };
   }).filter(a => a.choice !== null);
 
@@ -203,16 +212,20 @@ function generateSSRSBehavioralProfile(answers: Record<string, number>) {
   let archetypeDesc: string;
   if (avg < 1) {
     archetype = '独立内敛型';
-    archetypeDesc = '你更倾向于自我消化、不轻易打扰他人,享受独处与独立解决问题。优势是边界清晰、不耗竭;风险是关键时刻可能缺乏主动求助。';
+    archetypeDesc =
+      '你更倾向于自我消化、不轻易打扰他人,享受独处与独立解决问题。优势是边界清晰、不耗竭;风险是关键时刻可能缺乏主动求助。';
   } else if (avg < 2) {
     archetype = '弹性平衡型';
-    archetypeDesc = '你能在独立与连接之间自如切换,该自己扛时扛,该求助时也会开口。这是较健康的关系模式。';
+    archetypeDesc =
+      '你能在独立与连接之间自如切换,该自己扛时扛,该求助时也会开口。这是较健康的关系模式。';
   } else if (avg < 3) {
     archetype = '主动连接型';
-    archetypeDesc = '你习惯主动维护关系、表达情感,在关系中投入度较高。优势是被支持感强;风险是可能在关系中消耗过多精力。';
+    archetypeDesc =
+      '你习惯主动维护关系、表达情感,在关系中投入度较高。优势是被支持感强;风险是可能在关系中消耗过多精力。';
   } else {
     archetype = '深度依赖型';
-    archetypeDesc = '你高度依赖核心关系网,在亲密关系中寻求强连接。优势是关系深度;风险是当关系波动时,情绪冲击也大。';
+    archetypeDesc =
+      '你高度依赖核心关系网,在亲密关系中寻求强连接。优势是关系深度;风险是当关系波动时,情绪冲击也大。';
   }
 
   return {

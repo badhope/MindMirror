@@ -402,7 +402,7 @@ export default {
         },
         {
           q: 'Where is my data?',
-          a: 'On your device, in your browser\'s localStorage. Nothing leaves your machine — we never see it.',
+          a: "On your device, in your browser's localStorage. Nothing leaves your machine — we never see it.",
         },
         {
           q: 'Can I use it anonymously?',
@@ -420,7 +420,7 @@ export default {
     },
     privacy: {
       title: 'A note on privacy',
-      body: 'We don\'t sell data, don\'t run ads, and don\'t ship third-party trackers. Your data stays on your device — nothing leaves your browser.',
+      body: "We don't sell data, don't run ads, and don't ship third-party trackers. Your data stays on your device — nothing leaves your browser.",
     },
     contact: {
       title: 'Questions or feedback?',

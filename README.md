@@ -25,15 +25,15 @@ collect 47 categories of telemetry. There is nothing to collect.
 
 Seven validated psychological scales ship in the box:
 
-| Scale | What it measures | Items |
-|---|---|---|
-| **BFI** (Big Five / OCEAN) | The personality traits most-used in modern psych research | 60 |
-| **PSS-10** | How often you felt overloaded in the last month | 33 |
-| **GAD-7** | Generalised anxiety, with the standard clinical cut-points | 28 |
-| **SSRS** (肖水源 1986) | Subjective / objective / utilisation social support | 43 |
-| **MBI-GS** (Maslach) | Burnout across exhaustion / cynicism / efficacy | 40 |
-| **SWLS** (Diener) | Life satisfaction, with theme sub-scores | 40 |
-| **CD-RISC-10** (Connor-Davidson) | Resilience, with sub-dimension breakdown | 40 |
+| Scale                            | What it measures                                           | Items |
+| -------------------------------- | ---------------------------------------------------------- | ----- |
+| **BFI** (Big Five / OCEAN)       | The personality traits most-used in modern psych research  | 60    |
+| **PSS-10**                       | How often you felt overloaded in the last month            | 33    |
+| **GAD-7**                        | Generalised anxiety, with the standard clinical cut-points | 28    |
+| **SSRS** (肖水源 1986)           | Subjective / objective / utilisation social support        | 43    |
+| **MBI-GS** (Maslach)             | Burnout across exhaustion / cynicism / efficacy            | 40    |
+| **SWLS** (Diener)                | Life satisfaction, with theme sub-scores                   | 40    |
+| **CD-RISC-10** (Connor-Davidson) | Resilience, with sub-dimension breakdown                   | 40    |
 
 Long-form scales use a dimension-aligned **question bank** plus
 **behaviour-anchored extension items** so people who would give
@@ -58,7 +58,7 @@ It is worth being honest about the edges:
   re-validated against their full original samples; they exist so
   you can see a richer picture of yourself, not so you can publish
   papers. The original authors and citations are in
-  [CITATION.cff](CITATION.cff) — cite *them*, not us.
+  [CITATION.cff](CITATION.cff) — cite _them_, not us.
 - **Not a sync service.** There is no cloud. There is no account.
   If you switch browsers, you start over. That is the trade for
   the privacy guarantee.

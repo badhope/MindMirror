@@ -21,8 +21,8 @@ async function run() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
   const errs = [];
-  page.on('pageerror', (e) => errs.push(`pageerror: ${e.message}`));
-  page.on('console', (m) => {
+  page.on('pageerror', e => errs.push(`pageerror: ${e.message}`));
+  page.on('console', m => {
     if (m.type() === 'error') errs.push(`console.error: ${m.text()}`);
   });
 
@@ -50,10 +50,7 @@ async function run() {
         type: 'anxiety',
         questions: Array.from({ length: 28 }, (_, i) => ({
           id: 'gad7-q' + (i + 1),
-          text:
-            '示例问题 ' +
-            (i + 1) +
-            ': 在过去的两周里,你有多少时间被这种感受困扰?',
+          text: '示例问题 ' + (i + 1) + ': 在过去的两周里,你有多少时间被这种感受困扰?',
           trait: i % 2 === 0 ? 'negative' : 'positive',
         })),
       },
@@ -66,12 +63,7 @@ async function run() {
 
   // Verify the new design tokens rendered
   const html = await page.locator('body').innerText();
-  const expected = [
-    '焦虑等级解读',
-    '题目得分热力图',
-    '建议与资源',
-    '下一步,试试这些',
-  ];
+  const expected = ['焦虑等级解读', '题目得分热力图', '建议与资源', '下一步,试试这些'];
   for (const needle of expected) {
     if (!html.includes(needle)) {
       throw new Error('design token missing: "' + needle + '"');
@@ -97,7 +89,7 @@ async function run() {
     { name: 'tabs', y: 3900 },
     { name: 'cta', y: 5000 },
   ]) {
-    await page.evaluate((y) => window.scrollTo(0, y), s.y);
+    await page.evaluate(y => window.scrollTo(0, y), s.y);
     await sleep(500);
     await page.screenshot({ path: OUT + '/gad7-' + s.name + '.png', fullPage: false });
     log('  saved gad7-' + s.name + '.png');
@@ -126,7 +118,7 @@ async function run() {
   log('DONE');
 }
 
-run().catch((e) => {
+run().catch(e => {
   console.error('[gad7-ui] FAILED:', e.message);
   process.exit(1);
 });

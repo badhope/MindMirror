@@ -14,8 +14,8 @@ async function run() {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   const errs = [];
-  page.on('pageerror', (e) => errs.push(`pageerror: ${e.message}`));
-  page.on('console', (m) => {
+  page.on('pageerror', e => errs.push(`pageerror: ${e.message}`));
+  page.on('console', m => {
     if (m.type() === 'error') errs.push(`console.error: ${m.text()}`);
   });
 
@@ -70,7 +70,7 @@ async function run() {
     { name: 'tabs', y: 3400 },
     { name: 'cta', y: 5000 },
   ]) {
-    await page.evaluate((y) => window.scrollTo(0, y), s.y);
+    await page.evaluate(y => window.scrollTo(0, y), s.y);
     await sleep(400);
     await page.screenshot({ path: OUT + '/bigfive-' + s.name + '.png', fullPage: false });
     log('  saved bigfive-' + s.name + '.png');
@@ -92,7 +92,7 @@ async function run() {
   await browser.close();
   log('DONE');
 }
-run().catch((e) => {
+run().catch(e => {
   console.error('[bigfive-ui] FAILED:', e.message);
   process.exit(1);
 });

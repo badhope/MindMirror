@@ -20,7 +20,12 @@
  * use `toUnifiedResult` from DataSyncService to map.
  */
 import { storage } from '../../lib/utils';
-import { DataStatistics, AssessmentTrend, PeriodicSummary, UnifiedAssessmentResult } from '../../types/dataAbstraction';
+import {
+  DataStatistics,
+  AssessmentTrend,
+  PeriodicSummary,
+  UnifiedAssessmentResult,
+} from '../../types/dataAbstraction';
 
 const HASH_KEY = 'mindmirror_analysis_history_hash';
 const CACHE_KEY = 'mindmirror_analysis_cache';

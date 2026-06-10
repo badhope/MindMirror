@@ -103,8 +103,8 @@ export function getMBITotalLevel(score: number, totalMax: number = 30) {
   const range = totalMax > 0 ? totalMax : 30;
   const pct = score / range;
   if (pct >= 0.77) return MBI_SEVERITY.severe;
-  if (pct >= 0.60) return MBI_SEVERITY.high;
-  if (pct >= 0.40) return MBI_SEVERITY.moderate;
+  if (pct >= 0.6) return MBI_SEVERITY.high;
+  if (pct >= 0.4) return MBI_SEVERITY.moderate;
   return MBI_SEVERITY.low;
 }
 
@@ -120,9 +120,9 @@ export function getMBIExLevel(score: number, exMax: number = 30) {
   // EX 高分=倦怠,使用百分比判断,兼容 15/40 题版本
   // 原始阈值: ≥15/30=50% 极高, ≥11/30=37% 高, ≥6/30=20% 中, else 低
   const pct = exMax > 0 ? score / exMax : 0;
-  if (pct >= 0.50) return MBI_DIMENSION_LEVELS.exhaustion.severe;
+  if (pct >= 0.5) return MBI_DIMENSION_LEVELS.exhaustion.severe;
   if (pct >= 0.37) return MBI_DIMENSION_LEVELS.exhaustion.high;
-  if (pct >= 0.20) return MBI_DIMENSION_LEVELS.exhaustion.moderate;
+  if (pct >= 0.2) return MBI_DIMENSION_LEVELS.exhaustion.moderate;
   return MBI_DIMENSION_LEVELS.exhaustion.low;
 }
 
@@ -146,10 +146,7 @@ export function getMBIPeLevel(score: number, peMax: number = 90) {
   return MBI_DIMENSION_LEVELS.efficacy.veryLow;
 }
 
-export function calculateMBISubScores(
-  answers: Record<string, number>,
-  questions: Question[]
-) {
+export function calculateMBISubScores(answers: Record<string, number>, questions: Question[]) {
   let ex = 0;
   let cy = 0;
   let pe = 0;
@@ -173,10 +170,7 @@ export function calculateMBISubScores(
   return { ex, cy, pe, total: (ex + cy + (peMax - pe)) / 3 };
 }
 
-export function generateDetailedMBIReport(
-  answers: Record<string, number>,
-  questions: Question[]
-) {
+export function generateDetailedMBIReport(answers: Record<string, number>, questions: Question[]) {
   const { ex, cy, pe, total } = calculateMBISubScores(answers, questions);
 
   // 动态计算各维度 max
@@ -246,9 +240,27 @@ export function generateDetailedMBIReport(
 // =====================================================================
 
 const MBI_BEHAVIOR_LABELS: Record<string, string[]> = {
-  mbi16: ['没问题配合 (奉献)', '接受但讨价还价 (边界)', '直接拒绝/要求调休 (强硬)', '接受但心里抗拒 (压抑)', '心灰意冷 (重度倦怠)'],
-  mbi17: ['真心祝贺并学习 (成长)', '失落但很快接受 (韧性)', '质疑晋升公平性 (犬儒)', '怀疑自身价值 (低效能)', '失去工作信任 (深度犬儒)'],
-  mbi18: ['保持专注贡献 (高投入)', '听讲偶尔走神 (常规)', '同时处理其他工作 (多任务)', '觉得浪费时间忍耐 (犬儒)', '主动提缩短会议 (质疑者)'],
+  mbi16: [
+    '没问题配合 (奉献)',
+    '接受但讨价还价 (边界)',
+    '直接拒绝/要求调休 (强硬)',
+    '接受但心里抗拒 (压抑)',
+    '心灰意冷 (重度倦怠)',
+  ],
+  mbi17: [
+    '真心祝贺并学习 (成长)',
+    '失落但很快接受 (韧性)',
+    '质疑晋升公平性 (犬儒)',
+    '怀疑自身价值 (低效能)',
+    '失去工作信任 (深度犬儒)',
+  ],
+  mbi18: [
+    '保持专注贡献 (高投入)',
+    '听讲偶尔走神 (常规)',
+    '同时处理其他工作 (多任务)',
+    '觉得浪费时间忍耐 (犬儒)',
+    '主动提缩短会议 (质疑者)',
+  ],
 };
 
 function generateMBIBehavioralProfile(answers: Record<string, number>) {
@@ -258,7 +270,7 @@ function generateMBIBehavioralProfile(answers: Record<string, number>) {
       id: q.id,
       question: q.text,
       choice: choice ?? null,
-      label: choice != null ? MBI_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填' : '未填',
+      label: choice != null ? (MBI_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填') : '未填',
     };
   }).filter(a => a.choice !== null);
 
@@ -274,16 +286,20 @@ function generateMBIBehavioralProfile(answers: Record<string, number>) {
   let archetypeDesc: string;
   if (avg < 1) {
     archetype = '高投入成长型';
-    archetypeDesc = '面对加班/同事晋升/冗长会议, 你倾向于主动配合、祝贺同事、保持专注, 是工作中的"正能量"角色。注意: 这也可能是高功能倦怠 (你只是没有表达疲惫)。';
+    archetypeDesc =
+      '面对加班/同事晋升/冗长会议, 你倾向于主动配合、祝贺同事、保持专注, 是工作中的"正能量"角色。注意: 这也可能是高功能倦怠 (你只是没有表达疲惫)。';
   } else if (avg < 2) {
     archetype = '弹性务实型';
-    archetypeDesc = '你能处理工作中的负面情绪, 但会设置边界。在奉献与自我保护之间找到了平衡点, 是可持续的工作模式。';
+    archetypeDesc =
+      '你能处理工作中的负面情绪, 但会设置边界。在奉献与自我保护之间找到了平衡点, 是可持续的工作模式。';
   } else if (avg < 3) {
     archetype = '压抑消耗型';
-    archetypeDesc = '表面上你还在配合, 但内心已经积累了很多抗拒。这是倦怠的早期信号, 建议主动调整工作量或寻求支持。';
+    archetypeDesc =
+      '表面上你还在配合, 但内心已经积累了很多抗拒。这是倦怠的早期信号, 建议主动调整工作量或寻求支持。';
   } else {
     archetype = '犬儒耗竭型';
-    archetypeDesc = '你在行为层面已经表现出明显的倦怠信号: 抗拒加班、怀疑晋升公平、质疑工作价值。建议认真评估: 是休息不足, 还是这份工作本身需要重新选择?';
+    archetypeDesc =
+      '你在行为层面已经表现出明显的倦怠信号: 抗拒加班、怀疑晋升公平、质疑工作价值。建议认真评估: 是休息不足, 还是这份工作本身需要重新选择?';
   }
 
   return {

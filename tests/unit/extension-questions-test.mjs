@@ -30,16 +30,43 @@ import {
 import { getQuestionsForAssessment } from '../../src/data/mockData.ts';
 
 const log = (...a) => console.log('[ext-q]', ...a);
-let pass = 0, fail = 0;
+let pass = 0,
+  fail = 0;
 const issues = [];
 
 function eq(actual, expected, label) {
   const ok = JSON.stringify(actual) === JSON.stringify(expected);
-  if (ok) { pass++; log(`  ✓ ${label}`); }
-  else { fail++; log(`  ✗ ${label}`); log(`    expected: ${JSON.stringify(expected)}`); log(`    actual:   ${JSON.stringify(actual)}`); issues.push(label); }
+  if (ok) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label}`);
+    log(`    expected: ${JSON.stringify(expected)}`);
+    log(`    actual:   ${JSON.stringify(actual)}`);
+    issues.push(label);
+  }
 }
-function truthy(v, label) { if (v) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — falsy`); issues.push(label); } }
-function ok(cond, label) { if (cond) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label}`); issues.push(label); } }
+function truthy(v, label) {
+  if (v) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — falsy`);
+    issues.push(label);
+  }
+}
+function ok(cond, label) {
+  if (cond) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label}`);
+    issues.push(label);
+  }
+}
 
 const allQuestions = [
   ...SSRS_QUESTIONS,
@@ -62,15 +89,39 @@ eq(MBI_EXTENSION_QUESTIONS.length, 3, '1.1 MBI 延伸题 = 3 道');
 eq(SWLS_EXTENSION_QUESTIONS.length, 2, '1.1 SWLS 延伸题 = 2 道');
 eq(RESILIENCE_EXTENSION_QUESTIONS.length, 3, '1.1 CD-RISC 延伸题 = 3 道');
 
-ok(SSRS_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'), '1.2 SSRS 延伸题 trait = extension');
-ok(MBI_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'), '1.2 MBI 延伸题 trait = extension');
-ok(SWLS_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'), '1.2 SWLS 延伸题 trait = extension');
-ok(RESILIENCE_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'), '1.2 CD-RISC 延伸题 trait = extension');
+ok(
+  SSRS_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'),
+  '1.2 SSRS 延伸题 trait = extension'
+);
+ok(
+  MBI_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'),
+  '1.2 MBI 延伸题 trait = extension'
+);
+ok(
+  SWLS_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'),
+  '1.2 SWLS 延伸题 trait = extension'
+);
+ok(
+  RESILIENCE_EXTENSION_QUESTIONS.every(q => q.trait === 'extension'),
+  '1.2 CD-RISC 延伸题 trait = extension'
+);
 
-ok(SSRS_EXTENSION_QUESTIONS.every(q => q.text.length > 20), '1.3 SSRS 延伸题题干 > 20 字符 (具体场景)');
-ok(MBI_EXTENSION_QUESTIONS.every(q => q.text.length > 20), '1.3 MBI 延伸题题干 > 20 字符');
-ok(SWLS_EXTENSION_QUESTIONS.every(q => q.text.length > 10), '1.3 SWLS 延伸题题干 > 10 字符');
-ok(RESILIENCE_EXTENSION_QUESTIONS.every(q => q.text.length > 20), '1.3 CD-RISC 延伸题题干 > 20 字符');
+ok(
+  SSRS_EXTENSION_QUESTIONS.every(q => q.text.length > 20),
+  '1.3 SSRS 延伸题题干 > 20 字符 (具体场景)'
+);
+ok(
+  MBI_EXTENSION_QUESTIONS.every(q => q.text.length > 20),
+  '1.3 MBI 延伸题题干 > 20 字符'
+);
+ok(
+  SWLS_EXTENSION_QUESTIONS.every(q => q.text.length > 10),
+  '1.3 SWLS 延伸题题干 > 10 字符'
+);
+ok(
+  RESILIENCE_EXTENSION_QUESTIONS.every(q => q.text.length > 20),
+  '1.3 CD-RISC 延伸题题干 > 20 字符'
+);
 
 // ID 不重复
 const allIds = allQuestions.map(q => q.id);
@@ -131,7 +182,10 @@ log('\n=== 3. 延伸题不污染原量表分 ===');
   const allQuestionsList = [...MBI_QUESTIONS, ...MBI_EXTENSION_QUESTIONS];
   const fullReport = generateDetailedMBIReport(withExt, allQuestionsList);
 
-  ok(Math.abs(fullReport.summary.score - mainReport.summary.score) < 0.01, '3.2 MBI 加延伸题后总分不变');
+  ok(
+    Math.abs(fullReport.summary.score - mainReport.summary.score) < 0.01,
+    '3.2 MBI 加延伸题后总分不变'
+  );
 }
 
 // 3.3 SWLS
@@ -171,7 +225,10 @@ log('\n=== 4. 报告含 behavioralProfile ===');
   const answers = {};
   for (const q of SSRS_QUESTIONS) answers[q.id] = 2;
   for (const q of SSRS_EXTENSION_QUESTIONS) answers[q.id] = 2;
-  const report = generateDetailedSSRSReport(answers, [...SSRS_QUESTIONS, ...SSRS_EXTENSION_QUESTIONS]);
+  const report = generateDetailedSSRSReport(answers, [
+    ...SSRS_QUESTIONS,
+    ...SSRS_EXTENSION_QUESTIONS,
+  ]);
   truthy(report.behavioralProfile, '4.1 SSRS 报告含 behavioralProfile');
   truthy(report.behavioralProfile.archetype, '4.1 SSRS 报告含 archetype');
   truthy(report.behavioralProfile.archetypeDesc, '4.1 SSRS 报告含 archetypeDesc');
@@ -189,7 +246,10 @@ log('\n=== 4. 报告含 behavioralProfile ===');
   const answers = {};
   for (const q of SWLS_QUESTIONS) answers[q.id] = 4;
   for (const q of SWLS_EXTENSION_QUESTIONS) answers[q.id] = 2;
-  const report = generateDetailedSWLSReport(answers, [...SWLS_QUESTIONS, ...SWLS_EXTENSION_QUESTIONS]);
+  const report = generateDetailedSWLSReport(answers, [
+    ...SWLS_QUESTIONS,
+    ...SWLS_EXTENSION_QUESTIONS,
+  ]);
   truthy(report.behavioralProfile, '4.3 SWLS 报告含 behavioralProfile');
   eq(report.behavioralProfile.items.length, 2, '4.3 SWLS 报告 items = 2');
 }
@@ -197,7 +257,10 @@ log('\n=== 4. 报告含 behavioralProfile ===');
   const answers = {};
   for (const q of RESILIENCE_QUESTIONS) answers[q.id] = 2;
   for (const q of RESILIENCE_EXTENSION_QUESTIONS) answers[q.id] = 2;
-  const report = generateDetailedResilienceReport(answers, [...RESILIENCE_QUESTIONS, ...RESILIENCE_EXTENSION_QUESTIONS]);
+  const report = generateDetailedResilienceReport(answers, [
+    ...RESILIENCE_QUESTIONS,
+    ...RESILIENCE_EXTENSION_QUESTIONS,
+  ]);
   truthy(report.behavioralProfile, '4.4 CD-RISC 报告含 behavioralProfile');
   eq(report.behavioralProfile.items.length, 3, '4.4 CD-RISC 报告 items = 3');
 }

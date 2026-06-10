@@ -20,27 +20,64 @@
  * 运行: node --import tsx tests/unit/user-simulation-test.mjs
  */
 
-import { SSRS_QUESTIONS, SSRS_RESPONSE_OPTIONS, SSRS_SOURCES_OPTIONS } from '../../src/data/ssrsData.ts';
+import {
+  SSRS_QUESTIONS,
+  SSRS_RESPONSE_OPTIONS,
+  SSRS_SOURCES_OPTIONS,
+} from '../../src/data/ssrsData.ts';
 import { MBI_QUESTIONS, MBI_RESPONSE_OPTIONS } from '../../src/data/mbiData.ts';
 import { SWLS_QUESTIONS, SWLS_RESPONSE_OPTIONS } from '../../src/data/swlsData.ts';
-import { RESILIENCE_QUESTIONS, RESILIENCE_RESPONSE_OPTIONS } from '../../src/data/resilienceData.ts';
+import {
+  RESILIENCE_QUESTIONS,
+  RESILIENCE_RESPONSE_OPTIONS,
+} from '../../src/data/resilienceData.ts';
 
 import { generateDetailedSSRSReport, calculateSSRSTraits } from '../../src/services/ssrsScoring.ts';
 import { generateDetailedMBIReport, calculateMBITraits } from '../../src/services/mbiScoring.ts';
 import { generateDetailedSWLSReport, calculateSWLSTraits } from '../../src/services/swlsScoring.ts';
-import { generateDetailedResilienceReport, calculateResilienceTraits } from '../../src/services/resilienceScoring.ts';
+import {
+  generateDetailedResilienceReport,
+  calculateResilienceTraits,
+} from '../../src/services/resilienceScoring.ts';
 
 const log = (...a) => console.log('[user-sim]', ...a);
-let pass = 0, fail = 0;
+let pass = 0,
+  fail = 0;
 const issues = [];
 
 function eq(actual, expected, label) {
   const ok = JSON.stringify(actual) === JSON.stringify(expected);
-  if (ok) { pass++; log(`  ✓ ${label}`); }
-  else { fail++; log(`  ✗ ${label}`); log(`    expected: ${JSON.stringify(expected)}`); log(`    actual:   ${JSON.stringify(actual)}`); issues.push(label); }
+  if (ok) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label}`);
+    log(`    expected: ${JSON.stringify(expected)}`);
+    log(`    actual:   ${JSON.stringify(actual)}`);
+    issues.push(label);
+  }
 }
-function truthy(v, label) { if (v) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label} — falsy`); issues.push(label); } }
-function ok(cond, label) { if (cond) { pass++; log(`  ✓ ${label}`); } else { fail++; log(`  ✗ ${label}`); issues.push(label); } }
+function truthy(v, label) {
+  if (v) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label} — falsy`);
+    issues.push(label);
+  }
+}
+function ok(cond, label) {
+  if (cond) {
+    pass++;
+    log(`  ✓ ${label}`);
+  } else {
+    fail++;
+    log(`  ✗ ${label}`);
+    issues.push(label);
+  }
+}
 
 // ============================================================
 // 场景 1: SSRS 完整流程 (10 题)
@@ -63,12 +100,13 @@ log('\n=== 1. SSRS 用户流程: 列表 → 介绍 → 答题 → 翻页 → 提
 // 1.3 模拟"答 ssrs1, ssrs2, ssrs3, ssrs4, ssrs5, ssrs8, ssrs9, ssrs10" 各取 2
 {
   const answers = {};
-  for (const id of ['ssrs1','ssrs2','ssrs3','ssrs4','ssrs5','ssrs8','ssrs9','ssrs10']) answers[id] = 2;
+  for (const id of ['ssrs1', 'ssrs2', 'ssrs3', 'ssrs4', 'ssrs5', 'ssrs8', 'ssrs9', 'ssrs10'])
+    answers[id] = 2;
 
   // 1.3.1 进度: 8/10 = 80%
   const answered = Object.keys(answers).length;
   eq(answered, 8, '1.3.1 已答 8 题');
-  eq(Math.round(answered / 10 * 100), 80, '1.3.1 进度 80%');
+  eq(Math.round((answered / 10) * 100), 80, '1.3.1 进度 80%');
 
   // 1.3.2 用户可点跳到任意已答题 (验证页码导航)
   ok(answers[SSRS_QUESTIONS[3].id] !== undefined, '1.3.2 可跳到第 4 题 (已答)');
@@ -77,9 +115,16 @@ log('\n=== 1. SSRS 用户流程: 列表 → 介绍 → 答题 → 翻页 → 提
 // 1.4 模拟"答 ssrs6, ssrs7" (来源题, 0-9 范围)
 {
   const answers = {
-    ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2,
-    ssrs6: 5, ssrs7: 5,
-    ssrs8: 2, ssrs9: 2, ssrs10: 2,
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
   };
   // 1.4.1 答完所有
   ok(Object.keys(answers).length === 10, '1.4.1 答完 10 题');
@@ -94,9 +139,16 @@ log('\n=== 1. SSRS 用户流程: 列表 → 介绍 → 答题 → 翻页 → 提
 // 1.5 模拟"回退修改"
 {
   const answers = {
-    ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2,
-    ssrs6: 5, ssrs7: 5,
-    ssrs8: 2, ssrs9: 2, ssrs10: 2,
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
   };
   // 用户回退到第 5 题, 改为 4
   answers.ssrs5 = 4;
@@ -107,7 +159,10 @@ log('\n=== 1. SSRS 用户流程: 列表 → 介绍 → 答题 → 翻页 → 提
 // 1.6 模拟"跳题后点完成" — 应跳到第一道未答题
 {
   const answers = {
-    ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2,
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
     // 5, 6, 7, 8, 9, 10 未答
   };
   // 模拟 QuizPage.handleNext 行为
@@ -128,8 +183,10 @@ log('\n=== 2. MBI 用户流程: 介绍 → 15 题 → 倦怠结果 ===');
   // 2.1 模拟一个"高倦怠"用户
   const answers = {};
   for (const q of MBI_QUESTIONS) {
-    if (q.trait === 'exhaustion') answers[q.id] = 5; // 高耗竭
-    else if (q.trait === 'cynicism') answers[q.id] = 5; // 高犬儒
+    if (q.trait === 'exhaustion')
+      answers[q.id] = 5; // 高耗竭
+    else if (q.trait === 'cynicism')
+      answers[q.id] = 5; // 高犬儒
     else if (q.trait === 'efficacy') answers[q.id] = 1; // 反向: 低效能
   }
 
@@ -176,7 +233,10 @@ log('\n=== 2. MBI 用户流程: 介绍 → 15 题 → 倦怠结果 ===');
 
   // 跳到第 5 题 (未答且 idx > current+1) — 应被禁用
   const skipIdx = 4;
-  ok(skipIdx > nextIdx && !answers[MBI_QUESTIONS[skipIdx].id], '2.4 第 5 题未答且 idx > current+1, 应禁用');
+  ok(
+    skipIdx > nextIdx && !answers[MBI_QUESTIONS[skipIdx].id],
+    '2.4 第 5 题未答且 idx > current+1, 应禁用'
+  );
 }
 
 // ============================================================
@@ -210,7 +270,10 @@ log('\n=== 3. SWLS 用户流程: 5 题 → 满意度结果 ===');
   truthy(r1.interpretation, '3.4 报告含 interpretation');
   truthy(r1.advice, '3.4 报告含 advice');
   truthy(r1.boost, '3.4 报告含 boost');
-  truthy(r1.boost.relationships && r1.boost.flow && r1.boost.meaning && r1.boost.health, '3.4 boost 4 维度全有');
+  truthy(
+    r1.boost.relationships && r1.boost.flow && r1.boost.meaning && r1.boost.health,
+    '3.4 boost 4 维度全有'
+  );
 }
 
 // ============================================================
@@ -254,7 +317,18 @@ log('\n=== 5. 跨量表流程: 同一会话做 4 个新量表 ===');
 
 {
   // 5.1 完成 SSRS
-  const ssrsAns = { ssrs1: 3, ssrs2: 2, ssrs3: 3, ssrs4: 2, ssrs5: 4, ssrs6: 6, ssrs7: 7, ssrs8: 3, ssrs9: 2, ssrs10: 1 };
+  const ssrsAns = {
+    ssrs1: 3,
+    ssrs2: 2,
+    ssrs3: 3,
+    ssrs4: 2,
+    ssrs5: 4,
+    ssrs6: 6,
+    ssrs7: 7,
+    ssrs8: 3,
+    ssrs9: 2,
+    ssrs10: 1,
+  };
   const ssrsR = generateDetailedSSRSReport(ssrsAns, SSRS_QUESTIONS);
   truthy(ssrsR.summary, '5.1 SSRS 报告 OK');
 
@@ -276,17 +350,51 @@ log('\n=== 5. 跨量表流程: 同一会话做 4 个新量表 ===');
   for (const q of RESILIENCE_QUESTIONS) resAns[q.id] = 3;
   const resR = generateDetailedResilienceReport(resAns, RESILIENCE_QUESTIONS);
   eq(resR.summary.score, 30, '5.4 CD-RISC-10 全 3 → 30');
-  truthy(['韧性较高', '韧性很强'].includes(resR.summary.level.label), `5.4 30 → 韧性较高/很强 (实际 ${resR.summary.level.label})`);
+  truthy(
+    ['韧性较高', '韧性很强'].includes(resR.summary.level.label),
+    `5.4 30 → 韧性较高/很强 (实际 ${resR.summary.level.label})`
+  );
 
   // 5.5 模拟 addToHistory — 4 个量表都应能入库
   const history = [
-    { id: 'h1', assessmentId: 'social-support', assessmentTitle: 'SSRS', totalScore: ssrsR.summary.score, completedAt: new Date().toISOString(), traits: [] },
-    { id: 'h2', assessmentId: 'mbi-burnout', assessmentTitle: 'MBI', totalScore: mbiR.summary.score, completedAt: new Date().toISOString(), traits: [] },
-    { id: 'h3', assessmentId: 'life-satisfaction', assessmentTitle: 'SWLS', totalScore: swlsR.summary.score, completedAt: new Date().toISOString(), traits: [] },
-    { id: 'h4', assessmentId: 'resilience-cdrisc', assessmentTitle: 'CD-RISC-10', totalScore: resR.summary.score, completedAt: new Date().toISOString(), traits: [] },
+    {
+      id: 'h1',
+      assessmentId: 'social-support',
+      assessmentTitle: 'SSRS',
+      totalScore: ssrsR.summary.score,
+      completedAt: new Date().toISOString(),
+      traits: [],
+    },
+    {
+      id: 'h2',
+      assessmentId: 'mbi-burnout',
+      assessmentTitle: 'MBI',
+      totalScore: mbiR.summary.score,
+      completedAt: new Date().toISOString(),
+      traits: [],
+    },
+    {
+      id: 'h3',
+      assessmentId: 'life-satisfaction',
+      assessmentTitle: 'SWLS',
+      totalScore: swlsR.summary.score,
+      completedAt: new Date().toISOString(),
+      traits: [],
+    },
+    {
+      id: 'h4',
+      assessmentId: 'resilience-cdrisc',
+      assessmentTitle: 'CD-RISC-10',
+      totalScore: resR.summary.score,
+      completedAt: new Date().toISOString(),
+      traits: [],
+    },
   ];
   ok(history.length === 4, '5.5 4 个量表都可入历史');
-  ok(history.every(h => h.totalScore > 0), '5.5 4 条历史总分 > 0');
+  ok(
+    history.every(h => h.totalScore > 0),
+    '5.5 4 条历史总分 > 0'
+  );
 }
 
 // ============================================================
@@ -310,12 +418,34 @@ log('\n=== 6. 边界: 跳题/越界/重置 ===');
   eq(r2.summary.score, 0, '6.2 SSRS 全 0 → 总分 0');
 
   // 6.3 越界 (用户输入 999)
-  const over = { ssrs1: 999, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2, ssrs6: 5, ssrs7: 5, ssrs8: 2, ssrs9: 2, ssrs10: 2 };
+  const over = {
+    ssrs1: 999,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
+  };
   const r3 = generateDetailedSSRSReport(over, SSRS_QUESTIONS);
   truthy(r3.summary, '6.3 SSRS 越界值不崩溃');
 
   // 6.4 负值
-  const neg = { ssrs1: -5, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2, ssrs6: 5, ssrs7: 5, ssrs8: 2, ssrs9: 2, ssrs10: 2 };
+  const neg = {
+    ssrs1: -5,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
+  };
   const r4 = generateDetailedSSRSReport(neg, SSRS_QUESTIONS);
   truthy(r4.summary, '6.4 SSRS 负值不崩溃');
 
@@ -344,7 +474,10 @@ log('\n=== 7. 同一量表 1 分钟内重做 → 覆盖而非新增 ===');
   function addToHistory(result) {
     const dupeIdx = history.findIndex(h => {
       if (h.assessmentId !== result.assessmentId) return false;
-      return Math.abs(new Date(h.completedAt).getTime() - new Date(result.completedAt).getTime()) < 60_000;
+      return (
+        Math.abs(new Date(h.completedAt).getTime() - new Date(result.completedAt).getTime()) <
+        60_000
+      );
     });
     if (dupeIdx >= 0) history[dupeIdx] = result;
     else history.unshift(result);
