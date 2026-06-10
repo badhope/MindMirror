@@ -5,7 +5,20 @@ import tseslint from 'typescript-eslint';
 const tsRecommended = tseslint.configs?.recommended ?? [];
 
 export default [
-  { ignores: ['dist', 'node_modules', 'api/dist', 'backend/**', '.trae/**', '*.config.*', 'eslint.config.*', 'scripts/**', 'tests/e2e/**', 'tests/unit/**'] },
+  {
+    ignores: [
+      'dist',
+      'node_modules',
+      'api/dist',
+      'backend/**',
+      '.trae/**',
+      '*.config.*',
+      'eslint.config.*',
+      'scripts/**',
+      'tests/e2e/**',
+      'tests/unit/**',
+    ],
+  },
   js.configs.recommended,
   ...tsRecommended,
   {
@@ -80,7 +93,10 @@ export default [
     },
     rules: {
       ...(reactRefresh.configs?.vite?.rules ?? {}),
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
       'no-empty': ['error', { allowEmptyCatch: true }],

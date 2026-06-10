@@ -55,8 +55,8 @@ and the format follows [Keep a Changelog](https://keepachangelog.com/).
   - **MBI-GS** Maslach Burnout Inventory — 40 items (15 core + 22
     bank × 3 dimensions: exhaustion / cynicism / efficacy + 3 ext)
   - **SWLS** Diener Satisfaction With Life Scale — 40 items (5 core
-    + 33 bank × 6 themes: relationships / health / achievement /
-    growth / meaning / daily + 2 extension)
+    - 33 bank × 6 themes: relationships / health / achievement /
+      growth / meaning / daily + 2 extension)
   - **CD-RISC-10** Connor-Davidson Resilience Scale — 40 items
     (10 core + 27 bank × 5 sub-dimensions + 3 extension)
 - **Bank questions are reverse-coded** to detect acquiescent responding

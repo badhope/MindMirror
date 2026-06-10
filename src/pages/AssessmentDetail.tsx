@@ -14,15 +14,9 @@ import {
   SSRS_LEVELS,
   SSRS_DIMENSIONS,
 } from '../data/ssrsData';
-import {
-  MBI_RESPONSE_OPTIONS,
-  MBI_LEVELS,
-} from '../data/mbiData';
+import { MBI_RESPONSE_OPTIONS, MBI_LEVELS } from '../data/mbiData';
 import { SWLS_RESPONSE_OPTIONS, SWLS_LEVELS } from '../data/swlsData';
-import {
-  RESILIENCE_RESPONSE_OPTIONS,
-  RESILIENCE_LEVELS,
-} from '../data/resilienceData';
+import { RESILIENCE_RESPONSE_OPTIONS, RESILIENCE_LEVELS } from '../data/resilienceData';
 import { calculateProgress, generateBigFiveReport } from '../services/bigFiveScoring';
 import { getStressLevelInfo, generateDetailedStressReport } from '../services/stressTestScoring';
 import { getAnxietyLevelInfo, generateDetailedGAD7Report } from '../services/anxietyGad7Scoring';
@@ -134,10 +128,7 @@ function BehavioralProfileSection({
           你的具体选择 ({profile.items.length} 题)
         </div>
         {profile.items.map(item => (
-          <div
-            key={item.id}
-            className="rounded-xl bg-white border border-slate-200 p-3 sm:p-4"
-          >
+          <div key={item.id} className="rounded-xl bg-white border border-slate-200 p-3 sm:p-4">
             <div className="text-xs text-slate-500 mb-1.5 flex items-center gap-2">
               <span className="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">
                 {item.id}
@@ -231,9 +222,7 @@ function AnxietyGauge({
         >
           {score}
         </motion.div>
-        <div className="text-xs sm:text-sm text-white/80 font-medium -mt-1">
-          / {max} 分
-        </div>
+        <div className="text-xs sm:text-sm text-white/80 font-medium -mt-1">/ {max} 分</div>
       </div>
     </div>
   );
@@ -258,7 +247,10 @@ function SymptomCard({
       </div>
       <ul className="p-4 sm:p-5 space-y-2.5">
         {items.map((s, i) => (
-          <li key={i} className="flex items-start gap-2.5 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <li
+            key={i}
+            className="flex items-start gap-2.5 text-sm sm:text-base text-slate-700 leading-relaxed"
+          >
             <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0" />
             <span>{s}</span>
           </li>
@@ -291,14 +283,19 @@ function ActionCard({
   return (
     <div className={`rounded-2xl ${t.bg} p-5 border border-slate-100`}>
       <div className="flex items-center gap-2.5 mb-3">
-        <div className={`w-10 h-10 rounded-xl ${t.iconBg} ${t.text} flex items-center justify-center text-xl`}>
+        <div
+          className={`w-10 h-10 rounded-xl ${t.iconBg} ${t.text} flex items-center justify-center text-xl`}
+        >
           {icon}
         </div>
         <h4 className={`text-base sm:text-lg font-bold ${t.text}`}>{title}</h4>
       </div>
       <ul className="space-y-2">
         {items.map((s, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-slate-700 leading-relaxed">
+          <li
+            key={i}
+            className="flex items-start gap-2 text-sm sm:text-base text-slate-700 leading-relaxed"
+          >
             <span className={`mt-1 ${t.text} text-lg leading-none`}>·</span>
             <span>{s}</span>
           </li>
@@ -323,14 +320,19 @@ function LifestyleCard({
   return (
     <div className="group rounded-2xl bg-white border border-slate-100 p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-slate-200 transition-all">
       <div className="flex items-center gap-3 mb-3">
-        <div className={`w-12 h-12 rounded-xl ${t.iconBg} flex items-center justify-center text-2xl`}>
+        <div
+          className={`w-12 h-12 rounded-xl ${t.iconBg} flex items-center justify-center text-2xl`}
+        >
           {icon}
         </div>
         <h4 className={`text-lg sm:text-xl font-bold ${t.text}`}>{title}</h4>
       </div>
       <ul className="space-y-1.5">
         {items.map((h, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+          <li
+            key={i}
+            className="flex items-start gap-2 text-sm sm:text-base text-slate-600 leading-relaxed"
+          >
             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
             <span>{h}</span>
           </li>
@@ -423,9 +425,7 @@ function IntroPage({ onStart }: { onStart: () => void }) {
         {(currentAssessment.id === 'social-support' || currentAssessment.id === '4') && (
           <div className="bg-cyan-50 rounded-xl p-6 text-left mb-8">
             <h3 className="font-semibold text-cyan-800 mb-3">{i18n.assessments.title}</h3>
-            <p className="text-cyan-700 text-sm leading-relaxed">
-              {i18n.results.ssrsIntro}
-            </p>
+            <p className="text-cyan-700 text-sm leading-relaxed">{i18n.results.ssrsIntro}</p>
             <div className="mt-4 grid sm:grid-cols-4 gap-2">
               {Object.values(SSRS_LEVELS).map(level => (
                 <div key={level.label} className="bg-white rounded-lg p-2 text-center">
@@ -453,9 +453,7 @@ function IntroPage({ onStart }: { onStart: () => void }) {
         {(currentAssessment.id === 'life-satisfaction' || currentAssessment.id === '6') && (
           <div className="bg-emerald-50 rounded-xl p-6 text-left mb-8">
             <h3 className="font-semibold text-emerald-800 mb-3">{i18n.assessments.title}</h3>
-            <p className="text-emerald-700 text-sm leading-relaxed">
-              {i18n.results.swlsIntro}
-            </p>
+            <p className="text-emerald-700 text-sm leading-relaxed">{i18n.results.swlsIntro}</p>
             <div className="mt-4 grid sm:grid-cols-3 gap-2">
               {Object.values(SWLS_LEVELS).map(level => (
                 <div key={level.label} className="bg-white rounded-lg p-2 text-center">
@@ -469,9 +467,7 @@ function IntroPage({ onStart }: { onStart: () => void }) {
         {(currentAssessment.id === 'resilience-cdrisc' || currentAssessment.id === '7') && (
           <div className="bg-lime-50 rounded-xl p-6 text-left mb-8">
             <h3 className="font-semibold text-lime-800 mb-3">{i18n.assessments.title}</h3>
-            <p className="text-lime-700 text-sm leading-relaxed">
-              {i18n.results.resilienceIntro}
-            </p>
+            <p className="text-lime-700 text-sm leading-relaxed">{i18n.results.resilienceIntro}</p>
             <div className="mt-4 grid sm:grid-cols-3 gap-2">
               {Object.values(RESILIENCE_LEVELS).map(level => (
                 <div key={level.label} className="bg-white rounded-lg p-2 text-center">
@@ -748,24 +744,44 @@ function BigFiveResultDetail({
     { icon: string; gradient: string; soft: string; ring: string; text: string; bg: string }
   > = {
     O: {
-      icon: '🎨', gradient: 'from-violet-500 to-purple-500',
-      soft: 'bg-violet-50', ring: 'ring-violet-400', text: 'text-violet-700', bg: 'bg-violet-100',
+      icon: '🎨',
+      gradient: 'from-violet-500 to-purple-500',
+      soft: 'bg-violet-50',
+      ring: 'ring-violet-400',
+      text: 'text-violet-700',
+      bg: 'bg-violet-100',
     },
     C: {
-      icon: '📋', gradient: 'from-blue-500 to-indigo-500',
-      soft: 'bg-blue-50', ring: 'ring-blue-400', text: 'text-blue-700', bg: 'bg-blue-100',
+      icon: '📋',
+      gradient: 'from-blue-500 to-indigo-500',
+      soft: 'bg-blue-50',
+      ring: 'ring-blue-400',
+      text: 'text-blue-700',
+      bg: 'bg-blue-100',
     },
     E: {
-      icon: '🎉', gradient: 'from-amber-500 to-orange-500',
-      soft: 'bg-amber-50', ring: 'ring-amber-400', text: 'text-amber-700', bg: 'bg-amber-100',
+      icon: '🎉',
+      gradient: 'from-amber-500 to-orange-500',
+      soft: 'bg-amber-50',
+      ring: 'ring-amber-400',
+      text: 'text-amber-700',
+      bg: 'bg-amber-100',
     },
     A: {
-      icon: '💝', gradient: 'from-rose-500 to-pink-500',
-      soft: 'bg-rose-50', ring: 'ring-rose-400', text: 'text-rose-700', bg: 'bg-rose-100',
+      icon: '💝',
+      gradient: 'from-rose-500 to-pink-500',
+      soft: 'bg-rose-50',
+      ring: 'ring-rose-400',
+      text: 'text-rose-700',
+      bg: 'bg-rose-100',
     },
     N: {
-      icon: '🌊', gradient: 'from-emerald-500 to-teal-500',
-      soft: 'bg-emerald-50', ring: 'ring-emerald-400', text: 'text-emerald-700', bg: 'bg-emerald-100',
+      icon: '🌊',
+      gradient: 'from-emerald-500 to-teal-500',
+      soft: 'bg-emerald-50',
+      ring: 'ring-emerald-400',
+      text: 'text-emerald-700',
+      bg: 'bg-emerald-100',
     },
   };
 
@@ -822,7 +838,9 @@ function BigFiveResultDetail({
       </motion.section>
 
       <div className="bg-blue-50 rounded-2xl p-4 sm:p-5 border border-blue-100 flex items-start gap-3">
-        <span className="text-blue-600 text-lg sm:text-xl mt-0.5" aria-hidden="true">📊</span>
+        <span className="text-blue-600 text-lg sm:text-xl mt-0.5" aria-hidden="true">
+          📊
+        </span>
         <div>
           <h4 className="font-semibold text-blue-800 mb-1 text-sm sm:text-base">
             {i18n.results.aboutTScoreTitle}
@@ -836,17 +854,20 @@ function BigFiveResultDetail({
       <Section title="五大维度画像" subtitle="每个特质从 0 到 100,查看你在五个核心维度的位置">
         <div className="grid gap-4">
           {report.traitAnalyses.map(
-            (analysis: {
-              key: string;
-              name: string;
-              score: number;
-              description: string;
-              fullInterpretation?: {
-                high?: { name: string; description: string };
-                low?: { name: string; description: string };
-              };
-              scoreLevel: string;
-            }, idx: number) => {
+            (
+              analysis: {
+                key: string;
+                name: string;
+                score: number;
+                description: string;
+                fullInterpretation?: {
+                  high?: { name: string; description: string };
+                  low?: { name: string; description: string };
+                };
+                scoreLevel: string;
+              },
+              idx: number
+            ) => {
               const token = traitTokens[analysis.key] || traitTokens.O;
               const isHigh = analysis.score >= 50;
               const interp = isHigh
@@ -862,7 +883,9 @@ function BigFiveResultDetail({
                   className="rounded-2xl bg-white p-4 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-center gap-4">
-                    <div className={`shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${token.gradient} flex items-center justify-center text-3xl text-white shadow-md`}>
+                    <div
+                      className={`shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${token.gradient} flex items-center justify-center text-3xl text-white shadow-md`}
+                    >
                       {token.icon}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -870,7 +893,9 @@ function BigFiveResultDetail({
                         <h4 className="text-lg sm:text-xl font-bold text-slate-800">
                           {analysis.name}
                         </h4>
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${token.soft} ${token.text}`}>
+                        <span
+                          className={`text-xs font-bold px-2 py-0.5 rounded-full ${token.soft} ${token.text}`}
+                        >
                           {isHigh ? '高' : '低'}
                         </span>
                       </div>
@@ -887,7 +912,9 @@ function BigFiveResultDetail({
                             className={`h-full rounded-full bg-gradient-to-r ${token.gradient}`}
                           />
                         </div>
-                        <div className={`shrink-0 text-xl sm:text-2xl font-extrabold ${token.text}`}>
+                        <div
+                          className={`shrink-0 text-xl sm:text-2xl font-extrabold ${token.text}`}
+                        >
                           {analysis.score}
                         </div>
                       </div>
@@ -950,7 +977,7 @@ function BigFiveResultDetail({
             { id: 'growth', label: '🌱 个人成长' },
             { id: 'career', label: '💼 职业推荐' },
             { id: 'relationships', label: '💞 关系风格' },
-          ].map((t) => (
+          ].map(t => (
             <button
               key={t.id}
               role="tab"
@@ -981,7 +1008,10 @@ function BigFiveResultDetail({
               </h4>
               <div className="space-y-2">
                 {report.recommendations.personalGrowth.map((tip: string, i: number) => (
-                  <div key={i} className="flex items-start gap-2 text-sm sm:text-base text-slate-700">
+                  <div
+                    key={i}
+                    className="flex items-start gap-2 text-sm sm:text-base text-slate-700"
+                  >
                     <span className="shrink-0 mt-1 w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">
                       {i + 1}
                     </span>
@@ -1055,13 +1085,22 @@ function BigFiveResultDetail({
           把报告带走,或基于特质选择合适的训练
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link to="/training" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors">
+          <Link
+            to="/training"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors"
+          >
             💪 心理训练
           </Link>
-          <Link to="/assessments" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/assessments"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             🔁 再测一次
           </Link>
-          <Link to="/history" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/history"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             📈 查看历史
           </Link>
         </div>
@@ -1086,7 +1125,9 @@ function StressTestResultDetail({
   const { locale } = useAppStore();
   const i18n = getTranslation(locale);
   const reduce = useReducedMotion();
-  const [activeTab, setActiveTab] = useState<'strategies' | 'lifestyle' | 'professional'>('strategies');
+  const [activeTab, setActiveTab] = useState<'strategies' | 'lifestyle' | 'professional'>(
+    'strategies'
+  );
 
   const report = useMemo(
     () => generateDetailedStressReport(answers, questions),
@@ -1096,10 +1137,34 @@ function StressTestResultDetail({
 
   // 4 个压力等级的颜色 token (与焦虑模板同款色板)
   const levelTokens = {
-    green: { bg: 'from-emerald-500 to-teal-500', text: 'text-emerald-700', soft: 'bg-emerald-50', ring: 'ring-emerald-400', label: '🟢 正常' },
-    yellow: { bg: 'from-amber-500 to-yellow-500', text: 'text-amber-700', soft: 'bg-amber-50', ring: 'ring-amber-400', label: '🟡 轻度' },
-    orange: { bg: 'from-orange-500 to-red-400', text: 'text-orange-700', soft: 'bg-orange-50', ring: 'ring-orange-400', label: '🟠 中度' },
-    red: { bg: 'from-rose-600 to-red-600', text: 'text-rose-700', soft: 'bg-rose-50', ring: 'ring-rose-500', label: '🔴 重度' },
+    green: {
+      bg: 'from-emerald-500 to-teal-500',
+      text: 'text-emerald-700',
+      soft: 'bg-emerald-50',
+      ring: 'ring-emerald-400',
+      label: '🟢 正常',
+    },
+    yellow: {
+      bg: 'from-amber-500 to-yellow-500',
+      text: 'text-amber-700',
+      soft: 'bg-amber-50',
+      ring: 'ring-amber-400',
+      label: '🟡 轻度',
+    },
+    orange: {
+      bg: 'from-orange-500 to-red-400',
+      text: 'text-orange-700',
+      soft: 'bg-orange-50',
+      ring: 'ring-orange-400',
+      label: '🟠 中度',
+    },
+    red: {
+      bg: 'from-rose-600 to-red-600',
+      text: 'text-rose-700',
+      soft: 'bg-rose-50',
+      ring: 'ring-rose-500',
+      label: '🔴 重度',
+    },
   } as const;
   const tok = levelTokens[stressLevelInfo.color as keyof typeof levelTokens] ?? levelTokens.green;
 
@@ -1178,15 +1243,17 @@ function StressTestResultDetail({
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 )}
               >
-                <div className={`text-2xl sm:text-3xl font-extrabold ${active ? t.text : 'text-slate-700'}`}>
+                <div
+                  className={`text-2xl sm:text-3xl font-extrabold ${active ? t.text : 'text-slate-700'}`}
+                >
                   {info.range}
                 </div>
-                <div className={`mt-1 text-sm sm:text-base font-semibold ${active ? t.text : 'text-slate-600'}`}>
+                <div
+                  className={`mt-1 text-sm sm:text-base font-semibold ${active ? t.text : 'text-slate-600'}`}
+                >
                   {t.label} {info.label}
                 </div>
-                {active && (
-                  <div className="mt-2 text-xs sm:text-sm text-slate-700">← 你在这里</div>
-                )}
+                {active && <div className="mt-2 text-xs sm:text-sm text-slate-700">← 你在这里</div>}
               </div>
             );
           })}
@@ -1230,10 +1297,7 @@ function StressTestResultDetail({
         </div>
       </Section>
 
-      <Section
-        title="各维度得分"
-        subtitle="查看你在压力、应对、感受等维度的具体表现"
-      >
+      <Section title="各维度得分" subtitle="查看你在压力、应对、感受等维度的具体表现">
         <div className="space-y-3">
           {result.traits.map(
             (trait: { name: string; score: number; description: string }, idx: number) => {
@@ -1253,7 +1317,9 @@ function StressTestResultDetail({
                   className="rounded-2xl bg-white p-4 sm:p-5 border border-slate-100 shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <div className={`shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl text-white`}>
+                    <div
+                      className={`shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl text-white`}
+                    >
                       {icon}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -1288,10 +1354,7 @@ function StressTestResultDetail({
 
       {report.detailedAnalysis.topDimensions &&
         report.detailedAnalysis.topDimensions.length > 0 && (
-          <Section
-            title="主要压力维度"
-            subtitle="识别对你影响最大的压力来源,针对性调整"
-          >
+          <Section title="主要压力维度" subtitle="识别对你影响最大的压力来源,针对性调整">
             <div className="grid gap-4">
               {report.detailedAnalysis.topDimensions.map(
                 (
@@ -1364,16 +1427,13 @@ function StressTestResultDetail({
           </Section>
         )}
 
-      <Section
-        title="建议与资源"
-        subtitle="针对你的压力等级,提供分层、可操作的建议"
-      >
+      <Section title="建议与资源" subtitle="针对你的压力等级,提供分层、可操作的建议">
         <div role="tablist" className="flex gap-2 sm:gap-3 mb-6 overflow-x-auto pb-1">
           {[
             { id: 'strategies', label: '🛠️ 应对策略' },
             { id: 'lifestyle', label: '🌿 健康习惯' },
             { id: 'professional', label: '🆘 专业资源' },
-          ].map((t) => (
+          ].map(t => (
             <button
               key={t.id}
               role="tab"
@@ -1432,10 +1492,30 @@ function StressTestResultDetail({
             animate={{ opacity: 1, y: 0 }}
             className="grid sm:grid-cols-2 gap-4"
           >
-            <LifestyleCard icon="😴" title="睡眠" tone="amber" items={report.recommendations.healthyHabits.sleep} />
-            <LifestyleCard icon="🥗" title="饮食" tone="emerald" items={report.recommendations.healthyHabits.nutrition} />
-            <LifestyleCard icon="🏃" title="运动" tone="blue" items={report.recommendations.healthyHabits.movement} />
-            <LifestyleCard icon="👫" title="社交" tone="purple" items={report.recommendations.healthyHabits.social} />
+            <LifestyleCard
+              icon="😴"
+              title="睡眠"
+              tone="amber"
+              items={report.recommendations.healthyHabits.sleep}
+            />
+            <LifestyleCard
+              icon="🥗"
+              title="饮食"
+              tone="emerald"
+              items={report.recommendations.healthyHabits.nutrition}
+            />
+            <LifestyleCard
+              icon="🏃"
+              title="运动"
+              tone="blue"
+              items={report.recommendations.healthyHabits.movement}
+            />
+            <LifestyleCard
+              icon="👫"
+              title="社交"
+              tone="purple"
+              items={report.recommendations.healthyHabits.social}
+            />
           </motion.div>
         )}
 
@@ -1453,15 +1533,17 @@ function StressTestResultDetail({
                     <span className="text-2xl">⏰</span> 何时寻求帮助
                   </h4>
                   <ul className="space-y-2">
-                    {report.recommendations.professional.whenToSeekHelp.map((r: string, i: number) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm sm:text-base text-rose-900 leading-relaxed"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-                        <span>{r}</span>
-                      </li>
-                    ))}
+                    {report.recommendations.professional.whenToSeekHelp.map(
+                      (r: string, i: number) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-sm sm:text-base text-rose-900 leading-relaxed"
+                        >
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                          <span>{r}</span>
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
                 <div className="rounded-2xl bg-blue-50 border-2 border-blue-200 p-5 sm:p-6">
@@ -1469,15 +1551,17 @@ function StressTestResultDetail({
                     <span className="text-2xl">👨‍⚕️</span> 可咨询的专业人士
                   </h4>
                   <ul className="space-y-2">
-                    {report.recommendations.professional.professionals.map((r: string, i: number) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm sm:text-base text-blue-900 leading-relaxed"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                        <span>{r}</span>
-                      </li>
-                    ))}
+                    {report.recommendations.professional.professionals.map(
+                      (r: string, i: number) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-sm sm:text-base text-blue-900 leading-relaxed"
+                        >
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                          <span>{r}</span>
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
                 <div className="rounded-2xl bg-violet-50 border-2 border-violet-200 p-5 sm:p-6">
@@ -1485,15 +1569,17 @@ function StressTestResultDetail({
                     <span className="text-2xl">💊</span> 推荐疗法
                   </h4>
                   <ul className="space-y-2">
-                    {report.recommendations.professional.therapyTypes.map((r: string, i: number) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm sm:text-base text-violet-900 leading-relaxed"
-                      >
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-500 shrink-0" />
-                        <span>{r}</span>
-                      </li>
-                    ))}
+                    {report.recommendations.professional.therapyTypes.map(
+                      (r: string, i: number) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-sm sm:text-base text-violet-900 leading-relaxed"
+                        >
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-500 shrink-0" />
+                          <span>{r}</span>
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
               </>
@@ -1519,13 +1605,22 @@ function StressTestResultDetail({
           把报告带走、分享给信任的人、或者直接进入心理训练
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link to="/training" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors">
+          <Link
+            to="/training"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors"
+          >
             💪 心理训练
           </Link>
-          <Link to="/assessments" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/assessments"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             🔁 再测一次
           </Link>
-          <Link to="/history" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/history"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             📈 查看历史
           </Link>
         </div>
@@ -1561,17 +1656,41 @@ function GAD7ResultDetail({
   const perQuestion = useMemo(
     () =>
       questions
-        .map((q) => ({ id: q.id, text: q.text, score: answers[q.id] ?? 0, trait: q.trait }))
+        .map(q => ({ id: q.id, text: q.text, score: answers[q.id] ?? 0, trait: q.trait }))
         .sort((a, b) => b.score - a.score),
     [questions, answers]
   );
-  const topIds = new Set(perQuestion.slice(0, 3).map((q) => q.id));
+  const topIds = new Set(perQuestion.slice(0, 3).map(q => q.id));
 
   const levelTokens = {
-    green: { bg: 'from-emerald-500 to-teal-500', text: 'text-emerald-700', soft: 'bg-emerald-50', ring: 'ring-emerald-400', label: '🟢 正常' },
-    yellow: { bg: 'from-amber-500 to-yellow-500', text: 'text-amber-700', soft: 'bg-amber-50', ring: 'ring-amber-400', label: '🟡 轻度' },
-    orange: { bg: 'from-orange-500 to-red-400', text: 'text-orange-700', soft: 'bg-orange-50', ring: 'ring-orange-400', label: '🟠 中度' },
-    red: { bg: 'from-rose-600 to-red-600', text: 'text-rose-700', soft: 'bg-rose-50', ring: 'ring-rose-500', label: '🔴 重度' },
+    green: {
+      bg: 'from-emerald-500 to-teal-500',
+      text: 'text-emerald-700',
+      soft: 'bg-emerald-50',
+      ring: 'ring-emerald-400',
+      label: '🟢 正常',
+    },
+    yellow: {
+      bg: 'from-amber-500 to-yellow-500',
+      text: 'text-amber-700',
+      soft: 'bg-amber-50',
+      ring: 'ring-amber-400',
+      label: '🟡 轻度',
+    },
+    orange: {
+      bg: 'from-orange-500 to-red-400',
+      text: 'text-orange-700',
+      soft: 'bg-orange-50',
+      ring: 'ring-orange-400',
+      label: '🟠 中度',
+    },
+    red: {
+      bg: 'from-rose-600 to-red-600',
+      text: 'text-rose-700',
+      soft: 'bg-rose-50',
+      ring: 'ring-rose-500',
+      label: '🔴 重度',
+    },
   } as const;
   const tok = levelTokens[anxietyLevelInfo.color as keyof typeof levelTokens] ?? levelTokens.green;
 
@@ -1630,36 +1749,36 @@ function GAD7ResultDetail({
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 )}
               >
-                <div className={`text-2xl sm:text-3xl font-extrabold ${active ? t.text : 'text-slate-700'}`}>
+                <div
+                  className={`text-2xl sm:text-3xl font-extrabold ${active ? t.text : 'text-slate-700'}`}
+                >
                   {info.range}
                 </div>
-                <div className={`mt-1 text-sm sm:text-base font-semibold ${active ? t.text : 'text-slate-600'}`}>
+                <div
+                  className={`mt-1 text-sm sm:text-base font-semibold ${active ? t.text : 'text-slate-600'}`}
+                >
                   {t.label} {info.label}
                 </div>
-                {active && (
-                  <div className="mt-2 text-xs sm:text-sm text-slate-700">← 你在这里</div>
-                )}
+                {active && <div className="mt-2 text-xs sm:text-sm text-slate-700">← 你在这里</div>}
               </div>
             );
           })}
         </div>
       </Section>
 
-      <Section
-        title="题目得分热力图"
-        subtitle="从单题层面看哪些想法或感受在近 2 周最困扰你"
-      >
+      <Section title="题目得分热力图" subtitle="从单题层面看哪些想法或感受在近 2 周最困扰你">
         <div className="space-y-2 sm:space-y-3">
           {perQuestion.map((q, idx) => {
             const pct = (q.score / 3) * 100;
             const isTop = topIds.has(q.id);
-            const tone = q.score === 0
-              ? 'bg-slate-300'
-              : q.score === 1
-                ? 'bg-amber-400'
-                : q.score === 2
-                  ? 'bg-orange-500'
-                  : 'bg-rose-600';
+            const tone =
+              q.score === 0
+                ? 'bg-slate-300'
+                : q.score === 1
+                  ? 'bg-amber-400'
+                  : q.score === 2
+                    ? 'bg-orange-500'
+                    : 'bg-rose-600';
             return (
               <motion.div
                 key={q.id}
@@ -1713,10 +1832,7 @@ function GAD7ResultDetail({
       </Section>
 
       {report.detailedAnalysis.signs && (
-        <Section
-          title="主要症状分析"
-          subtitle="焦虑在身体、情绪、认知三个层面的具体表现"
-        >
+        <Section title="主要症状分析" subtitle="焦虑在身体、情绪、认知三个层面的具体表现">
           <div className="grid sm:grid-cols-3 gap-4">
             {report.detailedAnalysis.signs.physicalSigns && (
               <SymptomCard
@@ -1767,16 +1883,13 @@ function GAD7ResultDetail({
         </motion.div>
       )}
 
-      <Section
-        title="建议与资源"
-        subtitle="根据你的焦虑等级,提供分层、可操作的建议"
-      >
+      <Section title="建议与资源" subtitle="根据你的焦虑等级,提供分层、可操作的建议">
         <div role="tablist" className="flex gap-2 sm:gap-3 mb-6 overflow-x-auto pb-1">
           {[
             { id: 'coping', label: '🛠️ 应对策略' },
             { id: 'lifestyle', label: '🌿 健康习惯' },
             { id: 'crisis', label: '🆘 专业资源' },
-          ].map((t) => (
+          ].map(t => (
             <button
               key={t.id}
               role="tab"
@@ -1803,13 +1916,28 @@ function GAD7ResultDetail({
           >
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {report.recommendations.immediate && (
-                <ActionCard tone="rose" icon="⚡" title="立即行动" items={report.recommendations.immediate} />
+                <ActionCard
+                  tone="rose"
+                  icon="⚡"
+                  title="立即行动"
+                  items={report.recommendations.immediate}
+                />
               )}
               {report.recommendations.cognitive && (
-                <ActionCard tone="blue" icon="💭" title="认知调整" items={report.recommendations.cognitive} />
+                <ActionCard
+                  tone="blue"
+                  icon="💭"
+                  title="认知调整"
+                  items={report.recommendations.cognitive}
+                />
               )}
               {report.recommendations.lifestyle && (
-                <ActionCard tone="emerald" icon="🌿" title="生活方式" items={report.recommendations.lifestyle} />
+                <ActionCard
+                  tone="emerald"
+                  icon="🌿"
+                  title="生活方式"
+                  items={report.recommendations.lifestyle}
+                />
               )}
             </div>
 
@@ -1819,15 +1947,35 @@ function GAD7ResultDetail({
               </h4>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
-                  { color: 'from-sky-400 to-blue-500', icon: '🌬️', label: '呼吸练习', name: report.recommendations.relaxation.breathing.name, desc: report.recommendations.relaxation.breathing.description },
-                  { color: 'from-violet-400 to-purple-500', icon: '🤸', label: '身体放松', name: report.recommendations.relaxation.muscle.name, desc: report.recommendations.relaxation.muscle.description },
-                  { color: 'from-emerald-400 to-teal-500', icon: '🧠', label: '正念练习', name: report.recommendations.relaxation.mindfulness.name, desc: report.recommendations.relaxation.mindfulness.description },
-                ].map((t) => (
+                  {
+                    color: 'from-sky-400 to-blue-500',
+                    icon: '🌬️',
+                    label: '呼吸练习',
+                    name: report.recommendations.relaxation.breathing.name,
+                    desc: report.recommendations.relaxation.breathing.description,
+                  },
+                  {
+                    color: 'from-violet-400 to-purple-500',
+                    icon: '🤸',
+                    label: '身体放松',
+                    name: report.recommendations.relaxation.muscle.name,
+                    desc: report.recommendations.relaxation.muscle.description,
+                  },
+                  {
+                    color: 'from-emerald-400 to-teal-500',
+                    icon: '🧠',
+                    label: '正念练习',
+                    name: report.recommendations.relaxation.mindfulness.name,
+                    desc: report.recommendations.relaxation.mindfulness.description,
+                  },
+                ].map(t => (
                   <div
                     key={t.label}
                     className="rounded-2xl bg-white p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-shadow"
                   >
-                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${t.color} text-2xl text-white mb-3`}>
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${t.color} text-2xl text-white mb-3`}
+                    >
                       {t.icon}
                     </div>
                     <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
@@ -1852,11 +2000,31 @@ function GAD7ResultDetail({
             className="grid sm:grid-cols-2 gap-4"
           >
             {[
-              { icon: '😴', title: '睡眠', tone: 'amber', items: report.recommendations.healthyHabits.sleep },
-              { icon: '🥗', title: '饮食', tone: 'emerald', items: report.recommendations.healthyHabits.nutrition },
-              { icon: '🏃', title: '运动', tone: 'blue', items: report.recommendations.healthyHabits.movement },
-              { icon: '👫', title: '社交', tone: 'purple', items: report.recommendations.healthyHabits.connection },
-            ].map((c) => (
+              {
+                icon: '😴',
+                title: '睡眠',
+                tone: 'amber',
+                items: report.recommendations.healthyHabits.sleep,
+              },
+              {
+                icon: '🥗',
+                title: '饮食',
+                tone: 'emerald',
+                items: report.recommendations.healthyHabits.nutrition,
+              },
+              {
+                icon: '🏃',
+                title: '运动',
+                tone: 'blue',
+                items: report.recommendations.healthyHabits.movement,
+              },
+              {
+                icon: '👫',
+                title: '社交',
+                tone: 'purple',
+                items: report.recommendations.healthyHabits.connection,
+              },
+            ].map(c => (
               <LifestyleCard key={c.title} {...c} />
             ))}
           </motion.div>
@@ -1876,7 +2044,10 @@ function GAD7ResultDetail({
                 </h4>
                 <ul className="space-y-2">
                   {report.resources.professional.map((r: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-rose-900 leading-relaxed">
+                    <li
+                      key={i}
+                      className="flex items-start gap-2 text-sm sm:text-base text-rose-900 leading-relaxed"
+                    >
                       <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
                       <span>{r}</span>
                     </li>
@@ -1899,13 +2070,22 @@ function GAD7ResultDetail({
           把报告带走、分享给信任的人、或者直接进入心理训练
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link to="/training" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors">
+          <Link
+            to="/training"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 font-semibold transition-colors"
+          >
             💪 心理训练
           </Link>
-          <Link to="/assessments" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/assessments"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             🔁 再测一次
           </Link>
-          <Link to="/history" className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors">
+          <Link
+            to="/history"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 font-semibold transition-colors"
+          >
             📈 查看历史
           </Link>
         </div>
@@ -1965,9 +2145,7 @@ function SSRSResultDetail({
           <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
             {i18n.results.basedOnAnswers}
           </p>
-          <div className="text-6xl sm:text-8xl font-black tracking-tight">
-            {result.totalScore}
-          </div>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">{result.totalScore}</div>
           <div className="text-base sm:text-lg text-white/80">/ 50 分</div>
           <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
           <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
@@ -1979,10 +2157,7 @@ function SSRSResultDetail({
       <Section title="各维度得分" subtitle="客观支持、主观支持与利用度三方面">
         <div className="grid sm:grid-cols-3 gap-4">
           {report.dimensions.map(d => (
-            <div
-              key={d.name}
-              className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5"
-            >
+            <div key={d.name} className="rounded-2xl bg-white border border-slate-200 p-4 sm:p-5">
               <div className="text-sm text-slate-500 mb-1">{d.name}</div>
               <div className="text-3xl font-extrabold text-cyan-700">
                 {d.score}
@@ -2009,13 +2184,15 @@ function SSRSResultDetail({
               <span className="text-sm font-medium text-emerald-600 ml-1">%</span>
             </div>
             <p className="text-sm text-emerald-700">
-              {SSRS_DIMENSIONS[
-                report.strongest.name === '客观支持'
-                  ? 'objective'
-                  : report.strongest.name === '主观支持'
-                    ? 'subjective'
-                    : 'utilization'
-              ].highTip}
+              {
+                SSRS_DIMENSIONS[
+                  report.strongest.name === '客观支持'
+                    ? 'objective'
+                    : report.strongest.name === '主观支持'
+                      ? 'subjective'
+                      : 'utilization'
+                ].highTip
+              }
             </p>
           </div>
           <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 sm:p-5">
@@ -2025,13 +2202,15 @@ function SSRSResultDetail({
               <span className="text-sm font-medium text-amber-600 ml-1">%</span>
             </div>
             <p className="text-sm text-amber-700">
-              {SSRS_DIMENSIONS[
-                report.weakest.name === '客观支持'
-                  ? 'objective'
-                  : report.weakest.name === '主观支持'
-                    ? 'subjective'
-                    : 'utilization'
-              ].lowTip}
+              {
+                SSRS_DIMENSIONS[
+                  report.weakest.name === '客观支持'
+                    ? 'objective'
+                    : report.weakest.name === '主观支持'
+                      ? 'subjective'
+                      : 'utilization'
+                ].lowTip
+              }
             </p>
           </div>
         </div>
@@ -2098,10 +2277,7 @@ function MBIResultDetail({
   const { locale } = useAppStore();
   const i18n = getTranslation(locale);
   const reduce = useReducedMotion();
-  const report = useMemo(
-    () => generateDetailedMBIReport(answers, questions),
-    [answers, questions]
-  );
+  const report = useMemo(() => generateDetailedMBIReport(answers, questions), [answers, questions]);
   const level = getMBITotalLevel(result.totalScore);
 
   const gradientMap: Record<string, string> = {
@@ -2144,11 +2320,34 @@ function MBIResultDetail({
       <Section title="三维倦怠分" subtitle="情感耗竭、犬儒主义、职业效能 (反向)">
         <div className="grid sm:grid-cols-3 gap-4">
           {report.dimensions.map(d => {
-            const colorMap: Record<string, { bg: string; border: string; text: string; badge: string }> = {
-              green: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-800', badge: 'bg-emerald-100 text-emerald-700' },
-              yellow: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-800', badge: 'bg-amber-100 text-amber-700' },
-              orange: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-800', badge: 'bg-orange-100 text-orange-700' },
-              red: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-800', badge: 'bg-rose-100 text-rose-700' },
+            const colorMap: Record<
+              string,
+              { bg: string; border: string; text: string; badge: string }
+            > = {
+              green: {
+                bg: 'bg-emerald-50',
+                border: 'border-emerald-200',
+                text: 'text-emerald-800',
+                badge: 'bg-emerald-100 text-emerald-700',
+              },
+              yellow: {
+                bg: 'bg-amber-50',
+                border: 'border-amber-200',
+                text: 'text-amber-800',
+                badge: 'bg-amber-100 text-amber-700',
+              },
+              orange: {
+                bg: 'bg-orange-50',
+                border: 'border-orange-200',
+                text: 'text-orange-800',
+                badge: 'bg-orange-100 text-orange-700',
+              },
+              red: {
+                bg: 'bg-rose-50',
+                border: 'border-rose-200',
+                text: 'text-rose-800',
+                badge: 'bg-rose-100 text-rose-700',
+              },
             };
             const cm = colorMap[d.level.color] || colorMap.green;
             // PE (职业效能) 是反向: 高分=健康 (用 highTip), 低分=问题 (用 lowTip)
@@ -2159,13 +2358,14 @@ function MBIResultDetail({
             const isPE = d.name.includes('PE') || d.name.includes('职业效能');
             const isHealthy = d.level.color === 'green' || d.level.color === 'yellow';
             const tip = isPE
-              ? (isHealthy ? d.highTip : d.lowTip)
-              : (isHealthy ? d.lowTip : d.highTip);
+              ? isHealthy
+                ? d.highTip
+                : d.lowTip
+              : isHealthy
+                ? d.lowTip
+                : d.highTip;
             return (
-              <div
-                key={d.name}
-                className={`rounded-2xl ${cm.bg} border ${cm.border} p-4 sm:p-5`}
-              >
+              <div key={d.name} className={`rounded-2xl ${cm.bg} border ${cm.border} p-4 sm:p-5`}>
                 <div className="text-sm text-slate-600 mb-1">{d.name}</div>
                 <div className={`text-2xl font-extrabold ${cm.text}`}>{d.raw}</div>
                 <div className={`mt-1 inline-block text-xs px-2 py-0.5 rounded-full ${cm.badge}`}>
@@ -2197,8 +2397,7 @@ function MBIResultDetail({
           const isCon = worst.level.color === 'red' || worst.level.color === 'orange';
           // PE 反向: 红/橙 = 低 PE = 应显示 lowTip
           // EX/CY: 红/橙 = 高倦怠 = 应显示 highTip
-          const isWorstPE =
-            worst.name.includes('PE') || worst.name.includes('职业效能');
+          const isWorstPE = worst.name.includes('PE') || worst.name.includes('职业效能');
           const worstTip = isWorstPE
             ? isCon
               ? worst.lowTip
@@ -2207,22 +2406,32 @@ function MBIResultDetail({
               ? worst.highTip
               : worst.lowTip;
           return (
-            <div className={`rounded-2xl p-4 sm:p-5 ${
-              worst.level.color === 'red' ? 'bg-rose-50 border border-rose-200' : 'bg-orange-50 border border-orange-200'
-            }`}>
-              <div className={`text-xs font-medium mb-1 ${
-                worst.level.color === 'red' ? 'text-rose-700' : 'text-orange-700'
-              }`}>
+            <div
+              className={`rounded-2xl p-4 sm:p-5 ${
+                worst.level.color === 'red'
+                  ? 'bg-rose-50 border border-rose-200'
+                  : 'bg-orange-50 border border-orange-200'
+              }`}
+            >
+              <div
+                className={`text-xs font-medium mb-1 ${
+                  worst.level.color === 'red' ? 'text-rose-700' : 'text-orange-700'
+                }`}
+              >
                 {isCon ? '⚠️ 优先关注' : '📌 持续留意'}
               </div>
-              <div className={`text-lg font-bold mb-1 ${
-                worst.level.color === 'red' ? 'text-rose-800' : 'text-orange-800'
-              }`}>
+              <div
+                className={`text-lg font-bold mb-1 ${
+                  worst.level.color === 'red' ? 'text-rose-800' : 'text-orange-800'
+                }`}
+              >
                 {worst.name} · {worst.raw} 分 · {worst.level.label}
               </div>
-              <p className={`text-sm ${
-                worst.level.color === 'red' ? 'text-rose-700' : 'text-orange-700'
-              }`}>
+              <p
+                className={`text-sm ${
+                  worst.level.color === 'red' ? 'text-rose-700' : 'text-orange-700'
+                }`}
+              >
                 {worstTip}
               </p>
             </div>
@@ -2238,10 +2447,7 @@ function MBIResultDetail({
             { title: '认知调整', items: report.advice.cognitive, icon: '🧠' },
             { title: '专业支持', items: report.advice.professional, icon: '🩺' },
           ].map(card => (
-            <div
-              key={card.title}
-              className="rounded-2xl bg-white border border-slate-200 p-5"
-            >
+            <div key={card.title} className="rounded-2xl bg-white border border-slate-200 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xl">{card.icon}</span>
                 <h4 className="font-semibold text-slate-800">{card.title}</h4>
@@ -2313,9 +2519,7 @@ function SWLSResultDetail({
           <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
             {i18n.results.basedOnAnswers}
           </p>
-          <div className="text-6xl sm:text-8xl font-black tracking-tight">
-            {result.totalScore}
-          </div>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">{result.totalScore}</div>
           <div className="text-base sm:text-lg text-white/80">/ 35 分</div>
           <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
           <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
@@ -2326,12 +2530,8 @@ function SWLSResultDetail({
 
       <Section title="详细解读" subtitle="基于你的分数区间">
         <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 sm:p-5">
-          <h4 className="text-base font-semibold text-emerald-800 mb-2">
-            {level.label}
-          </h4>
-          <p className="text-sm text-emerald-700 mb-3">
-            {level.description}
-          </p>
+          <h4 className="text-base font-semibold text-emerald-800 mb-2">{level.label}</h4>
+          <p className="text-sm text-emerald-700 mb-3">{level.description}</p>
           {report.interpretation.strengths?.length > 0 && (
             <div className="mb-3">
               <div className="text-xs font-medium text-emerald-800 mb-1">💪 你的优势</div>
@@ -2384,10 +2584,7 @@ function SWLSResultDetail({
             { title: '意义', items: report.boost.meaning, icon: '🧭' },
             { title: '健康', items: report.boost.health, icon: '🌿' },
           ].map(card => (
-            <div
-              key={card.title}
-              className="rounded-2xl bg-white border border-slate-200 p-5"
-            >
+            <div key={card.title} className="rounded-2xl bg-white border border-slate-200 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xl">{card.icon}</span>
                 <h4 className="font-semibold text-slate-800">{card.title}</h4>
@@ -2459,9 +2656,7 @@ function ResilienceResultDetail({
           <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto mb-6">
             {i18n.results.basedOnAnswers}
           </p>
-          <div className="text-6xl sm:text-8xl font-black tracking-tight">
-            {result.totalScore}
-          </div>
+          <div className="text-6xl sm:text-8xl font-black tracking-tight">{result.totalScore}</div>
           <div className="text-base sm:text-lg text-white/80">/ 40 分</div>
           <div className="mt-4 text-2xl sm:text-3xl font-bold">{level.label}</div>
           <p className="mt-2 text-base sm:text-lg text-white/90 max-w-xl mx-auto">
@@ -2473,10 +2668,7 @@ function ResilienceResultDetail({
       <Section title="各维度得分" subtitle="适应性、关系、意义、自我效能、乐观五维">
         <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {report.dimensions.map(d => (
-            <div
-              key={d.name}
-              className="rounded-2xl bg-white border border-slate-200 p-3 sm:p-4"
-            >
+            <div key={d.name} className="rounded-2xl bg-white border border-slate-200 p-3 sm:p-4">
               <div className="text-xs text-slate-500 mb-1">{d.name}</div>
               <div className="text-2xl font-extrabold text-lime-700">
                 {d.score}
@@ -2783,7 +2975,6 @@ function ResultPage() {
           {i18n.results.viewHistory}
         </Link>
       </div>
-
     </div>
   );
 }
@@ -2817,8 +3008,7 @@ export default function AssessmentDetail() {
       // (or that the user already loaded from storage). Only reset when
       // we're landing on the intro for a fresh quiz.
       const state = useAppStore.getState();
-      const hasActiveResult =
-        state.result !== null && state.currentStep === 'result';
+      const hasActiveResult = state.result !== null && state.currentStep === 'result';
       if (!hasActiveResult) {
         resetAssessment();
       }

@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import { dashboardService } from '../../services/dashboard/DashboardService';
 import { analysisCache } from '../../services/dashboard/AnalysisCache';
 import { toUnifiedResult } from '../../services/dataAbstraction/DataSyncService';
-import { UnifiedAssessmentResult, DataStatistics, AssessmentTrend } from '../../types/dataAbstraction';
+import {
+  UnifiedAssessmentResult,
+  DataStatistics,
+  AssessmentTrend,
+} from '../../types/dataAbstraction';
 import { useAppStore } from '../../store';
 import { getTranslation } from '../../i18n';
 import { Skeleton, SkeletonCard } from '../Loading';
@@ -154,7 +158,9 @@ export function PersonalDashboard() {
             </h1>
             <p className="mt-2 text-sm sm:text-base text-white/80">
               {computedAt > 0
-                ? `${locale === 'zh' ? '数据更新于' : 'Updated'} ${new Date(computedAt).toLocaleString(
+                ? `${locale === 'zh' ? '数据更新于' : 'Updated'} ${new Date(
+                    computedAt
+                  ).toLocaleString(
                     locale === 'zh' ? 'zh-CN' : 'en-US'
                   )}${fromCache ? ' · ' + (locale === 'zh' ? '来自本地缓存' : 'from local cache') : ''}`
                 : ''}
@@ -333,7 +339,8 @@ function TrendBar({ trend }: { trend: AssessmentTrend }) {
         <span
           className={`text-xs font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1 ${tone}`}
         >
-          {arrow} {direction === 'increasing' ? '上升' : direction === 'decreasing' ? '下降' : '平稳'}
+          {arrow}{' '}
+          {direction === 'increasing' ? '上升' : direction === 'decreasing' ? '下降' : '平稳'}
         </span>
       </div>
       <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">

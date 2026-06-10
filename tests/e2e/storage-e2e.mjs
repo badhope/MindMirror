@@ -23,8 +23,8 @@ async function run() {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await ctx.newPage();
   const errs = [];
-  page.on('pageerror', (e) => errs.push('pageerror: ' + e.message));
-  page.on('console', (m) => {
+  page.on('pageerror', e => errs.push('pageerror: ' + e.message));
+  page.on('console', m => {
     if (m.type() === 'error') errs.push('console.error: ' + m.text());
   });
 
@@ -41,12 +41,60 @@ async function run() {
     if (!store) throw new Error('store not on window');
     const now = Date.now();
     const seedResults = [
-      { id: 'gad-r1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)', totalScore: 60, traits: [{ name: '紧张', score: 3 }, { name: '担忧', score: 2 }], days: 0 },
-      { id: 'gad-r2', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)', totalScore: 50, traits: [{ name: '紧张', score: 2 }], days: 7 },
-      { id: 'bf-r1',  assessmentId: 'bigfive',      assessmentTitle: '大五人格测验',           totalScore: 65, traits: [{ name: '开放性', score: 78 }, { name: '外向性', score: 67 }], days: 1 },
-      { id: 'bf-r2',  assessmentId: 'bigfive',      assessmentTitle: '大五人格测验',           totalScore: 58, traits: [{ name: '开放性', score: 65 }], days: 8 },
-      { id: 'st-r1',  assessmentId: 'stress-test',  assessmentTitle: '知觉压力量表 (PSS-10)',   totalScore: 72, traits: [{ name: '压力感受', score: 75 }], days: 2 },
-      { id: 'st-r2',  assessmentId: 'stress-test',  assessmentTitle: '知觉压力量表 (PSS-10)',   totalScore: 65, traits: [{ name: '压力感受', score: 70 }], days: 9 },
+      {
+        id: 'gad-r1',
+        assessmentId: 'anxiety-gad7',
+        assessmentTitle: '焦虑自评量表 (GAD-7)',
+        totalScore: 60,
+        traits: [
+          { name: '紧张', score: 3 },
+          { name: '担忧', score: 2 },
+        ],
+        days: 0,
+      },
+      {
+        id: 'gad-r2',
+        assessmentId: 'anxiety-gad7',
+        assessmentTitle: '焦虑自评量表 (GAD-7)',
+        totalScore: 50,
+        traits: [{ name: '紧张', score: 2 }],
+        days: 7,
+      },
+      {
+        id: 'bf-r1',
+        assessmentId: 'bigfive',
+        assessmentTitle: '大五人格测验',
+        totalScore: 65,
+        traits: [
+          { name: '开放性', score: 78 },
+          { name: '外向性', score: 67 },
+        ],
+        days: 1,
+      },
+      {
+        id: 'bf-r2',
+        assessmentId: 'bigfive',
+        assessmentTitle: '大五人格测验',
+        totalScore: 58,
+        traits: [{ name: '开放性', score: 65 }],
+        days: 8,
+      },
+      {
+        id: 'st-r1',
+        assessmentId: 'stress-test',
+        assessmentTitle: '知觉压力量表 (PSS-10)',
+        totalScore: 72,
+        traits: [{ name: '压力感受', score: 75 }],
+        days: 2,
+      },
+      {
+        id: 'st-r2',
+        assessmentId: 'stress-test',
+        assessmentTitle: '知觉压力量表 (PSS-10)',
+        totalScore: 65,
+        traits: [{ name: '压力感受', score: 70 }],
+        days: 9,
+      },
     ];
     const history = seedResults.map((s, i) => ({
       id: s.id,
@@ -155,7 +203,7 @@ async function run() {
   await browser.close();
   log('DONE');
 }
-run().catch((e) => {
+run().catch(e => {
   console.error('[storage-e2e] FAILED:', e.message);
   process.exit(1);
 });

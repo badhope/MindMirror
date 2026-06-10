@@ -390,8 +390,7 @@ export const MBI_SEVERITY = {
     label: '中度倦怠',
     range: [28, 42] as [number, number],
     color: 'yellow',
-    description:
-      '你开始出现一些倦怠的早期信号,如精力下降或工作意义感减弱,值得在近期进行主动调整。',
+    description: '你开始出现一些倦怠的早期信号,如精力下降或工作意义感减弱,值得在近期进行主动调整。',
   },
   high: {
     level: 'high',

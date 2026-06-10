@@ -1,9 +1,5 @@
 import { storage } from '../../lib/utils';
-import {
-  UnifiedAssessmentResult,
-  DataSyncStatus,
-  SyncConflict,
-} from '../../types/dataAbstraction';
+import { UnifiedAssessmentResult, DataSyncStatus, SyncConflict } from '../../types/dataAbstraction';
 import { AssessmentResult } from '../../types';
 
 const PERSONAL_CENTER_KEY = 'personalDataCenter';
@@ -60,7 +56,9 @@ export function toUnifiedResult(
     traits: normalizeTraits(anyResult.traits || []),
     rawAnswers: anyResult.rawAnswers || {},
     processedScores: anyResult.processedScores || {},
-    report: anyResult.report || { summary: { title, score: anyResult.totalScore || 0, description: '', color: '#6366f1' } },
+    report: anyResult.report || {
+      summary: { title, score: anyResult.totalScore || 0, description: '', color: '#6366f1' },
+    },
     tags: anyResult.tags || [],
     metadata: {
       duration: anyResult.metadata?.duration ?? anyResult.duration ?? 0,
@@ -70,10 +68,12 @@ export function toUnifiedResult(
   };
 }
 
-export function detectAssessmentType(assessmentId: string): UnifiedAssessmentResult['assessmentType'] {
+export function detectAssessmentType(
+  assessmentId: string
+): UnifiedAssessmentResult['assessmentType'] {
   const typeMap: Record<string, UnifiedAssessmentResult['assessmentType']> = {
     'big-five': 'personality',
-    'bigfive': 'personality',
+    bigfive: 'personality',
     'stress-test': 'stress',
     'anxiety-gad7': 'anxiety',
     'social-support': 'social',

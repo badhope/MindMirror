@@ -237,9 +237,7 @@ class DashboardService {
     return insights;
   }
 
-  getQuickStats(
-    results?: UnifiedAssessmentResult[]
-  ): {
+  getQuickStats(results?: UnifiedAssessmentResult[]): {
     totalAssessments: number;
     streakDays: number;
     averageScore: number;

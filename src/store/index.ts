@@ -101,7 +101,19 @@ function refreshTagCountsFromHistory(history: AssessmentResult[]): void {
 }
 
 function matchesAutoTag(
-  tag: { id: string; criteria?: { type: string; conditions: Array<{ trait?: string; assessmentType?: string; operator: string; value: unknown }>; operator: string } },
+  tag: {
+    id: string;
+    criteria?: {
+      type: string;
+      conditions: Array<{
+        trait?: string;
+        assessmentType?: string;
+        operator: string;
+        value: unknown;
+      }>;
+      operator: string;
+    };
+  },
   traits: Array<{ name: string; score: number }>,
   _history: AssessmentResult
 ): boolean {
@@ -113,10 +125,14 @@ function matchesAutoTag(
       if (!t) return false;
       const target = cond.value;
       switch (cond.operator) {
-        case 'gt': return t.score > Number(target);
-        case 'lt': return t.score < Number(target);
-        case 'eq': return t.score === Number(target);
-        default: return false;
+        case 'gt':
+          return t.score > Number(target);
+        case 'lt':
+          return t.score < Number(target);
+        case 'eq':
+          return t.score === Number(target);
+        default:
+          return false;
       }
     }
     return false;

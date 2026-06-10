@@ -10,9 +10,9 @@
 // --- minimal localStorage shim -----------------------------------------
 const _store = new Map();
 globalThis.localStorage = {
-  getItem: (k) => (_store.has(k) ? _store.get(k) : null),
+  getItem: k => (_store.has(k) ? _store.get(k) : null),
   setItem: (k, v) => _store.set(k, String(v)),
-  removeItem: (k) => _store.delete(k),
+  removeItem: k => _store.delete(k),
   clear: () => _store.clear(),
 };
 
@@ -30,14 +30,20 @@ const SESSION_KEYS = [
   'mindmirror_local_users',
   'mindmirror_local_secret',
   STORAGE_KEY_HISTORY,
-  HASH_KEY, CACHE_KEY, META_KEY,
+  HASH_KEY,
+  CACHE_KEY,
+  META_KEY,
   'moodTracker_entries',
-  'training_history', 'training_progress', 'training_schedules',
+  'training_history',
+  'training_progress',
+  'training_schedules',
   'achievements_unlocked',
   'userTags',
   'personalDataCenter',
   'shared_assessment_results',
-  'plugin_registry', 'plugin_states', 'plugin_cache',
+  'plugin_registry',
+  'plugin_states',
+  'plugin_cache',
   'assessment_trace_logs',
 ];
 
@@ -45,7 +51,7 @@ const PREFERENCES_THAT_SURVIVE_LOGOUT = ['theme', 'locale'];
 
 // --- copy of the addToHistory de-dupe logic ----------------------------
 function addToHistory(state, result) {
-  const dupeIdx = state.assessmentHistory.findIndex((h) => {
+  const dupeIdx = state.assessmentHistory.findIndex(h => {
     if (h.assessmentId !== result.assessmentId) return false;
     const tA = new Date(h.completedAt).getTime();
     const tB = new Date(result.completedAt).getTime();
@@ -71,7 +77,7 @@ function clearHistory() {
 
 function deleteHistoryItem(id) {
   const cur = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY) || '[]');
-  const next = cur.filter((x) => x.id !== id);
+  const next = cur.filter(x => x.id !== id);
   localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(next));
   localStorage.removeItem(HASH_KEY);
 }
@@ -145,12 +151,48 @@ log('=== 1. addToHistory de-dupe within 60s ===');
 let state = { assessmentHistory: [] };
 const now = Date.now();
 const seedResults = [
-  { id: 'gad-r1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)', totalScore: 60, days: 0 },
-  { id: 'gad-r2', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)', totalScore: 50, days: 7 },
-  { id: 'bf-r1',  assessmentId: 'bigfive',      assessmentTitle: '大五人格测验',           totalScore: 65, days: 1 },
-  { id: 'bf-r2',  assessmentId: 'bigfive',      assessmentTitle: '大五人格测验',           totalScore: 58, days: 8 },
-  { id: 'st-r1',  assessmentId: 'stress-test',  assessmentTitle: '知觉压力量表 (PSS-10)',   totalScore: 72, days: 2 },
-  { id: 'st-r2',  assessmentId: 'stress-test',  assessmentTitle: '知觉压力量表 (PSS-10)',   totalScore: 65, days: 9 },
+  {
+    id: 'gad-r1',
+    assessmentId: 'anxiety-gad7',
+    assessmentTitle: '焦虑自评量表 (GAD-7)',
+    totalScore: 60,
+    days: 0,
+  },
+  {
+    id: 'gad-r2',
+    assessmentId: 'anxiety-gad7',
+    assessmentTitle: '焦虑自评量表 (GAD-7)',
+    totalScore: 50,
+    days: 7,
+  },
+  {
+    id: 'bf-r1',
+    assessmentId: 'bigfive',
+    assessmentTitle: '大五人格测验',
+    totalScore: 65,
+    days: 1,
+  },
+  {
+    id: 'bf-r2',
+    assessmentId: 'bigfive',
+    assessmentTitle: '大五人格测验',
+    totalScore: 58,
+    days: 8,
+  },
+  {
+    id: 'st-r1',
+    assessmentId: 'stress-test',
+    assessmentTitle: '知觉压力量表 (PSS-10)',
+    totalScore: 72,
+    days: 2,
+  },
+  {
+    id: 'st-r2',
+    assessmentId: 'stress-test',
+    assessmentTitle: '知觉压力量表 (PSS-10)',
+    totalScore: 65,
+    days: 9,
+  },
 ];
 state.assessmentHistory = seedResults.map((s, i) => ({
   id: s.id,
@@ -170,24 +212,34 @@ expect('re-add within 60s swaps in latest score', r1.assessmentHistory[0].totalS
 expect('re-add within 60s flagged replaced', r1.replaced === true);
 
 const r2 = addToHistory(state, {
-  ...dup, id: 'gad-r1-later', completedAt: new Date(now + 5 * 60_000).toISOString(),
+  ...dup,
+  id: 'gad-r1-later',
+  completedAt: new Date(now + 5 * 60_000).toISOString(),
 });
 state.assessmentHistory = r2.assessmentHistory;
 expect('re-add 5 min later appends', r2.assessmentHistory.length === before + 1);
 expect('re-add 5 min later flagged not-replaced', r2.replaced === false);
 
 const r3 = addToHistory(state, {
-  ...dup, id: 'gad-r1-dup', completedAt: new Date(state.assessmentHistory[0].completedAt),
+  ...dup,
+  id: 'gad-r1-dup',
+  completedAt: new Date(state.assessmentHistory[0].completedAt),
 });
 state.assessmentHistory = r3.assessmentHistory;
 expect('re-add 30s later de-dupes', r3.assessmentHistory.length === r2.assessmentHistory.length);
 
 const r4 = addToHistory(state, {
-  id: 'bf-r3', assessmentId: 'bigfive', assessmentTitle: '大五人格测验',
-  totalScore: 70, completedAt: new Date(now).toISOString(),
+  id: 'bf-r3',
+  assessmentId: 'bigfive',
+  assessmentTitle: '大五人格测验',
+  totalScore: 70,
+  completedAt: new Date(now).toISOString(),
 });
 state.assessmentHistory = r4.assessmentHistory;
-expect('different assessmentId always appends', r4.assessmentHistory.length === r3.assessmentHistory.length + 1);
+expect(
+  'different assessmentId always appends',
+  r4.assessmentHistory.length === r3.assessmentHistory.length + 1
+);
 
 // =====================================================================
 // 2. AnalysisCache fingerprint + persistence + schema version
@@ -197,13 +249,35 @@ analysisCache.clear();
 expect('cache empty after clear', analysisCache.getIfFresh(state.assessmentHistory) === null);
 
 const sampleCache = {
-  statistics: { totalAssessments: 7, averageScore: 65, highestScore: 80, lowestScore: 50, completionRate: 100, streakDays: 5, traitAverages: {} },
+  statistics: {
+    totalAssessments: 7,
+    averageScore: 65,
+    highestScore: 80,
+    lowestScore: 50,
+    completionRate: 100,
+    streakDays: 5,
+    traitAverages: {},
+  },
   trends: [
-    { assessmentId: 'anxiety-gad7', trend: 'improving', dataPoints: [{ timestamp: now - 7 * 86400_000, score: 50 }, { timestamp: now, score: 60 }] },
+    {
+      assessmentId: 'anxiety-gad7',
+      trend: 'improving',
+      dataPoints: [
+        { timestamp: now - 7 * 86400_000, score: 50 },
+        { timestamp: now, score: 60 },
+      ],
+    },
   ],
   insights: ['焦虑症状持续偏高,建议关注日常放松练习'],
   recentResults: [
-    { id: 'gad-r1', title: '焦虑自评量表 (GAD-7)', timestamp: now, totalScore: 60, assessmentType: 'anxiety', tags: ['紧张'] },
+    {
+      id: 'gad-r1',
+      title: '焦虑自评量表 (GAD-7)',
+      timestamp: now,
+      totalScore: 60,
+      assessmentType: 'anxiety',
+      tags: ['紧张'],
+    },
   ],
   summaries: [],
 };
@@ -215,14 +289,20 @@ expect('cache hit for unchanged history', hit !== null);
 expect('cache restores statistics', hit.statistics.totalAssessments === 7);
 expect('cache restores insights', Array.isArray(hit.insights) && hit.insights.length === 1);
 
-const mutated = [{ ...state.assessmentHistory[0], totalScore: 90 }, ...state.assessmentHistory.slice(1)];
+const mutated = [
+  { ...state.assessmentHistory[0], totalScore: 90 },
+  ...state.assessmentHistory.slice(1),
+];
 expect('score change → cache miss', analysisCache.getIfFresh(mutated) === null);
 
-analysisCache.set(mutated, { ...sampleCache, statistics: { ...sampleCache.statistics, averageScore: 70 } });
+analysisCache.set(mutated, {
+  ...sampleCache,
+  statistics: { ...sampleCache.statistics, averageScore: 70 },
+});
 expect('recomputed cache hits', analysisCache.getIfFresh(mutated) !== null);
 
 const before2 = analysisCache.meta().lastVisitedAt;
-await new Promise((r) => setTimeout(r, 5));
+await new Promise(r => setTimeout(r, 5));
 const touched = analysisCache.touchVisited();
 expect('touchVisited advances time', touched.lastVisitedAt > before2);
 expect('touchVisited preserves cache', analysisCache.getIfFresh(mutated) !== null);
@@ -240,10 +320,16 @@ function addToHistoryWithCacheInvalidation(state, result) {
 }
 const beforeAdd = state.assessmentHistory.length;
 addToHistoryWithCacheInvalidation(state, {
-  id: 'gad-rX', assessmentId: 'anxiety-gad7-new', assessmentTitle: '焦虑自评量表 (GAD-7)',
-  totalScore: 88, completedAt: new Date(now).toISOString(),
+  id: 'gad-rX',
+  assessmentId: 'anxiety-gad7-new',
+  assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 88,
+  completedAt: new Date(now).toISOString(),
 });
-expect('addToHistory invalidates cache', analysisCache.getIfFresh(state.assessmentHistory) === null);
+expect(
+  'addToHistory invalidates cache',
+  analysisCache.getIfFresh(state.assessmentHistory) === null
+);
 expect('addToHistory length grew', state.assessmentHistory.length > beforeAdd);
 
 // re-seed cache
@@ -251,8 +337,14 @@ analysisCache.set(state.assessmentHistory, sampleCache);
 expect('cache re-armed', analysisCache.getIfFresh(state.assessmentHistory) !== null);
 const oneId = state.assessmentHistory[0].id;
 deleteHistoryItem(oneId);
-expect('deleteHistoryItem invalidates cache', analysisCache.getIfFresh(state.assessmentHistory) === null);
-expect('deleteHistoryItem removes entry', JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)).every((x) => x.id !== oneId));
+expect(
+  'deleteHistoryItem invalidates cache',
+  analysisCache.getIfFresh(state.assessmentHistory) === null
+);
+expect(
+  'deleteHistoryItem removes entry',
+  JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY)).every(x => x.id !== oneId)
+);
 
 analysisCache.set(state.assessmentHistory, sampleCache);
 expect('cache re-armed before clear', analysisCache.getIfFresh(state.assessmentHistory) !== null);
@@ -272,11 +364,20 @@ for (const k of SESSION_KEYS) localStorage.setItem(k, `seed:${k}`);
 // plant user preferences that must NOT be cleared on logout
 for (const k of PREFERENCES_THAT_SURVIVE_LOGOUT) localStorage.setItem(k, `pref:${k}`);
 // sanity check
-expect('session keys seeded', SESSION_KEYS.every((k) => localStorage.getItem(k)?.startsWith('seed:')));
-expect('preferences seeded', PREFERENCES_THAT_SURVIVE_LOGOUT.every((k) => localStorage.getItem(k)?.startsWith('pref:')));
+expect(
+  'session keys seeded',
+  SESSION_KEYS.every(k => localStorage.getItem(k)?.startsWith('seed:'))
+);
+expect(
+  'preferences seeded',
+  PREFERENCES_THAT_SURVIVE_LOGOUT.every(k => localStorage.getItem(k)?.startsWith('pref:'))
+);
 
 clearLocalSession();
-expect('every session key wiped', SESSION_KEYS.every((k) => localStorage.getItem(k) === null));
+expect(
+  'every session key wiped',
+  SESSION_KEYS.every(k => localStorage.getItem(k) === null)
+);
 expect('theme preference survives logout', localStorage.getItem('theme') === 'pref:theme');
 expect('locale preference survives logout', localStorage.getItem('locale') === 'pref:locale');
 
@@ -290,7 +391,11 @@ analysisCache.set([{ id: 'a', totalScore: 50 }], sampleCache);
 expect('analysis cache re-armed', analysisCache.getIfFresh([{ id: 'a', totalScore: 50 }]) !== null);
 
 // simulate the post-logout in-memory wipe
-const inMemory = { user: { id: 'u1' }, isAuthenticated: true, assessmentHistory: [{ id: 'a', totalScore: 50 }] };
+const inMemory = {
+  user: { id: 'u1' },
+  isAuthenticated: true,
+  assessmentHistory: [{ id: 'a', totalScore: 50 }],
+};
 clearLocalSession();
 analysisCache.clear();
 inMemory.user = null;
@@ -308,28 +413,44 @@ expect('analysis cache fully wiped', !analysisCache.meta().lastComputedAt);
 log('=== 6. SESSION_KEYS coverage check ===');
 // simulate the app writing the keys it actually uses
 const actuallyWrittenKeys = [
-  'mindmirror_user', 'mindmirror_token', 'mindmirror_local_users', 'mindmirror_local_secret',
+  'mindmirror_user',
+  'mindmirror_token',
+  'mindmirror_local_users',
+  'mindmirror_local_secret',
   'assessmentHistory',
-  'mindmirror_analysis_history_hash', 'mindmirror_analysis_cache', 'mindmirror_analysis_meta',
+  'mindmirror_analysis_history_hash',
+  'mindmirror_analysis_cache',
+  'mindmirror_analysis_meta',
   'moodTracker_entries',
-  'training_history', 'training_progress', 'training_schedules',
+  'training_history',
+  'training_progress',
+  'training_schedules',
   'achievements_unlocked',
   'userTags',
   'personalDataCenter',
   'shared_assessment_results',
-  'plugin_registry', 'plugin_states', 'plugin_cache',
+  'plugin_registry',
+  'plugin_states',
+  'plugin_cache',
   'assessment_trace_logs',
 ];
-const missing = actuallyWrittenKeys.filter((k) => !SESSION_KEYS.includes(k));
-expect('all actually-written keys are in SESSION_KEYS', missing.length === 0, `missing: ${missing.join(',')}`);
+const missing = actuallyWrittenKeys.filter(k => !SESSION_KEYS.includes(k));
+expect(
+  'all actually-written keys are in SESSION_KEYS',
+  missing.length === 0,
+  `missing: ${missing.join(',')}`
+);
 
 // =====================================================================
 // 7. AssessmentDetail resetAssessment guard
 // =====================================================================
 log('=== 7. useEffect result-preservation guard ===');
-const hasActiveResult = (state) => state.result !== null && state.currentStep === 'result';
+const hasActiveResult = state => state.result !== null && state.currentStep === 'result';
 expect('no result → reset is allowed', !hasActiveResult({ result: null, currentStep: 'intro' }));
-expect('injected result from history → reset is SKIPPED', hasActiveResult({ result: { id: 'gad-r1', totalScore: 60 }, currentStep: 'result' }));
+expect(
+  'injected result from history → reset is SKIPPED',
+  hasActiveResult({ result: { id: 'gad-r1', totalScore: 60 }, currentStep: 'result' })
+);
 
 // =====================================================================
 // 8. toUnifiedResult shape check (new helper)
@@ -341,29 +462,64 @@ function toUnifiedResult(result) {
   return {
     id: result.id,
     assessmentId,
-    assessmentType: ({ 'anxiety-gad7': 'anxiety', 'big-five': 'personality', 'bigfive': 'personality', 'stress-test': 'stress' })[assessmentId] || 'other',
+    assessmentType:
+      {
+        'anxiety-gad7': 'anxiety',
+        'big-five': 'personality',
+        bigfive: 'personality',
+        'stress-test': 'stress',
+      }[assessmentId] || 'other',
     title: result.assessmentTitle || result.title || '心理测评',
-    timestamp: result.timestamp || (result.completedAt ? new Date(result.completedAt).getTime() : Date.now()),
+    timestamp:
+      result.timestamp ||
+      (result.completedAt ? new Date(result.completedAt).getTime() : Date.now()),
     totalScore: result.totalScore || 0,
-    traits: (result.traits || []).map((t) => ({ name: t.name || t.traitName || 'Unknown', score: t.score || 0, description: t.description || '' })),
+    traits: (result.traits || []).map(t => ({
+      name: t.name || t.traitName || 'Unknown',
+      score: t.score || 0,
+      description: t.description || '',
+    })),
     rawAnswers: result.rawAnswers || {},
     processedScores: result.processedScores || {},
-    report: result.report || { summary: { title: result.assessmentTitle || '心理测评', score: result.totalScore || 0, description: '', color: '#6366f1' } },
+    report: result.report || {
+      summary: {
+        title: result.assessmentTitle || '心理测评',
+        score: result.totalScore || 0,
+        description: '',
+        color: '#6366f1',
+      },
+    },
     tags: result.tags || [],
-    metadata: { duration: result.metadata?.duration ?? result.duration ?? 0, completed: result.metadata?.completed ?? result.completed ?? true, version: result.metadata?.version ?? '1.0.0' },
+    metadata: {
+      duration: result.metadata?.duration ?? result.duration ?? 0,
+      completed: result.metadata?.completed ?? result.completed ?? true,
+      version: result.metadata?.version ?? '1.0.0',
+    },
   };
 }
 const sample = {
-  id: 'gad-r1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)',
-  totalScore: 60, completedAt: new Date(now).toISOString(),
+  id: 'gad-r1',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 60,
+  completedAt: new Date(now).toISOString(),
   traits: [{ name: '焦虑', score: 12, maxScore: 21 }],
 };
 const u = toUnifiedResult(sample);
 expect('toUnifiedResult keeps id', u.id === 'gad-r1');
 expect('toUnifiedResult maps anxiety type', u.assessmentType === 'anxiety');
-expect('toUnifiedResult backfills report.summary', u.report && u.report.summary && u.report.summary.title === '焦虑自评量表 (GAD-7)');
-expect('toUnifiedResult backfills metadata', u.metadata.completed === true && u.metadata.version === '1.0.0');
-expect('toUnifiedResult maps trait name+score', u.traits[0].name === '焦虑' && u.traits[0].score === 12);
+expect(
+  'toUnifiedResult backfills report.summary',
+  u.report && u.report.summary && u.report.summary.title === '焦虑自评量表 (GAD-7)'
+);
+expect(
+  'toUnifiedResult backfills metadata',
+  u.metadata.completed === true && u.metadata.version === '1.0.0'
+);
+expect(
+  'toUnifiedResult maps trait name+score',
+  u.traits[0].name === '焦虑' && u.traits[0].score === 12
+);
 
 const u2 = toUnifiedResult(null);
 expect('toUnifiedResult(null) returns null', u2 === null);
@@ -375,4 +531,6 @@ expect('toUnifiedResult maps bigfive → personality', u4.assessmentType === 'pe
 expect('toUnifiedResult backfills default title', u4.title === '心理测评');
 
 log(`PASS: ${pass} assertions`);
-log('DONE — full storage / addToHistory / AnalysisCache / SESSION_KEYS / logout / toUnifiedResult chain verified');
+log(
+  'DONE — full storage / addToHistory / AnalysisCache / SESSION_KEYS / logout / toUnifiedResult chain verified'
+);

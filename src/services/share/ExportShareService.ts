@@ -219,7 +219,9 @@ export class ExportService {
       id: result.id,
       title: result.title || result.assessmentTitle,
       assessmentId: result.assessmentId,
-      timestamp: result.timestamp || (result.completedAt ? new Date(result.completedAt).getTime() : undefined),
+      timestamp:
+        result.timestamp ||
+        (result.completedAt ? new Date(result.completedAt).getTime() : undefined),
       totalScore: result.totalScore,
       traits: result.traits,
       generatedAt: new Date().toISOString(),

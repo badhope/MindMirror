@@ -11,10 +11,14 @@ import { strict as assert } from 'assert';
 
 // 直接以 module 形式 import (node --import tsx 自动转译)
 const { getQuestionsForAssessment } = await import('../../src/data/mockData.ts');
-const { generateDetailedSSRSReport, getSSRSLevel } = await import('../../src/services/ssrsScoring.ts');
-const { generateDetailedMBIReport, getMBITotalLevel } = await import('../../src/services/mbiScoring.ts');
-const { generateDetailedSWLSReport, getSWLSLevel } = await import('../../src/services/swlsScoring.ts');
-const { generateDetailedResilienceReport, getResilienceLevel } = await import('../../src/services/resilienceScoring.ts');
+const { generateDetailedSSRSReport, getSSRSLevel } =
+  await import('../../src/services/ssrsScoring.ts');
+const { generateDetailedMBIReport, getMBITotalLevel } =
+  await import('../../src/services/mbiScoring.ts');
+const { generateDetailedSWLSReport, getSWLSLevel } =
+  await import('../../src/services/swlsScoring.ts');
+const { generateDetailedResilienceReport, getResilienceLevel } =
+  await import('../../src/services/resilienceScoring.ts');
 const {
   SSRS_SUBJECTIVE_BANK,
   SSRS_OBJECTIVE_BANK,
@@ -141,25 +145,54 @@ console.log('\n=== 4. trait 字段与主量表一致 (无孤立 trait) ===');
   };
   // SSRS
   checkTrait(
-    [...SSRS_QUESTIONS, ...SSRS_SUBJECTIVE_BANK, ...SSRS_OBJECTIVE_BANK, ...SSRS_UTILIZATION_BANK, ...SSRS_EXTENSION_QUESTIONS],
+    [
+      ...SSRS_QUESTIONS,
+      ...SSRS_SUBJECTIVE_BANK,
+      ...SSRS_OBJECTIVE_BANK,
+      ...SSRS_UTILIZATION_BANK,
+      ...SSRS_EXTENSION_QUESTIONS,
+    ],
     new Set(['subjective', 'objective', 'utilization', 'extension']),
     'SSRS'
   );
   // MBI
   checkTrait(
-    [...MBI_QUESTIONS, ...MBI_EXHAUSTION_BANK, ...MBI_CYNICISM_BANK, ...MBI_EFFICACY_BANK, ...MBI_EXTENSION_QUESTIONS],
+    [
+      ...MBI_QUESTIONS,
+      ...MBI_EXHAUSTION_BANK,
+      ...MBI_CYNICISM_BANK,
+      ...MBI_EFFICACY_BANK,
+      ...MBI_EXTENSION_QUESTIONS,
+    ],
     new Set(['exhaustion', 'cynicism', 'efficacy', 'extension']),
     'MBI'
   );
   // SWLS
   checkTrait(
-    [...SWLS_QUESTIONS, ...SWLS_RELATIONSHIPS_BANK, ...SWLS_HEALTH_BANK, ...SWLS_ACHIEVEMENT_BANK, ...SWLS_GROWTH_BANK, ...SWLS_MEANING_BANK, ...SWLS_DAILY_BANK, ...SWLS_EXTENSION_QUESTIONS],
+    [
+      ...SWLS_QUESTIONS,
+      ...SWLS_RELATIONSHIPS_BANK,
+      ...SWLS_HEALTH_BANK,
+      ...SWLS_ACHIEVEMENT_BANK,
+      ...SWLS_GROWTH_BANK,
+      ...SWLS_MEANING_BANK,
+      ...SWLS_DAILY_BANK,
+      ...SWLS_EXTENSION_QUESTIONS,
+    ],
     new Set(['satisfaction', 'extension']),
     'SWLS'
   );
   // CD-RISC
   checkTrait(
-    [...RESILIENCE_QUESTIONS, ...RESILIENCE_ADAPTABILITY_BANK, ...RESILIENCE_RELATIONSHIPS_BANK, ...RESILIENCE_MEANING_BANK, ...RESILIENCE_SELF_EFFICACY_BANK, ...RESILIENCE_OPTIMISM_BANK, ...RESILIENCE_EXTENSION_QUESTIONS],
+    [
+      ...RESILIENCE_QUESTIONS,
+      ...RESILIENCE_ADAPTABILITY_BANK,
+      ...RESILIENCE_RELATIONSHIPS_BANK,
+      ...RESILIENCE_MEANING_BANK,
+      ...RESILIENCE_SELF_EFFICACY_BANK,
+      ...RESILIENCE_OPTIMISM_BANK,
+      ...RESILIENCE_EXTENSION_QUESTIONS,
+    ],
     new Set(['adaptability', 'relationships', 'meaning', 'selfEfficacy', 'optimism', 'extension']),
     'CD-RISC'
   );
@@ -168,17 +201,33 @@ console.log('\n=== 4. trait 字段与主量表一致 (无孤立 trait) ===');
 console.log('\n=== 5. 反向题存在性 ===');
 {
   // SWLS 应该至少有反向题 (检测顺从偏差)
-  const swlsAll = [...SWLS_QUESTIONS, ...SWLS_RELATIONSHIPS_BANK, ...SWLS_HEALTH_BANK, ...SWLS_ACHIEVEMENT_BANK, ...SWLS_GROWTH_BANK, ...SWLS_MEANING_BANK, ...SWLS_DAILY_BANK];
+  const swlsAll = [
+    ...SWLS_QUESTIONS,
+    ...SWLS_RELATIONSHIPS_BANK,
+    ...SWLS_HEALTH_BANK,
+    ...SWLS_ACHIEVEMENT_BANK,
+    ...SWLS_GROWTH_BANK,
+    ...SWLS_MEANING_BANK,
+    ...SWLS_DAILY_BANK,
+  ];
   const swlsReverse = swlsAll.filter(q => q.reverse === true);
   ok(swlsReverse.length >= 3, `5.1 SWLS 至少有 3 道反向题 (实际=${swlsReverse.length})`);
 
   // CD-RISC 题库应该有反向题
-  const resBanks = [...RESILIENCE_ADAPTABILITY_BANK, ...RESILIENCE_RELATIONSHIPS_BANK, ...RESILIENCE_MEANING_BANK, ...RESILIENCE_SELF_EFFICACY_BANK, ...RESILIENCE_OPTIMISM_BANK];
+  const resBanks = [
+    ...RESILIENCE_ADAPTABILITY_BANK,
+    ...RESILIENCE_RELATIONSHIPS_BANK,
+    ...RESILIENCE_MEANING_BANK,
+    ...RESILIENCE_SELF_EFFICACY_BANK,
+    ...RESILIENCE_OPTIMISM_BANK,
+  ];
   const resReverse = resBanks.filter(q => q.reverse === true);
   ok(resReverse.length >= 3, `5.2 CD-RISC 题库至少有 3 道反向题 (实际=${resReverse.length})`);
 
   // MBI 题库应该有反向题 (PE 题库)
-  const mbiReverse = [...MBI_EFFICACY_BANK, ...MBI_CYNICISM_BANK, ...MBI_EXHAUSTION_BANK].filter(q => q.reverse === true);
+  const mbiReverse = [...MBI_EFFICACY_BANK, ...MBI_CYNICISM_BANK, ...MBI_EXHAUSTION_BANK].filter(
+    q => q.reverse === true
+  );
   ok(mbiReverse.length >= 1, `5.3 MBI 题库至少有 1 道反向题 (实际=${mbiReverse.length})`);
 }
 
@@ -186,38 +235,84 @@ console.log('\n=== 6. 评分随题库扩展而正确变化 ===');
 {
   // SSRS: 主量表只 vs 主+题库 (10 vs 40),低支持回答
   const answersLow = {};
-  for (const q of [...SSRS_QUESTIONS, ...SSRS_SUBJECTIVE_BANK, ...SSRS_OBJECTIVE_BANK, ...SSRS_UTILIZATION_BANK]) {
+  for (const q of [
+    ...SSRS_QUESTIONS,
+    ...SSRS_SUBJECTIVE_BANK,
+    ...SSRS_OBJECTIVE_BANK,
+    ...SSRS_UTILIZATION_BANK,
+  ]) {
     if (q.id === 'ssrs6' || q.id === 'ssrs7' || q.id === 'ssrs26' || q.id === 'ssrs27') {
       answersLow[q.id] = 0; // 0-9 量表的最低
     } else {
       answersLow[q.id] = 1; // 1-4 量表的最低
     }
   }
-  const ssrsReport = generateDetailedSSRSReport(answersLow, getQuestionsForAssessment('social-support'));
+  const ssrsReport = generateDetailedSSRSReport(
+    answersLow,
+    getQuestionsForAssessment('social-support')
+  );
   ok(ssrsReport.summary.score < 80, `6.1 SSRS 低支持总分 < 80 (实际=${ssrsReport.summary.score})`);
-  ok(ssrsReport.summary.maxScore === 180, `6.2 SSRS maxScore = 180 (实际=${ssrsReport.summary.maxScore})`);
+  ok(
+    ssrsReport.summary.maxScore === 180,
+    `6.2 SSRS maxScore = 180 (实际=${ssrsReport.summary.maxScore})`
+  );
 
   // SWLS: 全部 1 (最低)
   const swlsLow = {};
-  for (const q of [...SWLS_QUESTIONS, ...SWLS_RELATIONSHIPS_BANK, ...SWLS_HEALTH_BANK, ...SWLS_ACHIEVEMENT_BANK, ...SWLS_GROWTH_BANK, ...SWLS_MEANING_BANK, ...SWLS_DAILY_BANK]) {
+  for (const q of [
+    ...SWLS_QUESTIONS,
+    ...SWLS_RELATIONSHIPS_BANK,
+    ...SWLS_HEALTH_BANK,
+    ...SWLS_ACHIEVEMENT_BANK,
+    ...SWLS_GROWTH_BANK,
+    ...SWLS_MEANING_BANK,
+    ...SWLS_DAILY_BANK,
+  ]) {
     swlsLow[q.id] = q.reverse ? 7 : 1;
   }
-  const swlsReport = generateDetailedSWLSReport(swlsLow, getQuestionsForAssessment('life-satisfaction'));
+  const swlsReport = generateDetailedSWLSReport(
+    swlsLow,
+    getQuestionsForAssessment('life-satisfaction')
+  );
   ok(swlsReport.summary.score <= 72, `6.3 SWLS 全 1 → 极不满意 (实际=${swlsReport.summary.score})`);
-  ok(swlsReport.summary.maxScore === 266, `6.4 SWLS maxScore = 266 (实际=${swlsReport.summary.maxScore})`);
+  ok(
+    swlsReport.summary.maxScore === 266,
+    `6.4 SWLS maxScore = 266 (实际=${swlsReport.summary.maxScore})`
+  );
 
   // CD-RISC: 全部 0
   const resLow = {};
-  for (const q of [...RESILIENCE_QUESTIONS, ...RESILIENCE_ADAPTABILITY_BANK, ...RESILIENCE_RELATIONSHIPS_BANK, ...RESILIENCE_MEANING_BANK, ...RESILIENCE_SELF_EFFICACY_BANK, ...RESILIENCE_OPTIMISM_BANK]) {
+  for (const q of [
+    ...RESILIENCE_QUESTIONS,
+    ...RESILIENCE_ADAPTABILITY_BANK,
+    ...RESILIENCE_RELATIONSHIPS_BANK,
+    ...RESILIENCE_MEANING_BANK,
+    ...RESILIENCE_SELF_EFFICACY_BANK,
+    ...RESILIENCE_OPTIMISM_BANK,
+  ]) {
     resLow[q.id] = q.reverse ? 4 : 0;
   }
-  const resReport = generateDetailedResilienceReport(resLow, getQuestionsForAssessment('resilience-cdrisc'));
-  ok(resReport.summary.score <= 70, `6.5 CD-RISC 全 0 → 韧性较低 (实际=${resReport.summary.score})`);
-  ok(resReport.summary.maxScore === 148, `6.6 CD-RISC maxScore = 148 (实际=${resReport.summary.maxScore})`);
+  const resReport = generateDetailedResilienceReport(
+    resLow,
+    getQuestionsForAssessment('resilience-cdrisc')
+  );
+  ok(
+    resReport.summary.score <= 70,
+    `6.5 CD-RISC 全 0 → 韧性较低 (实际=${resReport.summary.score})`
+  );
+  ok(
+    resReport.summary.maxScore === 148,
+    `6.6 CD-RISC maxScore = 148 (实际=${resReport.summary.maxScore})`
+  );
 
   // MBI: 全部 max (高倦怠)
   const mbiHigh = {};
-  for (const q of [...MBI_QUESTIONS, ...MBI_EXHAUSTION_BANK, ...MBI_CYNICISM_BANK, ...MBI_EFFICACY_BANK]) {
+  for (const q of [
+    ...MBI_QUESTIONS,
+    ...MBI_EXHAUSTION_BANK,
+    ...MBI_CYNICISM_BANK,
+    ...MBI_EFFICACY_BANK,
+  ]) {
     mbiHigh[q.id] = 6;
   }
   const mbiReport = generateDetailedMBIReport(mbiHigh, getQuestionsForAssessment('mbi-burnout'));
@@ -228,35 +323,35 @@ console.log('\n=== 6. 评分随题库扩展而正确变化 ===');
 console.log('\n=== 7. 严重度函数在 40 题下能正确分级 ===');
 {
   // SSRS: 0/低/中/高 边界
-  const low = getSSRSLevel(40);  // ≤80
-  const medLow = getSSRSLevel(100);  // 81-106
-  const med = getSSRSLevel(150);  // 107-161
-  const high = getSSRSLevel(175);  // ≥162
+  const low = getSSRSLevel(40); // ≤80
+  const medLow = getSSRSLevel(100); // 81-106
+  const med = getSSRSLevel(150); // 107-161
+  const high = getSSRSLevel(175); // ≥162
   eq(low.level, 'low', '7.1 SSRS score 40 → low');
   eq(medLow.level, 'mediumLow', '7.2 SSRS score 100 → mediumLow');
   eq(med.level, 'medium', '7.3 SSRS score 150 → medium');
   eq(high.level, 'high', '7.4 SSRS score 175 → high');
 
   // MBI: 百分比版
-  const mbiLow = getMBITotalLevel(10, 74);  // 13.5% → low
-  const mbiHigh = getMBITotalLevel(50, 74);  // 67.6% → high
-  const mbiSev = getMBITotalLevel(70, 74);  // 94.6% → severe
+  const mbiLow = getMBITotalLevel(10, 74); // 13.5% → low
+  const mbiHigh = getMBITotalLevel(50, 74); // 67.6% → high
+  const mbiSev = getMBITotalLevel(70, 74); // 94.6% → severe
   eq(mbiLow.level, 'low', '7.5 MBI 10/74 → low');
   eq(mbiHigh.level, 'high', '7.6 MBI 50/74 → high');
   eq(mbiSev.level, 'severe', '7.7 MBI 70/74 → severe');
 
   // SWLS: 百分比版
-  const swlsLow = getSWLSLevel(100, 266);  // 37.6% → low
-  const swlsHigh = getSWLSLevel(220, 266);  // 82.7% → high
-  const swlsVHigh = getSWLSLevel(250, 266);  // 94% → veryHigh
+  const swlsLow = getSWLSLevel(100, 266); // 37.6% → low
+  const swlsHigh = getSWLSLevel(220, 266); // 82.7% → high
+  const swlsVHigh = getSWLSLevel(250, 266); // 94% → veryHigh
   eq(swlsLow.level, 'low', '7.8 SWLS 100/266 → low');
   eq(swlsHigh.level, 'high', '7.9 SWLS 220/266 → high');
   eq(swlsVHigh.level, 'veryHigh', '7.10 SWLS 250/266 → veryHigh');
 
   // CD-RISC: 百分比版
-  const resLow = getResilienceLevel(50, 148);  // 33.8% → veryLow
-  const resHigh = getResilienceLevel(120, 148);  // 81% → high
-  const resVHigh = getResilienceLevel(140, 148);  // 94.6% → veryHigh
+  const resLow = getResilienceLevel(50, 148); // 33.8% → veryLow
+  const resHigh = getResilienceLevel(120, 148); // 81% → high
+  const resVHigh = getResilienceLevel(140, 148); // 94.6% → veryHigh
   eq(resLow.level, 'veryLow', '7.11 CD-RISC 50/148 → veryLow');
   eq(resHigh.level, 'high', '7.12 CD-RISC 120/148 → high');
   eq(resVHigh.level, 'veryHigh', '7.13 CD-RISC 140/148 → veryHigh');
@@ -277,7 +372,10 @@ console.log('\n=== 8. 极值不崩 ===');
   ok(swlsEmpty.summary !== null, '8.3 SWLS 全空不崩');
 
   // CD-RISC: 全空
-  const resEmpty = generateDetailedResilienceReport({}, getQuestionsForAssessment('resilience-cdrisc'));
+  const resEmpty = generateDetailedResilienceReport(
+    {},
+    getQuestionsForAssessment('resilience-cdrisc')
+  );
   ok(resEmpty.summary !== null, '8.4 CD-RISC 全空不崩');
 }
 

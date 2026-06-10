@@ -85,9 +85,16 @@ eq(
 // 总分 = 7×1 + 1×0 = 8
 {
   const a = {
-    ssrs1: 1, ssrs2: 1, ssrs3: 1, ssrs4: 1, ssrs5: 1,
-    ssrs6: 0, ssrs7: 0,
-    ssrs8: 1, ssrs9: 1, ssrs10: 1,
+    ssrs1: 1,
+    ssrs2: 1,
+    ssrs3: 1,
+    ssrs4: 1,
+    ssrs5: 1,
+    ssrs6: 0,
+    ssrs7: 0,
+    ssrs8: 1,
+    ssrs9: 1,
+    ssrs10: 1,
   };
   eq(ssrsTotal(a), 8, '1.2 全部最低: 总分 = 8');
   eq(ssrsLevel(8), 'low', '1.2 总分=8 → low');
@@ -96,9 +103,16 @@ eq(
 // 全部最高: 1,3,4,5,8,9,10 = 4; ssrs2 = 4; ssrs6,7 = 9
 {
   const a = {
-    ssrs1: 4, ssrs2: 4, ssrs3: 4, ssrs4: 4, ssrs5: 4,
-    ssrs6: 9, ssrs7: 9,
-    ssrs8: 4, ssrs9: 4, ssrs10: 4,
+    ssrs1: 4,
+    ssrs2: 4,
+    ssrs3: 4,
+    ssrs4: 4,
+    ssrs5: 4,
+    ssrs6: 9,
+    ssrs7: 9,
+    ssrs8: 4,
+    ssrs9: 4,
+    ssrs10: 4,
   };
   eq(ssrsTotal(a), 50, '1.3 全部最高: 总分 = 50');
   eq(ssrsLevel(50), 'high', '1.3 总分=50 → high');
@@ -115,9 +129,16 @@ eq(ssrsLevel(45), 'high', '1.4 45 → high');
 // 维度切分正确
 {
   const a = {
-    ssrs1: 2, ssrs2: 2, ssrs3: 2, ssrs4: 2, ssrs5: 2,
-    ssrs6: 5, ssrs7: 5,
-    ssrs8: 2, ssrs9: 2, ssrs10: 2,
+    ssrs1: 2,
+    ssrs2: 2,
+    ssrs3: 2,
+    ssrs4: 2,
+    ssrs5: 2,
+    ssrs6: 5,
+    ssrs7: 5,
+    ssrs8: 2,
+    ssrs9: 2,
+    ssrs10: 2,
   };
   const objScore = SSRS_DIM.objective.reduce((s, k) => s + (a[k] || 0), 0);
   const subScore = SSRS_DIM.subjective.reduce((s, k) => s + (a[k] || 0), 0);
@@ -147,7 +168,9 @@ const MBI_DIM = {
 };
 
 function mbiSubScores(answers) {
-  let ex = 0, cy = 0, pe = 0;
+  let ex = 0,
+    cy = 0,
+    pe = 0;
   for (const k of MBI_DIM.exhaustion) ex += answers[k] || 0;
   for (const k of MBI_DIM.cynicism) cy += answers[k] || 0;
   for (const k of MBI_DIM.efficacy) pe += answers[k] || 0;
@@ -290,19 +313,22 @@ eq(SWLS_QUESTIONS.length, 5, '3.1 SWLS 共 5 题');
 
 // 极值
 {
-  const a = {}; SWLS_QUESTIONS.forEach(k => a[k] = 1);
+  const a = {};
+  SWLS_QUESTIONS.forEach(k => (a[k] = 1));
   eq(swlsTotal(a), 5, '3.2 全部 1: 总分 = 5');
   eq(swlsLevel(5), 'veryLow', '3.2 总分=5 → veryLow');
 }
 {
-  const a = {}; SWLS_QUESTIONS.forEach(k => a[k] = 7);
+  const a = {};
+  SWLS_QUESTIONS.forEach(k => (a[k] = 7));
   eq(swlsTotal(a), 35, '3.3 全部 7: 总分 = 35');
   eq(swlsLevel(35), 'veryHigh', '3.3 总分=35 → veryHigh');
 }
 
 // 中等
 {
-  const a = {}; SWLS_QUESTIONS.forEach(k => a[k] = 4);
+  const a = {};
+  SWLS_QUESTIONS.forEach(k => (a[k] = 4));
   eq(swlsTotal(a), 20, '3.4 全部 4: 总分 = 20');
   eq(swlsLevel(20), 'average', '3.4 总分=20 → average');
 }
@@ -434,27 +460,56 @@ truthy(SSRS_DIM.objective.includes('ssrs7'), '5.3 SSRS 来源数项 ssrs7 在 ob
   const expected = all.length;
   eq(expected, 15, '5.4 MBI 15 题');
   const peKeys = MBI_DIM.efficacy;
-  truthy(peKeys.every(k => k.startsWith('mbi1')), '5.4 PE 维度题号都是 mbi1X');
+  truthy(
+    peKeys.every(k => k.startsWith('mbi1')),
+    '5.4 PE 维度题号都是 mbi1X'
+  );
 }
 
 // 反向计分逻辑正确: PE 越大 → 综合分越小
 {
   const high = mbiSubScores({
-    mbi1: 0, mbi2: 0, mbi3: 0, mbi4: 0, mbi5: 0,
-    mbi6: 0, mbi7: 0, mbi8: 0, mbi9: 0,
-    mbi10: 6, mbi11: 6, mbi12: 6, mbi13: 6, mbi14: 6, mbi15: 6,
+    mbi1: 0,
+    mbi2: 0,
+    mbi3: 0,
+    mbi4: 0,
+    mbi5: 0,
+    mbi6: 0,
+    mbi7: 0,
+    mbi8: 0,
+    mbi9: 0,
+    mbi10: 6,
+    mbi11: 6,
+    mbi12: 6,
+    mbi13: 6,
+    mbi14: 6,
+    mbi15: 6,
   });
   const low = mbiSubScores({
-    mbi1: 0, mbi2: 0, mbi3: 0, mbi4: 0, mbi5: 0,
-    mbi6: 0, mbi7: 0, mbi8: 0, mbi9: 0,
-    mbi10: 0, mbi11: 0, mbi12: 0, mbi13: 0, mbi14: 0, mbi15: 0,
+    mbi1: 0,
+    mbi2: 0,
+    mbi3: 0,
+    mbi4: 0,
+    mbi5: 0,
+    mbi6: 0,
+    mbi7: 0,
+    mbi8: 0,
+    mbi9: 0,
+    mbi10: 0,
+    mbi11: 0,
+    mbi12: 0,
+    mbi13: 0,
+    mbi14: 0,
+    mbi15: 0,
   });
   truthy(high.total < low.total, '5.5 PE 满分综合分 < PE 零分综合分 (反向)');
 }
 
 // SSRS 不应有反向题 (4 点李克特 + 来源数)
 eq(
-  Object.values(SSRS_DIM).flat().filter(k => k.endsWith('_r')).length,
+  Object.values(SSRS_DIM)
+    .flat()
+    .filter(k => k.endsWith('_r')).length,
   0,
   '5.6 SSRS 无反向题'
 );
@@ -464,7 +519,9 @@ eq(SWLS_QUESTIONS.filter(k => k.endsWith('_r')).length, 0, '5.6 SWLS 无反向�
 
 // CD-RISC-10 无反向
 eq(
-  Object.values(CDR_DIM).flat().filter(k => k.endsWith('_r')).length,
+  Object.values(CDR_DIM)
+    .flat()
+    .filter(k => k.endsWith('_r')).length,
   0,
   '5.6 CD-RISC-10 无反向题'
 );
@@ -509,7 +566,11 @@ eq(ssrsLevel(45), 'high', '6.1 45 → high');
 // ============================================================
 log('=== 7. MBI-GS(s) 短版 ===');
 
-eq(MBI_DIM.exhaustion.length + MBI_DIM.cynicism.length + MBI_DIM.efficacy.length, 15, '7.1 MBI-GS(s) 15 题');
+eq(
+  MBI_DIM.exhaustion.length + MBI_DIM.cynicism.length + MBI_DIM.efficacy.length,
+  15,
+  '7.1 MBI-GS(s) 15 题'
+);
 // CY 短版 = 4 题 (完整版是 5 题)
 eq(MBI_DIM.cynicism.length, 4, '7.1 CY 短版 4 题 (vs 完整版 5)');
 // PE 6 题反向
@@ -571,7 +632,10 @@ log('=== 10. ID 命名空间 ===');
 const expectedPrefixes = ['ssrs', 'mbi', 'swls', 'cdr'];
 for (const prefix of expectedPrefixes) {
   const all = allIds();
-  truthy(all.some(id => id.startsWith(prefix + '1')), `10.1 ${prefix}* ID 存在`);
+  truthy(
+    all.some(id => id.startsWith(prefix + '1')),
+    `10.1 ${prefix}* ID 存在`
+  );
 }
 
 // ============================================================
@@ -604,15 +668,20 @@ const expectedLabels = {
 
 for (const [lang, map] of Object.entries(expectedLabels)) {
   for (const [id, expectedName] of Object.entries(map)) {
-    truthy(
-      expectedName && expectedName.length > 0,
-      `12.1 ${lang}/${id} → ${expectedName}`
-    );
+    truthy(expectedName && expectedName.length > 0, `12.1 ${lang}/${id} → ${expectedName}`);
   }
 }
 
 // 验证 7 个测评 ID 都覆盖
-const allIds2 = ['big-five', 'stress-test', 'anxiety-gad7', 'social-support', 'mbi-burnout', 'life-satisfaction', 'resilience-cdrisc'];
+const allIds2 = [
+  'big-five',
+  'stress-test',
+  'anxiety-gad7',
+  'social-support',
+  'mbi-burnout',
+  'life-satisfaction',
+  'resilience-cdrisc',
+];
 eq(allIds2.length, 7, '12.2 7 个测评 ID 完整');
 
 // ============================================================
@@ -622,7 +691,7 @@ log('=== 13. 严重度分界连续性 ===');
 
 // SSRS: [8,22] low, [23,29] mediumLow, [30,44] medium, [45,50] high
 const ssrsCheck = [
-  [7, 'low'],    // 不应该
+  [7, 'low'], // 不应该
   [8, 'low'],
   [22, 'low'],
   [23, 'mediumLow'],
@@ -631,7 +700,7 @@ const ssrsCheck = [
   [44, 'medium'],
   [45, 'high'],
   [50, 'high'],
-  [51, 'high'],  // 越界
+  [51, 'high'], // 越界
 ];
 for (const [score, expected] of ssrsCheck) {
   truthy(ssrsLevel(score) === expected, `13.1 SSRS ${score} → ${expected}`);
@@ -750,31 +819,25 @@ log('=== 18. SWLS high 边界 vs interpretation ===');
 
 // 模拟修复后的 isHigh 判定:基于 level.level 而非分数阈值
 function swlsIsHighAligned(score) {
-  if (score <= 24) return false;        // veryLow/low/slightlyLow/average
-  if (score <= 29) return true;         // high (label "较满意")
-  return true;                            // veryHigh (label "高度满意")
+  if (score <= 24) return false; // veryLow/low/slightlyLow/average
+  if (score <= 29) return true; // high (label "较满意")
+  return true; // veryHigh (label "高度满意")
 }
 
 const swlsInterp = [
-  [5,  'veryLow',  false],
-  [9,  'veryLow',  false],
-  [14, 'low',      false],
+  [5, 'veryLow', false],
+  [9, 'veryLow', false],
+  [14, 'low', false],
   [19, 'slightlyLow', false],
-  [24, 'average',  false],
-  [25, 'high',     true],   // 较满意 — strengths 显示
-  [29, 'high',     true],
-  [30, 'veryHigh', true],   // 高度满意 — strengths 显示
+  [24, 'average', false],
+  [25, 'high', true], // 较满意 — strengths 显示
+  [29, 'high', true],
+  [30, 'veryHigh', true], // 高度满意 — strengths 显示
   [35, 'veryHigh', true],
 ];
 for (const [score, lvl, high] of swlsInterp) {
-  truthy(
-    swlsLevel(score) === lvl,
-    `18.1 SWLS ${score} → ${lvl}`,
-  );
-  truthy(
-    swlsIsHighAligned(score) === high,
-    `18.2 SWLS ${score} isHigh = ${high} (匹配 ${lvl})`,
-  );
+  truthy(swlsLevel(score) === lvl, `18.1 SWLS ${score} → ${lvl}`);
+  truthy(swlsIsHighAligned(score) === high, `18.2 SWLS ${score} isHigh = ${high} (匹配 ${lvl})`);
 }
 
 // ============================================================

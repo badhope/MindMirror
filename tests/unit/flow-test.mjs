@@ -12,9 +12,9 @@
 
 const _store = new Map();
 globalThis.localStorage = {
-  getItem: (k) => (_store.has(k) ? _store.get(k) : null),
+  getItem: k => (_store.has(k) ? _store.get(k) : null),
   setItem: (k, v) => _store.set(k, String(v)),
-  removeItem: (k) => _store.delete(k),
+  removeItem: k => _store.delete(k),
   clear: () => _store.clear(),
 };
 
@@ -24,14 +24,21 @@ globalThis.localStorage = {
 // (Node 24 makes `globalThis.crypto` read-only; we polyfill the parts
 // the simulation actually touches instead of overwriting it.)
 if (!globalThis.crypto.getRandomValues) {
-  globalThis.crypto.getRandomValues = (b) => { for (let i = 0; i < b.length; i++) b[i] = Math.floor(Math.random() * 256); return b; };
+  globalThis.crypto.getRandomValues = b => {
+    for (let i = 0; i < b.length; i++) b[i] = Math.floor(Math.random() * 256);
+    return b;
+  };
 }
 
 const log = (...a) => console.log('[flow-test]', ...a);
 let pass = 0;
 let fail = 0;
 const expect = (label, cond, detail = '') => {
-  if (!cond) { log('  ✗', label, detail); fail++; throw new Error(`FAIL ${label} ${detail}`); }
+  if (!cond) {
+    log('  ✗', label, detail);
+    fail++;
+    throw new Error(`FAIL ${label} ${detail}`);
+  }
   log('  ✓', label, detail);
   pass++;
 };
@@ -62,7 +69,11 @@ const SCHEMA_VERSION = 3;
 const readJSON = (k, fb) => {
   const v = _store.get(k);
   if (v == null) return fb;
-  try { return JSON.parse(v); } catch { return fb; }
+  try {
+    return JSON.parse(v);
+  } catch {
+    return fb;
+  }
 };
 const writeJSON = (k, v) => _store.set(k, JSON.stringify(v));
 
@@ -71,7 +82,9 @@ const writeJSON = (k, v) => _store.set(k, JSON.stringify(v));
 function addToHistory(state, result) {
   const dupeIdx = state.assessmentHistory.findIndex(h => {
     if (h.assessmentId !== result.assessmentId) return false;
-    return Math.abs(new Date(h.completedAt).getTime() - new Date(result.completedAt).getTime()) < 60_000;
+    return (
+      Math.abs(new Date(h.completedAt).getTime() - new Date(result.completedAt).getTime()) < 60_000
+    );
   });
   if (dupeIdx >= 0) {
     const next = state.assessmentHistory.slice();
@@ -113,7 +126,13 @@ function fingerprint(history) {
   const first = history[history.length - 1];
   const last = history[0];
   const sum = history.reduce((a, h) => a + (h.totalScore || 0), 0);
-  return [history.length, first?.id || '', last?.id || '', sum.toFixed(2), last?.completedAt || ''].join('|');
+  return [
+    history.length,
+    first?.id || '',
+    last?.id || '',
+    sum.toFixed(2),
+    last?.completedAt || '',
+  ].join('|');
 }
 const analysisCache = {
   getIfFresh(history) {
@@ -133,9 +152,17 @@ const analysisCache = {
     const cur = readJSON(KEYS.meta, {});
     writeJSON(KEYS.meta, { ...cur, lastVisitedAt: Date.now() });
   },
-  meta() { return readJSON(KEYS.meta, {}); },
-  clear() { _store.delete(KEYS.hash); _store.delete(KEYS.cache); _store.delete(KEYS.meta); },
-  invalidate() { _store.delete(KEYS.hash); },
+  meta() {
+    return readJSON(KEYS.meta, {});
+  },
+  clear() {
+    _store.delete(KEYS.hash);
+    _store.delete(KEYS.cache);
+    _store.delete(KEYS.meta);
+  },
+  invalidate() {
+    _store.delete(KEYS.hash);
+  },
 };
 
 // --- AchievementService -----------------------------------------------------
@@ -156,7 +183,8 @@ const ACHIEVEMENTS = {
 function achievementRefresh(history) {
   const checkState = {
     totalAssessments: history.length,
-    bigFiveCount: history.filter(h => h.assessmentId === 'big-five' || h.assessmentId === 'bigfive').length,
+    bigFiveCount: history.filter(h => h.assessmentId === 'big-five' || h.assessmentId === 'bigfive')
+      .length,
     stressCount: history.filter(h => h.assessmentId === 'stress-test').length,
     anxietyCount: history.filter(h => h.assessmentId === 'anxiety-gad7').length,
     trainingCompleted: readJSON(KEYS.trainingHistory, []).filter(s => s.completedAt).length,
@@ -196,7 +224,17 @@ function moodAdd({ date, mood, energy, anxiety, sleep, note = '', tags = [] }) {
   if (existing) {
     Object.assign(existing, { mood, energy, anxiety, sleep, note, tags });
   } else {
-    all.push({ id: Date.now().toString(), date, mood, energy, anxiety, sleep, note, tags, createdAt: new Date().toISOString() });
+    all.push({
+      id: Date.now().toString(),
+      date,
+      mood,
+      energy,
+      anxiety,
+      sleep,
+      note,
+      tags,
+      createdAt: new Date().toISOString(),
+    });
   }
   all.sort((a, b) => b.date.localeCompare(a.date));
   writeJSON(KEYS.mood, all);
@@ -207,7 +245,13 @@ function moodAdd({ date, mood, energy, anxiety, sleep, note = '', tags = [] }) {
 // --- TrainingService --------------------------------------------------------
 
 function trainingStart(trainingId) {
-  const session = { id: `s_${Date.now()}`, trainingId, userId: 'default', startedAt: Date.now(), stepsCompleted: [] };
+  const session = {
+    id: `s_${Date.now()}`,
+    trainingId,
+    userId: 'default',
+    startedAt: Date.now(),
+    stepsCompleted: [],
+  };
   const all = readJSON(KEYS.trainingHistory, []);
   all.push(session);
   writeJSON(KEYS.trainingHistory, all);
@@ -254,10 +298,22 @@ function rewriteTagCounts(history) {
 // --- PluginRegistry --------------------------------------------------------
 
 const PLUGINS = [
-  { id: 'big-five-personality', name: 'Big Five', version: '2.0.0', autoLoad: true, type: 'assessment' },
+  {
+    id: 'big-five-personality',
+    name: 'Big Five',
+    version: '2.0.0',
+    autoLoad: true,
+    type: 'assessment',
+  },
   { id: 'stress-test', name: 'Stress', version: '2.0.0', autoLoad: true, type: 'assessment' },
   { id: 'gad7-anxiety', name: 'Anxiety', version: '2.0.0', autoLoad: true, type: 'assessment' },
-  { id: 'mindfulness-training', name: 'Mindfulness', version: '2.0.0', autoLoad: true, type: 'training' },
+  {
+    id: 'mindfulness-training',
+    name: 'Mindfulness',
+    version: '2.0.0',
+    autoLoad: true,
+    type: 'training',
+  },
   { id: 'theme-system', name: 'Theme', version: '2.0.0', autoLoad: true, type: 'ui' },
   { id: 'data-analytics', name: 'Analytics', version: '1.0.0', autoLoad: true, type: 'core' },
 ];
@@ -282,7 +338,13 @@ function pluginGetState(pluginId) {
 
 function shareCreate(result) {
   const id = 'share_' + Math.random().toString(16).slice(2, 18);
-  const shared = { id, resultId: result.id, data: { id: result.id, title: result.title, totalScore: result.totalScore }, createdAt: Date.now(), views: 0 };
+  const shared = {
+    id,
+    resultId: result.id,
+    data: { id: result.id, title: result.title, totalScore: result.totalScore },
+    createdAt: Date.now(),
+    views: 0,
+  };
   const all = readJSON(KEYS.sharedResults, {});
   all[id] = shared;
   writeJSON(KEYS.sharedResults, all);
@@ -303,7 +365,7 @@ function shareGet(shareId) {
 
 const now = Date.now();
 const state = { assessmentHistory: [] };
-const isoOffset = (days) => new Date(now - days * 86400_000).toISOString();
+const isoOffset = days => new Date(now - days * 86400_000).toISOString();
 
 // =============================================================================
 // 1. Assessment main flow
@@ -312,21 +374,30 @@ log('=== 1. Assessment: AssessmentDetail → addToHistory → History ===');
 
 // Simulate 3 assessments: GAD-7, Big Five, Stress Test.
 addToHistory(state, {
-  id: 'g1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)',
-  totalScore: 60, completedAt: isoOffset(0),
+  id: 'g1',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 60,
+  completedAt: isoOffset(0),
   traits: [{ name: '焦虑', score: 12, maxScore: 21 }],
 });
 addToHistory(state, {
-  id: 'b1', assessmentId: 'big-five', assessmentTitle: '大五人格测验',
-  totalScore: 65, completedAt: isoOffset(1),
+  id: 'b1',
+  assessmentId: 'big-five',
+  assessmentTitle: '大五人格测验',
+  totalScore: 65,
+  completedAt: isoOffset(1),
   traits: [
     { name: '开放性', score: 80, maxScore: 100 },
     { name: '情绪稳定性', score: 55, maxScore: 100 },
   ],
 });
 addToHistory(state, {
-  id: 's1', assessmentId: 'stress-test', assessmentTitle: '知觉压力量表 (PSS-10)',
-  totalScore: 72, completedAt: isoOffset(2),
+  id: 's1',
+  assessmentId: 'stress-test',
+  assessmentTitle: '知觉压力量表 (PSS-10)',
+  totalScore: 72,
+  completedAt: isoOffset(2),
   traits: [{ name: '压力水平', score: 22, maxScore: 40 }],
 });
 
@@ -344,8 +415,11 @@ expect('hash key cleared after 3 addToHistory', _store.get(KEYS.hash) === undefi
 
 // Re-add the same GAD-7 within 60s — replaces, doesn't append
 addToHistory(state, {
-  id: 'g1', assessmentId: 'anxiety-gad7', assessmentTitle: '焦虑自评量表 (GAD-7)',
-  totalScore: 55, completedAt: isoOffset(0), // same minute as g1
+  id: 'g1',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: '焦虑自评量表 (GAD-7)',
+  totalScore: 55,
+  completedAt: isoOffset(0), // same minute as g1
   traits: [{ name: '焦虑', score: 11, maxScore: 21 }],
 });
 expect('in-place replace keeps history length', state.assessmentHistory.length === 3);
@@ -363,7 +437,10 @@ trainingComplete(s2session.id, 4);
 
 const allTraining = readJSON(KEYS.trainingHistory, []);
 expect('2 training sessions persisted', allTraining.length === 2);
-expect('first_training unlocked after 1 complete', !!readJSON(KEYS.achievements, {}).first_training);
+expect(
+  'first_training unlocked after 1 complete',
+  !!readJSON(KEYS.achievements, {}).first_training
+);
 expect('first_training re-check is idempotent', !!readJSON(KEYS.achievements, {}).first_training);
 
 // =============================================================================
@@ -383,7 +460,10 @@ for (let i = 1; i <= 6; i++) {
 }
 expect('mood entries = 7', readJSON(KEYS.mood, []).length === 7);
 expect('7-day streak counted', computeStreakDays() === 7);
-expect('mood_tracker_start unlocked after 7 entries', !!readJSON(KEYS.achievements, {}).mood_tracker_start);
+expect(
+  'mood_tracker_start unlocked after 7 entries',
+  !!readJSON(KEYS.achievements, {}).mood_tracker_start
+);
 // week_streak needs streakDays >= 7, but our computeStreakDays already returns 7
 expect('week_streak unlocked when streak >= 7', !!readJSON(KEYS.achievements, {}).week_streak);
 
@@ -395,7 +475,10 @@ log('=== 4. TagService: auto-tag applied to history ===');
 rewriteTagCounts(state.assessmentHistory);
 const userTags = readJSON(KEYS.userTags, []);
 const c1 = userTags.find(t => t.name === '开放性');
-expect('userTags[] reflects auto-tag counts (0 = no manual tags yet)', c1 ? c1.resultCount === 0 : true);
+expect(
+  'userTags[] reflects auto-tag counts (0 = no manual tags yet)',
+  c1 ? c1.resultCount === 0 : true
+);
 
 // =============================================================================
 // 5. PersonalDashboard cache flow
@@ -410,9 +493,15 @@ const sampleDashboard = {
   summaries: [],
 };
 analysisCache.set(state.assessmentHistory, sampleDashboard);
-expect('cache hit on unchanged history', analysisCache.getIfFresh(state.assessmentHistory) !== null);
+expect(
+  'cache hit on unchanged history',
+  analysisCache.getIfFresh(state.assessmentHistory) !== null
+);
 
-const dirtyHistory = [{ id: 'x', totalScore: 1, assessmentId: 'anxiety-gad7', completedAt: new Date().toISOString() }, ...state.assessmentHistory];
+const dirtyHistory = [
+  { id: 'x', totalScore: 1, assessmentId: 'anxiety-gad7', completedAt: new Date().toISOString() },
+  ...state.assessmentHistory,
+];
 expect('cache miss on dirty history', analysisCache.getIfFresh(dirtyHistory) === null);
 
 // touch() preserves cache
@@ -426,13 +515,21 @@ expect('touchVisited advances lastVisitedAt', m1.lastVisitedAt > 0);
 log('=== 6. Auth: registerLocal / loginLocal / logout / restoreSession ===');
 
 // Plant a local user and token
-const localUsers = [{
-  id: 'u1', email: 'test@example.com', username: 'tester',
-  passwordHash: 'pbkdf2$X$Y$200000$SHA-256',
-  createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
-}];
+const localUsers = [
+  {
+    id: 'u1',
+    email: 'test@example.com',
+    username: 'tester',
+    passwordHash: 'pbkdf2$X$Y$200000$SHA-256',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
 writeJSON('mindmirror_local_users', localUsers);
-_store.set('mindmirror_user', JSON.stringify({ id: 'u1', email: 'test@example.com', username: 'tester' }));
+_store.set(
+  'mindmirror_user',
+  JSON.stringify({ id: 'u1', email: 'test@example.com', username: 'tester' })
+);
 _store.set('mindmirror_token', 'local.abcdefghijklmnopqrstuv');
 
 const cachedUser = JSON.parse(_store.get('mindmirror_user'));
@@ -440,13 +537,28 @@ expect('local user cached', cachedUser.username === 'tester');
 
 // Logout: clearLocalSession + isAuthenticated false
 const SESSION_KEYS = [
-  'mindmirror_user', 'mindmirror_token', 'mindmirror_local_users', 'mindmirror_local_secret',
-  KEYS.history, KEYS.hash, KEYS.cache, KEYS.meta,
-  KEYS.mood, KEYS.trainingHistory, KEYS.trainingProgress, KEYS.achievements, KEYS.userTags,
-  KEYS.sharedResults, KEYS.pluginRegistry, KEYS.pluginStates,
+  'mindmirror_user',
+  'mindmirror_token',
+  'mindmirror_local_users',
+  'mindmirror_local_secret',
+  KEYS.history,
+  KEYS.hash,
+  KEYS.cache,
+  KEYS.meta,
+  KEYS.mood,
+  KEYS.trainingHistory,
+  KEYS.trainingProgress,
+  KEYS.achievements,
+  KEYS.userTags,
+  KEYS.sharedResults,
+  KEYS.pluginRegistry,
+  KEYS.pluginStates,
 ];
 for (const k of SESSION_KEYS) _store.delete(k);
-expect('all session keys cleared on logout', SESSION_KEYS.every(k => _store.get(k) === undefined));
+expect(
+  'all session keys cleared on logout',
+  SESSION_KEYS.every(k => _store.get(k) === undefined)
+);
 
 // Theme/locale (preferences) should still be intact
 _store.set('locale', 'zh');
@@ -460,7 +572,13 @@ expect('theme survives logout', _store.get('theme') === 'light');
 // =============================================================================
 log('=== 7. ExportShareService: createShareLink → SharedView ===');
 
-const fakeResult = { id: 'r1', title: 'Big Five', totalScore: 65, assessmentId: 'big-five', report: { summary: 'balanced' } };
+const fakeResult = {
+  id: 'r1',
+  title: 'Big Five',
+  totalScore: 65,
+  assessmentId: 'big-five',
+  report: { summary: 'balanced' },
+};
 const shareId = shareCreate(fakeResult);
 expect('share link created', shareId.startsWith('share_'));
 
@@ -479,7 +597,10 @@ log('=== 8. PluginRegistry: initialize → setState → restart-persistence ==='
 pluginInit();
 const reg1 = readJSON(KEYS.pluginRegistry, null);
 expect('6 built-in plugins registered', Object.keys(reg1.plugins).length === 6);
-expect('5 active by default (all autoLoad=true)', reg1.activePlugins.length === 5 || reg1.activePlugins.length === 6);
+expect(
+  '5 active by default (all autoLoad=true)',
+  reg1.activePlugins.length === 5 || reg1.activePlugins.length === 6
+);
 
 pluginSetState('theme-system', { currentTheme: 'dark', accent: 'indigo' });
 expect('plugin state persisted', pluginGetState('theme-system')?.currentTheme === 'dark');
@@ -505,9 +626,15 @@ log('=== 10. SESSION_KEYS coverage ===');
 
 // Re-seed and clear
 for (const k of SESSION_KEYS) _store.set(k, `v:${k}`);
-expect('all keys seeded', SESSION_KEYS.every(k => _store.get(k)?.startsWith('v:')));
+expect(
+  'all keys seeded',
+  SESSION_KEYS.every(k => _store.get(k)?.startsWith('v:'))
+);
 for (const k of SESSION_KEYS) _store.delete(k);
-expect('all session keys can be cleared in one pass', SESSION_KEYS.every(k => _store.get(k) === undefined));
+expect(
+  'all session keys can be cleared in one pass',
+  SESSION_KEYS.every(k => _store.get(k) === undefined)
+);
 
 // =============================================================================
 // 11. Achievement chain — completion + retention
@@ -517,17 +644,52 @@ log('=== 11. Achievements: completion flows unlock right achievements ===');
 _state_clear();
 const s3 = { assessmentHistory: [] };
 // Plant nothing — no achievements
-addToHistory(s3, { id: 'g0', assessmentId: 'anxiety-gad7', assessmentTitle: 'X', totalScore: 50, completedAt: isoOffset(0), traits: [] });
-addToHistory(s3, { id: 'g2', assessmentId: 'anxiety-gad7', assessmentTitle: 'X', totalScore: 50, completedAt: isoOffset(2), traits: [] });
-addToHistory(s3, { id: 'g3', assessmentId: 'anxiety-gad7', assessmentTitle: 'X', totalScore: 50, completedAt: isoOffset(4), traits: [] });
+addToHistory(s3, {
+  id: 'g0',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: 'X',
+  totalScore: 50,
+  completedAt: isoOffset(0),
+  traits: [],
+});
+addToHistory(s3, {
+  id: 'g2',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: 'X',
+  totalScore: 50,
+  completedAt: isoOffset(2),
+  traits: [],
+});
+addToHistory(s3, {
+  id: 'g3',
+  assessmentId: 'anxiety-gad7',
+  assessmentTitle: 'X',
+  totalScore: 50,
+  completedAt: isoOffset(4),
+  traits: [],
+});
 const ach = readJSON(KEYS.achievements, {});
 expect('3x anxiety unlocks anxiety_guardian', !!ach.anxiety_guardian);
 expect('3x anxiety unlocks explorer (3 assessments total)', !!ach.explorer);
 expect('3x anxiety does NOT unlock all_rounder (need all 3 types)', !ach.all_rounder);
 
 // Add 1 stress → unlocks all_rounder
-addToHistory(s3, { id: 'st', assessmentId: 'stress-test', assessmentTitle: 'X', totalScore: 50, completedAt: isoOffset(5), traits: [] });
-addToHistory(s3, { id: 'bf', assessmentId: 'big-five', assessmentTitle: 'X', totalScore: 50, completedAt: isoOffset(6), traits: [] });
+addToHistory(s3, {
+  id: 'st',
+  assessmentId: 'stress-test',
+  assessmentTitle: 'X',
+  totalScore: 50,
+  completedAt: isoOffset(5),
+  traits: [],
+});
+addToHistory(s3, {
+  id: 'bf',
+  assessmentId: 'big-five',
+  assessmentTitle: 'X',
+  totalScore: 50,
+  completedAt: isoOffset(6),
+  traits: [],
+});
 const ach2 = readJSON(KEYS.achievements, {});
 expect('all 3 types → all_rounder unlocked', !!ach2.all_rounder);
 expect('anxiety_guardian already unlocked (idempotent)', !!ach2.anxiety_guardian);
@@ -542,19 +704,50 @@ expect('history cleared', s3.assessmentHistory.length === 0);
 log('=== 12. deleteHistoryItem: cache invalidation + id-uniqueness ===');
 
 const s4 = { assessmentHistory: [] };
-addToHistory(s4, { id: 'a1', assessmentId: 'big-five', assessmentTitle: 'X', totalScore: 60, completedAt: isoOffset(0), traits: [] });
-addToHistory(s4, { id: 'a2', assessmentId: 'big-five', assessmentTitle: 'X', totalScore: 70, completedAt: isoOffset(1), traits: [] });
-addToHistory(s4, { id: 'a3', assessmentId: 'big-five', assessmentTitle: 'X', totalScore: 80, completedAt: isoOffset(2), traits: [] });
+addToHistory(s4, {
+  id: 'a1',
+  assessmentId: 'big-five',
+  assessmentTitle: 'X',
+  totalScore: 60,
+  completedAt: isoOffset(0),
+  traits: [],
+});
+addToHistory(s4, {
+  id: 'a2',
+  assessmentId: 'big-five',
+  assessmentTitle: 'X',
+  totalScore: 70,
+  completedAt: isoOffset(1),
+  traits: [],
+});
+addToHistory(s4, {
+  id: 'a3',
+  assessmentId: 'big-five',
+  assessmentTitle: 'X',
+  totalScore: 80,
+  completedAt: isoOffset(2),
+  traits: [],
+});
 expect('3 big-five entries', s4.assessmentHistory.length === 3);
 
 deleteHistoryItem(s4, 'a2');
 expect('after delete: 2 entries', s4.assessmentHistory.length === 2);
 expect('after delete: a2 gone', s4.assessmentHistory.findIndex(h => h.id === 'a2') === -1);
-expect('after delete: a1 + a3 remain in order', s4.assessmentHistory[0].id === 'a3' && s4.assessmentHistory[1].id === 'a1');
+expect(
+  'after delete: a1 + a3 remain in order',
+  s4.assessmentHistory[0].id === 'a3' && s4.assessmentHistory[1].id === 'a1'
+);
 expect('after delete: cache invalidated', analysisCache.getIfFresh(s4.assessmentHistory) === null);
 
 // Re-adding a2 5 min later (outside dedupe window) creates a new entry
-addToHistory(s4, { id: 'a2', assessmentId: 'big-five', assessmentTitle: 'X', totalScore: 75, completedAt: new Date(Date.now() - 5 * 60_000).toISOString(), traits: [] });
+addToHistory(s4, {
+  id: 'a2',
+  assessmentId: 'big-five',
+  assessmentTitle: 'X',
+  totalScore: 75,
+  completedAt: new Date(Date.now() - 5 * 60_000).toISOString(),
+  traits: [],
+});
 expect('re-add 5 min later appends', s4.assessmentHistory.length === 3);
 
 // ---------------------------------------------------------------------------

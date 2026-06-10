@@ -86,10 +86,7 @@ export function getSWLSTotalDescription(score: number, maxScore: number = 35): s
   return `${level.label} (${score}/${maxScore})`;
 }
 
-export function generateDetailedSWLSReport(
-  answers: Record<string, number>,
-  questions: Question[]
-) {
+export function generateDetailedSWLSReport(answers: Record<string, number>, questions: Question[]) {
   const traits = calculateSWLSTraits(answers, questions);
   const total = traits[0].score;
   const totalMax = traits[0].maxScore;
@@ -107,9 +104,7 @@ export function generateDetailedSWLSReport(
       color: level.color,
       level,
     },
-    interpretation: isHigh
-      ? SWLS_INTERPRETATION.high
-      : SWLS_INTERPRETATION.low,
+    interpretation: isHigh ? SWLS_INTERPRETATION.high : SWLS_INTERPRETATION.low,
     dimensions: [
       {
         name: '生活满意度',
@@ -130,8 +125,20 @@ export function generateDetailedSWLSReport(
 // =====================================================================
 
 const SWLS_BEHAVIOR_LABELS: Record<string, string[]> = {
-  swls6: ['比预期好很多 (超越)', '比预期好一点 (略超)', '和预期差不多 (符合)', '比预期差一些 (略低)', '比预期差很多 (大失所望)'],
-  swls7: ['保持现状不变 (满足型)', '微调一些事情 (优化型)', '大幅改变工作 (方向重置)', '大幅改变关系 (关系重置)', '几乎全部重来 (重来型)'],
+  swls6: [
+    '比预期好很多 (超越)',
+    '比预期好一点 (略超)',
+    '和预期差不多 (符合)',
+    '比预期差一些 (略低)',
+    '比预期差很多 (大失所望)',
+  ],
+  swls7: [
+    '保持现状不变 (满足型)',
+    '微调一些事情 (优化型)',
+    '大幅改变工作 (方向重置)',
+    '大幅改变关系 (关系重置)',
+    '几乎全部重来 (重来型)',
+  ],
 };
 
 function generateSWLSBehavioralProfile(answers: Record<string, number>) {
@@ -141,7 +148,7 @@ function generateSWLSBehavioralProfile(answers: Record<string, number>) {
       id: q.id,
       question: q.text,
       choice: choice ?? null,
-      label: choice != null ? SWLS_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填' : '未填',
+      label: choice != null ? (SWLS_BEHAVIOR_LABELS[q.id]?.[choice] ?? '未填') : '未填',
     };
   }).filter(a => a.choice !== null);
 
@@ -158,16 +165,20 @@ function generateSWLSBehavioralProfile(answers: Record<string, number>) {
   let archetypeDesc: string;
   if (avg < 1) {
     archetype = '超越满足型';
-    archetypeDesc = '你不仅对现状满意, 还觉得生活超出了自己 5 年前的预期。如果让你重来, 你甚至不想改变。这种状态很难得, 值得珍惜。';
+    archetypeDesc =
+      '你不仅对现状满意, 还觉得生活超出了自己 5 年前的预期。如果让你重来, 你甚至不想改变。这种状态很难得, 值得珍惜。';
   } else if (avg < 2) {
     archetype = '稳定满足型';
-    archetypeDesc = '你的生活基本符合预期, 也愿意保持现状或微调。这是较稳定的状态, 注意: 稳定不等于停滞, 可在擅长的领域继续追求成长。';
+    archetypeDesc =
+      '你的生活基本符合预期, 也愿意保持现状或微调。这是较稳定的状态, 注意: 稳定不等于停滞, 可在擅长的领域继续追求成长。';
   } else if (avg < 3) {
     archetype = '不满修正型';
-    archetypeDesc = '你对生活某些方面存在不满, 想要做出具体改变。建议明确"改变什么", 区分可控与不可控, 避免陷入"全盘重来"的冲动。';
+    archetypeDesc =
+      '你对生活某些方面存在不满, 想要做出具体改变。建议明确"改变什么", 区分可控与不可控, 避免陷入"全盘重来"的冲动。';
   } else {
     archetype = '大失所望型';
-    archetypeDesc = '你的生活与 5 年前的预期差距很大, 也想做出大幅改变。重要的是: 在行动前先识别哪些是"目标问题"(目标定太高) vs "路径问题"(执行不到位), 避免无谓的重来。';
+    archetypeDesc =
+      '你的生活与 5 年前的预期差距很大, 也想做出大幅改变。重要的是: 在行动前先识别哪些是"目标问题"(目标定太高) vs "路径问题"(执行不到位), 避免无谓的重来。';
   }
 
   return {
