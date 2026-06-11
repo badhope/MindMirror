@@ -6,28 +6,37 @@ import { BrushButton } from '../components/BrushButton';
 import { Verse } from '../components/Verse';
 import { figuresForDomain } from '../domain/figures/figures.index';
 import type { DomainId } from '../domain/figures/figure.types';
+import { useT } from '../i18n';
 
 type Region = 'east' | 'west';
 
-const REGION_ZH: Record<Region, string> = { east: '东方', west: '西方' };
-
-const DOMAINS_BY_REGION: Record<
-  Region,
-  { id: DomainId; name: string; sub: string; ready: boolean }[]
-> = {
-  east: [
-    { id: 'east-literati', name: '文人墨客', sub: '诗人、词人、散文家、思想家', ready: true },
-    { id: 'east-statesman', name: '治国能臣', sub: '宰相、将相、变法、孤忠', ready: false },
-    { id: 'east-scientist', name: '科技先贤', sub: '天文、算学、医药、工学', ready: false },
-  ],
-  west: [
-    { id: 'west-philosopher', name: '文哲巨擘', sub: '希腊、欧陆、英美思想家', ready: false },
-    { id: 'west-scientist', name: '科学与思想', sub: '近代科学奠基人与思想者', ready: false },
-  ],
+const DOMAIN_REGION: Record<DomainId, Region> = {
+  'east-literati': 'east',
+  'east-statesman': 'east',
+  'east-scientist': 'east',
+  'west-philosopher': 'west',
+  'west-scientist': 'west',
 };
+
+const READY: Record<DomainId, boolean> = {
+  'east-literati': true,
+  'east-statesman': true,
+  'east-scientist': true,
+  'west-philosopher': true,
+  'west-scientist': true,
+};
+
+const REGION_KEYS: readonly DomainId[] = [
+  'east-literati',
+  'east-statesman',
+  'east-scientist',
+  'west-philosopher',
+  'west-scientist',
+];
 
 export function Path() {
   const { selectDomain } = useStore();
+  const t = useT();
   const [region, setRegion] = useState<Region>('east');
   const [picked, setPicked] = useState<DomainId | null>(null);
 
@@ -37,15 +46,15 @@ export function Path() {
   return (
     <section className="jx-container jx-fade-enter" aria-labelledby="path-title">
       <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 id="path-title">选域</h1>
-        <p style={{ color: 'var(--ink-faint)' }}>汝欲入何方？</p>
+        <h1 id="path-title">{t.path.title}</h1>
+        <p style={{ color: 'var(--ink-faint)' }}>{t.path.prompt}</p>
       </header>
 
       <div
         role="tablist"
         style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}
       >
-        {(Object.keys(REGION_ZH) as Region[]).map(r => (
+        {(['east', 'west'] as Region[]).map(r => (
           <button
             key={r}
             role="tab"
@@ -66,7 +75,7 @@ export function Path() {
               transition: 'all 200ms',
             }}
           >
-            {REGION_ZH[r]}
+            {t.path.region[r]}
           </button>
         ))}
       </div>
@@ -79,38 +88,52 @@ export function Path() {
           marginBottom: '3rem',
         }}
       >
-        {DOMAINS_BY_REGION[region].map(d => {
-          const count = figuresForDomain(d.id).length;
-          const active = picked === d.id;
+        {REGION_KEYS.filter(d => DOMAIN_REGION[d] === region).map(d => {
+          const count = figuresForDomain(d).length;
+          const meta = t.path.domains[d];
+          const readyFlag = READY[d];
+          const active = picked === d;
           return (
             <button
-              key={d.id}
+              key={d}
               type="button"
-              onClick={() => d.ready && setPicked(d.id)}
-              disabled={!d.ready}
+              data-domain={d}
+              data-ready={readyFlag ? 'true' : 'false'}
+              data-testid={`domain-card-${d}`}
+              onClick={() => readyFlag && setPicked(d)}
+              disabled={!readyFlag}
               aria-pressed={active}
+              aria-label={`${meta.name} · ${meta.sub}`}
               style={{
                 padding: '1.5rem 1.25rem',
                 textAlign: 'left',
                 background: active ? 'var(--rice-warm)' : 'transparent',
                 border: `1.5px solid ${active ? 'var(--cinnabar)' : 'var(--rice-deep)'}`,
-                cursor: d.ready ? 'pointer' : 'not-allowed',
-                opacity: d.ready ? 1 : 0.45,
+                cursor: readyFlag ? 'pointer' : 'not-allowed',
+                opacity: readyFlag ? 1 : 0.45,
                 transition: 'all 200ms',
                 position: 'relative',
               }}
             >
-              <h3 style={{ marginBottom: '0.5rem' }}>{d.name}</h3>
-              <p style={{ color: 'var(--ink-faint)', fontSize: '0.875rem', margin: 0 }}>{d.sub}</p>
+              <h2
+                style={{
+                  marginBottom: '0.5rem',
+                  fontSize: '1.25rem',
+                  fontFamily: 'var(--font-display)',
+                }}
+              >
+                {meta.name}
+              </h2>
+              <p style={{ color: 'var(--ink-faint)', fontSize: '0.875rem', margin: 0 }}>{meta.sub}</p>
               <p
                 style={{
                   marginTop: '0.75rem',
                   fontFamily: 'var(--font-display)',
-                  color: d.ready ? 'var(--jade)' : 'var(--ash)',
+                  color: readyFlag ? 'var(--jade)' : 'var(--ash)',
                   fontSize: '0.875rem',
                 }}
               >
-                {d.ready ? `${count} 人` : '待补'}
+                {readyFlag ? t.path.peopleCount(count) : t.path.pending}
               </p>
             </button>
           );
@@ -120,16 +143,17 @@ export function Path() {
       {picked && (
         <div className="jx-fade-enter" style={{ textAlign: 'center' }}>
           <Verse
-            text={`${REGION_ZH[region]} · ${DOMAINS_BY_REGION[region].find(d => d.id === picked)?.name}`}
-            gloss="既已择定，便入其问。"
+            text={`${t.path.region[DOMAIN_REGION[picked]]} · ${t.path.domains[picked].name}`}
+            gloss={t.path.picked}
           />
           <div style={{ marginTop: '2rem' }}>
             <BrushButton
               variant="primary"
               disabled={!ready}
               onClick={() => ready && selectDomain(picked)}
+              data-testid="btn-start"
             >
-              开始
+              {t.path.start}
             </BrushButton>
           </div>
         </div>

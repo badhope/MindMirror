@@ -2,37 +2,21 @@
 import { useStore } from '../store';
 import { BrushButton } from '../components/BrushButton';
 import { Verse } from '../components/Verse';
-
-const INTROS = [
-  [
-    { text: '镜心', gloss: '一面问己之镜。' },
-    {
-      text: '你若在千古之中，能与何人对坐？',
-      gloss: '答以形，答以神，答以一段并行于时间里的同频共振。',
-    },
-  ],
-  [
-    { text: '镜中自有千古', gloss: '不必外求，汝答即是照。' },
-    { text: '他人之影非汝，亦非非汝。', gloss: '问汝若他，他会如何处世？' },
-  ],
-  [
-    { text: '入镜', gloss: '三分钟，三千年。' },
-    { text: '借古人三千年的影子，映汝一念之端。', gloss: '所答无对错，唯以诚为要。' },
-  ],
-];
+import { useT } from '../i18n';
 
 export function Prologue() {
   const { goPhase } = useStore();
-  const pick = Math.floor(Math.random() * INTROS.length);
-  const lines = INTROS[pick];
+  const t = useT();
+  const pick = Math.floor(Math.random() * t.prologue.verses.length);
+  const lines = t.prologue.verses[pick];
 
   return (
     <section className="jx-container-narrow jx-fade-enter" aria-labelledby="prologue-title">
       <div style={{ textAlign: 'center', padding: '4rem 0 2rem' }}>
         <div
           aria-hidden
+          className="jx-seal-large"
           style={{
-            fontSize: '6rem',
             color: 'var(--cinnabar)',
             fontFamily: 'var(--font-display)',
             letterSpacing: '0.3em',
@@ -40,10 +24,10 @@ export function Prologue() {
             marginBottom: '1.5rem',
           }}
         >
-          镜
+          {t.prologue.seal}
         </div>
         <h1 id="prologue-title" style={{ marginBottom: '2rem' }}>
-          镜心
+          {t.prologue.title}
         </h1>
       </div>
 
@@ -54,8 +38,8 @@ export function Prologue() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '3rem' }}>
-        <BrushButton variant="primary" onClick={() => goPhase('path')}>
-          入镜
+        <BrushButton variant="primary" onClick={() => goPhase('path')} data-testid="btn-enter">
+          {t.prologue.enter}
         </BrushButton>
       </div>
 
@@ -67,7 +51,7 @@ export function Prologue() {
           marginTop: '4rem',
         }}
       >
-        所答仅存汝之本地，镜心不联网。
+        {t.prologue.privacy}
       </p>
     </section>
   );
