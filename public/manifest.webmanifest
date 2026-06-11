@@ -1,0 +1,29 @@
+{
+  "name": "MindMirror · 镜心",
+  "short_name": "镜心",
+  "description": "一面问己之镜——以十二维特征空间将汝之答映射至千古人物。纯前端、纯本地、无后端。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5efe0",
+  "theme_color": "#a8322e",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "categories": ["lifestyle", "education", "books"],
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "入镜",
+      "url": "./?p=path",
+      "description": "开始一次问己之照"
+    }
+  ]
+}
