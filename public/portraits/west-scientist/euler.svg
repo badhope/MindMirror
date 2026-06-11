@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <filter id="ink-60" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="60" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+    </filter>
+    <filter id="ink-strong-60" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="67" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.6"/>
+    </filter>
+    <filter id="wash-60" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="63" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6"/>
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+    <filter id="haze-60">
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="paper-60" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="71" result="grain"/>
+      <feColorMatrix in="grain" type="matrix"
+        values="0 0 0 0 0.45
+                0 0 0 0 0.35
+                0 0 0 0 0.20
+                0 0 0 0.10 0"/>
+    </filter>
+  </defs>
+
+
+  <rect x="0" y="0" width="480" height="640" fill="#dee8e0"/>
+  <rect x="0" y="0" width="480" height="640" fill="#dee8e0" filter="url(#paper-60)" opacity="0.55"/>
+  <!-- 边角阴影 -->
+  <radialGradient id="vignette-60" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#dee8e0" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#0e1a18" stop-opacity="0.18"/>
+  </radialGradient>
+  <rect x="0" y="0" width="480" height="640" fill="url(#vignette-60)"/>
+  <!-- 折痕 -->
+  <path d="M 0 320 L 480 318" stroke="#0e1a18" stroke-width="0.4" opacity="0.08"/>
+  <path d="M 240 0 L 242 640" stroke="#0e1a18" stroke-width="0.3" opacity="0.06"/>
+
+  <rect x="14" y="14" width="452" height="612" fill="none" stroke="#3e5a4a" stroke-width="1.4"/>
+  <rect x="20" y="20" width="440" height="600" fill="none" stroke="#0e1a18" stroke-width="0.5" opacity="0.5"/>
+  <!-- 四角小纹 -->
+  <g stroke="#3e5a4a" stroke-width="0.9" fill="none" opacity="0.7">
+    <path d="M 20 38 L 20 20 L 38 20"/>
+    <path d="M 442 20 L 460 20 L 460 38"/>
+    <path d="M 460 602 L 460 620 L 442 620"/>
+    <path d="M 38 620 L 20 620 L 20 602"/>
+  </g>
+
+  <g>
+    <!-- 朝代小章：左顶角 -->
+    <g transform="translate(34 36)">
+      <rect x="0" y="0" width="44" height="22" fill="none" stroke="#7a2a2a" stroke-width="1.6"/>
+      <text x="22" y="15" text-anchor="middle" font-family="STKaiti, KaiTi, serif" font-size="11" fill="#7a2a2a" letter-spacing="2" font-weight="600">启蒙</text>
+    </g>
+    <!-- 朝代小印 -->
+    <g transform="translate(82 32)">
+      <rect x="0" y="0" width="22" height="22" fill="#7a2a2a"/>
+      <text x="11" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#dee8e0" font-weight="700">镜</text>
+    </g>
+    <!-- 题词：右半 -->
+    <g transform="translate(120 44)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="15" fill="#0e1a18" letter-spacing="3" font-weight="500">
+        <tspan x="0" dy="0">e的i派加一</tspan><tspan x="0" dy="22">心算之强</tspan>
+      </text>
+    </g>
+    <!-- 顶分隔细线 -->
+    <line x1="34" y1="78" x2="446" y2="78" stroke="#3e5a4a" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="82" x2="446" y2="82" stroke="#3e5a4a" stroke-width="0.3" opacity="0.4"/>
+  </g>
+<!-- 场景区 -->
+<g>
+        
+  <g stroke="#3e5a4a" stroke-width="1.2" fill="none">
+    <rect x="72" y="260" width="16" height="190" fill="#3e5a4a" opacity="0.4"/>
+    <line x1="70" y1="264" x2="90" y2="264" stroke-width="2"/>
+    <line x1="69" y1="256" x2="91" y2="256" stroke-width="2.2"/>
+    <line x1="72" y1="452" x2="88" y2="452"/>
+    <line x1="70" y1="456" x2="90" y2="456"/>
+  </g>
+        
+  <g stroke="#3e5a4a" stroke-width="1.2" fill="none">
+    <rect x="392" y="260" width="16" height="190" fill="#3e5a4a" opacity="0.4"/>
+    <line x1="390" y1="264" x2="410" y2="264" stroke-width="2"/>
+    <line x1="389" y1="256" x2="411" y2="256" stroke-width="2.2"/>
+    <line x1="392" y1="452" x2="408" y2="452"/>
+    <line x1="390" y1="456" x2="410" y2="456"/>
+  </g>
+        
+  <g stroke="#0e1a18" stroke-width="1.4" fill="none" stroke-linecap="round">
+    <path d="M 180 380 q 14 -10 30 -30 q 10 -6 20 -16"/>
+    <path d="M 184 376 q 10 -4 18 -10" stroke-width="0.8" opacity="0.7"/>
+    <path d="M 188 368 q 8 -4 16 -8" stroke-width="0.8" opacity="0.7"/>
+  </g>
+        
+  <g>
+    <path d="M 280 420 Q 320 414 360 420 L 360 450 Q 320 444 280 450 Z" fill="#dee8e0" stroke="#0e1a18" stroke-width="1.2"/>
+    <line x1="320" y1="420" x2="320" y2="446" stroke="#0e1a18" stroke-width="0.8"/>
+    <line x1="286" y1="426" x2="312" y2="426" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="286" y1="432" x2="312" y2="432" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="286" y1="438" x2="312" y2="438" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="286" y1="444" x2="312" y2="444" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/>
+    <line x1="328" y1="426" x2="354" y2="426" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="328" y1="432" x2="354" y2="432" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="328" y1="438" x2="354" y2="438" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/><line x1="328" y1="444" x2="354" y2="444" stroke="#0e1a18" stroke-width="0.5" opacity="0.6"/>
+  </g>
+        <!-- 公式 e^{iπ}+1=0 -->
+        <g transform="translate(240 280)" stroke="#7a2a2a" stroke-width="2" fill="#7a2a2a">
+          <text x="0" y="0" text-anchor="middle" font-family="serif" font-size="18" font-weight="700">e^iπ + 1 = 0</text>
+        </g>
+        <!-- 公式 e=mc² -->
+        <g transform="translate(140 360)" stroke="#0e1a18" stroke-width="1.4" fill="#0e1a18">
+          <text x="0" y="0" font-family="serif" font-size="11" font-weight="700">∑ 1/n² = π²/6</text>
+        </g>
+        <!-- 坐者 -->
+        <g transform="translate(240 360)" fill="#0e1a18" opacity="0.95">
+          <ellipse cx="0" cy="0" rx="12" ry="15"/>
+          <path d="M -18 12 L -24 50 L 24 50 L 18 12 Z"/>
+          <ellipse cx="0" cy="-18" rx="10" ry="12" fill="#3e5a4a"/>
+        </g></g>
+
+  <g>
+    <!-- 底分隔细线 -->
+    <line x1="34" y1="500" x2="446" y2="500" stroke="#3e5a4a" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="504" x2="446" y2="504" stroke="#3e5a4a" stroke-width="0.3" opacity="0.4"/>
+    <!-- 姓名：左半横排大字 -->
+    <g transform="translate(46 540)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="38" fill="#0e1a18" letter-spacing="14" font-weight="700">欧拉</text>
+      <!-- 姓名小注：右侧小字 -->
+      <text x="0" y="40" font-family="STKaiti, KaiTi, serif" font-size="10" fill="#3e5a4a" letter-spacing="3" opacity="0.85">东方文人 · 镜心之镜</text>
+    </g>
+    <!-- 篆刻朱砂方印：右下角 -->
+    <g transform="translate(360 530)">
+      <rect x="0" y="0" width="64" height="64" fill="#7a2a2a" filter="url(#ink-27)"/>
+      <rect x="2" y="2" width="60" height="60" fill="none" stroke="#dee8e0" stroke-width="0.8" opacity="0.6"/>
+      
+      <text x="32" y="28" text-anchor="middle" font-family="serif" font-size="20" fill="#dee8e0" font-weight="900">最</text>
+      <text x="32" y="54" text-anchor="middle" font-family="serif" font-size="20" fill="#dee8e0" font-weight="900">式</text>
+      <g transform="rotate(-2 32 32)" opacity="0.95">
+        <text x="14" y="22" text-anchor="middle" font-family="serif" font-size="16" fill="#dee8e0" font-weight="900">美</text>
+        <text x="50" y="50" text-anchor="middle" font-family="serif" font-size="16" fill="#dee8e0" font-weight="900">公</text>
+      </g>
+    </g>
+  </g>
+<!-- 副标：人物小注 -->
+<g transform="translate(46 600)">
+  <text font-family="STKaiti, KaiTi, serif" font-size="10" fill="#3e5a4a" letter-spacing="2" opacity="0.7">心算之强 · 镜心选镜</text>
+</g>
+</svg>

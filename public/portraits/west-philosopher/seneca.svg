@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <filter id="ink-78" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="78" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+    </filter>
+    <filter id="ink-strong-78" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="85" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.6"/>
+    </filter>
+    <filter id="wash-78" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="81" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6"/>
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+    <filter id="haze-78">
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="paper-78" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="89" result="grain"/>
+      <feColorMatrix in="grain" type="matrix"
+        values="0 0 0 0 0.45
+                0 0 0 0 0.35
+                0 0 0 0 0.20
+                0 0 0 0.10 0"/>
+    </filter>
+  </defs>
+
+
+  <rect x="0" y="0" width="480" height="640" fill="#ece4d4"/>
+  <rect x="0" y="0" width="480" height="640" fill="#ece4d4" filter="url(#paper-78)" opacity="0.55"/>
+  <!-- 边角阴影 -->
+  <radialGradient id="vignette-78" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#ece4d4" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#1a2030" stop-opacity="0.18"/>
+  </radialGradient>
+  <rect x="0" y="0" width="480" height="640" fill="url(#vignette-78)"/>
+  <!-- 折痕 -->
+  <path d="M 0 320 L 480 318" stroke="#1a2030" stroke-width="0.4" opacity="0.08"/>
+  <path d="M 240 0 L 242 640" stroke="#1a2030" stroke-width="0.3" opacity="0.06"/>
+
+  <rect x="14" y="14" width="452" height="612" fill="none" stroke="#5a6a82" stroke-width="1.4"/>
+  <rect x="20" y="20" width="440" height="600" fill="none" stroke="#1a2030" stroke-width="0.5" opacity="0.5"/>
+  <!-- 四角小纹 -->
+  <g stroke="#5a6a82" stroke-width="0.9" fill="none" opacity="0.7">
+    <path d="M 20 38 L 20 20 L 38 20"/>
+    <path d="M 442 20 L 460 20 L 460 38"/>
+    <path d="M 460 602 L 460 620 L 442 620"/>
+    <path d="M 38 620 L 20 620 L 20 602"/>
+  </g>
+
+  <g>
+    <!-- 朝代小章：左顶角 -->
+    <g transform="translate(34 36)">
+      <rect x="0" y="0" width="44" height="22" fill="none" stroke="#7a2a3a" stroke-width="1.6"/>
+      <text x="22" y="15" text-anchor="middle" font-family="STKaiti, KaiTi, serif" font-size="11" fill="#7a2a3a" letter-spacing="2" font-weight="600">希腊</text>
+    </g>
+    <!-- 朝代小印 -->
+    <g transform="translate(82 32)">
+      <rect x="0" y="0" width="22" height="22" fill="#7a2a3a"/>
+      <text x="11" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#ece4d4" font-weight="700">镜</text>
+    </g>
+    <!-- 题词：右半 -->
+    <g transform="translate(120 44)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="15" fill="#1a2030" letter-spacing="3" font-weight="500">
+        <tspan x="0" dy="0">斯多葛学</tspan><tspan x="0" dy="22">命运之思</tspan>
+      </text>
+    </g>
+    <!-- 顶分隔细线 -->
+    <line x1="34" y1="78" x2="446" y2="78" stroke="#5a6a82" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="82" x2="446" y2="82" stroke="#5a6a82" stroke-width="0.3" opacity="0.4"/>
+  </g>
+<!-- 场景区 -->
+<g>
+        
+  <g stroke="#5a6a82" stroke-width="1.2" fill="none">
+    <rect x="92" y="240" width="16" height="210" fill="#5a6a82" opacity="0.4"/>
+    <line x1="90" y1="244" x2="110" y2="244" stroke-width="2"/>
+    <line x1="89" y1="236" x2="111" y2="236" stroke-width="2.2"/>
+    <line x1="92" y1="452" x2="108" y2="452"/>
+    <line x1="90" y1="456" x2="110" y2="456"/>
+  </g>
+        
+  <g stroke="#5a6a82" stroke-width="1.2" fill="none">
+    <rect x="372" y="240" width="16" height="210" fill="#5a6a82" opacity="0.4"/>
+    <line x1="370" y1="244" x2="390" y2="244" stroke-width="2"/>
+    <line x1="369" y1="236" x2="391" y2="236" stroke-width="2.2"/>
+    <line x1="372" y1="452" x2="388" y2="452"/>
+    <line x1="370" y1="456" x2="390" y2="456"/>
+  </g>
+        
+  <g stroke="#5a6a82" stroke-width="1.6" fill="none">
+    <path d="M 130 460 L 130 400 Q 240 370 350 400 L 350 460 Z" fill="#5a6a82" opacity="0.25"/>
+    <path d="M 136 460 L 136 400 Q 240 376 344 400 L 344 460"/>
+    <line x1="130" y1="460" x2="350" y2="460"/>
+  </g>
+        
+  <g stroke="#a8b0c0" stroke-width="1.4" fill="none" stroke-linecap="round">
+    <path d="M 140 380 q 18 -8 40 -20 q 20 -10 50 -34"/>
+    <ellipse cx="148" cy="374" rx="6" ry="2.4" transform="rotate(-20 148 374)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="164" cy="368" rx="6" ry="2.4" transform="rotate(-20 164 368)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="180" cy="362" rx="6" ry="2.4" transform="rotate(-20 180 362)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="196" cy="356" rx="6" ry="2.4" transform="rotate(-20 196 356)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="212" cy="350" rx="6" ry="2.4" transform="rotate(-20 212 350)" fill="#a8b0c0" opacity="0.75"/>
+  </g>
+        
+  <g stroke="#a8b0c0" stroke-width="1.4" fill="none" stroke-linecap="round">
+    <path d="M 340 380 q -18 -8 -40 -20 q -20 -10 -50 -34"/>
+    <ellipse cx="332" cy="374" rx="6" ry="2.4" transform="rotate(20 332 374)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="316" cy="368" rx="6" ry="2.4" transform="rotate(20 316 368)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="300" cy="362" rx="6" ry="2.4" transform="rotate(20 300 362)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="284" cy="356" rx="6" ry="2.4" transform="rotate(20 284 356)" fill="#a8b0c0" opacity="0.75"/><ellipse cx="268" cy="350" rx="6" ry="2.4" transform="rotate(20 268 350)" fill="#a8b0c0" opacity="0.75"/>
+  </g>
+        
+  <g>
+    <path d="M 200 400 Q 240 394 280 400 L 280 430 Q 240 424 200 430 Z" fill="#ece4d4" stroke="#1a2030" stroke-width="1.2"/>
+    <line x1="240" y1="400" x2="240" y2="426" stroke="#1a2030" stroke-width="0.8"/>
+    <line x1="206" y1="406" x2="232" y2="406" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="206" y1="412" x2="232" y2="412" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="206" y1="418" x2="232" y2="418" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="206" y1="424" x2="232" y2="424" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/>
+    <line x1="248" y1="406" x2="274" y2="406" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="248" y1="412" x2="274" y2="412" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="248" y1="418" x2="274" y2="418" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/><line x1="248" y1="424" x2="274" y2="424" stroke="#1a2030" stroke-width="0.5" opacity="0.6"/>
+  </g>
+        <!-- 坐者 -->
+        <g transform="translate(240 340)" fill="#1a2030" opacity="0.95">
+          <ellipse cx="0" cy="0" rx="13" ry="16"/>
+          <path d="M -20 14 L -26 50 L 26 50 L 20 14 Z"/>
+          <ellipse cx="0" cy="-20" rx="11" ry="13" fill="#5a6a82"/>
+        </g></g>
+
+  <g>
+    <!-- 底分隔细线 -->
+    <line x1="34" y1="500" x2="446" y2="500" stroke="#5a6a82" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="504" x2="446" y2="504" stroke="#5a6a82" stroke-width="0.3" opacity="0.4"/>
+    <!-- 姓名：左半横排大字 -->
+    <g transform="translate(46 540)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="38" fill="#1a2030" letter-spacing="14" font-weight="700">塞涅卡</text>
+      <!-- 姓名小注：右侧小字 -->
+      <text x="0" y="40" font-family="STKaiti, KaiTi, serif" font-size="10" fill="#5a6a82" letter-spacing="3" opacity="0.85">东方文人 · 镜心之镜</text>
+    </g>
+    <!-- 篆刻朱砂方印：右下角 -->
+    <g transform="translate(360 530)">
+      <rect x="0" y="0" width="64" height="64" fill="#7a2a3a" filter="url(#ink-40)"/>
+      <rect x="2" y="2" width="60" height="60" fill="none" stroke="#ece4d4" stroke-width="0.8" opacity="0.6"/>
+      
+      <text x="32" y="28" text-anchor="middle" font-family="serif" font-size="20" fill="#ece4d4" font-weight="900">向</text>
+      <text x="32" y="54" text-anchor="middle" font-family="serif" font-size="20" fill="#ece4d4" font-weight="900">生</text>
+      <g transform="rotate(-2 32 32)" opacity="0.95">
+        <text x="14" y="22" text-anchor="middle" font-family="serif" font-size="16" fill="#ece4d4" font-weight="900">死</text>
+        <text x="50" y="50" text-anchor="middle" font-family="serif" font-size="16" fill="#ece4d4" font-weight="900">而</text>
+      </g>
+    </g>
+  </g>
+<!-- 副标：人物小注 -->
+<g transform="translate(46 600)">
+  <text font-family="STKaiti, KaiTi, serif" font-size="10" fill="#5a6a82" letter-spacing="2" opacity="0.7">罗马之柱 · 镜心选镜</text>
+</g>
+</svg>

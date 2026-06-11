@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <filter id="ink-67" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="67" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+    </filter>
+    <filter id="ink-strong-67" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="74" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.6"/>
+    </filter>
+    <filter id="wash-67" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="70" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6"/>
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+    <filter id="haze-67">
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="paper-67" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="78" result="grain"/>
+      <feColorMatrix in="grain" type="matrix"
+        values="0 0 0 0 0.45
+                0 0 0 0 0.35
+                0 0 0 0 0.20
+                0 0 0 0.10 0"/>
+    </filter>
+  </defs>
+
+
+  <rect x="0" y="0" width="480" height="640" fill="#e2e2ec"/>
+  <rect x="0" y="0" width="480" height="640" fill="#e2e2ec" filter="url(#paper-67)" opacity="0.55"/>
+  <!-- 边角阴影 -->
+  <radialGradient id="vignette-67" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#e2e2ec" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#0a0a20" stop-opacity="0.18"/>
+  </radialGradient>
+  <rect x="0" y="0" width="480" height="640" fill="url(#vignette-67)"/>
+  <!-- 折痕 -->
+  <path d="M 0 320 L 480 318" stroke="#0a0a20" stroke-width="0.4" opacity="0.08"/>
+  <path d="M 240 0 L 242 640" stroke="#0a0a20" stroke-width="0.3" opacity="0.06"/>
+
+  <rect x="14" y="14" width="452" height="612" fill="none" stroke="#3a3a5a" stroke-width="1.4"/>
+  <rect x="20" y="20" width="440" height="600" fill="none" stroke="#0a0a20" stroke-width="0.5" opacity="0.5"/>
+  <!-- 四角小纹 -->
+  <g stroke="#3a3a5a" stroke-width="0.9" fill="none" opacity="0.7">
+    <path d="M 20 38 L 20 20 L 38 20"/>
+    <path d="M 442 20 L 460 20 L 460 38"/>
+    <path d="M 460 602 L 460 620 L 442 620"/>
+    <path d="M 38 620 L 20 620 L 20 602"/>
+  </g>
+
+  <g>
+    <!-- 朝代小章：左顶角 -->
+    <g transform="translate(34 36)">
+      <rect x="0" y="0" width="44" height="22" fill="none" stroke="#6a2030" stroke-width="1.6"/>
+      <text x="22" y="15" text-anchor="middle" font-family="STKaiti, KaiTi, serif" font-size="11" fill="#6a2030" letter-spacing="2" font-weight="600">近代</text>
+    </g>
+    <!-- 朝代小印 -->
+    <g transform="translate(82 32)">
+      <rect x="0" y="0" width="22" height="22" fill="#6a2030"/>
+      <text x="11" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#e2e2ec" font-weight="700">镜</text>
+    </g>
+    <!-- 题词：右半 -->
+    <g transform="translate(120 44)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="15" fill="#0a0a20" letter-spacing="3" font-weight="500">
+        <tspan x="0" dy="0">反馈之环</tspan><tspan x="0" dy="22">神童博士</tspan>
+      </text>
+    </g>
+    <!-- 顶分隔细线 -->
+    <line x1="34" y1="78" x2="446" y2="78" stroke="#3a3a5a" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="82" x2="446" y2="82" stroke="#3a3a5a" stroke-width="0.3" opacity="0.4"/>
+  </g>
+<!-- 场景区 -->
+<g>
+        
+  <g filter="url(#haze-50)" opacity="0.7">
+    <path d="M 0 320 L 60 284 L 130 269 L 200 290 L 280 260 L 360 278 L 440 296 L 480 308 L 480 480 L 0 480 Z" fill="#5a5a7a" opacity="0.35"/>
+    <path d="M 0 344 L 80 326 L 170 311 L 260 332 L 340 308 L 420 329 L 480 341 L 480 480 L 0 480 Z" fill="#5a5a7a" opacity="0.55"/>
+  </g>
+        
+  <g fill="#e2e2ec" opacity="0.85">
+    <ellipse cx="140" cy="150" rx="35" ry="6"/>
+    <ellipse cx="126" cy="146" rx="12.6" ry="5"/>
+    <ellipse cx="152.6" cy="147" rx="14" ry="4"/>
+  </g>
+        
+  <g fill="#0a0a20" opacity="0.85">
+    <rect x="377" y="338" width="6" height="8" transform="rotate(0 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(45 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(90 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(135 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(180 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(225 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(270 380 360)"/><rect x="377" y="338" width="6" height="8" transform="rotate(315 380 360)"/>
+    <circle cx="380" cy="360" r="18"/>
+    <circle cx="380" cy="360" r="8.1" fill="#f1e4c4"/>
+  </g>
+        
+  <g fill="#0a0a20" opacity="0.85">
+    <rect x="417" y="304" width="6" height="8" transform="rotate(0 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(45 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(90 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(135 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(180 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(225 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(270 420 320)"/><rect x="417" y="304" width="6" height="8" transform="rotate(315 420 320)"/>
+    <circle cx="420" cy="320" r="12"/>
+    <circle cx="420" cy="320" r="5.4" fill="#f1e4c4"/>
+  </g>
+        
+  <g>
+    <path d="M 100 420 Q 140 414 180 420 L 180 450 Q 140 444 100 450 Z" fill="#e2e2ec" stroke="#0a0a20" stroke-width="1.2"/>
+    <line x1="140" y1="420" x2="140" y2="446" stroke="#0a0a20" stroke-width="0.8"/>
+    <line x1="106" y1="426" x2="132" y2="426" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="106" y1="432" x2="132" y2="432" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="106" y1="438" x2="132" y2="438" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="106" y1="444" x2="132" y2="444" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/>
+    <line x1="148" y1="426" x2="174" y2="426" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="148" y1="432" x2="174" y2="432" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="148" y1="438" x2="174" y2="438" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/><line x1="148" y1="444" x2="174" y2="444" stroke="#0a0a20" stroke-width="0.5" opacity="0.6"/>
+  </g>
+        <!-- 反馈环 -->
+        <g transform="translate(240 320)" fill="none" stroke="#0a0a20" stroke-width="1.6">
+          <ellipse cx="0" cy="0" rx="50" ry="22" stroke="#6a2030"/>
+          <path d="M -50 0 L -56 0" stroke="#6a2030" stroke-width="2"/>
+          <path d="M -56 0 L -50 -8" stroke="#6a2030" stroke-width="2"/>
+          <text x="0" y="4" text-anchor="middle" font-family="serif" font-size="11" fill="#6a2030" font-weight="700">反馈</text>
+        </g>
+        <!-- 站者 -->
+        <g transform="translate(240 360)" fill="#0a0a20" opacity="0.95">
+          <ellipse cx="0" cy="0" rx="12" ry="15"/>
+          <path d="M -18 12 L -22 50 L 22 50 L 18 12 Z"/>
+          <ellipse cx="0" cy="-18" rx="10" ry="12" fill="#3a3a5a"/>
+        </g></g>
+
+  <g>
+    <!-- 底分隔细线 -->
+    <line x1="34" y1="500" x2="446" y2="500" stroke="#3a3a5a" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="504" x2="446" y2="504" stroke="#3a3a5a" stroke-width="0.3" opacity="0.4"/>
+    <!-- 姓名：左半横排大字 -->
+    <g transform="translate(46 540)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="38" fill="#0a0a20" letter-spacing="14" font-weight="700">维纳</text>
+      <!-- 姓名小注：右侧小字 -->
+      <text x="0" y="40" font-family="STKaiti, KaiTi, serif" font-size="10" fill="#3a3a5a" letter-spacing="3" opacity="0.85">东方文人 · 镜心之镜</text>
+    </g>
+    <!-- 篆刻朱砂方印：右下角 -->
+    <g transform="translate(360 530)">
+      <rect x="0" y="0" width="64" height="64" fill="#6a2030" filter="url(#ink-27)"/>
+      <rect x="2" y="2" width="60" height="60" fill="none" stroke="#e2e2ec" stroke-width="0.8" opacity="0.6"/>
+      
+      <text x="32" y="20" text-anchor="middle" font-family="serif" font-size="20" fill="#e2e2ec" font-weight="900">控</text>
+      <text x="32" y="40" text-anchor="middle" font-family="serif" font-size="20" fill="#e2e2ec" font-weight="900">制</text>
+      <text x="32" y="60" text-anchor="middle" font-family="serif" font-size="20" fill="#e2e2ec" font-weight="900">论</text>
+    </g>
+  </g>
+<!-- 副标：人物小注 -->
+<g transform="translate(46 600)">
+  <text font-family="STKaiti, KaiTi, serif" font-size="10" fill="#3a3a5a" letter-spacing="2" opacity="0.7">反馈之环 · 镜心选镜</text>
+</g>
+</svg>
