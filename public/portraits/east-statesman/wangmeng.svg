@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <filter id="ink-81" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="81" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+    </filter>
+    <filter id="ink-strong-81" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="88" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.6"/>
+    </filter>
+    <filter id="wash-81" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="84" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6"/>
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+    <filter id="haze-81">
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="paper-81" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="92" result="grain"/>
+      <feColorMatrix in="grain" type="matrix"
+        values="0 0 0 0 0.45
+                0 0 0 0 0.35
+                0 0 0 0 0.20
+                0 0 0 0.10 0"/>
+    </filter>
+  </defs>
+
+
+  <rect x="0" y="0" width="480" height="640" fill="#ece1c0"/>
+  <rect x="0" y="0" width="480" height="640" fill="#ece1c0" filter="url(#paper-81)" opacity="0.55"/>
+  <!-- 边角阴影 -->
+  <radialGradient id="vignette-81" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#ece1c0" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#1f1408" stop-opacity="0.18"/>
+  </radialGradient>
+  <rect x="0" y="0" width="480" height="640" fill="url(#vignette-81)"/>
+  <!-- 折痕 -->
+  <path d="M 0 320 L 480 318" stroke="#1f1408" stroke-width="0.4" opacity="0.08"/>
+  <path d="M 240 0 L 242 640" stroke="#1f1408" stroke-width="0.3" opacity="0.06"/>
+
+  <rect x="14" y="14" width="452" height="612" fill="none" stroke="#5e3a20" stroke-width="1.4"/>
+  <rect x="20" y="20" width="440" height="600" fill="none" stroke="#1f1408" stroke-width="0.5" opacity="0.5"/>
+  <!-- 四角小纹 -->
+  <g stroke="#5e3a20" stroke-width="0.9" fill="none" opacity="0.7">
+    <path d="M 20 38 L 20 20 L 38 20"/>
+    <path d="M 442 20 L 460 20 L 460 38"/>
+    <path d="M 460 602 L 460 620 L 442 620"/>
+    <path d="M 38 620 L 20 620 L 20 602"/>
+  </g>
+
+  <g>
+    <!-- 朝代小章：左顶角 -->
+    <g transform="translate(34 36)">
+      <rect x="0" y="0" width="44" height="22" fill="none" stroke="#9a2828" stroke-width="1.6"/>
+      <text x="22" y="15" text-anchor="middle" font-family="STKaiti, KaiTi, serif" font-size="11" fill="#9a2828" letter-spacing="2" font-weight="600">战国</text>
+    </g>
+    <!-- 朝代小印 -->
+    <g transform="translate(82 32)">
+      <rect x="0" y="0" width="22" height="22" fill="#9a2828"/>
+      <text x="11" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#ece1c0" font-weight="700">镜</text>
+    </g>
+    <!-- 题词：右半 -->
+    <g transform="translate(120 44)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="15" fill="#1f1408" letter-spacing="3" font-weight="500">
+        <tspan x="0" dy="0">扪虱而谈</tspan><tspan x="0" dy="22">关中大治</tspan>
+      </text>
+    </g>
+    <!-- 顶分隔细线 -->
+    <line x1="34" y1="78" x2="446" y2="78" stroke="#5e3a20" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="82" x2="446" y2="82" stroke="#5e3a20" stroke-width="0.3" opacity="0.4"/>
+  </g>
+<!-- 场景区 -->
+<g>
+        
+  <g filter="url(#haze-50)" opacity="0.7">
+    <path d="M 0 320 L 60 284 L 130 269 L 200 290 L 280 260 L 360 278 L 440 296 L 480 308 L 480 480 L 0 480 Z" fill="#8a5a30" opacity="0.35"/>
+    <path d="M 0 344 L 80 326 L 170 311 L 260 332 L 340 308 L 420 329 L 480 341 L 480 480 L 0 480 Z" fill="#8a5a30" opacity="0.55"/>
+  </g>
+        
+  <g stroke="#1f1408" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <line x1="80" y1="440" x2="80" y2="320"/>
+    <line x1="74" y1="404" x2="86" y2="404"/>
+    <line x1="75" y1="374" x2="85" y2="374"/>
+    <line x1="74" y1="344" x2="86" y2="344"/>
+    <path d="M 80 416 q -10 -4 -22 -8" />
+    <path d="M 80 380 q 12 -6 24 -10" />
+  </g>
+        
+  <g stroke="#1f1408" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <line x1="420" y1="440" x2="420" y2="330"/>
+    <line x1="414" y1="407" x2="426" y2="407"/>
+    <line x1="415" y1="379.5" x2="425" y2="379.5"/>
+    <line x1="414" y1="352" x2="426" y2="352"/>
+    <path d="M 420 418 q -10 -4 -22 -8" />
+    <path d="M 420 385 q 12 -6 24 -10" />
+  </g>
+        <!-- 案 -->
+        <rect x="140" y="400" width="200" height="12" fill="#5e3a20" opacity="0.85"/>
+        
+  <g>
+    <rect x="156" y="384" width="48" height="8" fill="#ece1c0" stroke="#5e3a20" stroke-width="0.6"/>
+    <line x1="158" y1="387" x2="202" y2="387" stroke="#5e3a20" stroke-width="0.4"/>
+    <line x1="158" y1="389" x2="202" y2="389" stroke="#5e3a20" stroke-width="0.4"/>
+  </g>
+        
+  <g>
+    <rect x="256" y="384" width="48" height="8" fill="#ece1c0" stroke="#5e3a20" stroke-width="0.6"/>
+    <line x1="258" y1="387" x2="302" y2="387" stroke="#5e3a20" stroke-width="0.4"/>
+    <line x1="258" y1="389" x2="302" y2="389" stroke="#5e3a20" stroke-width="0.4"/>
+  </g>
+        <!-- 坐者 -->
+        <g transform="translate(220 340)" fill="#1f1408" opacity="0.95">
+          <ellipse cx="0" cy="0" rx="12" ry="15"/>
+          <path d="M -18 12 L -24 56 L 24 56 L 18 12 Z"/>
+          <ellipse cx="0" cy="-18" rx="10" ry="12" fill="#5e3a20"/>
+        </g>
+        <!-- 扪虱手 -->
+        <line x1="234" y1="320" x2="240" y2="306" stroke="#1f1408" stroke-width="2"/>
+        <circle cx="240" cy="306" r="1.4" fill="#9a2828"/></g>
+
+  <g>
+    <!-- 底分隔细线 -->
+    <line x1="34" y1="500" x2="446" y2="500" stroke="#5e3a20" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="504" x2="446" y2="504" stroke="#5e3a20" stroke-width="0.3" opacity="0.4"/>
+    <!-- 姓名：左半横排大字 -->
+    <g transform="translate(46 540)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="38" fill="#1f1408" letter-spacing="14" font-weight="700">王猛</text>
+      <!-- 姓名小注：右侧小字 -->
+      <text x="0" y="40" font-family="STKaiti, KaiTi, serif" font-size="10" fill="#5e3a20" letter-spacing="3" opacity="0.85">东方文人 · 镜心之镜</text>
+    </g>
+    <!-- 篆刻朱砂方印：右下角 -->
+    <g transform="translate(360 530)">
+      <rect x="0" y="0" width="64" height="64" fill="#9a2828" filter="url(#ink-27)"/>
+      <rect x="2" y="2" width="60" height="60" fill="none" stroke="#ece1c0" stroke-width="0.8" opacity="0.6"/>
+      
+      <text x="32" y="20" text-anchor="middle" font-family="serif" font-size="20" fill="#ece1c0" font-weight="900">扪</text>
+      <text x="32" y="40" text-anchor="middle" font-family="serif" font-size="20" fill="#ece1c0" font-weight="900">虱</text>
+      <text x="32" y="60" text-anchor="middle" font-family="serif" font-size="20" fill="#ece1c0" font-weight="900">谈</text>
+    </g>
+  </g>
+<!-- 副标：人物小注 -->
+<g transform="translate(46 600)">
+  <text font-family="STKaiti, KaiTi, serif" font-size="10" fill="#5e3a20" letter-spacing="2" opacity="0.7">扪虱论天 · 镜心选镜</text>
+</g>
+</svg>

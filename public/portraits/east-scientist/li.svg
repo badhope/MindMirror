@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" width="480" height="640" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <filter id="ink-50" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="50" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4"/>
+    </filter>
+    <filter id="ink-strong-50" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="57" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.6"/>
+    </filter>
+    <filter id="wash-50" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="53" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="6"/>
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+    <filter id="haze-50">
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="paper-50" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="61" result="grain"/>
+      <feColorMatrix in="grain" type="matrix"
+        values="0 0 0 0 0.45
+                0 0 0 0 0.35
+                0 0 0 0 0.20
+                0 0 0 0.10 0"/>
+    </filter>
+  </defs>
+
+
+  <rect x="0" y="0" width="480" height="640" fill="#f0d8d0"/>
+  <rect x="0" y="0" width="480" height="640" fill="#f0d8d0" filter="url(#paper-50)" opacity="0.55"/>
+  <!-- 边角阴影 -->
+  <radialGradient id="vignette-50" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#f0d8d0" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#1a0808" stop-opacity="0.18"/>
+  </radialGradient>
+  <rect x="0" y="0" width="480" height="640" fill="url(#vignette-50)"/>
+  <!-- 折痕 -->
+  <path d="M 0 320 L 480 318" stroke="#1a0808" stroke-width="0.4" opacity="0.08"/>
+  <path d="M 240 0 L 242 640" stroke="#1a0808" stroke-width="0.3" opacity="0.06"/>
+
+  <rect x="14" y="14" width="452" height="612" fill="none" stroke="#8a2424" stroke-width="1.4"/>
+  <rect x="20" y="20" width="440" height="600" fill="none" stroke="#1a0808" stroke-width="0.5" opacity="0.5"/>
+  <!-- 四角小纹 -->
+  <g stroke="#8a2424" stroke-width="0.9" fill="none" opacity="0.7">
+    <path d="M 20 38 L 20 20 L 38 20"/>
+    <path d="M 442 20 L 460 20 L 460 38"/>
+    <path d="M 460 602 L 460 620 L 442 620"/>
+    <path d="M 38 620 L 20 620 L 20 602"/>
+  </g>
+
+  <g>
+    <!-- 朝代小章：左顶角 -->
+    <g transform="translate(34 36)">
+      <rect x="0" y="0" width="44" height="22" fill="none" stroke="#9a2020" stroke-width="1.6"/>
+      <text x="22" y="15" text-anchor="middle" font-family="STKaiti, KaiTi, serif" font-size="11" fill="#9a2020" letter-spacing="2" font-weight="600">明</text>
+    </g>
+    <!-- 朝代小印 -->
+    <g transform="translate(82 32)">
+      <rect x="0" y="0" width="22" height="22" fill="#9a2020"/>
+      <text x="11" y="16" text-anchor="middle" font-family="serif" font-size="11" fill="#f0d8d0" font-weight="700">镜</text>
+    </g>
+    <!-- 题词：右半 -->
+    <g transform="translate(120 44)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="15" fill="#1a0808" letter-spacing="3" font-weight="500">
+        <tspan x="0" dy="0">医者贵格物</tspan><tspan x="0" dy="22">以身试药</tspan>
+      </text>
+    </g>
+    <!-- 顶分隔细线 -->
+    <line x1="34" y1="78" x2="446" y2="78" stroke="#8a2424" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="82" x2="446" y2="82" stroke="#8a2424" stroke-width="0.3" opacity="0.4"/>
+  </g>
+<!-- 场景区 -->
+<g>
+        
+  <g filter="url(#haze-50)" opacity="0.7">
+    <path d="M 0 320 L 60 284 L 130 269 L 200 290 L 280 260 L 360 278 L 440 296 L 480 308 L 480 480 L 0 480 Z" fill="#a83838" opacity="0.35"/>
+    <path d="M 0 344 L 80 326 L 170 311 L 260 332 L 340 308 L 420 329 L 480 341 L 480 480 L 0 480 Z" fill="#a83838" opacity="0.55"/>
+  </g>
+        
+  <g stroke="#1a0808" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <line x1="60" y1="440" x2="60" y2="330"/>
+    <line x1="54" y1="407" x2="66" y2="407"/>
+    <line x1="55" y1="379.5" x2="65" y2="379.5"/>
+    <line x1="54" y1="352" x2="66" y2="352"/>
+    <path d="M 60 418 q -10 -4 -22 -8" />
+    <path d="M 60 385 q 12 -6 24 -10" />
+  </g>
+        
+  <g stroke="#1a0808" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <line x1="420" y1="440" x2="420" y2="340"/>
+    <line x1="414" y1="410" x2="426" y2="410"/>
+    <line x1="415" y1="385" x2="425" y2="385"/>
+    <line x1="414" y1="360" x2="426" y2="360"/>
+    <path d="M 420 420 q -10 -4 -22 -8" />
+    <path d="M 420 390 q 12 -6 24 -10" />
+  </g>
+        
+  <g stroke="#1a0808" stroke-width="1.6" fill="none" stroke-linecap="round">
+    <path d="M 80 240 q 18 -8 40 -20 q 20 -10 44 -30"/>
+    <circle cx="98" cy="230" r="3.5" fill="#c64a4a"/>
+    <circle cx="116" cy="218" r="3.5" fill="#c64a4a"/>
+    <circle cx="136" cy="208" r="3.5" fill="#e88a8a"/>
+    <circle cx="152" cy="196" r="3" fill="#c64a4a"/>
+  </g>
+        <!-- 案 -->
+        <rect x="140" y="400" width="200" height="12" fill="#8a2424" opacity="0.85"/>
+        <!-- 药草标本 -->
+        <g transform="translate(180 360)" fill="#c45a4a" stroke="#1a0808" stroke-width="0.6">
+          <ellipse cx="0" cy="0" rx="6" ry="3"/>
+          <line x1="0" y1="0" x2="0" y2="14"/>
+          <ellipse cx="-3" cy="6" rx="3" ry="2"/>
+          <ellipse cx="3" cy="10" rx="3" ry="2"/>
+        </g>
+        <g transform="translate(220 360)" fill="#9a2020" stroke="#1a0808" stroke-width="0.6">
+          <ellipse cx="0" cy="0" rx="6" ry="3"/>
+          <line x1="0" y1="0" x2="0" y2="14"/>
+        </g>
+        <g transform="translate(260 360)" fill="#c45a4a" stroke="#1a0808" stroke-width="0.6">
+          <ellipse cx="0" cy="0" rx="6" ry="3"/>
+          <line x1="0" y1="0" x2="0" y2="14"/>
+        </g>
+        <!-- 背篓 -->
+        <g transform="translate(360 380)" fill="#a83838" stroke="#1a0808" stroke-width="0.6">
+          <path d="M -20 0 L -16 30 L 16 30 L 20 0 Z"/>
+          <path d="M -20 0 q 20 -10 40 0" fill="none"/>
+        </g>
+        <!-- 采药者 -->
+        <g transform="translate(220 320)" fill="#1a0808" opacity="0.95">
+          <ellipse cx="0" cy="0" rx="12" ry="15"/>
+          <path d="M -18 12 L -24 60 L 24 60 L 18 12 Z"/>
+          <ellipse cx="0" cy="-18" rx="10" ry="12" fill="#8a2424"/>
+        </g></g>
+
+  <g>
+    <!-- 底分隔细线 -->
+    <line x1="34" y1="500" x2="446" y2="500" stroke="#8a2424" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="504" x2="446" y2="504" stroke="#8a2424" stroke-width="0.3" opacity="0.4"/>
+    <!-- 姓名：左半横排大字 -->
+    <g transform="translate(46 540)">
+      <text font-family="STKaiti, KaiTi, serif" font-size="38" fill="#1a0808" letter-spacing="14" font-weight="700">李时珍</text>
+      <!-- 姓名小注：右侧小字 -->
+      <text x="0" y="40" font-family="STKaiti, KaiTi, serif" font-size="10" fill="#8a2424" letter-spacing="3" opacity="0.85">东方文人 · 镜心之镜</text>
+    </g>
+    <!-- 篆刻朱砂方印：右下角 -->
+    <g transform="translate(360 530)">
+      <rect x="0" y="0" width="64" height="64" fill="#9a2020" filter="url(#ink-40)"/>
+      <rect x="2" y="2" width="60" height="60" fill="none" stroke="#f0d8d0" stroke-width="0.8" opacity="0.6"/>
+      
+      <text x="32" y="20" text-anchor="middle" font-family="serif" font-size="20" fill="#f0d8d0" font-weight="900">本</text>
+      <text x="32" y="40" text-anchor="middle" font-family="serif" font-size="20" fill="#f0d8d0" font-weight="900">草</text>
+      <text x="32" y="60" text-anchor="middle" font-family="serif" font-size="20" fill="#f0d8d0" font-weight="900">纲</text>
+    </g>
+  </g>
+<!-- 副标：人物小注 -->
+<g transform="translate(46 600)">
+  <text font-family="STKaiti, KaiTi, serif" font-size="10" fill="#8a2424" letter-spacing="2" opacity="0.7">本草纲目 · 镜心选镜</text>
+</g>
+</svg>
