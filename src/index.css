@@ -21,7 +21,7 @@
   /* ── 节奏 ── */
   --t-fast: 200ms;
   --t-base: 400ms;
-  --t-slow: 1200ms;
+  --t-slow: 700ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
@@ -325,5 +325,457 @@ p {
   .jx-btn {
     font-size: 1rem;
     padding: var(--sp-3) var(--sp-6);
+  }
+  header button {
+    font-size: 1rem !important;
+    padding: 0.25rem 0.25rem !important;
+    gap: 0.25rem !important;
+  }
+  header nav {
+    gap: 0.25rem !important;
+  }
+  header nav > span {
+    font-size: 0.75rem !important;
+    padding: 0 0.25rem !important;
+  }
+  /* 映照十二维：窄屏改为单列 */
+  .jx-ref-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .jx-ref-grid > svg.jx-radar {
+    max-width: 16rem;
+    margin: 0 auto;
+  }
+  /* 同道卡：窄屏单列 */
+  .jx-alt-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  /* 主镜：窄屏单列 */
+  .jx-primary-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    text-align: center;
+  }
+  .jx-primary-grid .jx-portrait {
+    margin: 0 auto;
+  }
+}
+
+/* 焦点指示器（键盘可达性） */
+button:focus-visible,
+[role='radio']:focus-visible,
+[role='tab']:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(168, 50, 46, 0.15);
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 减少动效：尊重系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 选项 A-F 字母印章 */
+.jx-opt-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.75rem;
+  background: var(--rice-warm);
+  color: var(--ink);
+  border: 1px solid var(--rice-deep);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.jx-opt-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+}
+
+[data-role='option'][aria-checked='true'] .jx-opt-letter {
+  background: var(--cinnabar);
+  color: var(--rice);
+  border-color: var(--cinnabar);
+}
+
+/* 入镜大字 镜 */
+.jx-mark {
+  font-family: var(--font-display);
+  color: var(--cinnabar);
+  letter-spacing: 0;
+  line-height: 1;
+  display: block;
+}
+
+/* 启动页 / 复位 提示卡 */
+.jx-hint {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-display);
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─── C7 夜间模式（玄青 + 月白 + 朱砂） ─── */
+:root[data-theme='dark'] {
+  --ink: #e8e2d0;
+  --ink-soft: #d0cab8;
+  --ink-faint: #9a9080;
+  --rice: #0e141a;
+  --rice-warm: #1a232c;
+  --rice-deep: #283342;
+  --cinnabar: #d8584a;
+  --cinnabar-soft: #e07060;
+  --jade: #6aaa8a;
+  --gold-dim: #c0a060;
+  --ash: #6a7080;
+  --rice-translucent: rgba(14, 20, 26, 0.85);
+}
+
+:root[data-theme='dark'] body {
+  background: var(--rice);
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] body::before {
+  opacity: 0.3;
+  filter: invert(0.85) hue-rotate(180deg);
+}
+
+:root[data-theme='dark'] h1,
+:root[data-theme='dark'] h2,
+:root[data-theme='dark'] h3 {
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] .jx-btn {
+  border-color: var(--ink-soft);
+  color: var(--ink);
+}
+:root[data-theme='dark'] .jx-btn-primary {
+  background: var(--ink);
+  color: var(--rice);
+}
+:root[data-theme='dark'] .jx-btn-primary:hover {
+  background: var(--cinnabar);
+  color: var(--rice);
+}
+:root[data-theme='dark'] .jx-btn-ghost {
+  color: var(--ink-faint);
+}
+:root[data-theme='dark'] .jx-btn-ghost:hover {
+  color: var(--cinnabar);
+}
+
+:root[data-theme='dark'] .jx-seal {
+  background: var(--cinnabar);
+  color: var(--rice);
+}
+
+:root[data-theme='dark'] .jx-verse .ancient {
+  color: var(--ink);
+}
+:root[data-theme='dark'] .jx-verse .gloss {
+  color: var(--ink-faint);
+}
+
+:root[data-theme='dark'] .jx-blurb {
+  background: var(--rice-warm) !important;
+  border-left-color: var(--cinnabar) !important;
+  color: var(--ink) !important;
+}
+
+:root[data-theme='dark'] .jx-progress {
+  background: var(--rice-deep);
+}
+:root[data-theme='dark'] .jx-progress-fill {
+  background: var(--jade);
+}
+
+:root[data-theme='dark'] .jx-opt-letter {
+  background: var(--rice-warm);
+  color: var(--ink);
+  border-color: var(--rice-deep);
+}
+:root[data-theme='dark'] [data-role='option'][aria-checked='true'] .jx-opt-letter {
+  background: var(--cinnabar);
+  color: var(--rice);
+}
+
+:root[data-theme='dark'] button:focus-visible,
+:root[data-theme='dark'] [role='radio']:focus-visible,
+:root[data-theme='dark'] [role='tab']:focus-visible {
+  outline-color: var(--cinnabar);
+  box-shadow: 0 0 0 4px rgba(216, 88, 74, 0.25);
+}
+
+:root[data-theme='dark'] .jx-trait-highlight {
+  background: linear-gradient(90deg, rgba(216, 88, 74, 0.08) 0%, rgba(216, 88, 74, 0.02) 100%);
+  border-left: 2px solid var(--cinnabar);
+  padding-left: 0.5rem;
+}
+
+:root[data-theme='dark'] svg.jx-radar circle,
+:root[data-theme='dark'] svg.jx-radar line {
+  stroke: var(--ink-soft);
+}
+
+/* ─── C14 视觉品牌正式化 ─── */
+.jx-seal-large {
+  display: inline-block;
+  font-size: clamp(4rem, 12vw, 8rem);
+  animation: jx-seal-print 800ms var(--ease-out) both;
+}
+
+@keyframes jx-seal-print {
+  0% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.92);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.jx-trait-highlight {
+  background: linear-gradient(90deg, rgba(168, 50, 46, 0.06) 0%, rgba(168, 50, 46, 0.01) 100%);
+  border-left: 2px solid var(--cinnabar);
+  padding-left: 0.5rem;
+  transition: background 600ms;
+}
+
+/* Empty / Loading 三态 */
+.jx-loading {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--rice-deep);
+  border-top-color: var(--cinnabar);
+  border-radius: 50%;
+  animation: jx-spin 800ms linear infinite;
+}
+
+@keyframes jx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.jx-empty {
+  text-align: center;
+  padding: var(--sp-12) var(--sp-6);
+  color: var(--ink-faint);
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+}
+
+.jx-error {
+  text-align: center;
+  padding: var(--sp-8);
+  border: 1.5px dashed var(--cinnabar);
+  background: var(--rice-warm);
+  color: var(--cinnabar);
+  font-family: var(--font-display);
+}
+
+/* ─── C8 高级动画 ─── */
+@keyframes jx-stamp-in {
+  0% {
+    transform: scale(2.2) rotate(-8deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.9) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.jx-stamp-in {
+  animation: jx-stamp-in 600ms var(--ease-out) both;
+}
+
+@keyframes jx-roll-open {
+  from {
+    clip-path: inset(0 0 0 50%);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.jx-roll-open {
+  animation: jx-roll-open 700ms var(--ease-in-out) both;
+}
+
+@keyframes jx-fade-stagger {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.jx-stagger > * {
+  opacity: 0;
+  animation: jx-fade-stagger 500ms var(--ease-out) forwards;
+}
+.jx-stagger > *:nth-child(1) {
+  animation-delay: 60ms;
+}
+.jx-stagger > *:nth-child(2) {
+  animation-delay: 140ms;
+}
+.jx-stagger > *:nth-child(3) {
+  animation-delay: 220ms;
+}
+.jx-stagger > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+.jx-stagger > *:nth-child(5) {
+  animation-delay: 380ms;
+}
+.jx-stagger > *:nth-child(6) {
+  animation-delay: 460ms;
+}
+.jx-stagger > *:nth-child(7) {
+  animation-delay: 540ms;
+}
+.jx-stagger > *:nth-child(8) {
+  animation-delay: 620ms;
+}
+.jx-stagger > *:nth-child(9) {
+  animation-delay: 700ms;
+}
+.jx-stagger > *:nth-child(10) {
+  animation-delay: 780ms;
+}
+.jx-stagger > *:nth-child(11) {
+  animation-delay: 860ms;
+}
+.jx-stagger > *:nth-child(12) {
+  animation-delay: 940ms;
+}
+
+/* 印章朱砂下压效果 */
+.jx-cinnabar-stamp {
+  transition:
+    transform 200ms var(--ease-out),
+    background 200ms;
+}
+
+.jx-cinnabar-stamp:hover {
+  transform: scale(1.06);
+}
+
+/* ─── C9 响应式打磨（已有 640 断点，扩 1024） ─── */
+@media (max-width: 1024px) {
+  .jx-container {
+    padding: var(--sp-6) var(--sp-4);
+  }
+}
+
+@media (max-width: 380px) {
+  .jx-container,
+  .jx-container-narrow {
+    padding: var(--sp-4) var(--sp-3);
+  }
+  h1 {
+    font-size: 1.625rem;
+  }
+}
+
+/* ─── C12 a11y 增量 ─── */
+
+/* Skip link — 键盘用户按 Tab 第一个可见 */
+.jx-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0.5rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--cinnabar);
+  color: var(--rice);
+  font-family: var(--font-display);
+  text-decoration: none;
+  font-size: 0.875rem;
+  border: 2px solid var(--rice);
+  transition: top 200ms var(--ease-out);
+}
+
+.jx-skip-link:focus,
+.jx-skip-link:focus-visible {
+  top: 0.5rem;
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* 强制增强所有可聚焦元素的轮廓 */
+:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+}
+
+/* 减少动画时禁用自定义动画 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 高对比度偏好：增强对比 */
+@media (prefers-contrast: more) {
+  :root {
+    --ink: #000000;
+    --ink-soft: #1a1a1a;
+    --ink-faint: #3a3a3a;
+  }
+  :root[data-theme='dark'] {
+    --ink: #ffffff;
+    --ink-soft: #f0f0f0;
+    --ink-faint: #d0d0d0;
   }
 }

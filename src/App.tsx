@@ -10,8 +10,11 @@ export function App() {
   const { phase } = useStore();
   return (
     <>
+      <a className="jx-skip-link" href="#main-content">
+        跳至正文
+      </a>
       <TopBar />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         {phase === 'prologue' && <Prologue />}
         {phase === 'path' && <Path />}
         {phase === 'way' && <Way />}

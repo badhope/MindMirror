@@ -33,6 +33,7 @@ export function TraitRadar({ user, figure, size = 360 }: Props) {
     <svg
       viewBox={`0 0 ${size} ${size}`}
       className="jx-radar"
+      data-testid="trait-radar"
       role="img"
       aria-label="十二维特征雷达"
       style={{ maxWidth: '100%', height: 'auto' }}

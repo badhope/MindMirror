@@ -1,22 +1,128 @@
 // 镜心 · 映照 · 卷
 
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../store';
 import { TraitRadar } from '../components/TraitRadar';
 import { Portrait } from '../components/Portrait';
 import { BrushButton } from '../components/BrushButton';
 import { Verse } from '../components/Verse';
 import { TRAITS } from '../domain/traits/trait.dimensions';
+import { itemsForDomain } from '../domain/items/items.index';
+import { figuresForDomain } from '../domain/figures/figures.index';
+import { computeUserVector } from '../domain/matching/vector';
+import { buildReport } from '../domain/matching/report';
+import { useT } from '../i18n';
+import { exportState, encodeResume, downloadJSON, readJSONFile } from '../share';
 
 export function Reflection() {
-  const { report, goPhase, reset } = useStore();
+  const { report, domain, answers, goPhase, setReport, reset, locale, theme } = useStore();
+  const t = useT();
+  const [toast, setToast] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const goPhaseRef = useRef(goPhase);
+  goPhaseRef.current = goPhase;
 
-  if (!report) {
-    goPhase('prologue');
-    return null;
-  }
+  // 刷新后报告丢失：可由 domain + answers 重新计算
+  useEffect(() => {
+    if (!report) {
+      if (domain && Object.keys(answers).length >= 30) {
+        const items = itemsForDomain(domain);
+        const figures = figuresForDomain(domain);
+        const r = buildReport(computeUserVector(answers, items), figures, answers, items);
+        setReport(r);
+      } else {
+        goPhaseRef.current('prologue');
+      }
+    }
+  }, [report, domain, answers, setReport]);
+
+  // C17 同道 3 维高亮（必须在任何条件 return 之前）
+  const top3 = useMemo<number[]>(() => {
+    if (!report) return [];
+    return [...report.traitBreakdown]
+      .map(b => ({
+        traitId: b.traitId,
+        diff: Math.abs(b.user - b.figure),
+      }))
+      .sort((a, b) => a.diff - b.diff)
+      .slice(0, 3)
+      .map(x => x.traitId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [report]);
+
+  if (!report) return null;
 
   const { primary, alternates, traitBreakdown, confidence } = report;
   const pct = Math.round(primary.score * 100);
+
+  const flash = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 1500);
+  };
+
+  // C18 分享
+  const handleShare = async () => {
+    const shareData = {
+      title: t.share.title,
+      text: `${t.share.text} — ${primary.figure.name} (${primary.figure.era})`,
+      url: window.location.href,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+        flash(t.reflection.shareCopied);
+      }
+    } catch {
+      /* user cancel */
+    }
+  };
+
+  // C13 导出 JSON
+  const handleExport = () => {
+    const s = exportState({
+      domain,
+      currentIndex: Object.keys(answers).length,
+      answers,
+      locale,
+      theme,
+    });
+    downloadJSON(s);
+  };
+
+  // C13 复制续答 URL
+  const handleCopyResume = async () => {
+    const s = exportState({
+      domain,
+      currentIndex: Object.keys(answers).length,
+      answers,
+      locale,
+      theme,
+    });
+    const enc = encodeResume(s);
+    const url = `${window.location.origin}${window.location.pathname}?resume=${enc}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      flash(t.reflection.shareCopied);
+    } catch {
+      flash(url);
+    }
+  };
+
+  // C13 导入 JSON
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const s = await readJSONFile(f);
+    if (s) {
+      useStore.getState().importState(s);
+      flash(t.reflection.imported);
+    } else {
+      flash(t.reflection.importFail);
+    }
+    e.target.value = '';
+  };
 
   return (
     <article className="jx-container jx-scroll-reveal" aria-labelledby="ref-title">
@@ -30,13 +136,13 @@ export function Reflection() {
             marginBottom: '1rem',
           }}
         >
-          镜 中 之 人
+          {t.reflection.sealLabel}
         </p>
-        <h1 id="ref-title" style={{ marginBottom: '0.5rem' }}>
+        <h1 id="ref-title" data-figure="primary" style={{ marginBottom: '0.5rem' }}>
           {primary.figure.name}
         </h1>
         <p style={{ color: 'var(--ink-faint)' }}>
-          {primary.figure.era} · 同道 {pct}%
+          {primary.figure.era} · {t.reflection.score(pct)}
         </p>
       </header>
 
@@ -55,6 +161,7 @@ export function Reflection() {
         <div>
           <Verse text={primary.figure.signature} gloss={primary.figure.bio} />
           <div
+            className="jx-blurb"
             style={{
               marginTop: '1.5rem',
               padding: '1rem 1.25rem',
@@ -67,12 +174,36 @@ export function Reflection() {
           >
             {primary.blurb}
           </div>
+          {primary.figure.anecdotes && primary.figure.anecdotes.length > 0 && (
+            <details
+              className="jx-anecdotes"
+              style={{ marginTop: '1rem', color: 'var(--ink-faint)', fontSize: '0.9rem' }}
+            >
+              <summary
+                style={{
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  color: 'var(--ink)',
+                }}
+              >
+                {t.reflection.anecdote} ▾
+              </summary>
+              <ul style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+                {primary.figure.anecdotes.map((a, i) => (
+                  <li key={i} style={{ marginBottom: '0.25rem' }}>
+                    <strong style={{ color: 'var(--ink)' }}>{a.title}</strong>：{a.body}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
         </div>
       </section>
 
       <section style={{ marginBottom: '3rem' }}>
-        <h2 style={{ marginBottom: '1.5rem' }}>同道</h2>
+        <h2 style={{ marginBottom: '1.5rem' }}>{t.reflection.samePath}</h2>
         <div
+          className="jx-alt-grid jx-stagger"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(10rem, 1fr))',
@@ -82,6 +213,8 @@ export function Reflection() {
           {alternates.map(a => (
             <article
               key={a.figure.id}
+              data-figure="alternate"
+              data-figure-id={a.figure.id}
               style={{
                 padding: '1rem',
                 background: 'var(--rice-warm)',
@@ -108,7 +241,7 @@ export function Reflection() {
       </section>
 
       <section style={{ marginBottom: '3rem' }}>
-        <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>十二维</h2>
+        <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>{t.reflection.twelve}</h2>
         <div
           style={{
             display: 'grid',
@@ -119,16 +252,34 @@ export function Reflection() {
           className="jx-ref-grid"
         >
           <TraitRadar
-            user={report.traitBreakdown.map(b => b.user) as never}
+            user={
+              report.traitBreakdown.map(b => b.user) as unknown as [
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+              ]
+            }
             figure={primary.figure.vector}
           />
           <div>
             {traitBreakdown.map(b => {
               const trait = TRAITS.find(t => t.id === b.traitId);
               if (!trait) return null;
+              const highlight = top3.includes(b.traitId);
               return (
                 <div
                   key={b.traitId}
+                  data-trait-id={b.traitId}
+                  className={highlight ? 'jx-trait-highlight' : ''}
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '4rem 1fr',
@@ -145,10 +296,10 @@ export function Reflection() {
                     }}
                   >
                     {trait.name}
+                    {highlight && <span aria-label="高亮"> ✦</span>}
                   </span>
                   <span style={{ color: 'var(--ink-faint)', fontSize: '0.9rem' }}>
-                    汝 {b.user.toFixed(2)} · 古人 {b.figure.toFixed(2)} ——
-                    {b.comment.replace(/^.*?，/, '')}
+                    {t.reflection.rowFormat(b.user.toFixed(2), b.figure.toFixed(2), b.comment)}
                   </span>
                 </div>
               );
@@ -160,18 +311,74 @@ export function Reflection() {
       <footer
         style={{
           display: 'flex',
-          gap: '1rem',
+          gap: '0.75rem',
           justifyContent: 'center',
           marginTop: '3rem',
           paddingTop: '2rem',
           borderTop: '1px solid var(--rice-deep)',
+          flexWrap: 'wrap',
         }}
       >
-        <BrushButton variant="primary" onClick={() => goPhase('path')}>
-          换一个域
+        <BrushButton variant="primary" onClick={handleShare} data-testid="btn-share">
+          {t.reflection.share}
         </BrushButton>
-        <BrushButton onClick={reset}>再来一次</BrushButton>
+        <BrushButton onClick={handleCopyResume} data-testid="btn-copy-resume">
+          {t.reflection.copyResume}
+        </BrushButton>
+        <BrushButton onClick={handleExport} data-testid="btn-export">
+          {t.reflection.exportJSON}
+        </BrushButton>
+        <BrushButton onClick={() => fileRef.current?.click()} data-testid="btn-import">
+          {t.reflection.importJSON}
+        </BrushButton>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="application/json"
+          onChange={handleImport}
+          style={{ display: 'none' }}
+          aria-hidden
+        />
+        <BrushButton
+          variant="primary"
+          onClick={() => goPhase('path')}
+          data-testid="btn-change-domain"
+        >
+          {t.reflection.changeDomain}
+        </BrushButton>
+        <BrushButton
+          onClick={() => {
+            if (confirm(t.ui.resetConfirm)) reset();
+          }}
+          data-testid="btn-reset"
+        >
+          {t.reflection.reset}
+        </BrushButton>
       </footer>
+
+      {toast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="jx-toast"
+          style={{
+            position: 'fixed',
+            bottom: '1.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: 'var(--ink)',
+            color: 'var(--rice)',
+            padding: '0.5rem 1rem',
+            fontFamily: 'var(--font-display)',
+            fontSize: '0.875rem',
+            borderRadius: '2px',
+            zIndex: 100,
+            animation: 'jx-fade-stagger 200ms var(--ease-out) both',
+          }}
+        >
+          {toast}
+        </div>
+      )}
 
       {confidence < 0.6 && (
         <p
@@ -182,7 +389,7 @@ export function Reflection() {
             marginTop: '1.5rem',
           }}
         >
-          （汝所答尚少，此映照为略影；若欲更明，再答若干题即可。）
+          {t.reflection.lowConfidence}
         </p>
       )}
 
