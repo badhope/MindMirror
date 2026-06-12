@@ -1,6 +1,6 @@
 // 镜心 · 答题 · 行
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from '../store';
 import { itemsForDomain } from '../domain/items/items.index';
 import { figuresForDomain } from '../domain/figures/figures.index';
@@ -31,6 +31,15 @@ export function Way() {
     if (domain && !item) goPhaseRef.current('prologue');
   }, [domain, item]);
 
+  // 回溯提示状态
+  const [showBacktrackHint, setShowBacktrackHint] = useState(false);
+
+  useEffect(() => {
+    // 如果用户在前面的题目中有未答题，显示提示
+    const hasUnansweredBefore = items.slice(0, currentIndex).some((it) => answers[it.id] === undefined);
+    setShowBacktrackHint(hasUnansweredBefore);
+  }, [currentIndex, answers, items]);
+
   if (!domain || !item) return null;
 
   const figures = figuresForDomain(domain);
@@ -43,6 +52,33 @@ export function Way() {
     const r = buildReport(computeUserVector(answers, items), figures, answers, items);
     setReport(r);
   };
+
+  const handleSkip = () => {
+    if (currentIndex < total - 1) {
+      goNext();
+    }
+  };
+
+  // 键盘导航
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        goPrev();
+      } else if (e.key === 'ArrowRight' && currentIndex < total - 1) {
+        if (current !== undefined) {
+          goNext();
+        }
+      } else if (e.key >= '1' && e.key <= '6') {
+        const optIndex = parseInt(e.key) - 1;
+        if (optIndex < item.options.length) {
+          answer(item.id, optIndex);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, total, current, item, answer, goPrev, goNext]);
 
   return (
     <section className="jx-container-narrow jx-fade-enter" aria-labelledby="way-title">
@@ -64,6 +100,19 @@ export function Way() {
           <span>{t.way.question(currentIndex + 1, total)}</span>
           <span>{t.way.answered(answered, total)}</span>
         </p>
+        {showBacktrackHint && (
+          <p
+            style={{
+              marginTop: '0.5rem',
+              color: 'var(--cinnabar)',
+              fontSize: '0.75rem',
+              fontFamily: 'var(--font-display)',
+              opacity: 0.8,
+            }}
+          >
+            提示：前面有未回答的题目，可以返回补充
+          </p>
+        )}
       </header>
 
       <article
@@ -141,26 +190,39 @@ export function Way() {
           {t.way.prev}
         </BrushButton>
 
-        {currentIndex === total - 1 ? (
-          <BrushButton
-            variant="primary"
-            data-testid="btn-finish"
-            disabled={!canFinish}
-            onClick={handleFinish}
-            title={!canFinish ? t.way.finishTitle(30 - answered) : undefined}
-          >
-            {t.way.finish}
-          </BrushButton>
-        ) : (
-          <BrushButton
-            variant="primary"
-            data-testid="btn-next"
-            onClick={goNext}
-            disabled={current === undefined}
-          >
-            {t.way.next}
-          </BrushButton>
-        )}
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          {currentIndex < total - 1 && (
+            <BrushButton
+              variant="ghost"
+              onClick={handleSkip}
+              data-testid="btn-skip"
+              style={{ fontSize: '0.875rem' }}
+            >
+              跳过
+            </BrushButton>
+          )}
+
+          {currentIndex === total - 1 ? (
+            <BrushButton
+              variant="primary"
+              data-testid="btn-finish"
+              disabled={!canFinish}
+              onClick={handleFinish}
+              title={!canFinish ? t.way.finishTitle(30 - answered) : undefined}
+            >
+              {t.way.finish}
+            </BrushButton>
+          ) : (
+            <BrushButton
+              variant="primary"
+              data-testid="btn-next"
+              onClick={goNext}
+              disabled={current === undefined}
+            >
+              {t.way.next}
+            </BrushButton>
+          )}
+        </div>
       </nav>
     </section>
   );

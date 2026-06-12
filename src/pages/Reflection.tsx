@@ -210,33 +210,56 @@ export function Reflection() {
             gap: '1rem',
           }}
         >
-          {alternates.map(a => (
-            <article
-              key={a.figure.id}
-              data-figure="alternate"
-              data-figure-id={a.figure.id}
-              style={{
-                padding: '1rem',
-                background: 'var(--rice-warm)',
-                border: '1px solid var(--rice-deep)',
-              }}
-            >
-              <h3 style={{ marginBottom: '0.5rem' }}>{a.figure.name}</h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--ink-faint)', margin: 0 }}>
-                {a.figure.era}
-              </p>
-              <p
-                style={{
-                  marginTop: '0.5rem',
-                  fontFamily: 'var(--font-display)',
-                  color: 'var(--jade)',
-                  fontSize: '0.875rem',
-                }}
-              >
-                {Math.round(a.score * 100)}%
-              </p>
-            </article>
-          ))}
+          {alternates
+            .sort((a, b) => b.score - a.score)
+            .map((a, idx) => {
+              const diff = Math.abs(a.score - primary.score);
+              const isClose = diff < 0.05;
+              return (
+                <article
+                  key={a.figure.id}
+                  data-figure="alternate"
+                  data-figure-id={a.figure.id}
+                  className={isClose ? 'jx-alt-close' : ''}
+                  style={{
+                    padding: '1rem',
+                    background: isClose ? 'var(--rice-warm)' : 'transparent',
+                    border: `1px solid ${isClose ? 'var(--cinnabar)' : 'var(--rice-deep)'}`,
+                    position: 'relative',
+                    transition: 'all 300ms var(--ease-out)',
+                  }}
+                >
+                  {idx === 0 && (
+                    <span
+                      className="jx-chip jx-chip-cinnabar"
+                      style={{
+                        position: 'absolute',
+                        top: '-0.5rem',
+                        right: '0.5rem',
+                        fontSize: '0.75rem',
+                      }}
+                    >
+                      最似
+                    </span>
+                  )}
+                  <h3 style={{ marginBottom: '0.5rem' }}>{a.figure.name}</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--ink-faint)', margin: 0 }}>
+                    {a.figure.era}
+                  </p>
+                  <p
+                    style={{
+                      marginTop: '0.5rem',
+                      fontFamily: 'var(--font-display)',
+                      color: isClose ? 'var(--cinnabar)' : 'var(--jade)',
+                      fontSize: '0.875rem',
+                      fontWeight: isClose ? 600 : 400,
+                    }}
+                  >
+                    {Math.round(a.score * 100)}%
+                  </p>
+                </article>
+              );
+            })}
         </div>
       </section>
 

@@ -779,3 +779,109 @@ main:focus {
     --ink-faint: #d0d0d0;
   }
 }
+
+/* ─── 同道高亮样式 ─── */
+.jx-alt-close {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(168, 50, 46, 0.15);
+}
+
+.jx-alt-close:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 16px rgba(168, 50, 46, 0.2);
+}
+
+/* ─── 跳过按钮样式 ─── */
+.jx-btn-skip {
+  font-size: 0.875rem;
+  padding: var(--sp-2) var(--sp-4);
+  opacity: 0.7;
+}
+
+.jx-btn-skip:hover {
+  opacity: 1;
+  background: var(--rice-warm);
+}
+
+/* ─── 回溯提示样式 ─── */
+.jx-backtrack-hint {
+  animation: jx-pulse 2s var(--ease-in-out) infinite;
+}
+
+@keyframes jx-pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ─── 键盘导航提示 ─── */
+.jx-keyboard-hint {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--rice-warm);
+  border: 1px solid var(--rice-deep);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  font-family: var(--font-display);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  pointer-events: none;
+  z-index: 50;
+}
+
+.jx-keyboard-hint.visible {
+  opacity: 0.9;
+}
+
+/* ─── 改进的焦点指示器 ─── */
+button:focus-visible,
+[role='radio']:focus-visible,
+[role='tab']:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--cinnabar);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(168, 50, 46, 0.15);
+  border-radius: 2px;
+}
+
+/* ─── 触摸设备优化 ─── */
+@media (hover: none) and (pointer: coarse) {
+  .jx-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  [data-role='option'] {
+    min-height: 56px;
+  }
+}
+
+/* ─── 打印样式 ─── */
+@media print {
+  body::before {
+    display: none;
+  }
+  
+  .jx-btn,
+  .jx-skip-link,
+  .jx-keyboard-hint {
+    display: none;
+  }
+  
+  .jx-container,
+  .jx-container-narrow {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  * {
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
