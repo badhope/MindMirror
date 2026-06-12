@@ -58,7 +58,7 @@ export function Path() {
           fontFamily: 'var(--font-accent)',
         }}
       >
-        ✦ ─── ❖ ─── ✦
+        ✦ ─── ◆ ─── ✦
       </div>
 
       <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -76,13 +76,14 @@ export function Path() {
         </p>
       </header>
 
+      {/* 东西方切换按钮 */}
       <div
         role="tablist"
         style={{
           display: 'flex',
           justifyContent: 'center',
           gap: '1rem',
-          marginBottom: '2rem',
+          marginBottom: '2.5rem',
           flexWrap: 'wrap',
         }}
       >
@@ -96,13 +97,13 @@ export function Path() {
               setPicked(null);
             }}
             style={{
-              padding: '0.5rem 1.5rem',
+              padding: '0.6rem 2rem',
               background: region === r ? 'var(--ink)' : 'var(--rice-deep)',
               color: region === r ? 'var(--rice)' : 'var(--ink)',
               border: '1.5px solid var(--ink)',
               fontFamily: 'var(--font-display)',
               fontSize: '1.125rem',
-              letterSpacing: '0.2em',
+              letterSpacing: '0.25em',
               cursor: 'pointer',
               transition: 'all 300ms var(--ease-out)',
             }}
@@ -112,12 +113,16 @@ export function Path() {
         ))}
       </div>
 
+      {/* 域卡片网格 */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(0, 14rem))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(14rem, 1fr))',
           gap: '1.5rem',
           marginBottom: '3rem',
+          maxWidth: '36rem',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
       >
         {REGION_KEYS.filter(d => DOMAIN_REGION[d] === region).map(d => {
@@ -137,34 +142,50 @@ export function Path() {
               aria-pressed={active}
               aria-label={`${meta.name} · ${meta.sub}`}
               style={{
-                padding: '1.5rem 1.25rem',
-                textAlign: 'left',
+                padding: '1.75rem 1.25rem',
+                textAlign: 'center',
                 background: active ? 'var(--rice-warm)' : 'transparent',
-                border: `1.5px solid ${active ? 'var(--cinnabar)' : 'var(--rice-deep)'}`,
+                border: `2px solid ${active ? 'var(--cinnabar)' : 'var(--rice-deep)'}`,
                 cursor: readyFlag ? 'pointer' : 'not-allowed',
-                opacity: readyFlag ? 1 : 0.45,
+                opacity: readyFlag ? 1 : 0.5,
                 transition: 'all 300ms var(--ease-out)',
-                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '13rem',
               }}
             >
               <h2
                 style={{
-                  marginBottom: '0.5rem',
-                  fontSize: '1.25rem',
+                  marginBottom: '0.75rem',
+                  fontSize: '1.35rem',
                   fontFamily: 'var(--font-display)',
+                  letterSpacing: '0.15em',
                 }}
               >
                 {meta.name}
               </h2>
-              <p style={{ color: 'var(--ink-faint)', fontSize: '0.875rem', margin: 0 }}>
+              <p
+                style={{
+                  color: 'var(--ink-faint)',
+                  fontSize: '0.9rem',
+                  margin: '0 0 1rem 0',
+                  lineHeight: 1.7,
+                  wordBreak: 'keep-all',
+                  overflowWrap: 'break-word',
+                  maxWidth: '100%',
+                }}
+              >
                 {meta.sub}
               </p>
               <p
                 style={{
-                  marginTop: '0.75rem',
+                  marginTop: 'auto',
                   fontFamily: 'var(--font-display)',
                   color: readyFlag ? 'var(--jade)' : 'var(--ash)',
-                  fontSize: '0.875rem',
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.1em',
                 }}
               >
                 {readyFlag ? t.path.peopleCount(count) : t.path.pending}

@@ -216,7 +216,7 @@ export function Reflection() {
           fontFamily: 'var(--font-accent)',
         }}
       >
-        ❖ ─── ✦ ─── ❖
+        ✦ ─── ◆ ─── ✦
       </div>
       {/* 顶部印章与标题 */}
       <header style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -250,23 +250,26 @@ export function Reflection() {
         </p>
       </header>
 
-      {/* ── 主镜：人像 + 诗赋 ── */}
+      {/* ─ 主镜：人像 + 诗赋 ─ */}
       <section
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.6fr)',
           gap: '2rem',
           marginBottom: '3.5rem',
+          textAlign: 'left',
         }}
         className="jx-ref-grid jx-stagger"
       >
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
           <div style={{ maxWidth: '220px', width: '100%' }}>
             <Portrait figure={primary.figure} />
           </div>
         </div>
         <div>
-          <Verse text={primary.figure.signature} gloss={primary.figure.bio} />
+          <div style={{ textAlign: 'left' }}>
+            <Verse text={primary.figure.signature} gloss={primary.figure.bio} />
+          </div>
           <div
             className="jx-blurb"
             style={{
@@ -277,6 +280,7 @@ export function Reflection() {
               fontFamily: 'var(--font-display)',
               fontSize: '1.05rem',
               lineHeight: 1.9,
+              textAlign: 'left',
             }}
           >
             {primary.blurb}

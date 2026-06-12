@@ -25,7 +25,7 @@ export function Prologue() {
           opacity: 0.6,
         }}
       >
-        ❖ ─── ✦ ─── ❖
+        ✦ ─── ◆ ─── ✦
       </div>
 
       <div style={{ textAlign: 'center', padding: '3rem 0 2rem' }}>
