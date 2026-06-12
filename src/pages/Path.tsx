@@ -124,7 +124,9 @@ export function Path() {
               >
                 {meta.name}
               </h2>
-              <p style={{ color: 'var(--ink-faint)', fontSize: '0.875rem', margin: 0 }}>{meta.sub}</p>
+              <p style={{ color: 'var(--ink-faint)', fontSize: '0.875rem', margin: 0 }}>
+                {meta.sub}
+              </p>
               <p
                 style={{
                   marginTop: '0.75rem',

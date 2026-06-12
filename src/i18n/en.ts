@@ -33,8 +33,14 @@ export const en: Dict = {
         },
       ],
       [
-        { text: 'Three thousand years live in the glass', gloss: 'Seek not without; thy answer is the reflection.' },
-        { text: 'Their shadow is not thou, yet not-not-thou.', gloss: 'Ask: if thou wert he, how wouldst thou live?' },
+        {
+          text: 'Three thousand years live in the glass',
+          gloss: 'Seek not without; thy answer is the reflection.',
+        },
+        {
+          text: 'Their shadow is not thou, yet not-not-thou.',
+          gloss: 'Ask: if thou wert he, how wouldst thou live?',
+        },
       ],
       [
         { text: 'Enter', gloss: 'Three minutes, three millennia.' },
@@ -51,10 +57,19 @@ export const en: Dict = {
     region: { east: 'East', west: 'West' },
     domains: {
       'east-literati': { name: 'Literati', sub: 'Poets, lyricists, essayists, thinkers' },
-      'east-statesman': { name: 'Statesmen', sub: 'Chancellors, generals, reformers, loyal hearts' },
+      'east-statesman': {
+        name: 'Statesmen',
+        sub: 'Chancellors, generals, reformers, loyal hearts',
+      },
       'east-scientist': { name: 'Scientists', sub: 'Astronomy, math, medicine, engineering' },
-      'west-philosopher': { name: 'Philosophers', sub: 'Greek, continental, Anglo-American thought' },
-      'west-scientist': { name: 'Scientists & Ideas', sub: 'Founders of modern science and thought' },
+      'west-philosopher': {
+        name: 'Philosophers',
+        sub: 'Greek, continental, Anglo-American thought',
+      },
+      'west-scientist': {
+        name: 'Scientists & Ideas',
+        sub: 'Founders of modern science and thought',
+      },
     },
     start: 'Begin',
     pending: 'Forthcoming',
@@ -79,7 +94,8 @@ export const en: Dict = {
       `Thou ${user} · Ancient ${fig} ——${comment}`,
     changeDomain: 'Change Domain',
     reset: 'Begin Anew',
-    lowConfidence: '(Few answers given — this is but a faint reflection. Answer more for a clearer mirror.)',
+    lowConfidence:
+      '(Few answers given — this is but a faint reflection. Answer more for a clearer mirror.)',
     share: 'Share Mirror',
     exportJSON: 'Export JSON',
     importJSON: 'Import JSON',
