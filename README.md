@@ -56,16 +56,16 @@
 
 ## 🛠 技术栈
 
-| 类别 | 选型 |
-|---|---|
-| 框架 | React 18 + TypeScript 5.5 |
-| 构建 | Vite 5 |
-| 状态 | Zustand 4 |
-| 路由 | 无（单页 + localStorage 状态机） |
-| 样式 | 原生 CSS + 主题变量 (`src/index.css`) |
-| 字体 | 霞鹜文楷 / 思源宋体（系统回落） |
-| PWA | 原生 Service Worker（无 Workbox） |
-| 部署 | GitHub Pages (Actions) |
+| 类别 | 选型                                      |
+| ---- | ----------------------------------------- |
+| 框架 | React 18 + TypeScript 5.5                 |
+| 构建 | Vite 5                                    |
+| 状态 | Zustand 4                                 |
+| 路由 | 无（单页 + localStorage 状态机）          |
+| 样式 | 原生 CSS + 主题变量 (`src/index.css`)     |
+| 字体 | 霞鹜文楷 / 思源宋体（系统回落）           |
+| PWA  | 原生 Service Worker（无 Workbox）         |
+| 部署 | GitHub Pages (Actions)                    |
 | 许可 | [PolyForm Noncommercial 1.0.0](./LICENSE) |
 
 无第三方追踪 SDK。无埋点。无后端。
@@ -166,16 +166,16 @@ UI 文案在 [`src/i18n/zh.ts`](./src/i18n/zh.ts) 与 [`src/i18n/en.ts`](./src/i
 
 ## 🧪 质量保证
 
-| 工具 | 范围 | 配置 |
-|---|---|---|
-| `tsc --noEmit` | 类型 | `tsconfig.json` |
-| `prettier` | 格式 | `.prettierrc` |
-| `npm test` | 金样例 5/5 | `tests/golden.spec.mjs` |
-| Lighthouse CI | perf ≥ 85 / a11y ≥ 95 / seo ≥ 90 | `.lighthouserc.json` |
-| axe-core | a11y (WCAG AA) | `tests/axe.mjs` |
-| Playwright E2E | 4 视口 (320/375/768/1280) | `tests/e2e.mjs` |
-| size-limit | 体积预算 ≤ 280 KB gzip | `.size-limit.json` |
-| link-check | 站内 .md 引用 | `tests/link-check.mjs` |
+| 工具           | 范围                             | 配置                    |
+| -------------- | -------------------------------- | ----------------------- |
+| `tsc --noEmit` | 类型                             | `tsconfig.json`         |
+| `prettier`     | 格式                             | `.prettierrc`           |
+| `npm test`     | 金样例 5/5                       | `tests/golden.spec.mjs` |
+| Lighthouse CI  | perf ≥ 85 / a11y ≥ 95 / seo ≥ 90 | `.lighthouserc.json`    |
+| axe-core       | a11y (WCAG AA)                   | `tests/axe.mjs`         |
+| Playwright E2E | 4 视口 (320/375/768/1280)        | `tests/e2e.mjs`         |
+| size-limit     | 体积预算 ≤ 280 KB gzip           | `.size-limit.json`      |
+| link-check     | 站内 .md 引用                    | `tests/link-check.mjs`  |
 
 ---
 
@@ -184,6 +184,7 @@ UI 文案在 [`src/i18n/zh.ts`](./src/i18n/zh.ts) 与 [`src/i18n/en.ts`](./src/i
 请先阅读 [CONTRIBUTING.md](./CONTRIBUTING.md) 与 [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)。
 
 **添域步骤**（详见 [CONTRIBUTING.md](./CONTRIBUTING.md)）：
+
 1. 在 `src/domain/figures/figures.<your-domain>.ts` 写 30+ 人
 2. 在 `src/domain/items/items.<your-domain>.ts` 写 48 题
 3. 在两个 `*.index.ts` 注册新域
