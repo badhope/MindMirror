@@ -44,10 +44,36 @@ export function Path() {
   const ready = picked && chosen > 0;
 
   return (
-    <section className="jx-container jx-fade-enter" aria-labelledby="path-title">
+    <section className="jx-container jx-page-enter" aria-labelledby="path-title">
+      {/* 顶部装饰 */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: 'center',
+          color: 'var(--ink-faint)',
+          fontSize: '0.8rem',
+          letterSpacing: '0.6em',
+          marginBottom: '1.5rem',
+          opacity: 0.5,
+          fontFamily: 'var(--font-accent)',
+        }}
+      >
+        ✦ ─── ❖ ─── ✦
+      </div>
+
       <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 id="path-title">{t.path.title}</h1>
-        <p style={{ color: 'var(--ink-soft)' }}>{t.path.prompt}</p>
+        <h1 id="path-title" className="jx-ink-spread">
+          {t.path.title}
+        </h1>
+        <p
+          style={{
+            color: 'var(--ink-soft)',
+            fontFamily: 'var(--font-accent)',
+            fontSize: '1.05rem',
+          }}
+        >
+          {t.path.prompt}
+        </p>
       </header>
 
       <div
@@ -78,7 +104,7 @@ export function Path() {
               fontSize: '1.125rem',
               letterSpacing: '0.2em',
               cursor: 'pointer',
-              transition: 'all 200ms',
+              transition: 'all 300ms var(--ease-out)',
             }}
           >
             {t.path.region[r]}
@@ -117,7 +143,7 @@ export function Path() {
                 border: `1.5px solid ${active ? 'var(--cinnabar)' : 'var(--rice-deep)'}`,
                 cursor: readyFlag ? 'pointer' : 'not-allowed',
                 opacity: readyFlag ? 1 : 0.45,
-                transition: 'all 200ms',
+                transition: 'all 300ms var(--ease-out)',
                 position: 'relative',
               }}
             >
@@ -150,6 +176,19 @@ export function Path() {
 
       {picked && (
         <div className="jx-fade-enter" style={{ textAlign: 'center' }}>
+          {/* 装饰分隔 */}
+          <div
+            aria-hidden
+            style={{
+              color: 'var(--cinnabar)',
+              fontSize: '0.9rem',
+              letterSpacing: '0.5em',
+              opacity: 0.4,
+              marginBottom: '1.5rem',
+            }}
+          >
+            ── ◈ ──
+          </div>
           <Verse
             text={`${t.path.region[DOMAIN_REGION[picked]]} · ${t.path.domains[picked].name}`}
             gloss={t.path.picked}
@@ -166,6 +205,21 @@ export function Path() {
           </div>
         </div>
       )}
+
+      {/* 底部装饰 */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: 'center',
+          color: 'var(--ink-faint)',
+          fontSize: '0.7rem',
+          letterSpacing: '0.4em',
+          marginTop: '3rem',
+          opacity: 0.3,
+        }}
+      >
+        ✧ · · ✧ · · ✧
+      </div>
     </section>
   );
 }

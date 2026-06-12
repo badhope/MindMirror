@@ -17,6 +17,7 @@
   /* ── 字 ── 加大加粗，古风感 ── */
   --font-display: '华文行楷', 'STXingkai', '楷体', 'KaiTi', 'STKaiti', '华文楷体', serif;
   --font-body: '华文宋体', 'STSong', '宋体', 'SimSun', 'Songti SC', serif;
+  --font-accent: '华文隶书', 'STLiti', '隶书', 'LiSu', '华文行楷', serif;
 
   /* ── 节奏 ── 加长停顿 ── */
   --t-fast: 400ms;
@@ -270,19 +271,105 @@ p {
   }
 }
 
-/* 卷轴展开 */
+/* ─── 页面切换动画：卷轴翻页效果 ─── */
+.jx-page-enter {
+  animation: jx-page-flip-in 1200ms var(--ease-in-out) both;
+}
+
+.jx-page-exit {
+  animation: jx-page-flip-out 600ms var(--ease-in-out) both;
+}
+
+@keyframes jx-page-flip-in {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(-15deg) translateX(-40px);
+    filter: blur(4px);
+  }
+  40% {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0) translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes jx-page-flip-out {
+  0% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(15deg) translateX(40px);
+    filter: blur(4px);
+  }
+}
+
+/* 卷轴展开 - 增强版 */
 .jx-scroll-reveal {
   animation: jx-scroll-open var(--t-slow) var(--ease-in-out) both;
 }
 
 @keyframes jx-scroll-open {
-  from {
+  0% {
     opacity: 0;
     clip-path: inset(0 50% 0 50%);
+    transform: scaleY(0.8);
   }
-  to {
+  50% {
+    opacity: 0.7;
+    transform: scaleY(0.95);
+  }
+  100% {
     opacity: 1;
     clip-path: inset(0 0 0 0);
+    transform: scaleY(1);
+  }
+}
+
+/* 墨迹晕染进入 */
+.jx-ink-spread {
+  animation: jx-ink-spread-in 1000ms var(--ease-out) both;
+}
+
+@keyframes jx-ink-spread-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    filter: blur(8px);
+  }
+  60% {
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* 竹简展开 */
+.jx-bamboo-unfold {
+  animation: jx-bamboo-unfold 1400ms var(--ease-in-out) both;
+}
+
+@keyframes jx-bamboo-unfold {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.3);
+    transform-origin: left center;
+  }
+  50% {
+    opacity: 0.8;
+    transform: scaleX(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
   }
 }
 

@@ -203,6 +203,21 @@ export function Reflection() {
       aria-labelledby="ref-title"
       style={{ maxWidth: '64rem' }}
     >
+      {/* 顶部装饰 */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: 'center',
+          color: 'var(--ink-faint)',
+          fontSize: '0.8rem',
+          letterSpacing: '0.6em',
+          marginBottom: '1.5rem',
+          opacity: 0.5,
+          fontFamily: 'var(--font-accent)',
+        }}
+      >
+        ❖ ─── ✦ ─── ❖
+      </div>
       {/* 顶部印章与标题 */}
       <header style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
         <p

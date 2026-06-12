@@ -102,10 +102,25 @@ export function Way() {
 
   return (
     <section
-      className="jx-container-narrow jx-fade-enter"
+      className="jx-container-narrow jx-page-enter"
       aria-labelledby="way-title"
       style={{ maxWidth: '42rem' }}
     >
+      {/* 顶部装饰 */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: 'center',
+          color: 'var(--ink-faint)',
+          fontSize: '0.75rem',
+          letterSpacing: '0.5em',
+          marginBottom: '1rem',
+          opacity: 0.4,
+          fontFamily: 'var(--font-accent)',
+        }}
+      >
+        ✦ ─── ✦
+      </div>
       <header style={{ marginBottom: '2rem' }}>
         {/* 双进度：当前题进度 + 已答数进度 */}
         <div
@@ -393,6 +408,21 @@ export function Way() {
       >
         键盘：← → 切换 · 1-6 选答 · Enter 确认
       </p>
+
+      {/* 底部装饰 */}
+      <div
+        aria-hidden
+        style={{
+          textAlign: 'center',
+          color: 'var(--ink-faint)',
+          fontSize: '0.7rem',
+          letterSpacing: '0.4em',
+          marginTop: '1.5rem',
+          opacity: 0.3,
+        }}
+      >
+        ✧ · · ✧ · · ✧
+      </div>
 
       {/* 重置 */}
       <div
