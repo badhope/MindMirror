@@ -1,9 +1,9 @@
 {
-  "name": "jingxin",
+  "name": "mindmirror",
   "version": "0.1.0",
   "private": true,
-  "description": "Jingxin (镜心) is a static, privacy-first tool that maps your answers across a 12-dimensional trait space to a historical figure — literary masters of China first, then more. All math runs in the browser; nothing is sent to a server.",
-  "description_zh": "镜心 —— 一面问己之镜。以十二维特征空间将汝之答映射至千古人物，先就东方文人墨客，再及其余。纯前端、纯本地、无后端、无账号。",
+  "description": "MindMirror (镜心) is a static, privacy-first tool that maps your answers across a 12-dimensional trait space to a historical figure — literary masters of China first, then more. All math runs in the browser; nothing is sent to a server.",
+  "description_zh": "MindMirror · 镜心 —— 一面问己之镜。以十二维特征空间将汝之答映射至千古人物，先就东方文人墨客，再及其余。纯前端、纯本地、无后端、无账号。",
   "type": "module",
   "engines": {
     "node": ">=18.0.0",
@@ -17,6 +17,10 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "tsx tests/golden.spec.mjs",
+    "test:e2e": "node tests/e2e.mjs",
+    "test:record": "node tests/record-e2e.mjs",
+    "test:capture": "node tests/capture-states.mjs",
+    "test:multi": "node tests/multi-shot.mjs",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\" \"*.{json,md,yml,yaml}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,md}\" \"*.{json,md,yml,yaml}\"",
     "gen:portraits": "node scripts/gen-portraits.mjs"
@@ -26,7 +30,8 @@
     "url": "https://github.com/badhope/MindMirror.git"
   },
   "keywords": [
-    "jingxin",
+    "mindmirror",
+    "MindMirror",
     "镜心",
     "trait-space",
     "personality",
@@ -69,8 +74,9 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "playwright": "^1.60.0",
     "prettier": "^3.3.3",
-    "tsx": "^4.16.2",
+    "tsx": "^4.22.4",
     "typescript": "~5.5.3",
     "vite": "^5.3.4"
   }

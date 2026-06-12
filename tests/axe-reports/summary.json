@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "desktop",
+    "scene": "prologue",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  },
+  {
+    "viewport": "desktop",
+    "scene": "path",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  },
+  {
+    "viewport": "desktop",
+    "scene": "way",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  },
+  {
+    "viewport": "mobile",
+    "scene": "prologue",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  },
+  {
+    "viewport": "mobile",
+    "scene": "path",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  },
+  {
+    "viewport": "mobile",
+    "scene": "way",
+    "violations": 0,
+    "criticalSerious": 0,
+    "incomplete": 2
+  }
+]

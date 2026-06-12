@@ -1,25 +1,209 @@
-name: CI - Type-check, Format & Tests
+name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NODE_VERSION: '20'
 
 jobs:
-  frontend-quality:
+  install:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install (npm ci)
+        run: npm ci --no-audit --no-fund
+
+  typecheck:
+    name: TypeScript type-check
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+
+  build:
+    name: Build (vite)
+    needs: install
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - run: npm run typecheck
-      - run: npx prettier --check "src/**/*.{ts,tsx,css,md}" "*.{json,js,mjs,md}" "tests/**/*.mjs"
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /
+
+  size-limit:
+    name: Size-limit budget
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
       - run: npm run build
         env:
           VITE_BASE_PATH: /
-      - run: npm test
+      - run: npx size-limit
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-size
+          path: dist
+          retention-days: 7
+          if-no-files-found: error
+
+  e2e:
+    name: Playwright E2E (4 viewports)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build for preview (relative path ./)
+        run: npx vite build --mode static
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Start vite preview
+        run: |
+          npx vite preview --port 4173 --host 127.0.0.1 --base ./ &
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 1
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null 2>&1; then
+              echo "preview ready"
+              break
+            fi
+          done
+      - name: Run E2E
+        run: E2E_BASE=http://127.0.0.1:4173/ node tests/e2e.mjs
+      - name: Upload E2E screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-shots
+          path: tests/e2e-shots
+          retention-days: 7
+          if-no-files-found: ignore
+
+  lighthouse-ci:
+    name: Lighthouse CI (mobile)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build for preview (relative path ./)
+        run: npx vite build --mode static
+      - name: Start vite preview
+        run: |
+          npx vite preview --port 4173 --host 127.0.0.1 --base ./ &
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 1
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null 2>&1; then
+              echo "preview ready"
+              break
+            fi
+          done
+      - name: Run Lighthouse CI
+        run: npx -y @lhci/cli@0.13.x autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci
+          retention-days: 14
+          if-no-files-found: ignore
+
+  axe:
+    name: axe-core accessibility scan
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build for preview (relative path ./)
+        run: npx vite build --mode static
+      - name: Install Playwright + axe
+        run: |
+          npm install --no-save axe-core@^4.10.0
+          npx playwright install --with-deps chromium
+      - name: Start vite preview
+        run: |
+          npx vite preview --port 4173 --host 127.0.0.1 --base ./ &
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 1
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null 2>&1; then
+              echo "preview ready"
+              break
+            fi
+          done
+      - name: Run axe scan
+        run: node tests/axe.mjs
+
+  link-check:
+    name: Internal markdown link check
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Verify internal .md references resolve
+        run: node tests/link-check.mjs

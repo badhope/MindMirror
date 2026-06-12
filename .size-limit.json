@@ -1,0 +1,32 @@
+[
+  {
+    "name": "vendor-react (React + ReactDOM)",
+    "path": "dist/assets/vendor-react-*.js",
+    "limit": "200 KB",
+    "gzip": true
+  },
+  {
+    "name": "index (应用主 bundle)",
+    "path": "dist/assets/index-*.js",
+    "limit": "220 KB",
+    "gzip": true
+  },
+  {
+    "name": "vendor-state (Zustand 等状态)",
+    "path": "dist/assets/vendor-state-*.js",
+    "limit": "12 KB",
+    "gzip": true
+  },
+  {
+    "name": "css (主样式表)",
+    "path": "dist/assets/index-*.css",
+    "limit": "14 KB",
+    "gzip": true
+  },
+  {
+    "name": "TOTAL gzipped (所有 JS+CSS)",
+    "path": "dist/assets/*.{js,css}",
+    "limit": "280 KB",
+    "gzip": true
+  }
+]
