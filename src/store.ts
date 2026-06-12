@@ -55,7 +55,7 @@ const applyTheme = (th: Theme) => {
 
 export const useStore = create<State & Actions>()(
   persist(
-    (set) => ({
+    set => ({
       phase: 'prologue',
       domain: null,
       answers: {},
@@ -112,7 +112,7 @@ export const useStore = create<State & Actions>()(
         domain: s.domain,
         currentIndex: s.currentIndex,
       }),
-      onRehydrateStorage: () => (s) => {
+      onRehydrateStorage: () => s => {
         if (s) applyTheme(s.theme);
       },
     }

@@ -180,7 +180,11 @@ export function Reflection() {
               style={{ marginTop: '1rem', color: 'var(--ink-faint)', fontSize: '0.9rem' }}
             >
               <summary
-                style={{ cursor: 'pointer', fontFamily: 'var(--font-display)', color: 'var(--ink)' }}
+                style={{
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  color: 'var(--ink)',
+                }}
               >
                 {t.reflection.anecdote} ▾
               </summary>
@@ -248,20 +252,22 @@ export function Reflection() {
           className="jx-ref-grid"
         >
           <TraitRadar
-            user={report.traitBreakdown.map(b => b.user) as unknown as [
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-              number,
-            ]}
+            user={
+              report.traitBreakdown.map(b => b.user) as unknown as [
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+                number,
+              ]
+            }
             figure={primary.figure.vector}
           />
           <div>
@@ -313,11 +319,7 @@ export function Reflection() {
           flexWrap: 'wrap',
         }}
       >
-        <BrushButton
-          variant="primary"
-          onClick={handleShare}
-          data-testid="btn-share"
-        >
+        <BrushButton variant="primary" onClick={handleShare} data-testid="btn-share">
           {t.reflection.share}
         </BrushButton>
         <BrushButton onClick={handleCopyResume} data-testid="btn-copy-resume">
