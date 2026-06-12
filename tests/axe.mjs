@@ -11,10 +11,7 @@ const require = createRequire(import.meta.url);
 // axe-core 不一定在 dependencies 里；从 node_modules 兜底解析
 let axeSource;
 try {
-  axeSource = readFileSync(
-    require.resolve('axe-core/axe.min.js'),
-    'utf8'
-  );
+  axeSource = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 } catch (e) {
   console.error('axe-core 未安装。请先运行：npm install --no-save axe-core@^4.10.0');
   process.exit(1);
@@ -30,7 +27,11 @@ const SCENES = [
   {
     name: 'path',
     setup: async page => {
-      await page.locator('button').filter({ hasText: /入镜|开始|启程|照己|照一照/i }).first().click();
+      await page
+        .locator('button')
+        .filter({ hasText: /入镜|开始|启程|照己|照一照/i })
+        .first()
+        .click();
       await page.waitForTimeout(500);
     },
   },
@@ -108,7 +109,9 @@ async function scanScene(browser, viewport, scene) {
       );
       const tag = `[${viewport.name}/${scene.name}]`;
       if (criticalOrSerious.length === 0) {
-        console.log(`  ✓ ${tag}  无 critical/serious 违规 (${violations.length} minor / ${incomplete.length} 待复核)`);
+        console.log(
+          `  ✓ ${tag}  无 critical/serious 违规 (${violations.length} minor / ${incomplete.length} 待复核)`
+        );
       } else {
         console.log(`  ✗ ${tag}  ${criticalOrSerious.length} critical/serious 违规`);
         for (const v of criticalOrSerious) {
@@ -131,10 +134,7 @@ async function scanScene(browser, viewport, scene) {
   await browser.close();
 
   // 写总览
-  writeFileSync(
-    join(REPORT_DIR, 'summary.json'),
-    JSON.stringify(summary, null, 2)
-  );
+  writeFileSync(join(REPORT_DIR, 'summary.json'), JSON.stringify(summary, null, 2));
 
   // 终判：任何 critical/serious 即 fail
   const totalFail = summary.reduce((acc, s) => acc + s.criticalSerious, 0);

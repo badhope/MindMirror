@@ -29,7 +29,11 @@ const PHASES = ['prologue', 'way', 'reflection'];
 const KEY_SELECTORS = {
   prologue: ['[data-testid="btn-enter"]', 'h1#prologue-title', '.jx-seal-large'],
   way: ['[data-testid="way-prompt"]', '[data-role="option"]', '[data-testid="way-nav"]'],
-  reflection: ['[data-figure="primary"]', '[data-testid="trait-radar"]', '[data-figure="alternate"]'],
+  reflection: [
+    '[data-figure="primary"]',
+    '[data-testid="trait-radar"]',
+    '[data-figure="alternate"]',
+  ],
 };
 
 function sleep(ms) {

@@ -93,7 +93,10 @@ async function run(browserName, viewport, locale) {
     await page.waitForTimeout(900);
   })(page);
 
-  await page.screenshot({ path: join(SHOTS, `${viewport.width}-02-way-start.png`), fullPage: true });
+  await page.screenshot({
+    path: join(SHOTS, `${viewport.width}-02-way-start.png`),
+    fullPage: true,
+  });
 
   // 3. 答 48 题：每题轮询点同一位置（option index = currentIndex % 6）模拟"无偏好"
   await step('03 答题：循环 48 题', async () => {
@@ -135,7 +138,10 @@ async function run(browserName, viewport, locale) {
     await page.waitForTimeout(500); // 等动画
   })(page);
 
-  await page.screenshot({ path: join(SHOTS, `${viewport.width}-04-reflection.png`), fullPage: true });
+  await page.screenshot({
+    path: join(SHOTS, `${viewport.width}-04-reflection.png`),
+    fullPage: true,
+  });
 
   // 5. 验证映照
   await step('05 映照：主镜 + 同道 + 12 维', async () => {
@@ -178,7 +184,10 @@ async function run(browserName, viewport, locale) {
     await page.waitForTimeout(300);
     // 答 5 题
     for (let i = 0; i < 5; i++) {
-      await page.locator('[data-role="option"]').nth(i % 6).click();
+      await page
+        .locator('[data-role="option"]')
+        .nth(i % 6)
+        .click();
       const ne = await page.locator('[data-testid="btn-next"]').count();
       if (ne) await page.locator('[data-testid="btn-next"]').click();
       await page.waitForTimeout(20);
@@ -205,11 +214,17 @@ async function run(browserName, viewport, locale) {
     for (let i = 5; i < 48; i++) {
       const optExists = await page.locator('[data-role="option"]').count();
       if (optExists === 0) break;
-      await page.locator('[data-role="option"]').nth(i % 6).click();
+      await page
+        .locator('[data-role="option"]')
+        .nth(i % 6)
+        .click();
       const ne = await page.locator('[data-testid="btn-next"]').count();
       const fe = await page.locator('[data-testid="btn-finish"]').count();
       if (ne) await page.locator('[data-testid="btn-next"]').click();
-      else if (fe) { await page.locator('[data-testid="btn-finish"]').click(); break; }
+      else if (fe) {
+        await page.locator('[data-testid="btn-finish"]').click();
+        break;
+      }
       await page.waitForTimeout(20);
     }
     await page.waitForSelector('[data-figure="primary"]', { timeout: 5000 });
@@ -261,7 +276,7 @@ async function run(browserName, viewport, locale) {
     await page.waitForTimeout(500);
     // 在最后一题
     const finish = page.locator('[data-testid="btn-finish"]').first();
-    if (await finish.count() === 0) throw new Error('应可见出镜按钮');
+    if ((await finish.count()) === 0) throw new Error('应可见出镜按钮');
     // 但仅答 5 题，所以应禁用
     const isDisabled = await finish.evaluate(b => b.disabled);
     if (!isDisabled) throw new Error('仅 5 题时出镜按钮应禁用');
@@ -275,7 +290,7 @@ async function run(browserName, viewport, locale) {
   // 11. 语言切换：EN/中
   await step('11 语言切换', async () => {
     const toggle = page.getByRole('button', { name: /^EN$|^中$/ }).first();
-    if (await toggle.count() > 0) {
+    if ((await toggle.count()) > 0) {
       const phaseBefore = await page.locator('[data-testid="topbar-phase"]').textContent();
       await toggle.click();
       await page.waitForTimeout(100);
@@ -299,9 +314,11 @@ async function run(browserName, viewport, locale) {
   await run('mobile-narrow', { width: 320, height: 568 }, 'zh');
 
   console.log('\n── 总览');
-  let ok = 0, fail = 0;
+  let ok = 0,
+    fail = 0;
   for (const r of REPORT) {
-    if (r.ok) ok++; else fail++;
+    if (r.ok) ok++;
+    else fail++;
   }
   console.log(`OK ${ok} / FAIL ${fail}`);
   if (fail > 0) {
