@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f5efe0" />
+
+    <title>MindMirror · 镜心 · 一面问己之镜</title>
+    <meta name="description" content="MindMirror · 镜心——一面问己之镜。以十二维特征空间将汝之答映射至千古人物。先就东方文人墨客，再及其余。纯前端、纯本地、无后端、无账号。" />
+    <meta name="keywords" content="MindMirror,镜心,东方文人,文人墨客,千古人物,性格匹配,十二维,纯前端,localStorage" />
+    <meta name="author" content="badhope" />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://badhope.github.io/MindMirror/" />
+    <meta property="og:title" content="MindMirror · 镜心 · 一面问己之镜" />
+    <meta property="og:description" content="一面问己之镜。以十二维特征空间将汝之答映射至千古人物。纯前端、纯本地、无后端、无账号。" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="MindMirror · 镜心" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="镜心 · 一面问己之镜" />
+    <meta name="twitter:description" content="一面问己之镜。纯前端 · 纯本地 · 无后端。" />
+
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./favicon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="镜心" />
+    <link rel="alternate" hreflang="zh" href="https://badhope.github.io/MindMirror/" />
+    <link rel="alternate" hreflang="x-default" href="https://badhope.github.io/MindMirror/" />
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- C11 性能：关键资源 preload -->
+    <link rel="preload" href="./favicon.svg" as="image" type="image/svg+xml" />
+    <link rel="preload" href="./patterns/rice-paper.svg" as="image" type="image/svg+xml" />
+
+    <style>
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: #f5efe0;
+        color: #1a1a1a;
+        font-family: '思源宋体', 'Source Han Serif SC', 'Songti SC', 'STSong', '宋体', serif;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      #jx-boot {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+      }
+      #jx-boot .seal {
+        width: 64px; height: 64px; margin: 0 auto 20px;
+        background: #a8322e; color: #f5efe0;
+        font-family: '霞鹜文楷','LXGW WenKai','STKaiti',serif;
+        font-size: 32px; line-height: 64px;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(168,50,46,0.2);
+      }
+      #jx-boot h1 {
+        margin: 0 0 12px;
+        font-family: '霞鹜文楷','LXGW WenKai','STKaiti',serif;
+        font-weight: 400;
+        font-size: 32px;
+        letter-spacing: 0.3em;
+      }
+      #jx-boot p { margin: 0 0 24px; color: #5a5a5a; max-width: 480px; }
+      #jx-boot .spin {
+        display: inline-flex; gap: 10px; align-items: center;
+        padding: 10px 20px; background: #ebe3cf; border-radius: 999px;
+        font-size: 14px; color: #5a5a5a;
+      }
+      #jx-boot .dot {
+        width: 12px; height: 12px;
+        border: 2px solid #c8b88a;
+        border-top-color: #a8322e;
+        border-radius: 50%;
+        animation: jx-spin 0.8s linear infinite;
+      }
+      @keyframes jx-spin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="jx-boot">
+        <div>
+          <div class="seal">镜</div>
+          <h1>镜心</h1>
+          <p>一面问己之镜。三分钟，三千年。</p>
+          <div class="spin"><span class="dot"></span> 入镜中…</div>
+        </div>
+      </div>
+    </div>
+    <noscript>
+      <div style="max-width:640px;margin:80px auto;text-align:center;padding:0 20px;font-family:serif">
+        <h1>镜心 需 JavaScript 方可入镜</h1>
+        <p>镜心 是一面纯前端的问己之镜。请开启 JavaScript，再来照一照。</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- C10 PWA：注册 SW -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
