@@ -66,6 +66,5 @@ backend/.venv/
 backend/venv/
 backend/.env
 .trae/
-!.trae/documents/
 
 # Trae IDE workspace metadata
