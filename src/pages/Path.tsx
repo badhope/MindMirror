@@ -47,7 +47,7 @@ export function Path() {
     <section className="jx-container jx-fade-enter" aria-labelledby="path-title">
       <header style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h1 id="path-title">{t.path.title}</h1>
-        <p style={{ color: 'var(--ink-faint)' }}>{t.path.prompt}</p>
+        <p style={{ color: 'var(--ink-soft)' }}>{t.path.prompt}</p>
       </header>
 
       <div
