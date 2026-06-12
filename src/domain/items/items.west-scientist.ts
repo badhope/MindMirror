@@ -6,7 +6,8 @@ import type { Item } from './item.types';
 export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
   // ── T1 思辨 ──
   {
-    id: 'ws-001', format: 'situational',
+    id: 'ws-001',
+    format: 'situational',
     prompt: '自然之序',
     promptGloss: '万物运行，汝信何种秩序？',
     options: [
@@ -19,7 +20,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-002', format: 'situational',
+    id: 'ws-002',
+    format: 'situational',
     prompt: '旧说之破',
     promptGloss: '权威之言与新证相违，汝何从？',
     options: [
@@ -32,7 +34,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-003', format: 'imagery',
+    id: 'ws-003',
+    format: 'imagery',
     prompt: '可见与可知',
     promptGloss: '汝欲见何物？',
     options: [
@@ -45,7 +48,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-004', format: 'situational',
+    id: 'ws-004',
+    format: 'situational',
     prompt: '未证之理',
     promptGloss: '一理尚未证，汝敢言其有乎？',
     options: [
@@ -60,7 +64,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T2 情感 ──
   {
-    id: 'ws-005', format: 'situational',
+    id: 'ws-005',
+    format: 'situational',
     prompt: '穷理之苦',
     promptGloss: '皓首穷经未必有成，汝何以自处？',
     options: [
@@ -73,7 +78,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-006', format: 'situational',
+    id: 'ws-006',
+    format: 'situational',
     prompt: '同道之讥',
     promptGloss: '同辈讥汝痴，汝何以应？',
     options: [
@@ -86,7 +92,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-007', format: 'imagery',
+    id: 'ws-007',
+    format: 'imagery',
     prompt: '冷月之思',
     promptGloss: '汝于独处，心境为何？',
     options: [
@@ -99,7 +106,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-008', format: 'situational',
+    id: 'ws-008',
+    format: 'situational',
     prompt: '真理之美',
     promptGloss: '当一理之美动汝心，汝何以应？',
     options: [
@@ -114,7 +122,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T3 行动 ──
   {
-    id: 'ws-009', format: 'situational',
+    id: 'ws-009',
+    format: 'situational',
     prompt: '手脑之先',
     promptGloss: '汝先思，抑或先行？',
     options: [
@@ -127,7 +136,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-010', format: 'situational',
+    id: 'ws-010',
+    format: 'situational',
     prompt: '千试一得',
     promptGloss: '一器之成必经千次失败，汝当如何？',
     options: [
@@ -140,7 +150,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-011', format: 'imagery',
+    id: 'ws-011',
+    format: 'imagery',
     prompt: '纸上与器间',
     promptGloss: '汝之所得，归于何处？',
     options: [
@@ -153,7 +164,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-012', format: 'situational',
+    id: 'ws-012',
+    format: 'situational',
     prompt: '屡挫屡战',
     promptGloss: '试而不成、复试复败，汝当如何？',
     options: [
@@ -168,7 +180,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T4 革新 ──
   {
-    id: 'ws-013', format: 'situational',
+    id: 'ws-013',
+    format: 'situational',
     prompt: '旧理已穷',
     promptGloss: '旧理穷而新理未立，汝当如何？',
     options: [
@@ -181,7 +194,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-014', format: 'situational',
+    id: 'ws-014',
+    format: 'situational',
     prompt: '新理之出',
     promptGloss: '新理已得，世人疑之，汝当如何？',
     options: [
@@ -194,7 +208,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-015', format: 'imagery',
+    id: 'ws-015',
+    format: 'imagery',
     prompt: '旧瓶新酒',
     promptGloss: '新理已得，汝欲何载？',
     options: [
@@ -207,7 +222,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-016', format: 'situational',
+    id: 'ws-016',
+    format: 'situational',
     prompt: '新代旧',
     promptGloss: '新理已立，旧制尚存，汝何从？',
     options: [
@@ -222,7 +238,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T5 群我 ──
   {
-    id: 'ws-017', format: 'situational',
+    id: 'ws-017',
+    format: 'situational',
     prompt: '私秘与公器',
     promptGloss: '汝之所得，藏之为私，抑或公之？',
     options: [
@@ -235,7 +252,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-018', format: 'situational',
+    id: 'ws-018',
+    format: 'situational',
     prompt: '学派之争',
     promptGloss: '学派相争，汝当何从？',
     options: [
@@ -248,7 +266,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-019', format: 'imagery',
+    id: 'ws-019',
+    format: 'imagery',
     prompt: '一灯与千灯',
     promptGloss: '汝之灯，欲照几隅？',
     options: [
@@ -261,7 +280,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-020', format: 'situational',
+    id: 'ws-020',
+    format: 'situational',
     prompt: '独研与共研',
     promptGloss: '为学当独，抑或共？',
     options: [
@@ -276,7 +296,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T6 审美 ──
   {
-    id: 'ws-021', format: 'imagery',
+    id: 'ws-021',
+    format: 'imagery',
     prompt: '方程之美',
     promptGloss: '汝观一理，何者动汝？',
     options: [
@@ -289,7 +310,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-022', format: 'situational',
+    id: 'ws-022',
+    format: 'situational',
     prompt: '器之形',
     promptGloss: '一器之形，汝以何为上？',
     options: [
@@ -302,7 +324,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-023', format: 'situational',
+    id: 'ws-023',
+    format: 'situational',
     prompt: '图样之饰',
     promptGloss: '一图之绘，繁简如何？',
     options: [
@@ -315,7 +338,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-024', format: 'imagery',
+    id: 'ws-024',
+    format: 'imagery',
     prompt: '宇宙之象',
     promptGloss: '汝于宇宙之美，何者动汝？',
     options: [
@@ -330,7 +354,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T7 意志 ──
   {
-    id: 'ws-025', format: 'situational',
+    id: 'ws-025',
+    format: 'situational',
     prompt: '千试不成',
     promptGloss: '千试而不成，汝当如何？',
     options: [
@@ -343,7 +368,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-026', format: 'situational',
+    id: 'ws-026',
+    format: 'situational',
     prompt: '众讥汝痴',
     promptGloss: '众人讥汝痴狂，汝当如何？',
     options: [
@@ -356,7 +382,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-027', format: 'imagery',
+    id: 'ws-027',
+    format: 'imagery',
     prompt: '金刚与卵石',
     promptGloss: '汝欲为金刚石，抑或卵石？',
     options: [
@@ -369,7 +396,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-028', format: 'situational',
+    id: 'ws-028',
+    format: 'situational',
     prompt: '穷途之叹',
     promptGloss: '穷途而道不行，汝何以自处？',
     options: [
@@ -384,7 +412,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T8 学识 ──
   {
-    id: 'ws-029', format: 'situational',
+    id: 'ws-029',
+    format: 'situational',
     prompt: '学之博约',
     promptGloss: '学当博，抑或约？',
     options: [
@@ -397,7 +426,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-030', format: 'situational',
+    id: 'ws-030',
+    format: 'situational',
     prompt: '古今之学',
     promptGloss: '今人之学，胜于古人乎？',
     options: [
@@ -410,7 +440,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-031', format: 'imagery',
+    id: 'ws-031',
+    format: 'imagery',
     prompt: '井与海',
     promptGloss: '汝欲为井，抑或海？',
     options: [
@@ -423,7 +454,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-032', format: 'situational',
+    id: 'ws-032',
+    format: 'situational',
     prompt: '通才与专才',
     promptGloss: '为学当通才，抑或专才？',
     options: [
@@ -438,7 +470,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T9 处世 ──
   {
-    id: 'ws-033', format: 'situational',
+    id: 'ws-033',
+    format: 'situational',
     prompt: '仕与隐',
     promptGloss: '才成之后，汝欲何往？',
     options: [
@@ -451,7 +484,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-034', format: 'situational',
+    id: 'ws-034',
+    format: 'situational',
     prompt: '得志与失意',
     promptGloss: '得志则行，失意则隐，汝取何为？',
     options: [
@@ -464,7 +498,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-035', format: 'imagery',
+    id: 'ws-035',
+    format: 'imagery',
     prompt: '舟与塔',
     promptGloss: '汝欲为舟，抑或塔？',
     options: [
@@ -477,7 +512,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-036', format: 'situational',
+    id: 'ws-036',
+    format: 'situational',
     prompt: '身后之名',
     promptGloss: '身后之名，汝欲何为？',
     options: [
@@ -492,7 +528,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T10 时间 ──
   {
-    id: 'ws-037', format: 'situational',
+    id: 'ws-037',
+    format: 'situational',
     prompt: '百代之功',
     promptGloss: '一理之成，可传百代，汝欲何用？',
     options: [
@@ -505,7 +542,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-038', format: 'situational',
+    id: 'ws-038',
+    format: 'situational',
     prompt: '一器与千代',
     promptGloss: '一器可传千代，汝欲为之乎？',
     options: [
@@ -518,7 +556,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-039', format: 'imagery',
+    id: 'ws-039',
+    format: 'imagery',
     prompt: '寸阴与尺璧',
     promptGloss: '寸阴与尺璧，汝取何为贵？',
     options: [
@@ -531,7 +570,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-040', format: 'situational',
+    id: 'ws-040',
+    format: 'situational',
     prompt: '今与古',
     promptGloss: '今人之术，胜于古人乎？',
     options: [
@@ -546,7 +586,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T11 风险 ──
   {
-    id: 'ws-041', format: 'situational',
+    id: 'ws-041',
+    format: 'situational',
     prompt: '未验之器',
     promptGloss: '一器未验，汝敢用之乎？',
     options: [
@@ -559,7 +600,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-042', format: 'situational',
+    id: 'ws-042',
+    format: 'situational',
     prompt: '以身为验',
     promptGloss: '欲验新理，汝以何为试？',
     options: [
@@ -572,7 +614,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-043', format: 'imagery',
+    id: 'ws-043',
+    format: 'imagery',
     prompt: '孤舟与巨浪',
     promptGloss: '新理如孤舟入海，汝何以对？',
     options: [
@@ -585,7 +628,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-044', format: 'situational',
+    id: 'ws-044',
+    format: 'situational',
     prompt: '新理之争',
     promptGloss: '新理一立，旧派阻之，汝当如何？',
     options: [
@@ -600,7 +644,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
 
   // ── T12 表达 ──
   {
-    id: 'ws-045', format: 'situational',
+    id: 'ws-045',
+    format: 'situational',
     prompt: '一理之传',
     promptGloss: '一理已成，汝欲何传？',
     options: [
@@ -613,7 +658,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-046', format: 'situational',
+    id: 'ws-046',
+    format: 'situational',
     prompt: '著书之辞',
     promptGloss: '著书之辞，汝取何格？',
     options: [
@@ -626,7 +672,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-047', format: 'imagery',
+    id: 'ws-047',
+    format: 'imagery',
     prompt: '言之器',
     promptGloss: '传理之器，汝欲何为？',
     options: [
@@ -639,7 +686,8 @@ export const ITEMS_WEST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'ws-048', format: 'situational',
+    id: 'ws-048',
+    format: 'situational',
     prompt: '万言之传',
     promptGloss: '一理之传，汝欲万言以传，抑或千言以传？',
     options: [

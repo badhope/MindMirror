@@ -54,7 +54,10 @@ export const FIGURES_EAST_STATEMAN: readonly Figure[] = [
     portrait: 'portraits/east-statesman/lisi.svg',
     matchBlurb: '汝与 {{name}} 同，善书亦善政，能以尺牍定天下。',
     anecdotes: [
-      { title: '仓鼠之叹', body: '李斯见吏舍厕中鼠食不洁，近人犬，数惊恐；观仓中鼠食积粟，居大庑之下，不见人犬之忧，乃叹。' },
+      {
+        title: '仓鼠之叹',
+        body: '李斯见吏舍厕中鼠食不洁，近人犬，数惊恐；观仓中鼠食积粟，居大庑之下，不见人犬之忧，乃叹。',
+      },
       { title: '篆书定形', body: '李斯作《仓颉篇》，规范小篆，为汉字定型之祖。' },
     ],
     echoes: ['es-shangyang', 'es-fanju', 'es-zhangqiu'],
@@ -86,7 +89,10 @@ export const FIGURES_EAST_STATEMAN: readonly Figure[] = [
     portrait: 'portraits/east-statesman/kangyouwei.svg',
     matchBlurb: '汝与 {{name}} 同，思以制度变天下，敢为天下先。',
     anecdotes: [
-      { title: '公车上书', body: '1895 年甲午战败，康有为联合 18 省举人 1300 余人上书光绪帝，请求变法。' },
+      {
+        title: '公车上书',
+        body: '1895 年甲午战败，康有为联合 18 省举人 1300 余人上书光绪帝，请求变法。',
+      },
       { title: '百日维新', body: '103 天内颁数十道新政诏令，后被慈禧扼杀。' },
     ],
     echoes: ['es-shangyang', 'es-zhangqiu', 'es-liangqichao'],
@@ -120,7 +126,10 @@ export const FIGURES_EAST_STATEMAN: readonly Figure[] = [
     portrait: 'portraits/east-statesman/guanzhong.svg',
     matchBlurb: '汝与 {{name}} 同，能通商惠工，使民得利而国自富。',
     anecdotes: [
-      { title: '老马识途', body: '齐桓公伐山戎，归途迷。管仲曰：「老马之智可用也。」乃放老马而随之，遂得道。' },
+      {
+        title: '老马识途',
+        body: '齐桓公伐山戎，归途迷。管仲曰：「老马之智可用也。」乃放老马而随之，遂得道。',
+      },
       { title: '九合诸侯', body: '为齐桓公成就首霸之业。' },
     ],
     echoes: ['es-shangyang', 'es-fanju', 'es-zhuge'],

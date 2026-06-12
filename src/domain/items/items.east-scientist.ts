@@ -6,33 +6,56 @@ import type { Item } from './item.types';
 export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
   // ── T1 思辨 ──
   {
-    id: 'esci-001', format: 'situational',
+    id: 'esci-001',
+    format: 'situational',
     prompt: '万物有源',
     promptGloss: '天下万物，何以为知？',
     options: [
       { text: '观象', gloss: '以目为知', primary: { traitId: 1, delta: -0.6 } },
       { text: '察理', gloss: '以思为知', primary: { traitId: 1, delta: 0.6 } },
-      { text: '格物', gloss: '以物为知', primary: { traitId: 1, delta: 1.2 }, secondary: [{ traitId: 8, delta: 0.4 }] },
+      {
+        text: '格物',
+        gloss: '以物为知',
+        primary: { traitId: 1, delta: 1.2 },
+        secondary: [{ traitId: 8, delta: 0.4 }],
+      },
       { text: '穷理', gloss: '以理为至', primary: { traitId: 1, delta: 1.4 } },
-      { text: '致用', gloss: '以用为知', primary: { traitId: 1, delta: 0.4 }, secondary: [{ traitId: 3, delta: 0.3 }] },
+      {
+        text: '致用',
+        gloss: '以用为知',
+        primary: { traitId: 1, delta: 0.4 },
+        secondary: [{ traitId: 3, delta: 0.3 }],
+      },
       { text: '不求甚解', gloss: '以浑为知', primary: { traitId: 1, delta: -1.0 } },
     ],
   },
   {
-    id: 'esci-002', format: 'situational',
+    id: 'esci-002',
+    format: 'situational',
     prompt: '新理之惑',
     promptGloss: '一理新出，与旧说相悖，汝当何从？',
     options: [
       { text: '信古', gloss: '从旧', primary: { traitId: 1, delta: -1.2 } },
       { text: '慎择', gloss: '以理度之', primary: { traitId: 1, delta: 0.4 } },
       { text: '穷理以验', gloss: '以验为据', primary: { traitId: 1, delta: 1.2 } },
-      { text: '唯新是从', gloss: '以新为是', primary: { traitId: 1, delta: 0.4 }, secondary: [{ traitId: 4, delta: 0.3 }] },
-      { text: '古为体新为用', gloss: '融贯', primary: { traitId: 1, delta: 0.8 }, secondary: [{ traitId: 8, delta: 0.4 }] },
+      {
+        text: '唯新是从',
+        gloss: '以新为是',
+        primary: { traitId: 1, delta: 0.4 },
+        secondary: [{ traitId: 4, delta: 0.3 }],
+      },
+      {
+        text: '古为体新为用',
+        gloss: '融贯',
+        primary: { traitId: 1, delta: 0.8 },
+        secondary: [{ traitId: 8, delta: 0.4 }],
+      },
       { text: '存而不论', gloss: '不评', primary: { traitId: 1, delta: -0.6 } },
     ],
   },
   {
-    id: 'esci-003', format: 'imagery',
+    id: 'esci-003',
+    format: 'imagery',
     prompt: '以器载道',
     promptGloss: '道之精微，汝欲何载？',
     options: [
@@ -40,17 +63,28 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
       { text: '文墨', gloss: '以书为载', primary: { traitId: 1, delta: 0.4 } },
       { text: '器物', gloss: '以器为载', primary: { traitId: 1, delta: 1.0 } },
       { text: '图数', gloss: '以数为载', primary: { traitId: 1, delta: 1.4 } },
-      { text: '心神', gloss: '以心为载', primary: { traitId: 1, delta: -0.4 }, secondary: [{ traitId: 2, delta: 0.3 }] },
+      {
+        text: '心神',
+        gloss: '以心为载',
+        primary: { traitId: 1, delta: -0.4 },
+        secondary: [{ traitId: 2, delta: 0.3 }],
+      },
       { text: '无言', gloss: '以不载为载', primary: { traitId: 1, delta: -0.6 } },
     ],
   },
   {
-    id: 'esci-004', format: 'situational',
+    id: 'esci-004',
+    format: 'situational',
     prompt: '万理之归',
     promptGloss: '万物各有其理，汝以何理为归？',
     options: [
       { text: '天理', gloss: '以天为归', primary: { traitId: 1, delta: 0.6 } },
-      { text: '物理', gloss: '以物为归', primary: { traitId: 1, delta: 1.2 }, secondary: [{ traitId: 8, delta: 0.3 }] },
+      {
+        text: '物理',
+        gloss: '以物为归',
+        primary: { traitId: 1, delta: 1.2 },
+        secondary: [{ traitId: 8, delta: 0.3 }],
+      },
       { text: '数理', gloss: '以数为归', primary: { traitId: 1, delta: 1.4 } },
       { text: '事理', gloss: '以事为归', primary: { traitId: 1, delta: 0.4 } },
       { text: '心理', gloss: '以心为归', primary: { traitId: 1, delta: -0.6 } },
@@ -60,12 +94,18 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T2 情感 ──
   {
-    id: 'esci-005', format: 'situational',
+    id: 'esci-005',
+    format: 'situational',
     prompt: '为学之苦',
     promptGloss: '穷经皓首，未必有成，汝何以自处？',
     options: [
       { text: '以苦为乐', gloss: '乐在学中', primary: { traitId: 2, delta: 1.4 } },
-      { text: '持志以行', gloss: '以志驱苦', primary: { traitId: 2, delta: 0.6 }, secondary: [{ traitId: 7, delta: 0.3 }] },
+      {
+        text: '持志以行',
+        gloss: '以志驱苦',
+        primary: { traitId: 2, delta: 0.6 },
+        secondary: [{ traitId: 7, delta: 0.3 }],
+      },
       { text: '顺其自然', gloss: '不强求', primary: { traitId: 2, delta: 0.0 } },
       { text: '苦中寻乐', gloss: '以苦为阶', primary: { traitId: 2, delta: 0.8 } },
       { text: '逃苦求乐', gloss: '以乐为上', primary: { traitId: 2, delta: -1.0 } },
@@ -73,20 +113,32 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-006', format: 'situational',
+    id: 'esci-006',
+    format: 'situational',
     prompt: '以身为试',
     promptGloss: '欲证一理，当以身为试乎？',
     options: [
       { text: '不敢', gloss: '不涉险', primary: { traitId: 2, delta: -1.0 } },
       { text: '慎为之', gloss: '以慎为度', primary: { traitId: 2, delta: 0.0 } },
-      { text: '必试之', gloss: '以身为度', primary: { traitId: 2, delta: 1.0 }, secondary: [{ traitId: 11, delta: 0.4 }] },
+      {
+        text: '必试之',
+        gloss: '以身为度',
+        primary: { traitId: 2, delta: 1.0 },
+        secondary: [{ traitId: 11, delta: 0.4 }],
+      },
       { text: '舍身以试', gloss: '以身殉道', primary: { traitId: 2, delta: 1.4 } },
       { text: '请人代试', gloss: '以人为度', primary: { traitId: 2, delta: -0.4 } },
-      { text: '以理推之', gloss: '不试而推', primary: { traitId: 2, delta: 0.4 }, secondary: [{ traitId: 1, delta: 0.3 }] },
+      {
+        text: '以理推之',
+        gloss: '不试而推',
+        primary: { traitId: 2, delta: 0.4 },
+        secondary: [{ traitId: 1, delta: 0.3 }],
+      },
     ],
   },
   {
-    id: 'esci-007', format: 'imagery',
+    id: 'esci-007',
+    format: 'imagery',
     prompt: '冷板凳',
     promptGloss: '学问如冷板凳，汝何以坐？',
     options: [
@@ -99,7 +151,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-008', format: 'situational',
+    id: 'esci-008',
+    format: 'situational',
     prompt: '同道之讥',
     promptGloss: '同道讥汝迂腐，汝何以对？',
     options: [
@@ -107,14 +160,20 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
       { text: '不答', gloss: '以默为答', primary: { traitId: 2, delta: 0.6 } },
       { text: '笑而纳之', gloss: '以笑纳讥', primary: { traitId: 2, delta: 1.0 } },
       { text: '讽而答之', gloss: '以讥还讥', primary: { traitId: 2, delta: -0.6 } },
-      { text: '徐徐辩之', gloss: '以理服人', primary: { traitId: 2, delta: 0.0 }, secondary: [{ traitId: 1, delta: 0.3 }] },
+      {
+        text: '徐徐辩之',
+        gloss: '以理服人',
+        primary: { traitId: 2, delta: 0.0 },
+        secondary: [{ traitId: 1, delta: 0.3 }],
+      },
       { text: '以行证之', gloss: '不辩而行', primary: { traitId: 2, delta: 0.4 } },
     ],
   },
 
   // ── T3 行动 ──
   {
-    id: 'esci-009', format: 'situational',
+    id: 'esci-009',
+    format: 'situational',
     prompt: '手脑之择',
     promptGloss: '汝以何为先？',
     options: [
@@ -127,7 +186,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-010', format: 'situational',
+    id: 'esci-010',
+    format: 'situational',
     prompt: '一器之成',
     promptGloss: '一器之成必经千次试验，汝当如何？',
     options: [
@@ -135,12 +195,18 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
       { text: '试而不成则止', gloss: '不耐久试', primary: { traitId: 3, delta: -0.6 } },
       { text: '十试', gloss: '以十为度', primary: { traitId: 3, delta: 0.0 } },
       { text: '百试', gloss: '以百为度', primary: { traitId: 3, delta: 0.6 } },
-      { text: '千试', gloss: '以千为度', primary: { traitId: 3, delta: 1.2 }, secondary: [{ traitId: 7, delta: 0.3 }] },
+      {
+        text: '千试',
+        gloss: '以千为度',
+        primary: { traitId: 3, delta: 1.2 },
+        secondary: [{ traitId: 7, delta: 0.3 }],
+      },
       { text: '万试不止', gloss: '以恒为度', primary: { traitId: 3, delta: 1.4 } },
     ],
   },
   {
-    id: 'esci-011', format: 'imagery',
+    id: 'esci-011',
+    format: 'imagery',
     prompt: '纸上与器间',
     promptGloss: '学问于纸，汝欲成之何处？',
     options: [
@@ -153,22 +219,34 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-012', format: 'situational',
+    id: 'esci-012',
+    format: 'situational',
     prompt: '不期之成',
     promptGloss: '千试而不期一朝得成，汝当如何？',
     options: [
       { text: '沮丧而止', gloss: '不恒', primary: { traitId: 3, delta: -1.2 } },
       { text: '暂歇再试', gloss: '暂息', primary: { traitId: 3, delta: -0.4 } },
       { text: '审思其因', gloss: '以思促行', primary: { traitId: 3, delta: 0.2 } },
-      { text: '更法再试', gloss: '以变为进', primary: { traitId: 3, delta: 0.6 }, secondary: [{ traitId: 4, delta: 0.3 }] },
-      { text: '愈挫愈试', gloss: '以苦为志', primary: { traitId: 3, delta: 1.2 }, secondary: [{ traitId: 7, delta: 0.4 }] },
+      {
+        text: '更法再试',
+        gloss: '以变为进',
+        primary: { traitId: 3, delta: 0.6 },
+        secondary: [{ traitId: 4, delta: 0.3 }],
+      },
+      {
+        text: '愈挫愈试',
+        gloss: '以苦为志',
+        primary: { traitId: 3, delta: 1.2 },
+        secondary: [{ traitId: 7, delta: 0.4 }],
+      },
       { text: '以身相殉', gloss: '以死为度', primary: { traitId: 3, delta: 1.4 } },
     ],
   },
 
   // ── T4 革新 ──
   {
-    id: 'esci-013', format: 'situational',
+    id: 'esci-013',
+    format: 'situational',
     prompt: '古法已穷',
     promptGloss: '古法已穷其变，汝当守之，抑或变之？',
     options: [
@@ -181,7 +259,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-014', format: 'situational',
+    id: 'esci-014',
+    format: 'situational',
     prompt: '新器初成',
     promptGloss: '新器初成，世人疑之，汝当如何？',
     options: [
@@ -194,7 +273,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-015', format: 'imagery',
+    id: 'esci-015',
+    format: 'imagery',
     prompt: '旧瓶与新酒',
     promptGloss: '新理已得，汝欲何载？',
     options: [
@@ -207,7 +287,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-016', format: 'situational',
+    id: 'esci-016',
+    format: 'situational',
     prompt: '以旧辅新',
     promptGloss: '新理已得，旧器尚可用，汝当何从？',
     options: [
@@ -222,7 +303,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T5 群我 ──
   {
-    id: 'esci-017', format: 'situational',
+    id: 'esci-017',
+    format: 'situational',
     prompt: '私学与公学',
     promptGloss: '汝之所得，藏之为私学，抑或公之于众？',
     options: [
@@ -235,7 +317,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-018', format: 'situational',
+    id: 'esci-018',
+    format: 'situational',
     prompt: '同业之争',
     promptGloss: '同业相争，汝当如何？',
     options: [
@@ -248,7 +331,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-019', format: 'imagery',
+    id: 'esci-019',
+    format: 'imagery',
     prompt: '一灯与千灯',
     promptGloss: '一灯能照几隅？',
     options: [
@@ -261,7 +345,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-020', format: 'situational',
+    id: 'esci-020',
+    format: 'situational',
     prompt: '独学与共学',
     promptGloss: '为学当独，抑或共？',
     options: [
@@ -276,7 +361,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T6 审美 ──
   {
-    id: 'esci-021', format: 'imagery',
+    id: 'esci-021',
+    format: 'imagery',
     prompt: '器之美',
     promptGloss: '器物之饰，汝取何格？',
     options: [
@@ -289,7 +375,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-022', format: 'situational',
+    id: 'esci-022',
+    format: 'situational',
     prompt: '匠意之传',
     promptGloss: '一器之成，汝欲其传何？',
     options: [
@@ -302,7 +389,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-023', format: 'situational',
+    id: 'esci-023',
+    format: 'situational',
     prompt: '图样之饰',
     promptGloss: '图样之绘，汝欲其繁简如何？',
     options: [
@@ -315,7 +403,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-024', format: 'imagery',
+    id: 'esci-024',
+    format: 'imagery',
     prompt: '器之形',
     promptGloss: '器之形制，汝欲其何？',
     options: [
@@ -330,7 +419,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T7 意志 ──
   {
-    id: 'esci-025', format: 'situational',
+    id: 'esci-025',
+    format: 'situational',
     prompt: '千试不成',
     promptGloss: '千试而不成，汝当如何？',
     options: [
@@ -343,7 +433,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-026', format: 'situational',
+    id: 'esci-026',
+    format: 'situational',
     prompt: '人讥汝拙',
     promptGloss: '众人讥汝拙，汝当如何？',
     options: [
@@ -356,7 +447,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-027', format: 'imagery',
+    id: 'esci-027',
+    format: 'imagery',
     prompt: '金刚石',
     promptGloss: '汝欲为何石？',
     options: [
@@ -369,7 +461,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-028', format: 'situational',
+    id: 'esci-028',
+    format: 'situational',
     prompt: '穷途之叹',
     promptGloss: '穷途而道不行，汝何以自处？',
     options: [
@@ -378,13 +471,14 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
       { text: '传之于人', gloss: '以传为度', primary: { traitId: 7, delta: 1.0 } },
       { text: '著书立说', gloss: '以言为度', primary: { traitId: 7, delta: 1.2 } },
       { text: '死守', gloss: '以死为度', primary: { traitId: 7, delta: 1.4 } },
-      { text: '退而传道', gloss: '以退为度', primary: { traitId:  7, delta: 0.8 } },
+      { text: '退而传道', gloss: '以退为度', primary: { traitId: 7, delta: 0.8 } },
     ],
   },
 
   // ── T8 学识 ──
   {
-    id: 'esci-029', format: 'situational',
+    id: 'esci-029',
+    format: 'situational',
     prompt: '学之博约',
     promptGloss: '学当博，抑或约？',
     options: [
@@ -397,7 +491,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-030', format: 'situational',
+    id: 'esci-030',
+    format: 'situational',
     prompt: '东西之学',
     promptGloss: '东西之学，汝取何为？',
     options: [
@@ -410,7 +505,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-031', format: 'imagery',
+    id: 'esci-031',
+    format: 'imagery',
     prompt: '井与海',
     promptGloss: '汝欲为井，抑或海？',
     options: [
@@ -423,7 +519,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-032', format: 'situational',
+    id: 'esci-032',
+    format: 'situational',
     prompt: '通才与专才',
     promptGloss: '为学当通才，抑或专才？',
     options: [
@@ -438,7 +535,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T9 处世 ──
   {
-    id: 'esci-033', format: 'situational',
+    id: 'esci-033',
+    format: 'situational',
     prompt: '仕与隐',
     promptGloss: '才成之后，汝欲何往？',
     options: [
@@ -451,7 +549,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-034', format: 'situational',
+    id: 'esci-034',
+    format: 'situational',
     prompt: '得志与失意',
     promptGloss: '得志则行，失意则隐，汝取何为？',
     options: [
@@ -464,7 +563,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-035', format: 'imagery',
+    id: 'esci-035',
+    format: 'imagery',
     prompt: '舟与岸',
     promptGloss: '汝欲为舟，抑或岸？',
     options: [
@@ -477,7 +577,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-036', format: 'situational',
+    id: 'esci-036',
+    format: 'situational',
     prompt: '身后之名',
     promptGloss: '身后之名，汝欲何为？',
     options: [
@@ -492,7 +593,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T10 时间 ──
   {
-    id: 'esci-037', format: 'situational',
+    id: 'esci-037',
+    format: 'situational',
     prompt: '百代之功',
     promptGloss: '一理之成，可传百代，汝欲何用？',
     options: [
@@ -505,7 +607,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-038', format: 'situational',
+    id: 'esci-038',
+    format: 'situational',
     prompt: '一器与千代',
     promptGloss: '一器可传千代，汝欲为之乎？',
     options: [
@@ -518,7 +621,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-039', format: 'imagery',
+    id: 'esci-039',
+    format: 'imagery',
     prompt: '寸阴与尺璧',
     promptGloss: '寸阴与尺璧，汝取何为贵？',
     options: [
@@ -531,7 +635,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-040', format: 'situational',
+    id: 'esci-040',
+    format: 'situational',
     prompt: '今与古',
     promptGloss: '今人之术，胜于古人乎？',
     options: [
@@ -546,7 +651,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T11 风险 ──
   {
-    id: 'esci-041', format: 'situational',
+    id: 'esci-041',
+    format: 'situational',
     prompt: '未验之器',
     promptGloss: '一器未验，汝敢用之乎？',
     options: [
@@ -559,7 +665,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-042', format: 'situational',
+    id: 'esci-042',
+    format: 'situational',
     prompt: '以身为验',
     promptGloss: '欲验新药，汝以何为试？',
     options: [
@@ -572,7 +679,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-043', format: 'imagery',
+    id: 'esci-043',
+    format: 'imagery',
     prompt: '孤舟与巨浪',
     promptGloss: '新理如孤舟入海，汝何以对？',
     options: [
@@ -585,7 +693,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-044', format: 'situational',
+    id: 'esci-044',
+    format: 'situational',
     prompt: '新术之争',
     promptGloss: '新术一立，旧派阻之，汝当如何？',
     options: [
@@ -600,7 +709,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
 
   // ── T12 表达 ──
   {
-    id: 'esci-045', format: 'situational',
+    id: 'esci-045',
+    format: 'situational',
     prompt: '一理之传',
     promptGloss: '一理已成，汝欲何传？',
     options: [
@@ -613,7 +723,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-046', format: 'situational',
+    id: 'esci-046',
+    format: 'situational',
     prompt: '著书之辞',
     promptGloss: '著书之辞，汝取何格？',
     options: [
@@ -626,7 +737,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-047', format: 'imagery',
+    id: 'esci-047',
+    format: 'imagery',
     prompt: '言之器',
     promptGloss: '传理之器，汝欲何为？',
     options: [
@@ -639,7 +751,8 @@ export const ITEMS_EAST_SCIENTIST: readonly Item[] = [
     ],
   },
   {
-    id: 'esci-048', format: 'situational',
+    id: 'esci-048',
+    format: 'situational',
     prompt: '万言之传',
     promptGloss: '一理之传，汝欲万言以传，抑或千言以传？',
     options: [
