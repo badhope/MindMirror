@@ -2,19 +2,11 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist",
-      "url": [
-        "http://localhost:4173/"
-      ],
+      "url": ["http://localhost:4173/"],
       "numberOfRuns": 1,
       "settings": {
         "preset": "desktop",
-        "skipAudits": [
-          "is-on-https",
-          "uses-http2",
-          "redirects-http",
-          "csp-xss",
-          "has-hsts"
-        ],
+        "skipAudits": ["is-on-https", "uses-http2", "redirects-http", "csp-xss", "has-hsts"],
         "emulatedFormFactor": "mobile"
       }
     },
