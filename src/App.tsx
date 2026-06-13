@@ -9,19 +9,13 @@ import { Reflection } from './pages/Reflection';
 
 export function App() {
   const { phase } = useStore();
-  const [animClass, setAnimClass] = useState('jx-page-enter');
   const [currentPhase, setCurrentPhase] = useState(phase);
 
-  // 页面切换时执行翻页动画
+  // 阶段变化：先 600ms 翻页退出，再切换到新页面（带入场动画）
   useEffect(() => {
-    if (phase !== currentPhase) {
-      setAnimClass('jx-page-exit');
-      const timer = setTimeout(() => {
-        setCurrentPhase(phase);
-        setAnimClass('jx-page-enter');
-      }, 600);
-      return () => clearTimeout(timer);
-    }
+    if (phase === currentPhase) return;
+    const timer = setTimeout(() => setCurrentPhase(phase), 600);
+    return () => clearTimeout(timer);
   }, [phase, currentPhase]);
 
   // 页面切换时滚动到顶部
@@ -38,7 +32,7 @@ export function App() {
       <main
         id="main-content"
         tabIndex={-1}
-        className={animClass}
+        className="jx-page-enter"
         key={currentPhase}
       >
         {currentPhase === 'prologue' && <Prologue key="prologue" />}

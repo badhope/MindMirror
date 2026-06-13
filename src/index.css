@@ -276,10 +276,6 @@ p {
   animation: jx-page-flip-in 1200ms var(--ease-in-out) both;
 }
 
-.jx-page-exit {
-  animation: jx-page-flip-out 600ms var(--ease-in-out) both;
-}
-
 @keyframes jx-page-flip-in {
   0% {
     opacity: 0;
@@ -297,16 +293,9 @@ p {
   }
 }
 
-@keyframes jx-page-flip-out {
-  0% {
-    opacity: 1;
-    transform: perspective(1200px) rotateY(0) translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: perspective(1200px) rotateY(15deg) translateX(40px);
-    filter: blur(4px);
-  }
+/* 入场淡入：用于旧组件退出后，新组件挂载前 */
+.jx-fade-in {
+  animation: jx-fade-in 600ms var(--ease-out) both;
 }
 
 /* 卷轴展开 - 增强版 */
