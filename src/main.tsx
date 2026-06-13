@@ -9,7 +9,7 @@ import './index.css';
 // C7 主题：首屏前应用 data-theme，避免白闪
 (() => {
   try {
-    const saved = localStorage.getItem('mindmirror-v1.theme');
+    const saved = localStorage.getItem('mindmirror-v2.theme');
     const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
     const theme = saved === 'light' || saved === 'dark' ? saved : prefersDark ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);

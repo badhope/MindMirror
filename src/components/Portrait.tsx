@@ -7,6 +7,8 @@
 import type { Figure } from '../domain/figures/figure.types';
 import { useState } from 'react';
 
+const BASE = import.meta.env.BASE_URL;
+
 type Props = { figure: Figure };
 
 export function Portrait({ figure }: Props) {
@@ -15,6 +17,11 @@ export function Portrait({ figure }: Props) {
   if (err) {
     return <Placeholder figure={figure} />;
   }
+
+  // 确保 portrait 路径在 GitHub Pages 子路径下正确解析
+  const portraitSrc = figure.portrait.startsWith('/')
+    ? figure.portrait
+    : `${BASE}${figure.portrait}`;
 
   return (
     <div
@@ -28,7 +35,7 @@ export function Portrait({ figure }: Props) {
       }}
     >
       <img
-        src={figure.portrait}
+        src={portraitSrc}
         alt={`${figure.name}（${figure.era}）`}
         loading="lazy"
         onError={() => setErr(true)}

@@ -58,12 +58,16 @@
         text-align: center;
       }
       #jx-boot {
-        min-height: 100vh;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
         padding: 24px;
+        background: #f5efe0;
+        transition: opacity 400ms ease;
       }
       #jx-boot .seal {
         width: 80px; height: 80px; margin: 0 auto 24px;
