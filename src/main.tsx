@@ -47,3 +47,13 @@ ReactDOM.createRoot(root).render(
     <App />
   </React.StrictMode>
 );
+
+// React 挂载完成后清除启动加载页
+queueMicrotask(() => {
+  const boot = document.getElementById('jx-boot');
+  if (boot) {
+    boot.style.transition = 'opacity 300ms ease';
+    boot.style.opacity = '0';
+    setTimeout(() => boot.remove(), 350);
+  }
+});

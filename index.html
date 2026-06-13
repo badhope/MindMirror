@@ -98,16 +98,16 @@
     </style>
   </head>
   <body>
-    <div id="root">
-      <div id="jx-boot">
-        <div>
-          <div class="seal">镜</div>
-          <h1>镜心</h1>
-          <p>一面问己之镜。三分钟，三千年。</p>
-          <div class="spin"><span class="dot"></span> 入镜中…</div>
-        </div>
+    <!-- 启动加载页：放在 #root 外，React 挂载时清除 -->
+    <div id="jx-boot">
+      <div>
+        <div class="seal">镜</div>
+        <h1>镜心</h1>
+        <p>一面问己之镜。三分钟，三千年。</p>
+        <div class="spin"><span class="dot"></span> 入镜中…</div>
       </div>
     </div>
+    <div id="root"></div>
     <noscript>
       <div style="max-width:640px;margin:80px auto;text-align:center;padding:0 20px;font-family:serif">
         <h1>镜心 需 JavaScript 方可入镜</h1>
