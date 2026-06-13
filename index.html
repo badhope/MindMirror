@@ -119,11 +119,11 @@
       </div>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- C10 PWA：注册 SW -->
+    <!-- C10 PWA：注册 SW（加版本参数破坏旧 SW 缓存） -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').catch(() => {});
+          navigator.serviceWorker.register('./sw.js?v=5').catch(() => {});
         });
       }
     </script>

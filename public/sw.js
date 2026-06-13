@@ -1,22 +1,20 @@
-// MindMirror · Service Worker (v4 - 网络优先策略)
-// 策略：所有资源网络优先，离线时降级到缓存
-// 关键：避免旧版缓存导致新版本加载异常
+// MindMirror · Service Worker (v5 - 极简策略)
+// 核心原则：JS/CSS 带内容 hash，浏览器自身缓存即可，SW 不干预
+// 只缓存静态资源（图片、字体等），避免 SW 缓存旧 JS 导致白屏
 
-const CACHE = 'mindmirror-v4';
+const CACHE = 'mindmirror-v5';
 
-// 安装时立即激活
-self.addEventListener('install', (e) => {
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     Promise.all([
-      // 清理所有旧缓存
+      // 清理所有旧缓存（v1/v2/v3/v4 全部清除）
       caches.keys().then((keys) =>
         Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
       ),
-      // 立即接管所有页面
       self.clients.claim(),
     ])
   );
@@ -24,15 +22,20 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // 只拦截同源 GET 请求
   if (url.origin !== location.origin) return;
   if (e.request.method !== 'GET') return;
 
-  // 所有资源：网络优先，离线时降级到缓存
+  // JS/CSS/HTML：完全不拦截，让浏览器自己处理
+  // 带 hash 的 JS/CSS 浏览器会永久缓存，不带 hash 的 HTML 每次请求最新
+  if (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) {
+    return;
+  }
+
+  // 其他资源（图片、字体、SVG 等）：网络优先，离线降级缓存
   e.respondWith(
     fetch(e.request)
       .then((resp) => {
-        if (resp.ok && resp.status === 200) {
+        if (resp.ok) {
           const clone = resp.clone();
           caches.open(CACHE).then((c) => c.put(e.request, clone)).catch(() => {});
         }

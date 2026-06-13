@@ -9,6 +9,10 @@ export default defineConfig(({ mode }) => {
   return {
     base: mode === 'static' ? './' : base,
     plugins: [react()],
+    resolve: {
+      // 防御性配置：强制所有依赖使用顶层 React，避免嵌套依赖导致多实例
+      dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'use-sync-external-store'],
+    },
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
