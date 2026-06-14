@@ -61,6 +61,11 @@ export function Way() {
     if (currentIndex < total - 1) goNext();
   };
 
+  // 切换题目时回到顶部
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentIndex]);
+
   // 键盘导航
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

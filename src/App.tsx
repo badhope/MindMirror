@@ -14,14 +14,11 @@ export function App() {
   // 阶段变化：先 600ms 翻页退出，再切换到新页面（带入场动画）
   useEffect(() => {
     if (phase === currentPhase) return;
+    // 立即回到顶部（在退出动画期间就完成，新页面出现时已在顶端）
+    window.scrollTo({ top: 0, behavior: 'instant' });
     const timer = setTimeout(() => setCurrentPhase(phase), 600);
     return () => clearTimeout(timer);
   }, [phase, currentPhase]);
-
-  // 页面切换时滚动到顶部
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPhase]);
 
   return (
     <>
